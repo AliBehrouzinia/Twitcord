@@ -50,10 +50,10 @@ INSTALLED_APPS = [
     'rest_auth'
 ]
 
-AUTH_USER_MODEL = 'begard_app.twitcordUser'
+AUTH_USER_MODEL = 'twitcord_app.twitcordUser'
 
 REST_AUTH_SERIALIZERS = {
-    'USER_DETAILS_SERIALIZER': 'begard_app.serializers.CustomUserDetailsSerializer',
+    'USER_DETAILS_SERIALIZER': 'twitcord_app.serializers.CustomUserDetailsSerializer',
 }
 
 REST_FRAMEWORK = {

@@ -3,7 +3,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import NotFound
 
 from .models import *
-from .models import BegardUser
+from .models import twitcordUser
 
 
 class UserSerializer(serializers.ModelSerializer):
