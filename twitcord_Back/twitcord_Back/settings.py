@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'rest_auth'
 ]
 
+AUTH_USER_MODEL = 'begard_app.twitcordUser'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
