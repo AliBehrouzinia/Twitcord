@@ -5,7 +5,7 @@ from django.contrib.auth.models import PermissionsMixin
 from .managers.managers import BegardUserManager
 
 
-class BegardUser(AbstractBaseUser, PermissionsMixin):
+class twitcordser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
@@ -19,7 +19,7 @@ class BegardUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    objects = BegardUserManager()
+    objects = twitcordUserManager()
 
     def __str__(self):
         return self.email

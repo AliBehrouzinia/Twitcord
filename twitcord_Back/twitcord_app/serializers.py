@@ -8,5 +8,5 @@ from .models import BegardUser
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BegardUser
+        model = twitcordUser
         fields = 'email'
