@@ -1,17 +1,17 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .models import twitcordUser
+from .models import TwitcordUser
 
 
-class twitcordUserCreationForm(UserCreationForm):
+class TwitcordUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
-        model = twitcordUser
+        model = TwitcordUser
         fields = ('email',)
 
 
-class twitcordUserChangeForm(UserChangeForm):
+class TwitcordUserChangeForm(UserChangeForm):
 
     class Meta:
-        model = twitcordUser
+        model = TwitcordUser
         fields = ('email',)

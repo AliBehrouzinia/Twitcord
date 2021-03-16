@@ -1,7 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 
 
-class twitcordUserManager(BaseUserManager):
+class TwitcordUserManager(BaseUserManager):
     def create_user(self, email, password=None, is_admin=False, is_staff=False, is_active=True):
         if not email:
             raise ValueError("User must have an email")

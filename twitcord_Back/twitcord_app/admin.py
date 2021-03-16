@@ -2,14 +2,14 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .forms import twitcordUserCreationForm, twitcordUserChangeForm
+from .forms import TwitcordUserCreationForm, TwitcordUserChangeForm
 from .models import *
 
 
-class twitcordUserAdmin(UserAdmin):
-    add_form = twitcordUserCreationForm
-    form = twitcordUserChangeForm
-    model = twitcordUser
+class TwitcordUserAdmin(UserAdmin):
+    add_form = TwitcordUserCreationForm
+    form = TwitcordUserChangeForm
+    model = TwitcordUser
     list_display = ('email', 'date_joined', 'profile_img')
     list_filter = ('email', 'date_joined')
     fieldsets = (
@@ -26,4 +26,4 @@ class twitcordUserAdmin(UserAdmin):
     ordering = ('email',)
 
 
-admin.site.register(twitcordUser, twitcordUserAdmin)
+admin.site.register(TwitcordUser, TwitcordUserAdmin)

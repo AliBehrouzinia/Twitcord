@@ -54,7 +54,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
-AUTH_USER_MODEL = 'twitcord_app.twitcordUser'
+AUTH_USER_MODEL = 'twitcord_app.TwitcordUser'
 
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'twitcord_app.serializers.CustomUserDetailsSerializer',
