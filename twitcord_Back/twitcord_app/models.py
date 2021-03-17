@@ -43,3 +43,11 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     @is_staff.setter
     def is_staff(self, value):
         self._is_staff = value
+
+class Tweet(models.Model):
+    user = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
+    content = models.TextField(max_length=280)
+    create_date = models.DateTimeField()
+
+    def __str__(self):
+        return self.content
