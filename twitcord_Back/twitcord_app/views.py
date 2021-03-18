@@ -11,16 +11,4 @@ import datetime
 
 class TweetsView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated,]
-
-    def post(self, request, *args, **kwargs):
-        data = self.request.data
-        tweet = self.create_tweet(data)
-        return Response( data = serializers.TweetSerializer(tweet).data, status=status.HTTP_200_OK)
-    
-    def create_tweet(self,data):
-        data['user'] = self.request.user.id
-        serializer = serializers.TweetSerializer(data= data, many=False)
-        if serializer.is_valid(True):
-            tweet = serializer.save()
-            return tweet
-        return None
+    serializer_class = serializers.TweetSerializer
