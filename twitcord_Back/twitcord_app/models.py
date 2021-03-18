@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-
 from .managers import TwitcordUserManager
 
 
@@ -47,7 +46,7 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
 class Tweet(models.Model):
     user = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
     content = models.TextField(max_length=280)
-    create_date = models.DateTimeField()
+    create_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.content

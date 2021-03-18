@@ -20,7 +20,6 @@ class TweetsView(generics.CreateAPIView):
         return Response( data = serializers.TweetSerializer(tweet).data, status=status.HTTP_200_OK)
     
     def create_tweet(self,data):
-        data['create_date'] = datetime.datetime.now()
         data['user'] = self.request.user.id
         serializer = serializers.TweetSerializer(data= data, many=False)
         if serializer.is_valid(True):
