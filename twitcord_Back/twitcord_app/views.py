@@ -14,8 +14,6 @@ class TweetsView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         data = self.request.data
-        if not data.get('content'):
-            return HttpResponseBadRequest("content is required.")
         tweet = self.create_tweet(data)
         return Response( data = serializers.TweetSerializer(tweet).data, status=status.HTTP_200_OK)
     
