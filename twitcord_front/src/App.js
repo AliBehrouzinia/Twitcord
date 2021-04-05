@@ -1,6 +1,8 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
 import Login from './components/Login.tsx';
+import SignUp from './components/SignUp.tsx';
+import {BrowserRouter, Route} from 'react-router-dom';
 
 function App() {
   return (
@@ -18,10 +20,13 @@ function App() {
         >
           Learn React
         </a> */}
-        <div>
-          <Login />
-        </div>
       </header>
+      <BrowserRouter>
+        <div>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/SignUp" component={SignUp} />
+        </div>
+      </BrowserRouter>
     </div>
   );
 }

@@ -1,0 +1,21 @@
+.paper{
+    margin-Top:100px;
+  display: flex;
+ flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  }
+.avatar{
+    margin: 1px;
+    background-color: #F8BBD0;
+}
+.form {
+    width: '100%';
+    margin-Top: 20px;
+  }
+.submit{
+    margin-top: 10px;
+  }
+.grid {
+    margin-top: 10px;
+  }
