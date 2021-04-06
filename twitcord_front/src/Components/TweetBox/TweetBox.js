@@ -6,13 +6,14 @@ import Grid from '@material-ui/core/Grid';
 import {connect} from 'react-redux';
 import './TweetBox.css';
 import PropTypes from 'prop-types';
+import * as Constants from '../../Utils/Constants';
 
 const TweetBox = (props) => (
   <Grid container className="tweet-box">
     <Grid item xs={12}>
       <TextareaAutosize
-        rowsMin={4}
-        rowsMax={4}
+        rowsMin={Constants.TWEET_BOX_ROW_MIN}
+        rowsMax={Constants.TWEET_BOX_ROW_MAX}
         placeholder="what is in your mind?"
         onChange={(e) => props.onTweetTextChanged(e.target.value)}
       />
