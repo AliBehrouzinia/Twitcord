@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
-import TweetBox from './components/TweetBox/TweetBox';
+import TweetBox from './Components/TweetBox/TweetBox';
 
 function App() {
   return (
