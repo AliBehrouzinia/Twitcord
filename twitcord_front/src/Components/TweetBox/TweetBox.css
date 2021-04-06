@@ -20,6 +20,15 @@
   border-radius: 4px;
 }
 
+.tweet-box textarea:hover {
+  border: solid 1px rgb(134, 134, 134);
+}
+
+.tweet-box textarea:focus {
+  border: solid 2px rgb(134, 134, 134) !important;
+  outline: none;
+}
+
 .tweet-box bottom-bar {
   justify-content: space-between;
 }
