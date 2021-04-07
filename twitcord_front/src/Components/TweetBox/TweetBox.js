@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import './TweetBox.css';
 import PropTypes from 'prop-types';
 import * as Constants from '../../Utils/Constants';
+import CharCounter from '../CharCounter/CharCounter';
 
 const TweetBox = (props) => (
   <Grid container className="tweet-box">
@@ -20,6 +21,9 @@ const TweetBox = (props) => (
     </Grid>
     <Grid item xs={12}>
       <Grid container className="bottom-bar">
+        <Grid item xs={2} >
+          <CharCounter numChar={121} />
+        </Grid>
         <Grid item xs={12} sm={3} md={2}>
           <Button className="cancel tweet-box-button" variant="contained">
             cancel

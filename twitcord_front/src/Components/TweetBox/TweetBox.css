@@ -29,10 +29,6 @@
   outline: none;
 }
 
-.tweet-box bottom-bar {
-  justify-content: space-between;
-}
-
 .bottom-bar .cancel {
   float: left;
 }
@@ -45,4 +41,16 @@
   width: 100%;
   margin-top: 10px !important;
   box-shadow: none !important;
+}
+
+@media screen and (max-width: 400px) {
+  .tweet-box {
+    width: 100% !important;
+  }
+}
+
+@media textarea and (overflow: scroll) {
+  .tweet-box {
+    width: 80% !important;
+  }
 }
