@@ -27,3 +27,4 @@ class TwitcordUserAdmin(UserAdmin):
 
 
 admin.site.register(TwitcordUser, TwitcordUserAdmin)
+admin.site.register(Tweet)
