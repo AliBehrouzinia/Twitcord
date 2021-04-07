@@ -29,12 +29,17 @@
   outline: none;
 }
 
-.bottom-bar .cancel {
+.bottom-bar .clear {
   float: left;
+  font-size: x-large;
 }
 
 .bottom-bar .submit {
   float: right;
+}
+
+.bottom-bar .icon-container {
+  align-self: center;
 }
 
 .tweet-box-button {
