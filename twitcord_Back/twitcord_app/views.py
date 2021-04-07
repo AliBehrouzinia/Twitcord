@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from . import models, serializers
 from django.http import HttpResponseBadRequest
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, DjangoModelPermissionsOrAnonReadOnly
 import datetime
 
 
@@ -19,6 +19,10 @@ class ProfileDetailsView(generics.RetrieveAPIView):
     serializer_class = serializers.ProfileDetailsViewSerializer
     lookup_url_kwarg = 'id'
 
-class TweetsView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated,]
+class TweetsView(generics.ListCreateAPIView):
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly,]
     serializer_class = serializers.TweetSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(user_id = user_id)
