@@ -18,3 +18,7 @@ class ProfileDetailsView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
     serializer_class = serializers.ProfileDetailsViewSerializer
     lookup_url_kwarg = 'id'
+
+class TweetsView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = serializers.TweetSerializer
