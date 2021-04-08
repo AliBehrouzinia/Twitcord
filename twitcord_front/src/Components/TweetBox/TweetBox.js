@@ -37,7 +37,13 @@ const TweetBox = (props) => {
       <Grid item xs={12}>
         <Grid container className="bottom-bar">
           <Grid className="icon-container" item xs={1} sm={2}>
-            <IconButton aria-label="clear" className="icon-button">
+            <IconButton
+              onClick={() => {
+                handleClearClick(dispatch);
+              }}
+              aria-label="clear"
+              className="icon-button"
+            >
               <Icon className="clear">clear</Icon>
             </IconButton>
           </Grid>
@@ -59,6 +65,13 @@ const TweetBox = (props) => {
       </Grid>
     </Grid>
   );
+};
+
+const handleClearClick = (dispatch) => {
+  dispatch({
+    type: actionTypes.SET_TWEET_TEXT,
+    tweetText: '',
+  });
 };
 
 TweetBox.propTypes = {
