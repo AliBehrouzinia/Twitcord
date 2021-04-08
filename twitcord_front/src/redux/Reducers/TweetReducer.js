@@ -11,8 +11,7 @@ const tweetReducer = (state = initialState, action) => {
       return {
         ...state,
         tweetText: action.tweetText,
-        tweetCharCount:
-          action.tweetText != undefined ? action.tweetText.length : 0,
+        tweetCharCount: action.tweetText.length,
       };
     default:
       return state;
