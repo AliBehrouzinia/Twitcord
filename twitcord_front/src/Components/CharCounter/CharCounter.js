@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './CharCounter.css';
+import * as Constants from '../../Utils/Constants';
 
 const Counter = (props) => {
   const offset = 5;
   const r = 15;
   const circleLength = Math.round(2 * Math.PI * r);
   const twitterBlue = 'rgb(29, 161, 242)';
-  const colored = Math.round((circleLength * props.numChar) / 140);
+  const colored = Math.round(
+      (circleLength * props.numChar) / Constants.TWEET_CHAR_LIMIT,
+  );
   const gray = circleLength - colored > 0 ? circleLength - colored + offset : 0;
   const ringStyle = {
     stroke:
-      140 - props.numChar <= 0 ?
+      Constants.TWEET_CHAR_LIMIT - props.numChar <= 0 ?
         'red' :
-        140 - props.numChar <= 20 ?
+        Constants.TWEET_CHAR_LIMIT - props.numChar <= 20 ?
         'orange' :
         twitterBlue,
     strokeDasharray: `${colored}  ${gray}`,
