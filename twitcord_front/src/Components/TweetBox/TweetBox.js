@@ -15,6 +15,8 @@ import {useDispatch} from 'react-redux';
 const TweetBox = (props) => {
   const counter = useSelector((state) => state);
   const dispatch = useDispatch();
+  const postButtonDisable =
+    counter.tweet.tweetCharCount > Constants.TWEET_CHAR_LIMIT;
 
   return (
     <Grid container className="tweet-box">
@@ -48,6 +50,7 @@ const TweetBox = (props) => {
               className="submit tweet-box-button"
               variant="contained"
               color="primary"
+              disabled={postButtonDisable}
             >
               post
             </Button>
