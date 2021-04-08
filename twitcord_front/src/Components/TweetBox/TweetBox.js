@@ -7,8 +7,6 @@ import './TweetBox.css';
 import PropTypes from 'prop-types';
 import * as Constants from '../../Utils/Constants';
 import CharCounter from '../CharCounter/CharCounter';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 
@@ -37,22 +35,10 @@ const TweetBox = (props) => {
       </Grid>
       <Grid item xs={12}>
         <Grid container className="bottom-bar">
-          <Grid className="icon-container" item xs={1} sm={2}>
-            <IconButton
-              onClick={() => {
-                handleClearClick(dispatch);
-              }}
-              aria-label="clear"
-              className="icon-button"
-            >
-              <Icon className="clear">clear</Icon>
-            </IconButton>
-          </Grid>
-          <Grid item xs={false} sm={7}></Grid>
           <Grid item xs={1} sm={1}>
             <CharCounter numChar={counter.tweet.tweetCharCount} />
           </Grid>
-          <Grid item xs={12} sm={2}>
+          <Grid item xs={2} sm={2}>
             <Button
               className="submit tweet-box-button"
               variant="contained"
@@ -78,10 +64,6 @@ function clearTweet(dispatch) {
     tweetText: '',
   });
 }
-
-const handleClearClick = (dispatch) => {
-  clearTweet(dispatch);
-};
 
 const handlePostClick = (dispatch) => {
   clearTweet(dispatch);
