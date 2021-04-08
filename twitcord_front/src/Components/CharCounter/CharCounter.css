@@ -1,6 +1,6 @@
 #counter-container {
   /*place the items in row and align them vertically*/
-  text-align: center;
+  text-align: left;
   width: 100%;
   position: relative;
 }
@@ -22,6 +22,7 @@ svg {
 
 p {
   position: absolute;
-  width: 100%;
+  width: 40px;
+  text-align: center;
   font-size: small;
 }
