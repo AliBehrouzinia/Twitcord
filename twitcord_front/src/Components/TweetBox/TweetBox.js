@@ -16,7 +16,8 @@ const TweetBox = (props) => {
   const counter = useSelector((state) => state);
   const dispatch = useDispatch();
   const postButtonDisable =
-    counter.tweet.tweetCharCount > Constants.TWEET_CHAR_LIMIT;
+    counter.tweet.tweetCharCount > Constants.TWEET_CHAR_LIMIT ||
+    counter.tweet.tweetText.length == 0;
 
   return (
     <Grid container className="tweet-box">
@@ -56,6 +57,9 @@ const TweetBox = (props) => {
               className="submit tweet-box-button"
               variant="contained"
               color="primary"
+              onClick={() => {
+                handlePostClick(dispatch);
+              }}
               disabled={postButtonDisable}
             >
               post
@@ -67,11 +71,21 @@ const TweetBox = (props) => {
   );
 };
 
-const handleClearClick = (dispatch) => {
+// eslint-disable-next-line require-jsdoc
+function clearTweet(dispatch) {
   dispatch({
     type: actionTypes.SET_TWEET_TEXT,
     tweetText: '',
   });
+}
+
+const handleClearClick = (dispatch) => {
+  clearTweet(dispatch);
+};
+
+const handlePostClick = (dispatch) => {
+  clearTweet(dispatch);
+  alert('send tweet');
 };
 
 TweetBox.propTypes = {
