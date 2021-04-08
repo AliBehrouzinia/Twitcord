@@ -116,10 +116,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'twitcord',
-        'USER': 'twitcorduser',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '',
+        'USER': 'twitcord',
+        'PASSWORD': 'twitcord',
+        'HOST': 'twitcord_postgres',
+        'PORT': '5432',
     }
 }
 
