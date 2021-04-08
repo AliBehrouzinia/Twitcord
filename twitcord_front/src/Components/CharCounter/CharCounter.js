@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import './CharCounter.css';
 
 const Counter = (props) => {
+  const offset = 5;
   const r = 15;
-  const circleLength = 2 * Math.PI * r;
+  const circleLength = Math.round(2 * Math.PI * r);
   const twitterBlue = 'rgb(29, 161, 242)';
-  const colored = (circleLength * props.numChar) / 140;
-  const gray = circleLength - colored > 0 ? circleLength - colored : 0;
+  const colored = Math.round((circleLength * props.numChar) / 140);
+  const gray = circleLength - colored > 0 ? circleLength - colored + offset : 0;
   const ringStyle = {
     stroke:
       140 - props.numChar <= 0 ?
@@ -16,6 +17,7 @@ const Counter = (props) => {
         'orange' :
         twitterBlue,
     strokeDasharray: `${colored}  ${gray}`,
+    strokeDashoffset: 0,
   };
 
   return (
