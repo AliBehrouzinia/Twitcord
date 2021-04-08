@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import * as Constants from '../../Utils/Constants';
 import CharCounter from '../CharCounter/CharCounter';
 import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
 
 const TweetBox = (props) => (
   <Grid container className="tweet-box">
@@ -22,13 +23,16 @@ const TweetBox = (props) => (
     </Grid>
     <Grid item xs={12}>
       <Grid container className="bottom-bar">
-        <Grid item xs={2}>
+        <Grid className="icon-container" item xs={1} sm={2}>
+          <IconButton aria-label="clear" className="icon-button">
+            <Icon className="clear">clear</Icon>
+          </IconButton>
+        </Grid>
+        <Grid className="icon-container" item xs={0} sm={7}></Grid>
+        <Grid item xs={1} sm={1}>
           <CharCounter numChar={121} />
         </Grid>
-        <Grid className="icon-container" item xs={12} sm={3} md={2}>
-          <Icon className="clear">clear</Icon>
-        </Grid>
-        <Grid item xs={12} sm={3} md={2}>
+        <Grid item xs={12} sm={2}>
           <Button
             className="submit tweet-box-button"
             variant="contained"

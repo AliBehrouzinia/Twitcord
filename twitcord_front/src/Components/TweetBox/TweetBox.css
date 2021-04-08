@@ -29,9 +29,18 @@
   outline: none;
 }
 
+.bottom-bar {
+  justify-content: space-between;
+}
+
 .bottom-bar .clear {
   float: left;
   font-size: x-large;
+}
+
+.bottom-bar .icon-button {
+  height: 40px;
+  width: 40px;
 }
 
 .bottom-bar .submit {
@@ -48,13 +57,13 @@
   box-shadow: none !important;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 600px) and (min-width: 0px) {
   .tweet-box {
-    width: 100% !important;
+    width: 90% !important;
   }
 }
 
-@media textarea and (overflow: scroll) {
+@media screen and (max-width: 900px) and (min-width: 600px) {
   .tweet-box {
     width: 80% !important;
   }
