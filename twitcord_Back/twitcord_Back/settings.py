@@ -26,7 +26,10 @@ SECRET_KEY = 'x^1urp6ws$#d#ihst(f&q&7@*@@-t9xd$sf@vzd+xpoz)u_1&9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost'
+]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -116,10 +119,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'twitcord',
-        'USER': 'twitcorduser',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'PORT': '',
+        'USER': 'twitcord',
+        'PASSWORD': 'twitcord',
+        'HOST': 'twitcord_postgres',
+        'PORT': '5432',
     }
 }
 
