@@ -21,11 +21,11 @@
 }
 
 .tweet-box textarea:hover {
-  border: solid 1px rgb(134, 134, 134);
+  border: solid 1px rgb(187, 187, 187);
 }
 
 .tweet-box textarea:focus {
-  border: solid 2px rgb(134, 134, 134) !important;
+  border: solid 1px rgb(156, 156, 156) !important;
   outline: none;
 }
 
