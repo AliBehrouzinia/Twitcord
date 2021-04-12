@@ -1,16 +1,19 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import * as actionTypes from '../../redux/actionTypes';
-import Grid from '@material-ui/core/Grid';
-import './TweetBox.css';
-import PropTypes from 'prop-types';
-import * as Constants from '../../Utils/Constants';
-import CharCounter from '../CharCounter/CharCounter';
-import {useSelector} from 'react-redux';
-import {useDispatch} from 'react-redux';
+/* eslint-disable */
 
-const TweetBox = (props) => {
+import React from "react";
+import Button from "@material-ui/core/Button";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import * as actionTypes from "../../redux/actionTypes";
+import Grid from "@material-ui/core/Grid";
+import "./TweetBox.css";
+import PropTypes from "prop-types";
+import * as Constants from "../../Utils/Constants";
+import CharCounter from "../CharCounter/CharCounter";
+import { useSelector } from 'react-redux';
+import { useDispatch } from "react-redux";
+import postTweet from "../../Utils/RestApi";
+
+const TweetBox = () => {
   const counter = useSelector((state) => state);
   const dispatch = useDispatch();
   const postButtonDisable =
@@ -44,7 +47,7 @@ const TweetBox = (props) => {
               variant="contained"
               color="primary"
               onClick={() => {
-                handlePostClick(dispatch);
+                handlePostClick(dispatch, counter.tweet.tweetText);
               }}
               disabled={postButtonDisable}
             >
@@ -61,13 +64,21 @@ const TweetBox = (props) => {
 function clearTweet(dispatch) {
   dispatch({
     type: actionTypes.SET_TWEET_TEXT,
-    tweetText: '',
+    tweetText: "",
   });
 }
 
-const handlePostClick = (dispatch) => {
-  clearTweet(dispatch);
-  alert('send tweet');
+const handlePostClick = (dispatch, tweetText) => {
+  let tweetData = { content: tweetText };
+
+  postTweet(tweetData)
+    .then((response) => {
+      console.log(response);
+      clearTweet(dispatch);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 TweetBox.propTypes = {

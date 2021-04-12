@@ -4,7 +4,7 @@ import TweetBox from './Components/TweetBox/TweetBox';
 
 function App() {
   return (
-    <TweetBox/>
+    <TweetBox />
   );
 }
 
