@@ -13,3 +13,11 @@ const instance = axios.create({
   },
 });
 
+const postTweet = (data) =>
+  instance({
+    method: "POST",
+    url: "/tweets/",
+    data,
+  });
+
+export default postTweet;
