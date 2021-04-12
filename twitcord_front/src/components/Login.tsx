@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 // import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 /* eslint-disable require-jsdoc */
-function Login() {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   return (
@@ -82,5 +82,5 @@ function Login() {
       </div>
     </Container>
   );
-}
+};
 export default Login;
