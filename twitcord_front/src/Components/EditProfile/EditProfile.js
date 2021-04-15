@@ -11,7 +11,6 @@ import { TextField } from "formik-material-ui";
 import { DatePicker } from "formik-material-ui-pickers";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import Box from "@material-ui/core/Box";
 
 const EditProfile = () => {
   return (
@@ -42,7 +41,6 @@ const EditProfile = () => {
             {({ submitForm, isSubmitting }) => (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Form>
-                  <Box margin={1}>
                     <Field
                       component={TextField}
                       className="text-field"
@@ -52,9 +50,7 @@ const EditProfile = () => {
                       variant="outlined"
                       name="username"
                     />
-                  </Box>
 
-                  <Box margin={1}>
                     <Field
                       component={TextField}
                       className="text-field"
@@ -62,9 +58,7 @@ const EditProfile = () => {
                       variant="outlined"
                       name="name"
                     />
-                  </Box>
 
-                  <Box margin={1}>
                     <Field
                       component={DatePicker}
                       className="text-field"
@@ -73,9 +67,7 @@ const EditProfile = () => {
                       label="Birrth Day"
                       maxDate={new Date()}
                     />
-                  </Box>
 
-                  <Box margin={1}>
                     <Field
                       component={TextField}
                       className="text-field"
@@ -83,9 +75,7 @@ const EditProfile = () => {
                       variant="outlined"
                       name="website"
                     />
-                  </Box>
 
-                  <Box margin={1}>
                     <Field
                       component={TextField}
                       className="text-field"
@@ -93,9 +83,7 @@ const EditProfile = () => {
                       variant="outlined"
                       name="bio"
                     />
-                  </Box>
 
-                  <Box margin={1}>
                     <Button
                       variant="contained"
                       className="text-field"
@@ -105,7 +93,6 @@ const EditProfile = () => {
                     >
                       Submit
                     </Button>
-                  </Box>
                 </Form>
               </MuiPickersUtilsProvider>
             )}
