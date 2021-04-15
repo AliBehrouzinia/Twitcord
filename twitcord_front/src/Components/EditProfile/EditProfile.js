@@ -35,9 +35,19 @@ const EditProfile = () => {
             validate={(values) => {
               const errors = {
                 name: "",
+                website: "",
               };
               if (!values.name) {
                 errors.name = "Required";
+              }
+
+              if (
+                values.website &&
+                !values.website.match(
+                  "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
+                )
+              ) {
+                errors.website = "Invalid Url";
               }
               return errors;
             }}
