@@ -1,24 +1,52 @@
-import React, {useState} from 'react';
+import React from 'react';
 import classes from '../styles/SignUp.module.css';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-// import Box from '@material-ui/core/Box';c
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-// import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {useFormik} from 'formik';
+import * as yup from 'yup';
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
-  const [confirmpassword, setConfirmpassword] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [username, setUsername] = useState('');
+  // const [confirmPassword, setConfirmpassword] = useState('');
+
+  const validationSchema = yup.object({
+    username: yup
+        .string('Enter your username')
+        .required('Username is required'),
+
+    email: yup
+        .string('Enter your email')
+        .email('Enter a valid email')
+        .required('Email is required'),
+    password: yup
+        .string()
+        .min(8, 'Password should be of minimum 8 characters length')
+        .required('Password is required'),
+    // confirmPassword: yup.string()
+  });
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validationSchema: validationSchema,
+    validateOnChange: true,
+    onSubmit: (values) => {
+      // do sth
+      console.log(values);
+    },
+  });
   return (
     <div>
       <Container component="main" maxWidth="xs">
@@ -30,25 +58,26 @@ const SignUp = () => {
           <Typography component="h1" variant="h5">
           Sign up
           </Typography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form} onSubmit={formik.handleSubmit}>
             <TextField
-              type="username"
-              placeholder = "username"
-              value ={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              value ={formik.values.username}
+              onChange={formik.handleChange}
               variant="outlined"
               required
               fullWidth
               id="username"
-              label="username"
+              label="Username"
               name="username"
               autoComplete="username"
+              error={formik.touched.username && Boolean(formik.errors.username)}
+              helperText={formik.touched.username ?
+                formik.errors.username : ''}
             />
             <TextField
               type="email"
-              placeholder = "email"
-              value ={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value ={formik.values.email}
+              onChange={formik.handleChange}
               variant="outlined"
               margin="normal"
               required
@@ -57,13 +86,14 @@ const SignUp = () => {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email ?
+                formik.errors.email : ''}
             />
             <TextField
               type="password"
-              placeholder = "password"
-              value ={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value ={formik.values.password}
+              onChange={formik.handleChange}
               variant="outlined"
               margin="normal"
               required
@@ -72,25 +102,22 @@ const SignUp = () => {
               label="Password"
               id="password"
               autoComplete="current-password"
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password ?
+                formik.errors.password : ''}
             />
             <TextField
-              type="confirmpassword"
-              placeholder = "confirmpassword"
-              value ={confirmpassword}
-              onChange={(e) => setConfirmpassword(e.target.value)}
+              type="password"
+              value ={formik.values.confirmPassword}
+              onChange={formik.handleChange}
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              name="confirmpassword"
-              label="confirmpassword"
-              id="confirmpassword"
+              name="confirmPassword"
+              label="Confirm Password"
+              id="confirmPassword"
               autoComplete="current-password"
-              error={confirmpassword !== password}
-            />
-            <FormControlLabel
-              control={<Checkbox value="allowExtraEmails" color="primary" />}
-              label="I want to receive updates via email."
             />
             <Button
               type="submit"
