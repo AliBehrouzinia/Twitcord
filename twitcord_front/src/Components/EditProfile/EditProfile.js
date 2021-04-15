@@ -33,10 +33,7 @@ const EditProfile = () => {
               date: null,
             }}
             validate={(values) => {
-              const errors = {
-                name: "",
-                website: "",
-              };
+              const errors = {};
               if (!values.name) {
                 errors.name = "Required";
               }
@@ -122,6 +119,12 @@ const EditProfile = () => {
       </Grid>
     </Grid>
   );
+};
+
+const handleFormValidationResults = (values) => {
+  if (values.name == null && values.website == null) {
+    alert;
+  }
 };
 
 export default EditProfile;
