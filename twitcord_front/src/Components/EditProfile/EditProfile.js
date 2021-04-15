@@ -40,7 +40,7 @@ const EditProfile = () => {
           >
             {({ submitForm, isSubmitting }) => (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Form>
+                <Form className="form">
                     <Field
                       component={TextField}
                       className="text-field"
