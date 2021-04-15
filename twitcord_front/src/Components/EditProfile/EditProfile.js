@@ -32,67 +32,77 @@ const EditProfile = () => {
               bio: "",
               date: null,
             }}
-            onSubmit={(values, {setSubmitting}) => {
-                setSubmitting(false);
-                alert(JSON.stringify(values, null, 2));
-
+            validate={(values) => {
+              const errors = {
+                name: "",
+              };
+              if (!values.name) {
+                errors.name = "Required";
+              }
+              return errors;
+            }}
+            onSubmit={(values, { setSubmitting }) => {
+              setSubmitting(false);
+              alert(JSON.stringify(values, null, 2));
             }}
           >
             {({ submitForm, isSubmitting }) => (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Form className="form">
-                    <Field
-                      component={TextField}
-                      className="text-field"
-                      label="User Name"
-                      value="@alibehrooz"
-                      disabled
-                      variant="outlined"
-                      name="username"
-                    />
+                  <Field
+                    component={TextField}
+                    className="text-field"
+                    label="User Name"
+                    value="@alibehrooz"
+                    disabled
+                    variant="outlined"
+                    name="username"
+                  />
 
-                    <Field
-                      component={TextField}
-                      className="text-field"
-                      label="Name"
-                      variant="outlined"
-                      name="name"
-                    />
+                  <Field
+                    component={TextField}
+                    className="text-field"
+                    label="Name"
+                    variant="outlined"
+                    name="name"
+                  />
 
-                    <Field
-                      component={DatePicker}
-                      className="text-field"
-                      variant="outlined"
-                      name="date"
-                      label="Birrth Day"
-                      maxDate={new Date()}
-                    />
+                  <Field
+                    component={DatePicker}
+                    className="text-field"
+                    variant="outlined"
+                    name="date"
+                    label="Birth Day"
+                    maxDate={new Date()}
+                  />
 
-                    <Field
-                      component={TextField}
-                      className="text-field"
-                      label="Website"
-                      variant="outlined"
-                      name="website"
-                    />
+                  <Field
+                    component={TextField}
+                    className="text-field"
+                    label="Website"
+                    variant="outlined"
+                    name="website"
+                  />
 
-                    <Field
-                      component={TextField}
-                      className="text-field"
-                      label="Bio"
-                      variant="outlined"
-                      name="bio"
-                    />
+                  <Field
+                    component={TextField}
+                    className="text-field"
+                    label="Bio"
+                    variant="outlined"
+                    name="bio"
+                    multiline
+                    rows={4}
+                  />
 
-                    <Button
-                      variant="contained"
-                      className="text-field"
-                      color="primary"
-                      disabled={isSubmitting}
-                      onClick={submitForm}
-                    >
-                      Submit
-                    </Button>
+                  <Button
+                    variant="contained"
+                    className="text-field"
+                    color="primary"
+                    disabled={isSubmitting}
+                    onClick={submitForm}
+                  >
+                    Submit
+                  </Button>
                 </Form>
               </MuiPickersUtilsProvider>
             )}
