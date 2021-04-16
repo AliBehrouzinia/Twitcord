@@ -1,4 +1,4 @@
-import rootReducer from './Reducers/RootReducer.js';
+import rootReducer from './Reducers/RootReducer';
 import {createStore} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 

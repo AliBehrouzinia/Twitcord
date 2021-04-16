@@ -25,4 +25,7 @@ export const logInRequestSuccess = () => ({
   type: ActionTypes.SIGN_UP_REQUEST_SUCCESS,
 });
 
-
+export const setTweetText = (data) => ({
+  type: ActionTypes.SET_TWEET_TEXT,
+  ...data,
+});

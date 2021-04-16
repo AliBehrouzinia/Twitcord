@@ -7,6 +7,8 @@ const initialState = {
     password1: '',
     password2: '',
   },
+  tweetText: '',
+  tweetCharCount: 0,
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -21,6 +23,12 @@ const tweetReducer = (state = initialState, action) => {
           password1: action.password,
           password2: action.confirmPassword,
         },
+      };
+    case ActionTypes.SET_TWEET_TEXT:
+      return {
+        ...state,
+        tweetText: action.tweetText,
+        tweetCharCount: action.tweetText.length,
       };
     default:
       return state;

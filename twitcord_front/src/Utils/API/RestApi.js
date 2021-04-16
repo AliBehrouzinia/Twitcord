@@ -5,7 +5,8 @@ const instance = axios.create({
   baseURL: Constants.BASE_URL,
   responseType: 'json',
   headers: {
-    // 'Authorization': 'token 3c2380f638b1a5456efe4621a5ff3debac83e457',
+    // Change this with your own token
+    'Authorization': 'token efa18a57ed840ca25cd07ae619485f7d52d28c48',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
@@ -26,6 +27,14 @@ export const signUp = (data) => {
   return request(
       data,
       Constants.URL_SIGN_UP,
+      Constants.POST_REQUEST_METHOD,
+  );
+};
+
+export const postTweet = (data) => {
+  return request(
+      data,
+      Constants.URL_POST_TWEET,
       Constants.POST_REQUEST_METHOD,
   );
 };
