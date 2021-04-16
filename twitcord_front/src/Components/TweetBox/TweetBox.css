@@ -38,23 +38,11 @@
   font-size: x-large;
 }
 
-.bottom-bar .icon-button {
-  height: 40px;
-  width: 40px;
-}
-
-.bottom-bar .submit {
-  float: right;
-}
-
-.bottom-bar .icon-container {
-  align-self: center;
-}
-
 .tweet-box-button {
   width: 100%;
   margin-top: 10px !important;
   box-shadow: none !important;
+  float: right;
 }
 
 @media screen and (max-width: 600px) and (min-width: 0px) {

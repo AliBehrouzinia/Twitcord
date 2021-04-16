@@ -41,7 +41,7 @@ const TweetBox = () => {
           </Grid>
           <Grid item xs={2} sm={2}>
             <Button
-              className="submit tweet-box-button"
+              className="tweet-box-button"
               variant="contained"
               color="primary"
               onClick={() => {
