@@ -12,11 +12,11 @@ import {useDispatch} from 'react-redux';
 import postTweet from '../../Utils/RestApi';
 
 const TweetBox = () => {
-  const counter = useSelector((state) => state);
+  const tweetInfo = useSelector((state) => state).tweet;
   const dispatch = useDispatch();
   const postButtonDisable =
-    counter.tweet.tweetCharCount > Constants.TWEET_CHAR_LIMIT ||
-    counter.tweet.tweetText.length == 0;
+  tweetInfo.tweetCharCount > Constants.TWEET_CHAR_LIMIT ||
+  tweetInfo.tweetText.length == 0;
 
   return (
     <Grid container className="tweet-box">
@@ -31,13 +31,13 @@ const TweetBox = () => {
               tweetText: e.target.value,
             })
           }
-          value={counter.tweet.tweetText}
+          value={tweetInfo.tweetText}
         />
       </Grid>
       <Grid item xs={12}>
         <Grid container className="bottom-bar">
           <Grid item xs={1} sm={1}>
-            <CharCounter numChar={counter.tweet.tweetCharCount} />
+            <CharCounter numChar={tweetInfo.tweetCharCount} />
           </Grid>
           <Grid item xs={2} sm={2}>
             <Button
@@ -45,7 +45,7 @@ const TweetBox = () => {
               variant="contained"
               color="primary"
               onClick={() => {
-                handlePostClick(dispatch, counter.tweet.tweetText);
+                handlePostClick(dispatch, tweetInfo.tweetText);
               }}
               disabled={postButtonDisable}
             >
