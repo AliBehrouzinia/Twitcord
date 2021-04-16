@@ -71,11 +71,9 @@ const handlePostClick = (dispatch, tweetText) => {
 
   postTweet(tweetData)
       .then((response) => {
-        console.log(response);
         clearTweet(dispatch);
       })
       .catch((error) => {
-        console.log(error);
       });
 };
 
