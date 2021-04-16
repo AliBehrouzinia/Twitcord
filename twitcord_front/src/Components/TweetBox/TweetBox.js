@@ -1,17 +1,15 @@
-/* eslint-disable */
-
-import React from "react";
-import Button from "@material-ui/core/Button";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-import * as actionTypes from "../../redux/actionTypes";
-import Grid from "@material-ui/core/Grid";
-import "./TweetBox.css";
-import PropTypes from "prop-types";
-import * as Constants from "../../Utils/Constants";
-import CharCounter from "../CharCounter/CharCounter";
-import { useSelector } from 'react-redux';
-import { useDispatch } from "react-redux";
-import postTweet from "../../Utils/RestApi";
+import React from 'react';
+import Button from '@material-ui/core/Button';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import * as actionTypes from '../../redux/actionTypes';
+import Grid from '@material-ui/core/Grid';
+import './TweetBox.css';
+import PropTypes from 'prop-types';
+import * as Constants from '../../Utils/Constants';
+import CharCounter from '../CharCounter/CharCounter';
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import postTweet from '../../Utils/RestApi';
 
 const TweetBox = () => {
   const counter = useSelector((state) => state);
@@ -64,21 +62,21 @@ const TweetBox = () => {
 function clearTweet(dispatch) {
   dispatch({
     type: actionTypes.SET_TWEET_TEXT,
-    tweetText: "",
+    tweetText: '',
   });
 }
 
 const handlePostClick = (dispatch, tweetText) => {
-  let tweetData = { content: tweetText };
+  const tweetData = {content: tweetText};
 
   postTweet(tweetData)
-    .then((response) => {
-      console.log(response);
-      clearTweet(dispatch);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((response) => {
+        console.log(response);
+        clearTweet(dispatch);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 };
 
 TweetBox.propTypes = {
