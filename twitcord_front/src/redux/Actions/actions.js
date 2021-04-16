@@ -1,6 +1,6 @@
 import {ActionTypes} from './actionTypes';
 
-export const setSignUpInfo = (data: any) => ({
+export const setSignUpInfo = (data) => ({
   type: ActionTypes.SET_SIGN_UP_INFO,
   ...data,
 });

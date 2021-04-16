@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
-import * as Actions from '../../redux/Actions/index';
+import * as Actions from '../../redux/Actions/index.js';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {TextField} from 'formik-material-ui';

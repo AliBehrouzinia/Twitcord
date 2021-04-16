@@ -1,4 +1,4 @@
-import {ActionTypes} from '../Actions/actionTypes';
+import {ActionTypes} from '../Actions/actionTypes.js';
 
 const initialState = {
   signUpInfo: {

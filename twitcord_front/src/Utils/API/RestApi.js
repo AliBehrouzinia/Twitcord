@@ -1,5 +1,5 @@
 import axios from 'axios';
-import * as Constants from '../Constants';
+import * as Constants from '../Constants.js';
 
 const instance = axios.create({
   baseURL: Constants.BASE_URL,
