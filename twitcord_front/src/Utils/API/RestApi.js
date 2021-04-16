@@ -1,11 +1,12 @@
 import axios from 'axios';
-import * as Constants from './Constants';
+import * as Constants from '../Constants.js';
 
 const instance = axios.create({
   baseURL: Constants.BASE_URL,
   responseType: 'json',
   headers: {
-    'Authorization': 'token 3c2380f638b1a5456efe4621a5ff3debac83e457',
+    // Change this with your own token
+    'Authorization': 'token efa18a57ed840ca25cd07ae619485f7d52d28c48',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
@@ -22,7 +23,7 @@ const request = (data, url, method) => {
   }
 };
 
-const postTweet = (data) => {
+export const postTweet = (data) => {
   return request(
       data,
       Constants.URL_POST_TWEET,
@@ -30,4 +31,3 @@ const postTweet = (data) => {
   );
 };
 
-export default postTweet;

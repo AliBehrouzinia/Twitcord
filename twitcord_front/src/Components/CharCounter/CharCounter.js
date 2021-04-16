@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './CharCounter.css';
-import * as Constants from '../../Utils/Constants';
+import * as Constants from '../../Utils/Constants.js';
 
 const Counter = (props) => {
   const offset = 5;

@@ -4,12 +4,12 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Grid from '@material-ui/core/Grid';
 import './TweetBox.css';
 import PropTypes from 'prop-types';
-import * as Constants from '../../Utils/Constants';
+import * as Constants from '../../Utils/Constants.js';
 import CharCounter from '../CharCounter/CharCounter';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
-import postTweet from '../../Utils/RestApi';
-import {setTweetText} from '../../redux/actions';
+import * as API from '../../Utils/API/index';
+import * as Actions from '../../redux/Actions/index';
 
 const TweetBox = () => {
   const tweetInfo = useSelector((state) => state).tweet;
@@ -27,7 +27,7 @@ const TweetBox = () => {
           placeholder="what is in your mind?"
           onChange={(e) =>
             dispatch(
-                setTweetText({
+                Actions.setTweetText({
                   tweetText: e.target.value,
                 }),
             )
@@ -61,7 +61,7 @@ const TweetBox = () => {
 
 // eslint-disable-next-line require-jsdoc
 function clearTweet(dispatch) {
-  dispatch(setTweetText({
+  dispatch(Actions.setTweetText({
     tweetText: '',
   }));
 }
@@ -69,7 +69,7 @@ function clearTweet(dispatch) {
 const handlePostClick = (dispatch, tweetText) => {
   const tweetData = {content: tweetText};
 
-  postTweet(tweetData)
+  API.postTweet(tweetData)
       .then((response) => {
         clearTweet(dispatch);
       })
