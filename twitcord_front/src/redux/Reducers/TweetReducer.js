@@ -1,4 +1,4 @@
-import {SET_TWEET_TEXT} from '../actionTypes';
+import {ActionTypes} from '../actionTypes';
 
 const initialState = {
   tweetText: '',
@@ -7,7 +7,7 @@ const initialState = {
 
 const tweetReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_TWEET_TEXT:
+    case ActionTypes.SET_TWEET_TEXT:
       return {
         ...state,
         tweetText: action.tweetText,

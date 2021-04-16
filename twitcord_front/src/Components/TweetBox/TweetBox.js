@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import * as actionTypes from '../../redux/actionTypes';
 import Grid from '@material-ui/core/Grid';
 import './TweetBox.css';
 import PropTypes from 'prop-types';
@@ -10,6 +9,7 @@ import CharCounter from '../CharCounter/CharCounter';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import postTweet from '../../Utils/RestApi';
+import {setTweetText} from '../../redux/actions';
 
 const TweetBox = () => {
   const tweetInfo = useSelector((state) => state).tweet;
@@ -26,10 +26,11 @@ const TweetBox = () => {
           rowsMax={Constants.TWEET_BOX_ROW_MAX}
           placeholder="what is in your mind?"
           onChange={(e) =>
-            dispatch({
-              type: actionTypes.SET_TWEET_TEXT,
-              tweetText: e.target.value,
-            })
+            dispatch(
+                setTweetText({
+                  tweetText: e.target.value,
+                }),
+            )
           }
           value={tweetInfo.tweetText}
         />
@@ -60,10 +61,9 @@ const TweetBox = () => {
 
 // eslint-disable-next-line require-jsdoc
 function clearTweet(dispatch) {
-  dispatch({
-    type: actionTypes.SET_TWEET_TEXT,
+  dispatch(setTweetText({
     tweetText: '',
-  });
+  }));
 }
 
 const handlePostClick = (dispatch, tweetText) => {
