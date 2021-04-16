@@ -1,64 +1,120 @@
 import React from 'react';
-import classes from '../styles/SignUp.module.css';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
+// import Link from '@material-ui/core/Link';
+// import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import {useFormik} from 'formik';
-import * as yup from 'yup';
+import {Formik, Form, Field} from 'formik';
+import './SignUp.css';
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [username, setUsername] = useState('');
-  // const [confirmPassword, setConfirmpassword] = useState('');
-
-  const validationSchema = yup.object({
-    username: yup
-        .string('Enter your username')
-        .required('Username is required'),
-
-    email: yup
-        .string('Enter your email')
-        .email('Enter a valid email')
-        .required('Email is required'),
-    password: yup
-        .string()
-        .min(8, 'Password should be of minimum 8 characters length')
-        .required('Password is required'),
-    // confirmPassword: yup.string()
-  });
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    },
-    validationSchema: validationSchema,
-    validateOnChange: true,
-    onSubmit: (values) => {
-      // do sth
-      console.log(values);
-    },
-  });
   return (
     <div>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
+        <div>
+          <Avatar>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
           Sign up
           </Typography>
-          <form className={classes.form} onSubmit={formik.handleSubmit}>
+          <Formik
+            initialValues={{
+              username: '',
+              email: '',
+              password: '',
+              confirmPassword: '',
+            }}
+            validate={(values) => {
+              const errors = {};
+              if (!values.username) {
+                errors.username = 'Required';
+              }
+              if (!values.email) {
+                errors.email = 'Required';
+              }
+              if (!values.password) {
+                errors.password = 'Required';
+              }
+              if (!values.confirmPassword) {
+                errors.confirmPassword = 'Required';
+              }
+              if (
+                values.email &&
+                !values.email.match(
+                    '/^[^\s@]+@[^\s@]+$/',
+                )
+              ) {
+                errors.invalidEmail = 'Invalid email';
+              }
+              if (values.confirmPassword !== values.password) {
+                errors.invalidSecPass = 'Invalid password';
+              }
+              return errors;
+            }}
+            onSubmit={(values, {setSubmitting}) => {
+              setSubmitting(false);
+              alert(JSON.stringify(values, null, 2));
+              console.log('test');
+            }}
+          >
+            {({submitForm, isSubmitting, errors, touched}) => (
+              <Form className="form">
+                <Field
+                  component={TextField}
+                  className="text-field"
+                  label="Username"
+                  variant="outlined"
+                  name="username"
+                />
+
+                <Field
+                  component={TextField}
+                  className="text-field"
+                  label="Email Address"
+                  variant="outlined"
+                  name="email"
+                  type="email"
+                  helperText="Please Enter Email"
+                />
+
+                <Field
+                  component={TextField}
+                  className="text-field"
+                  label="Password"
+                  variant="outlined"
+                  name="password"
+                  type="password"
+                />
+
+                <Field
+                  component={TextField}
+                  className="text-field"
+                  label="Confirm Password"
+                  variant="outlined"
+                  name="confirmPassword"
+                  type="password"
+                />
+
+                <Button
+                  variant="contained"
+                  className="text-field"
+                  color="primary"
+                  disabled={isSubmitting}
+                  onClick={submitForm}
+                >
+                    Submit
+                </Button>
+              </Form>
+            )}
+          </Formik>
+
+          {/* <form className={classes.form} onSubmit={formik.handleSubmit}>
             <TextField
               type="text"
               value ={formik.values.username}
@@ -135,7 +191,7 @@ const SignUp = () => {
                 </Link>
               </Grid>
             </Grid>
-          </form>
+          </form> */}
         </div>
       </Container>
     </div>

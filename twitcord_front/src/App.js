@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
 // import LogIn from './components/LogIn.tsx';
-import SignUp from './components/SignUp.js';
+import SignUp from './components/SignUp/SignUp.js';
 // import {BrowserRouter, Route} from 'react-router-dom';
 
 function App() {
