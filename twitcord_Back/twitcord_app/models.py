@@ -16,6 +16,13 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     average_rate = models.DecimalField(max_digits=2, decimal_places=1, default=0.0)
     username = models.TextField(max_length=50, null=True, blank=True)
     is_admin = True
+    first_name = models.TextField(null = True)
+    last_name = models.CharField(null = True)
+    bio = models.TextField(null = True)
+    birth_date = models.DateTimeField(null = True)
+    website = models.URLField(null = True)
+
+
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
