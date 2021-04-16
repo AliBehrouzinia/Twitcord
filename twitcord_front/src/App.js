@@ -1,11 +1,11 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
-import profile_userinfo from'./components/profile_userinfo/Profile_userinfo.js';
+import ProfileUserinfo from './components/profile_userinfo/ProfileUserinfo.js';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        {/* <p>
+      {/* <header className="App-header">
+        <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
@@ -15,10 +15,10 @@ function App() {
           rel="noopener noreferrer"
         >
           Learn React
-        </a> */}
-      </header>
-      <profile_userinfo>
-      </profile_userinfo>
+        </a>
+      </header> */}
+      <ProfileUserinfo>
+      </ProfileUserinfo>
 
     </div>
   );
