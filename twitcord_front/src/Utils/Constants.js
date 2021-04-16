@@ -8,3 +8,6 @@ export const BASE_URL = 'http://127.0.0.1:8000';
 export const POST_REQUEST_METHOD = 'POST';
 export const GET_REQUEST_METHOD = 'GET';
 
+// Urls
+export const URL_POST_TWEET = '/tweets/';
+
