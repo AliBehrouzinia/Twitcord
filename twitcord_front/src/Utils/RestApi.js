@@ -11,11 +11,23 @@ const instance = axios.create({
   },
 });
 
-const postTweet = (data) =>
-  instance({
-    method: 'POST',
-    url: '/tweets/',
-    data,
-  });
+const request = (data, url, method) => {
+  switch (method) {
+    case Constants.POST_REQUEST_METHOD:
+      return instance({
+        method: method,
+        url: url,
+        data,
+      });
+  }
+};
+
+const postTweet = (data) => {
+  return request(
+      data,
+      Constants.URL_POST_TWEET,
+      Constants.POST_REQUEST_METHOD,
+  );
+};
 
 export default postTweet;
