@@ -1,7 +1,8 @@
-import {ActionTypes} from '../actions/actionTypes';
+import {ActionTypes} from './actionTypes';
 
-export const sendSignUpRequest = () => ({
-  type: ActionTypes.SIGN_UP_REQUEST,
+export const setSignUpInfo = (data: any) => ({
+  type: ActionTypes.SET_SIGN_UP_INFO,
+  ...data,
 });
 
 export const signUpRequestFailure = () => ({
@@ -23,4 +24,5 @@ export const logInRequestFailure = () => ({
 export const logInRequestSuccess = () => ({
   type: ActionTypes.SIGN_UP_REQUEST_SUCCESS,
 });
+
 

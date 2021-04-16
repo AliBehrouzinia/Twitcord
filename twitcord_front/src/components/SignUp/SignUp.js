@@ -1,4 +1,7 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import * as Actions from '../../redux/Actions/index';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {TextField} from 'formik-material-ui';
@@ -6,9 +9,15 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import {Formik, Form, Field} from 'formik';
+import PropTypes from 'prop-types';
+import * as API from '../../Utils/API/index';
 import './SignUp.css';
+// import { ActionTypes } from '../../redux/Actions/actionTypes';
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
+  const info = useSelector((state) => state).tweet.signUpInfo;
+  console.log(info);
+  const dispatch = useDispatch();
   return (
     <div>
       <Container component="main" maxWidth="xs">
@@ -34,6 +43,8 @@ const SignUp = () => {
               }
               if (!values.password) {
                 errors.password = 'Required';
+              } else if (values.password.length < 8) {
+                errors.password = 'Password must contain at least 8 characters';
               }
               if (!values.confirmPassword) {
                 errors.confirmPassword = 'Required';
@@ -43,9 +54,14 @@ const SignUp = () => {
               return errors;
             }}
             onSubmit={(values, {setSubmitting}) => {
-              setSubmitting(false);
-              alert(JSON.stringify(values, null, 2));
-              console.log('test');
+              dispatch(Actions.setSignUpInfo(values));
+              API.signUp(info)
+                  .then((response) => {
+                    alert('success');
+                  })
+                  .catch((error) => {
+                    alert('fail');
+                  });
             }}
           >
             {({submitForm, isSubmitting, errors, touched}) => (
@@ -109,4 +125,11 @@ const SignUp = () => {
     </div>
   );
 };
+
+SignUp.propTypes = {
+  username: PropTypes.string,
+  email: PropTypes.string,
+  password: PropTypes.number,
+};
+
 export default SignUp;
