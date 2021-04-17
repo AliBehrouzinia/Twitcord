@@ -13,3 +13,4 @@ export const URL_LOG_IN = '/rest-auth/login/';
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;
 export const TWEET_CHAR_LIMIT = 140;
+export const VERIFICATION_SENT_SUCCESS = 'Verification e-mail sent.';

@@ -6,7 +6,7 @@ const instance = axios.create({
   responseType: 'json',
   headers: {
     // Change this with your own token
-    'Authorization': 'token efa18a57ed840ca25cd07ae619485f7d52d28c48',
+    // 'Authorization': 'token efa18a57ed840ca25cd07ae619485f7d52d28c48',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },

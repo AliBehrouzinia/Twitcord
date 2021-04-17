@@ -5,6 +5,11 @@ export const setSignUpInfo = (data) => ({
   ...data,
 });
 
+export const setLogInInfo = (data) => ({
+  type: ActionTypes.SET_LOG_IN_INFO,
+  ...data,
+});
+
 export const signUpRequestFailure = () => ({
   type: ActionTypes.SIGN_UP_REQUEST_FAILURE,
 });

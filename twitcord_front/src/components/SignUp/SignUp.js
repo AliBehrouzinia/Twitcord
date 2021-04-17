@@ -11,12 +11,12 @@ import Container from '@material-ui/core/Container';
 import {Formik, Form, Field} from 'formik';
 import PropTypes from 'prop-types';
 import * as API from '../../Utils/API/index';
+import * as Constants from '../../Utils/Constants.js';
 import './SignUp.css';
 // import { ActionTypes } from '../../redux/Actions/actionTypes';
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
   const info = useSelector((state) => state).tweet.signUpInfo;
-  console.log(info);
   const dispatch = useDispatch();
   return (
     <div>
@@ -54,10 +54,15 @@ const SignUp = () => {
               return errors;
             }}
             onSubmit={(values, {setSubmitting}) => {
+              setSubmitting(false);
               dispatch(Actions.setSignUpInfo(values));
               API.signUp(info)
                   .then((response) => {
-                    alert('success');
+                    if (response.detail ===
+                      Constants.VERIFICATION_SENT_SUCCESS) {
+                      // change this to snack bar
+                      alert('success');
+                    }
                   })
                   .catch((error) => {
                     alert('fail');
