@@ -14,7 +14,6 @@ import * as API from '../../Utils/API/index';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import * as Constants from '../../Utils/Constants.js';
 import './SignUp.css';
-// import { ActionTypes } from '../../redux/Actions/actionTypes';
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
   const info = useSelector((state) => state).tweet.signUpInfo;
@@ -22,6 +21,32 @@ const SignUp = () => {
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
+  const handleSubmit = (values) => {
+    dispatch(Actions.setSignUpInfo(values));
+    API.signUp(info)
+        .then((response) => {
+          setSnackbarAlertMessage(
+              Constants.SIGN_UP_VERIFICATION_SUCCESS_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_SUCCESS_SEVERITY);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+        })
+        .catch((error) => {
+          setSnackbarAlertMessage(
+              Constants.SIGN_UP_EMAIL_ERROR_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_ERROR_SEVERITY);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+        });
+  };
   return (
     <div>
       <Container component="main" maxWidth="xs">
@@ -50,8 +75,11 @@ const SignUp = () => {
               }
               if (!values.password) {
                 errors.password = 'Required';
-              } else if (values.password.length < 8) {
-                errors.password = 'Password must contain at least 8 characters';
+              } else if (values.password.length < 8 ||
+                !/\d/g.test(values.password) ||
+                  /^\d*$/i.test(values.password)) {
+                errors.password =
+                'Password must contain at least 8 characters and numbers';
               }
               if (!values.confirmPassword) {
                 errors.confirmPassword = 'Required';
@@ -62,30 +90,7 @@ const SignUp = () => {
             }}
             onSubmit={(values, {setSubmitting}) => {
               setSubmitting(false);
-              dispatch(Actions.setSignUpInfo(values));
-              API.signUp(info)
-                  .then((response) => {
-                    setSnackbarAlertMessage(
-                        Constants.SIGN_UP_VERIFICATION_SUCCESS_MESSAGE);
-                    setSnackbarAlertSeverity(
-                        Constants.SNACKBAR_SUCCESS_SEVERITY);
-                    dispatch(
-                        Actions.setSnackBarState({
-                          isSnackbarOpen: true,
-                        }),
-                    );
-                  })
-                  .catch((error) => {
-                    setSnackbarAlertMessage(
-                        Constants.SIGN_UP_EMAIL_ERROR_MESSAGE);
-                    setSnackbarAlertSeverity(
-                        Constants.SNACKBAR_ERROR_SEVERITY);
-                    dispatch(
-                        Actions.setSnackBarState({
-                          isSnackbarOpen: true,
-                        }),
-                    );
-                  });
+              handleSubmit(values);
             }}
           >
             {({submitForm, isSubmitting, errors, touched}) => (
@@ -134,12 +139,10 @@ const SignUp = () => {
                 >
                     Sign Up
                 </Button>
-                <Grid container>
-                  <Grid className='log-in-redirection'>
-                    <Link href='login' variant="body2">
+                <Grid className='log-in-redirection'>
+                  <Link href='login' variant="body2">
                 Already have an account? Sign in
-                    </Link>
-                  </Grid>
+                  </Link>
                 </Grid>
               </Form>
             )}

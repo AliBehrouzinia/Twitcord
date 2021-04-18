@@ -21,6 +21,32 @@ const LogIn = () => {
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
+  const handleSubmit = (values) => {
+    dispatch(Actions.setLogInInfo(values));
+    API.logIn(info)
+        .then((response) => {
+          setSnackbarAlertMessage(
+              Constants.LOG_IN_SUCCESS_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_SUCCESS_SEVERITY);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+        })
+        .catch((error) => {
+          setSnackbarAlertMessage(
+              Constants.LOG_IN_VERIFICATION_ERROR_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_ERROR_SEVERITY);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+        });
+  };
   return (
     <Container component="main" maxWidth="xs">
       {isSnackbarOpen && (<SnackbarAlert
@@ -48,30 +74,7 @@ const LogIn = () => {
           }}
           onSubmit={(values, {setSubmitting}) => {
             setSubmitting(false);
-            dispatch(Actions.setLogInInfo(values));
-            API.logIn(info)
-                .then((response) => {
-                  setSnackbarAlertMessage(
-                      Constants.LOG_IN_SUCCESS_MESSAGE);
-                  setSnackbarAlertSeverity(
-                      Constants.SNACKBAR_SUCCESS_SEVERITY);
-                  dispatch(
-                      Actions.setSnackBarState({
-                        isSnackbarOpen: true,
-                      }),
-                  );
-                })
-                .catch((error) => {
-                  setSnackbarAlertMessage(
-                      Constants.LOG_IN_VERIFICATION_ERROR_MESSAGE);
-                  setSnackbarAlertSeverity(
-                      Constants.SNACKBAR_ERROR_SEVERITY);
-                  dispatch(
-                      Actions.setSnackBarState({
-                        isSnackbarOpen: true,
-                      }),
-                  );
-                });
+            handleSubmit(values);
           }}
         >
           {({submitForm, isSubmitting, errors, touched}) => (
@@ -104,12 +107,10 @@ const LogIn = () => {
               >
                     Log In
               </Button>
-              <Grid container>
-                <Grid className='log-in-redirection'>
-                  <Link href='signup' variant="body2">
+              <Grid className='log-in-redirection'>
+                <Link href='signup' variant="body2">
                 Do not have an account? Sign Up
-                  </Link>
-                </Grid>
+                </Link>
               </Grid>
             </Form>
           )}
