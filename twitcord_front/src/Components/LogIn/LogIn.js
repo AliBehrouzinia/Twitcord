@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
+import {useStore} from 'react-redux';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {TextField} from 'formik-material-ui';
 import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import {Formik, Form, Field} from 'formik';
 import * as API from '../../Utils/API/index';
@@ -16,14 +16,14 @@ import * as Actions from '../../redux/Actions/index.js';
 import './LogIn.css';
 /* eslint-disable require-jsdoc */
 const LogIn = () => {
-  // const info = useSelector((state) => state).tweet.logInInfo;
+  const store = useStore();
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
   const handleSubmit = (values) => {
     dispatch(Actions.setLogInInfo(values));
-    API.logIn(values)
+    API.logIn(store.getState().tweet.logInInfo)
         .then((response) => {
           localStorage.setItem('token', response.data.key);
           setSnackbarAlertMessage(
@@ -108,11 +108,11 @@ const LogIn = () => {
               >
                     Log In
               </Button>
-              <Grid className='log-in-redirection'>
+              <div className='log-in-redirection'>
                 <Link href='signup' variant="body2">
                 Do not have an account? Sign Up
                 </Link>
-              </Grid>
+              </div>
             </Form>
           )}
         </Formik>

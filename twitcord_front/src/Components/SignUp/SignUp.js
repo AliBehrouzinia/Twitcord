@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
+import {useStore} from 'react-redux';
 import * as Actions from '../../redux/Actions/index.js';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {TextField} from 'formik-material-ui';
 import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import {Formik, Form, Field} from 'formik';
 import PropTypes from 'prop-types';
@@ -16,14 +16,14 @@ import * as Constants from '../../Utils/Constants.js';
 import './SignUp.css';
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
-  const info = useSelector((state) => state).tweet.signUpInfo;
+  const store = useStore();
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
   const handleSubmit = (values) => {
     dispatch(Actions.setSignUpInfo(values));
-    API.signUp(info)
+    API.signUp(store.getState().tweet.signUpInfo)
         .then((response) => {
           setSnackbarAlertMessage(
               Constants.SIGN_UP_VERIFICATION_SUCCESS_MESSAGE);
@@ -139,11 +139,11 @@ const SignUp = () => {
                 >
                     Sign Up
                 </Button>
-                <Grid className='log-in-redirection'>
+                <div className='log-in-redirection'>
                   <Link href='login' variant="body2">
                 Already have an account? Sign in
                   </Link>
-                </Grid>
+                </div>
               </Form>
             )}
           </Formik>
