@@ -121,10 +121,4 @@ const EditProfile = () => {
   );
 };
 
-const handleFormValidationResults = (values) => {
-  if (values.name == null && values.website == null) {
-    alert;
-  }
-};
-
 export default EditProfile;
