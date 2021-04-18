@@ -12,8 +12,9 @@ import datetime
 # Create your views here.
 
 class TweetsView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, ]
     serializer_class = serializers.TweetSerializer
+
 
 class UpdateTwitcordUserView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated, UserIsOwnerOrReadonly]
