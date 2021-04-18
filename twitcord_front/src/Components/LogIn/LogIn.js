@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import SnackbarAlert from '../Snackbar/Snackbar';
@@ -16,15 +16,16 @@ import * as Actions from '../../redux/Actions/index.js';
 import './LogIn.css';
 /* eslint-disable require-jsdoc */
 const LogIn = () => {
-  const info = useSelector((state) => state).tweet.logInInfo;
+  // const info = useSelector((state) => state).tweet.logInInfo;
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
   const handleSubmit = (values) => {
     dispatch(Actions.setLogInInfo(values));
-    API.logIn(info)
+    API.logIn(values)
         .then((response) => {
+          localStorage.setItem('token', response.data.key);
           setSnackbarAlertMessage(
               Constants.LOG_IN_SUCCESS_MESSAGE);
           setSnackbarAlertSeverity(

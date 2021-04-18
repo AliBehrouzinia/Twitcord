@@ -30,7 +30,6 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     case ActionTypes.SET_LOG_IN_INFO:
-      console.log(action);
       return {
         ...state,
         logInInfo: {
