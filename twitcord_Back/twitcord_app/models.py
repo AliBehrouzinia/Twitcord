@@ -14,15 +14,13 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     is_public = models.BooleanField(default=True)
     profile_img = models.ImageField(default='profiles/defaults/user-profile-image.jpg', upload_to='profiles', null=True)
     average_rate = models.DecimalField(max_digits=2, decimal_places=1, default=0.0)
-    username = models.TextField(max_length= 15, null=True, blank=True)
+    username = models.TextField(max_length=15, null=True, blank=True)
     is_admin = True
-    first_name = models.CharField(null = True, max_length = 50)
-    last_name = models.CharField(null = True, max_length = 50)
-    bio = models.TextField(null = True, max_length = 160)
-    birth_date = models.DateTimeField(null = True)
-    website = models.URLField(null = True)
-
-
+    first_name = models.CharField(null=True, max_length=50)
+    last_name = models.CharField(null=True, max_length=50)
+    bio = models.TextField(null=True, max_length=160)
+    birth_date = models.DateTimeField(null=True)
+    website = models.URLField(null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -49,6 +47,7 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     @is_staff.setter
     def is_staff(self, value):
         self._is_staff = value
+
 
 class Tweet(models.Model):
     user = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)

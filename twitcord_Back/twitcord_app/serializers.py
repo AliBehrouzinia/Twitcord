@@ -18,6 +18,7 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
         fields = ('email', 'pk', 'profile_img','first_name','last_name','birth_date','bio','website')
         read_only_fields = ('email',)
 
+
 class TweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
