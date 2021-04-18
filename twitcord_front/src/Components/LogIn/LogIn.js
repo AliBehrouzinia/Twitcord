@@ -1,6 +1,7 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
+import SnackbarAlert from '../Snackbar/Snackbar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {TextField} from 'formik-material-ui';
@@ -9,15 +10,22 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import {Formik, Form, Field} from 'formik';
 import * as API from '../../Utils/API/index';
+import PropTypes from 'prop-types';
 import * as Constants from '../../Utils/Constants.js';
 import * as Actions from '../../redux/Actions/index.js';
 import './LogIn.css';
 /* eslint-disable require-jsdoc */
 const LogIn = () => {
-  const info = useSelector((state) => state).tweet.signUpInfo;
+  const info = useSelector((state) => state).tweet.logInInfo;
+  const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
+  const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
+  const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
   return (
     <Container component="main" maxWidth="xs">
+      {isSnackbarOpen && (<SnackbarAlert
+        alertMessage={snackbarAlertMessage}
+        severity={snackbarAlertSeverity}/>)}
       <CssBaseline />
       <div>
         <Formik
@@ -43,14 +51,26 @@ const LogIn = () => {
             dispatch(Actions.setLogInInfo(values));
             API.logIn(info)
                 .then((response) => {
-                  if (response.detail ===
-                      Constants.VERIFICATION_SENT_SUCCESS) {
-                    // change this to snack bar
-                    alert('success');
-                  }
+                  setSnackbarAlertMessage(
+                      Constants.LOG_IN_SUCCESS_MESSAGE);
+                  setSnackbarAlertSeverity(
+                      Constants.SNACKBAR_SUCCESS_SEVERITY);
+                  dispatch(
+                      Actions.setSnackBarState({
+                        isSnackbarOpen: true,
+                      }),
+                  );
                 })
                 .catch((error) => {
-                  alert('fail');
+                  setSnackbarAlertMessage(
+                      Constants.LOG_IN_VERIFICATION_ERROR_MESSAGE);
+                  setSnackbarAlertSeverity(
+                      Constants.SNACKBAR_ERROR_SEVERITY);
+                  dispatch(
+                      Actions.setSnackBarState({
+                        isSnackbarOpen: true,
+                      }),
+                  );
                 });
           }}
         >
@@ -86,7 +106,7 @@ const LogIn = () => {
               </Button>
               <Grid container>
                 <Grid className='log-in-redirection'>
-                  <Link href='SignUp' variant="body2">
+                  <Link href='signup' variant="body2">
                 Do not have an account? Sign Up
                   </Link>
                 </Grid>
@@ -98,4 +118,10 @@ const LogIn = () => {
     </Container>
   );
 };
+
+LogIn.propTypes = {
+  email: PropTypes.string,
+  password: PropTypes.number,
+};
+
 export default LogIn;

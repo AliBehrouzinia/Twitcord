@@ -13,6 +13,7 @@ const initialState = {
   },
   tweetText: '',
   tweetCharCount: 0,
+
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -29,11 +30,12 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     case ActionTypes.SET_LOG_IN_INFO:
+      console.log(action);
       return {
         ...state,
         logInInfo: {
           ...state.logInInfo,
-          username: action.username,
+          email: action.email,
           password: action.password,
         },
       };
@@ -43,6 +45,12 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
+    case ActionTypes.SET_SNACKBAR_STATE: {
+      return {
+        ...state,
+        isSnackbarOpen: action.isSnackbarOpen,
+      };
+    }
     default:
       return state;
   }

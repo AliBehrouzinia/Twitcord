@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
-import LogIn from './components/LogIn/LogIn.js';
-import SignUp from './components/SignUp/SignUp.js';
+import LogIn from './Components/LogIn/LogIn.js';
+import SignUp from './Components/SignUp/SignUp.js';
 // import TweetBox from './Components/TweetBox/TweetBox';
 import {Provider} from 'react-redux';
 import store from './redux/store.js';
@@ -16,7 +16,7 @@ function App() {
         <BrowserRouter>
           <div>
             <Route exact path="/login" component={LogIn} />
-            <Route exact path="/SignUp" component={SignUp} />
+            <Route exact path="/signup" component={SignUp} />
           </div>
         </BrowserRouter>
       </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import * as Actions from '../../redux/Actions/index.js';
@@ -11,16 +11,23 @@ import Container from '@material-ui/core/Container';
 import {Formik, Form, Field} from 'formik';
 import PropTypes from 'prop-types';
 import * as API from '../../Utils/API/index';
+import SnackbarAlert from '../Snackbar/Snackbar';
 import * as Constants from '../../Utils/Constants.js';
 import './SignUp.css';
 // import { ActionTypes } from '../../redux/Actions/actionTypes';
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
   const info = useSelector((state) => state).tweet.signUpInfo;
+  const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
+  const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
+  const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
   return (
     <div>
       <Container component="main" maxWidth="xs">
+        {isSnackbarOpen && (<SnackbarAlert
+          alertMessage={snackbarAlertMessage}
+          severity={snackbarAlertSeverity}/>)}
         <CssBaseline />
         <div>
           <Formik
@@ -58,14 +65,26 @@ const SignUp = () => {
               dispatch(Actions.setSignUpInfo(values));
               API.signUp(info)
                   .then((response) => {
-                    if (response.detail ===
-                      Constants.VERIFICATION_SENT_SUCCESS) {
-                      // change this to snack bar
-                      alert('success');
-                    }
+                    setSnackbarAlertMessage(
+                        Constants.SIGN_UP_VERIFICATION_SUCCESS_MESSAGE);
+                    setSnackbarAlertSeverity(
+                        Constants.SNACKBAR_SUCCESS_SEVERITY);
+                    dispatch(
+                        Actions.setSnackBarState({
+                          isSnackbarOpen: true,
+                        }),
+                    );
                   })
                   .catch((error) => {
-                    alert('fail');
+                    setSnackbarAlertMessage(
+                        Constants.SIGN_UP_EMAIL_ERROR_MESSAGE);
+                    setSnackbarAlertSeverity(
+                        Constants.SNACKBAR_ERROR_SEVERITY);
+                    dispatch(
+                        Actions.setSnackBarState({
+                          isSnackbarOpen: true,
+                        }),
+                    );
                   });
             }}
           >
@@ -134,7 +153,8 @@ const SignUp = () => {
 SignUp.propTypes = {
   username: PropTypes.string,
   email: PropTypes.string,
-  password: PropTypes.number,
+  password1: PropTypes.number,
+  password2: PropTypes.number,
 };
 
 export default SignUp;

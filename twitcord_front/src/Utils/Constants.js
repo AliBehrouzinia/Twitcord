@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 export const BASE_URL = 'http://127.0.0.1:8000';
 
 // request types
@@ -13,4 +15,10 @@ export const URL_LOG_IN = '/rest-auth/login/';
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;
 export const TWEET_CHAR_LIMIT = 140;
-export const VERIFICATION_SENT_SUCCESS = 'Verification e-mail sent.';
+export const LOG_IN_VERIFICATION_ERROR_MESSAGE = 'Please verify your email';
+export const LOG_IN_SUCCESS_MESSAGE = 'You are logged in';
+export const SIGN_UP_EMAIL_ERROR_MESSAGE = 'A user is already registered with this e-mail address';
+export const SIGN_UP_VERIFICATION_SUCCESS_MESSAGE = 'Verification email is sent';
+
+export const SNACKBAR_ERROR_SEVERITY = 'error';
+export const SNACKBAR_SUCCESS_SEVERITY = 'success';
