@@ -37,17 +37,17 @@ class TweetAdmin(admin.ModelAdmin):
 admin.site.register(Tweet)
 
 
-class FollowRequestAdmin(admin.ModelAdmin):
-    model = FollowRequest
-    list_display = ('request_from', 'request_to', 'date')
-
-
-admin.site.register(FollowRequest, FollowRequestAdmin)
-
-
 class UserFollowingAdmin(admin.ModelAdmin):
     model = UserFollowing
     list_display = ('user_id', 'following_user_id', 'created')
 
 
 admin.site.register(UserFollowing, UserFollowingAdmin)
+
+
+class FollowRequestAdmin(admin.ModelAdmin):
+    model = FollowRequest
+    list_display = ('request_from', 'request_to', 'date')
+
+
+admin.site.register(FollowRequest, FollowRequestAdmin)
