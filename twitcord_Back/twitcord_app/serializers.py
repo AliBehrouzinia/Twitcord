@@ -18,6 +18,11 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
         fields = ('email', 'pk', 'profile_img')
         read_only_fields = ('email',)
 
+
+class ProfileDetailsViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TwitcordUser
+        fields = ('email', 'username', 'profile_img', 'is_active', 'is_public', 'date_joined')
 class TweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
