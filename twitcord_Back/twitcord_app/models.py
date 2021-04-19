@@ -55,3 +55,13 @@ class Tweet(models.Model):
 
     def __str__(self):
         return self.content
+
+
+class FollowRequest(models.Model):
+    request_from = models.ForeignKey(TwitcordUser, related_name="request_from", on_delete=models.CASCADE)
+    request_to = models.ForeignKey(TwitcordUser, related_name="request_to", on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("request_from", "request_to")
+        ordering = ['-date']

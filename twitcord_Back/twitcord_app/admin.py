@@ -27,4 +27,19 @@ class TwitcordUserAdmin(UserAdmin):
 
 
 admin.site.register(TwitcordUser, TwitcordUserAdmin)
+
+
+class TweetAdmin(admin.ModelAdmin):
+    model = Tweet
+    list_display = ('user', 'create_date')
+
+
 admin.site.register(Tweet)
+
+
+class FollowRequestAdmin(admin.ModelAdmin):
+    model = FollowRequest
+    list_display = ('request_from', 'request_to', 'date')
+
+
+admin.site.register(FollowRequest, FollowRequestAdmin)
