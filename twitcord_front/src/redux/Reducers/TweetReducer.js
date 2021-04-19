@@ -11,6 +11,13 @@ const initialState = {
     email: '',
     password: '',
   },
+  profileinfo: {
+    username: '',
+    bio: '',
+    joinedat: '',
+    followers: '',
+    following: '',
+  },
   tweetText: '',
   tweetCharCount: 0,
 
@@ -43,6 +50,18 @@ const tweetReducer = (state = initialState, action) => {
         ...state,
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
+      };
+    case ActionTypes.SET_PROFILE_INFO:
+      return {
+        ...state,
+        profileinfo: {
+          ...state.profileinfo,
+          username: action.username,
+          bio: action.bio,
+          joinedat: action.joinedat,
+          followers: action.followers,
+          following: action.following,
+        },
       };
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {

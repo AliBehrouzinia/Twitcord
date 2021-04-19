@@ -1,6 +1,6 @@
 import React from 'react';
-import ProfileUserinfo from '../profile_userinfo/ProfileUserinfo';
-import './Profile.css';
+import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
+import './profile.css';
 const Profile = () => {
   return (
     <div className = "profile">

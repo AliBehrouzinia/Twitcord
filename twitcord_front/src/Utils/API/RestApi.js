@@ -30,6 +30,13 @@ const request = (data, url, method) => {
           data,
         });
     }
+    switch (method) {
+      case Constants.GET_REQUEST_METHOD:
+        return instance({
+          method: method,
+          url: url,
+        });
+    }
   } else {
     return withoutAuthInstance({
       method: method,
@@ -60,5 +67,13 @@ export const logIn = (data) => {
       data,
       Constants.URL_LOG_IN,
       Constants.POST_REQUEST_METHOD,
+  );
+};
+
+export const profileInfo = (data) => {
+  return request(
+      data,
+      Constants.URL_PROFILE_INFO,
+      Constants.GET_REQUEST_METHOD,
   );
 };
