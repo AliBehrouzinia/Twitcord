@@ -9,8 +9,11 @@ import {TextField} from 'formik-material-ui';
 import {DatePicker} from 'formik-material-ui-pickers';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import * as API from '../../Utils/API/index';
 
 const EditProfile = () => {
+  requestProfileInfo();
+
   return (
     <Grid container direction="column">
       <Grid item className="grid-item" xs={12} sm={10} md={8}>
@@ -133,5 +136,14 @@ const EditProfile = () => {
     </Grid>
   );
 };
+
+const requestProfileInfo = () => {
+  API.getProfileInfo({id: 1})
+      .then((response) => {
+      })
+      .catch((error) => {
+      });
+};
+
 
 export default EditProfile;
