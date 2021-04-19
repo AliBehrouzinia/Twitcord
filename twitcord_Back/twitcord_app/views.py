@@ -17,10 +17,10 @@ from allauth.account.views import ConfirmEmailView
 from django.contrib.auth import get_user_model
 
 
-class ProfileDetailsView(generics.RetrieveAPIView):
+class ProfileDetailsView(generics.RetrieveUpdateAPIView):
     """Get profile details of a user"""
     queryset = models.TwitcordUser.objects.all()
-    permission_classes = [AllowAny]
+    permission_classes = [UserIsOwnerOrReadonly]
     serializer_class = serializers.ProfileDetailsViewSerializer
     lookup_url_kwarg = 'id'
 
@@ -37,10 +37,3 @@ class TweetsView(generics.ListCreateAPIView):
 class TweetsView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, ]
     serializer_class = serializers.TweetSerializer
-
-
-class UpdateTwitcordUserView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated, UserIsOwnerOrReadonly]
-    queryset = models.TwitcordUser.objects.all()
-    lookup_field = 'id'
-    serializer_class = serializers.CustomUserDetailsSerializer
