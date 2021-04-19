@@ -1,26 +1,26 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
-import Profile from './components/profile/Profile.js';
+import LogIn from './Components/LogIn/LogIn.js';
+import SignUp from './Components/SignUp/SignUp.js';
+// import TweetBox from './Components/TweetBox/TweetBox';
+import {Provider} from 'react-redux';
+import store from './redux/store.js';
+import {BrowserRouter, Route} from 'react-router-dom';
+
 function App() {
   return (
-    <div className="App">
-      {/* <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
-      <Profile>
-      </Profile>
-
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        {/* <SignUp></SignUp> */}
+        {/* <TweetBox /> */}
+        <BrowserRouter>
+          <div>
+            <Route exact path="/login" component={LogIn} />
+            <Route exact path="/signup" component={SignUp} />
+          </div>
+        </BrowserRouter>
+      </div>
+    </Provider>
   );
 }
 
