@@ -58,8 +58,8 @@ class Tweet(models.Model):
 
 
 class UserFollowing(models.Model):
-    user_id = models.ForeignKey(TwitcordUser, related_name="following", on_delete=models.CASCADE)
-    following_user_id = models.ForeignKey(TwitcordUser, related_name="followers", on_delete=models.CASCADE)
+    user_id = models.ForeignKey("TwitcordUser", related_name="following", on_delete=models.CASCADE)
+    following_user_id = models.ForeignKey("TwitcordUser", related_name="followers", on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
