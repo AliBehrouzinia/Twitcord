@@ -10,5 +10,4 @@ urlpatterns = [
     path('tweets/<int:id>/', views.TweetsView.as_view()),
     re_path('accounts-rest/registration/account-confirm-email/(?P<key>.+)/', confirm_email,
             name='account_confirm_email'),
-    path('profile/<int:id>/', views.UpdateTwitcordUserView.as_view()),
 ]
