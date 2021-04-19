@@ -17,15 +17,13 @@ from allauth.account.views import ConfirmEmailView
 from django.contrib.auth import get_user_model
 
 
-
-# Create your views here.
-
 class ProfileDetailsView(generics.RetrieveAPIView):
     """Get profile details of a user"""
     queryset = models.TwitcordUser.objects.all()
     permission_classes = [AllowAny]
     serializer_class = serializers.ProfileDetailsViewSerializer
     lookup_url_kwarg = 'id'
+
 
 class TweetsView(generics.ListCreateAPIView):
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly,]
