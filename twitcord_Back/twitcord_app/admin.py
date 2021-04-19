@@ -43,3 +43,11 @@ class FollowRequestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(FollowRequest, FollowRequestAdmin)
+
+
+class UserFollowingAdmin(admin.ModelAdmin):
+    model = UserFollowing
+    list_display = ('user_id', 'following_user_id', 'created')
+
+
+admin.site.register(UserFollowing, UserFollowingAdmin)
