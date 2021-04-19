@@ -57,6 +57,16 @@ class Tweet(models.Model):
         return self.content
 
 
+class UserFollowing(models.Model):
+    user_id = models.ForeignKey(TwitcordUser, related_name="following", on_delete=models.CASCADE)
+    following_user_id = models.ForeignKey(TwitcordUser, related_name="followers", on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user_id", "following_user_id")
+        ordering = ["-created"]
+
+
 class FollowRequest(models.Model):
     request_from = models.ForeignKey(TwitcordUser, related_name="request_from", on_delete=models.CASCADE)
     request_to = models.ForeignKey(TwitcordUser, related_name="request_to", on_delete=models.CASCADE)
