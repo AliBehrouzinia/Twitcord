@@ -1,16 +1,14 @@
-/* eslint-disable */
-
-import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
-import "./EditProfile.css";
-import image from "../../assets/image.png";
-import { Formik, Form, Field } from "formik";
-import { Button } from "@material-ui/core";
-import { TextField } from "formik-material-ui";
-import { DatePicker } from "formik-material-ui-pickers";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import React from 'react';
+import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import './EditProfile.css';
+import image from '../../assets/image.png';
+import {Formik, Form, Field} from 'formik';
+import {Button} from '@material-ui/core';
+import {TextField} from 'formik-material-ui';
+import {DatePicker} from 'formik-material-ui-pickers';
+import {MuiPickersUtilsProvider} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 const EditProfile = () => {
   return (
@@ -26,34 +24,36 @@ const EditProfile = () => {
         <Grid item xs={10} sm={8} md={6} lg={4}>
           <Formik
             initialValues={{
-              username: "",
-              name: "",
-              website: "",
-              bio: "",
+              username: '',
+              name: '',
+              website: '',
+              bio: '',
               date: null,
             }}
             validate={(values) => {
               const errors = {};
               if (!values.name) {
-                errors.name = "Required";
+                errors.name = 'Required';
               }
 
               if (
                 values.website &&
                 !values.website.match(
-                  "^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$"
+                    '^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9]'+
+                    '[-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#'+
+                    '\\?&/=%]*)?$',
                 )
               ) {
-                errors.website = "Invalid Url";
+                errors.website = 'Invalid Url';
               }
               return errors;
             }}
-            onSubmit={(values, { setSubmitting }) => {
+            onSubmit={(values, {setSubmitting}) => {
               setSubmitting(false);
               alert(JSON.stringify(values, null, 2));
             }}
           >
-            {({ submitForm, isSubmitting }) => (
+            {({submitForm, isSubmitting}) => (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Form className="form">
                   <Field
