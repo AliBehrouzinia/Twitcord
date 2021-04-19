@@ -25,15 +25,20 @@ const EditProfile = () => {
           <Formik
             initialValues={{
               username: '',
-              name: '',
+              firstName: '',
+              lastName: '',
               website: '',
               bio: '',
               date: null,
             }}
             validate={(values) => {
               const errors = {};
-              if (!values.name) {
-                errors.name = 'Required';
+              if (!values.firstName) {
+                errors.firstName = 'Required';
+              }
+
+              if (!values.lastName) {
+                errors.lastName = 'Required';
               }
 
               if (
@@ -69,9 +74,17 @@ const EditProfile = () => {
                   <Field
                     component={TextField}
                     className="text-field"
-                    label="Name"
+                    label="First Name"
                     variant="outlined"
-                    name="name"
+                    name="firstName"
+                  />
+
+                  <Field
+                    component={TextField}
+                    className="text-field"
+                    label="Last Name"
+                    variant="outlined"
+                    name="lastName"
                   />
 
                   <Field
