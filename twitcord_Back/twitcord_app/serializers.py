@@ -23,6 +23,7 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
         fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio', 'website', 'is_public')
+        read_only_fields = ('email','username')
 
 
 class TweetSerializer(serializers.ModelSerializer):
