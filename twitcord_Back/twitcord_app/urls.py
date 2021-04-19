@@ -11,4 +11,11 @@ urlpatterns = [
     re_path('accounts-rest/registration/account-confirm-email/(?P<key>.+)/', confirm_email,
             name='account_confirm_email'),
     path('profile/<int:id>/', views.UpdateTwitcordUserView.as_view()),
+    path('followings/', views.ListOfFollowingsView.as_view()),
+    path('followers/', views.ListOfFollowersView.as_view()),
+    path('followings/<int:id>/', views.DeleteFollowingsView.as_view()),
+    path('followings/requests/', views.FollowingRequestView.as_view()),
+    path('followings/requests/<int:id>/', views.DeleteFollowRequestView.as_view()),
+    path('followers/requests/', views.FollowersRequestsView.as_view()),
+    path('followers/requests/<int:id>/', views.AnswerFollowRequestView.as_view()),
 ]
