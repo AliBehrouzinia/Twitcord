@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
-import ProfileUserinfo from './components/profile_userinfo/ProfileUserinfo.js';
+import Profile from './components/profile/Profile.js';
 function App() {
   return (
     <div className="App">
@@ -17,8 +17,8 @@ function App() {
           Learn React
         </a>
       </header> */}
-      <ProfileUserinfo>
-      </ProfileUserinfo>
+      <Profile>
+      </Profile>
 
     </div>
   );
