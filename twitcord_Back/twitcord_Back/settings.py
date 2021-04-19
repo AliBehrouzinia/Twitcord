@@ -108,6 +108,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'twitcord_Back.wsgi.application'
 
+APPEND_SLASH=False
+
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
