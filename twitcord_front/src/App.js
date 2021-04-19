@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-/* eslint-disable */
-import React from "react";
-import EditProfile from "./Components/EditProfile/EditProfile";
-
-function App() {
-  return <EditProfile />;
-=======
 /* eslint-disable require-jsdoc */
 import React from 'react';
 import LogIn from './Components/LogIn/LogIn.js';
@@ -14,6 +6,7 @@ import SignUp from './Components/SignUp/SignUp.js';
 import {Provider} from 'react-redux';
 import store from './redux/store.js';
 import {BrowserRouter, Route} from 'react-router-dom';
+import EditProfile from './Components/EditProfile/EditProfile';
 
 function App() {
   return (
@@ -23,6 +16,7 @@ function App() {
         {/* <TweetBox /> */}
         <BrowserRouter>
           <div>
+            <Route exact path="/edit-profile" component={EditProfile} />
             <Route exact path="/login" component={LogIn} />
             <Route exact path="/signup" component={SignUp} />
           </div>
@@ -30,7 +24,6 @@ function App() {
       </div>
     </Provider>
   );
->>>>>>> 9308cec00155e16d08cedbdb2508e1a9cf26e28e
 }
 
 export default App;
