@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import './EditProfile.css';
@@ -8,11 +8,19 @@ import {Button} from '@material-ui/core';
 import {TextField} from 'formik-material-ui';
 import {DatePicker} from 'formik-material-ui-pickers';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import DateFnsUtils from '@date-io/date-fns';
 import * as API from '../../Utils/API/index';
+import * as Actions from '../../redux/Actions/index';
 
 const EditProfile = () => {
-  requestProfileInfo();
+  const profileInfo = useSelector((state) => state).tweet.profileInfo;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    requestProfileInfo(dispatch);
+  }, []);
 
   return (
     <Grid container direction="column">
@@ -26,13 +34,14 @@ const EditProfile = () => {
 
         <Grid item xs={10} sm={8} md={6} lg={4}>
           <Formik
+            enableReinitialize
             initialValues={{
-              username: '',
-              firstName: '',
-              lastName: '',
-              website: '',
-              bio: '',
-              date: null,
+              username: profileInfo.username || '',
+              firstName: profileInfo.firstName || '',
+              lastName: profileInfo.lastName || '',
+              website: profileInfo.website || '',
+              bio: profileInfo.bio || '',
+              birthday: Date.parse(profileInfo.birthday) || '',
             }}
             validate={(values) => {
               const errors = {};
@@ -68,7 +77,7 @@ const EditProfile = () => {
                     component={TextField}
                     className="text-field"
                     label="User Name"
-                    value="@alibehrooz"
+                    value={profileInfo.username || ''}
                     disabled
                     variant="outlined"
                     name="username"
@@ -79,6 +88,7 @@ const EditProfile = () => {
                     className="text-field"
                     label="First Name"
                     variant="outlined"
+                    value={profileInfo.firstName || '1'}
                     name="firstName"
                   />
 
@@ -87,6 +97,7 @@ const EditProfile = () => {
                     className="text-field"
                     label="Last Name"
                     variant="outlined"
+                    value={profileInfo.lastName || ''}
                     name="lastName"
                   />
 
@@ -94,8 +105,9 @@ const EditProfile = () => {
                     component={DatePicker}
                     className="text-field"
                     variant="outlined"
-                    name="date"
+                    name="birthday"
                     label="Birth Day"
+                    value={profileInfo.birthday || ''}
                     maxDate={new Date()}
                   />
 
@@ -104,6 +116,7 @@ const EditProfile = () => {
                     className="text-field"
                     label="Website"
                     variant="outlined"
+                    value={profileInfo.website || ''}
                     name="website"
                   />
 
@@ -113,6 +126,7 @@ const EditProfile = () => {
                     label="Bio"
                     variant="outlined"
                     name="bio"
+                    value={profileInfo.bio || ''}
                     multiline
                     rows={4}
                   />
@@ -137,13 +151,18 @@ const EditProfile = () => {
   );
 };
 
-const requestProfileInfo = () => {
-  API.getProfileInfo({id: 1})
+const requestProfileInfo = (dispatch) => {
+  API.getProfileInfo({id: 2})
       .then((response) => {
+        handleProfileInfoResponse(dispatch, response.data);
       })
       .catch((error) => {
       });
 };
 
+const handleProfileInfoResponse = (dispatch, data) => {
+  console.log(data);
+  dispatch(Actions.setProfileInfo(data));
+};
 
 export default EditProfile;
