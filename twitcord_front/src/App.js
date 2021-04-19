@@ -1,10 +1,26 @@
 /* eslint-disable require-jsdoc */
 import React from 'react';
-import TweetBox from './Components/TweetBox/TweetBox';
+import LogIn from './Components/LogIn/LogIn.js';
+import SignUp from './Components/SignUp/SignUp.js';
+// import TweetBox from './Components/TweetBox/TweetBox';
+import {Provider} from 'react-redux';
+import store from './redux/store.js';
+import {BrowserRouter, Route} from 'react-router-dom';
 
 function App() {
   return (
-    <TweetBox />
+    <Provider store={store}>
+      <div className="App">
+        {/* <SignUp></SignUp> */}
+        {/* <TweetBox /> */}
+        <BrowserRouter>
+          <div>
+            <Route exact path="/login" component={LogIn} />
+            <Route exact path="/signup" component={SignUp} />
+          </div>
+        </BrowserRouter>
+      </div>
+    </Provider>
   );
 }
 
