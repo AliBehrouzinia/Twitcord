@@ -68,3 +68,10 @@ export const getProfileInfo = (data) => {
   );
 };
 
+export const updateProfileInfo = (id, data) => {
+  return request(
+      data,
+      Constants.URL_PROFILE_INFO.replace('{id}', id),
+      Constants.PATCH_REQUEST_METHOD,
+  );
+};
