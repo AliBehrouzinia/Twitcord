@@ -91,7 +91,7 @@ class FollowingRequestView(generics.CreateAPIView):
                                                following_user_id=data['request_to']).exists():
             return HttpResponseBadRequest('this user is followed by you, you can not request to follow this user')
 
-        request_to_user = get_object_or_404(models.BegardUser, id=data['request_to'])
+        request_to_user = get_object_or_404(models.TwitcordUser, id=data['request_to'])
 
         if request_to_user.is_public:
             follow_user_data = {"user_id": data['request_from'], "following_user_id": data['request_to']}
