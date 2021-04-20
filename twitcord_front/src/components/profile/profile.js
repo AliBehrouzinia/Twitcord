@@ -3,13 +3,13 @@ import React from 'react';
 import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
 import ProfileTweetlist from '../ProfileTweetlist/ProfileTweetlist';
 import * as Actions from '../../redux/Actions/index.js';
-// import {useStore} from 'react-redux';
+import {useStore} from 'react-redux';
 import './Profile.css';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
 const Profile = () => {
   const dispatch = useDispatch();
-  // const store = useStore();
+  const store = useStore();
   return (
     <div className = "profile">
       <div className = "profile_info">
@@ -27,7 +27,11 @@ const Profile = () => {
         </div>
       </div>
       <div className ="profiletabs">
-        <ProfileTweetlist/>
+        {store.getState().tweet.componentid === 1 ? (
+            <ProfileTweetlist/>
+          ) : (
+            <p> </p>
+          )}
       </div>
     </div>
   );
