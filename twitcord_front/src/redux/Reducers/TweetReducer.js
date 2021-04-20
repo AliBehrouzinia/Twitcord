@@ -15,11 +15,12 @@ const initialState = {
     username: '',
     bio: '',
     joinedat: '',
-    followers: '',
-    following: '',
+    followers: 0,
+    following: 0,
   },
   tweetText: '',
   tweetCharCount: 0,
+  componentid: 0,
 
 };
 
@@ -50,6 +51,11 @@ const tweetReducer = (state = initialState, action) => {
         ...state,
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
+      };
+    case ActionTypes.SET_COMPONENT_ID:
+      return {
+        ...state,
+        componentid: action.componentid,
       };
     case ActionTypes.SET_PROFILE_INFO:
       return {

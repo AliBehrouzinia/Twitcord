@@ -6,7 +6,7 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import store from './redux/store.js';
 // import {BrowserRouter, Route} from 'react-router-dom';
-import Profile from './Components/Profile/profile.js';
+import Profile from './Components/Profile/Profile.js';
 function App() {
   return (
     <Provider store={store}>

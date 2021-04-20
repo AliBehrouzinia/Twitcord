@@ -24,3 +24,8 @@ export const setProfileInfo = (data) => ({
   type: ActionTypes.SET_PROFILE_INFO,
   ...data,
 });
+
+export const setcomponentid = (data) => ({
+  type: ActionTypes.SET_COMPONENT_ID,
+  ...data,
+});
