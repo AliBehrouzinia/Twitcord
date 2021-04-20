@@ -4,7 +4,7 @@ import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
 import ProfileTweetlist from '../ProfileTweetlist/ProfileTweetlist';
 import * as Actions from '../../redux/Actions/index.js';
 import {useStore} from 'react-redux';
-import './Profile.css';
+import './profile.css';
 import PropTypes from 'prop-types';
 import {useDispatch} from 'react-redux';
 const Profile = () => {

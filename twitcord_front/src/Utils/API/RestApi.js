@@ -5,7 +5,7 @@ const instance = axios.create({
   baseURL: Constants.BASE_URL,
   responseType: 'json',
   headers: {
-    'Authorization': 'token ' + localStorage.getItem('token'),
+    'Authorization': 'token ' + 'd2c52b086b30019c8842401a8ac2a25c3a6bcd9d',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
@@ -22,21 +22,11 @@ const withoutAuthInstance = axios.create({
 
 const request = (data, url, method) => {
   if (url !== Constants.URL_SIGN_UP && url !== Constants.URL_LOG_IN) {
-    switch (method) {
-      case Constants.POST_REQUEST_METHOD:
-        return instance({
-          method: method,
-          url: url,
-          data,
-        });
-    }
-    switch (method) {
-      case Constants.GET_REQUEST_METHOD:
-        return instance({
-          method: method,
-          url: url,
-        });
-    }
+    return instance({
+      method: method,
+      url: url,
+      data: data,
+    });
   } else {
     return withoutAuthInstance({
       method: method,
@@ -70,10 +60,12 @@ export const logIn = (data) => {
   );
 };
 
-export const profileInfo = (data) => {
+
+export const profileinfo = (data) => {
   return request(
-      data,
-      Constants.URL_PROFILE_INFO,
+      {},
+      Constants.URL_PROFILE_INFO.replace('{id}', data.id),
       Constants.GET_REQUEST_METHOD,
   );
 };
+

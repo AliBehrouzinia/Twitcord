@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import './ProfileUserinfo.css';
 // import {useStore} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import image from '../../assets/image.png';
 import * as API from '../../Utils/API/index';
@@ -12,7 +13,7 @@ import * as Actions from '../../redux/Actions/index.js';
 const ProfileUserinfo = () => {
   // const store = useStore();
   const dispatch = useDispatch();
-  API.profileInfo()
+  API.profileinfo({id: 1})
       .then((response) => {
         dispatch(Actions.setProfileInfo(response.data));
         dispatch(
@@ -42,10 +43,10 @@ const ProfileUserinfo = () => {
       <div container className="grid-info">
         <div className="info1">
           <text className="grid-username" > username
-            {/* {store.getState().tweet.profileInfo.username} */}
+            {useSelector((state) => state).tweet.profileInfo.username}
           </text>
           <text className="grid-bio" > bio
-            {/* {store.getState().tweet.profileInfo.bio} */}
+            {useSelector((state) => state).tweet.profileInfo.bio}
           </text>
           <text className="grid-joined" > joined
             {/* {store.getState().tweet.profileInfo.joinedat} */}
