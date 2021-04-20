@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import './EditProfile.css';
@@ -13,13 +13,24 @@ import {useDispatch} from 'react-redux';
 import DateFnsUtils from '@date-io/date-fns';
 import * as API from '../../Utils/API/index';
 import * as Actions from '../../redux/Actions/index';
+import * as Constants from '../../Utils/Constants.js';
+import SnackbarAlert from '../Snackbar/Snackbar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
 
 const EditProfile = () => {
+  const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
+  const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
+  const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    requestProfileInfo(dispatch);
+    requestProfileInfo(
+        dispatch,
+        setSnackbarAlertMessage,
+        setSnackbarAlertSeverity,
+    );
   }, []);
 
   return (
@@ -33,112 +44,124 @@ const EditProfile = () => {
         <Grid item xs={1} sm={2} md={3} lg={4} />
 
         <Grid item xs={10} sm={8} md={6} lg={4}>
-          <Formik
-            enableReinitialize
-            initialValues={{
-              username: profileInfo.username || '',
-              firstName: profileInfo.firstName || '',
-              lastName: profileInfo.lastName || '',
-              website: profileInfo.website || '',
-              bio: profileInfo.bio || '',
-              birthday: Date.parse(profileInfo.birthday) || '',
-            }}
-            validate={(values) => {
-              const errors = {};
-              if (!values.firstName) {
-                errors.firstName = 'Required';
-              }
+          <div>
+            {isSnackbarOpen && (<SnackbarAlert
+              alertMessage={snackbarAlertMessage}
+              severity={snackbarAlertSeverity}/>)}
+            <CssBaseline />
+            <Formik
+              enableReinitialize
+              initialValues={{
+                username: profileInfo.username || '',
+                firstName: profileInfo.firstName || '',
+                lastName: profileInfo.lastName || '',
+                website: profileInfo.website || '',
+                bio: profileInfo.bio || '',
+                birthday: Date.parse(profileInfo.birthday) || '',
+              }}
+              validate={(values) => {
+                const errors = {};
+                if (!values.firstName) {
+                  errors.firstName = 'Required';
+                }
 
-              if (!values.lastName) {
-                errors.lastName = 'Required';
-              }
+                if (!values.lastName) {
+                  errors.lastName = 'Required';
+                }
 
-              if (
-                values.website &&
+                if (
+                  values.website &&
                 !values.website.match(
                     '^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9]'+
                     '[-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#'+
                     '\\?&/=%]*)?$',
                 )
-              ) {
-                errors.website = 'Invalid Url';
-              }
+                ) {
+                  errors.website = 'Invalid Url';
+                }
 
-              return errors;
-            }}
-            onSubmit={(values, {setSubmitting}) => {
-              setSubmitting(false);
-              onSubmitClicked(dispatch, profileInfo, values);
-            }}
-          >
-            {({submitForm, isSubmitting}) => (
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Form className="form">
-                  <Field
-                    component={TextField}
-                    className="text-field"
-                    label="User Name"
-                    disabled
-                    variant="outlined"
-                    name="username"
-                  />
+                return errors;
+              }}
+              onSubmit={(values, {setSubmitting}) => {
+                setSubmitting(false);
+                onSubmitClicked(
+                    dispatch,
+                    profileInfo,
+                    values,
+                    setSnackbarAlertMessage,
+                    setSnackbarAlertSeverity,
+                );
+              }}
+            >
+              {({submitForm, isSubmitting}) => (
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Form className="form">
+                    <Field
+                      component={TextField}
+                      className="text-field"
+                      label="User Name"
+                      disabled
+                      variant="outlined"
+                      name="username"
+                    />
 
-                  <Field
-                    component={TextField}
-                    className="text-field"
-                    label="First Name"
-                    variant="outlined"
-                    name="firstName"
-                  />
+                    <Field
+                      component={TextField}
+                      className="text-field"
+                      label="First Name"
+                      variant="outlined"
+                      name="firstName"
+                    />
 
-                  <Field
-                    component={TextField}
-                    className="text-field"
-                    label="Last Name"
-                    variant="outlined"
-                    name="lastName"
-                  />
+                    <Field
+                      component={TextField}
+                      className="text-field"
+                      label="Last Name"
+                      variant="outlined"
+                      name="lastName"
+                    />
 
-                  <Field
-                    component={DatePicker}
-                    className="text-field"
-                    variant="outlined"
-                    name="birthday"
-                    label="Birth Day"
-                    maxDate={new Date()}
-                  />
+                    <Field
+                      component={DatePicker}
+                      className="text-field"
+                      variant="outlined"
+                      name="birthday"
+                      label="Birth Day"
+                      maxDate={new Date()}
+                    />
 
-                  <Field
-                    component={TextField}
-                    className="text-field"
-                    label="Website"
-                    variant="outlined"
-                    name="website"
-                  />
+                    <Field
+                      component={TextField}
+                      className="text-field"
+                      label="Website"
+                      variant="outlined"
+                      name="website"
+                    />
 
-                  <Field
-                    component={TextField}
-                    className="text-field"
-                    label="Bio"
-                    variant="outlined"
-                    name="bio"
-                    multiline
-                    rows={4}
-                  />
+                    <Field
+                      component={TextField}
+                      className="text-field"
+                      label="Bio"
+                      variant="outlined"
+                      name="bio"
+                      multiline
+                      rows={4}
+                    />
 
-                  <Button
-                    variant="contained"
-                    className="text-field"
-                    color="primary"
-                    disabled={isSubmitting}
-                    onClick={submitForm}
-                  >
+                    <Button
+                      variant="contained"
+                      className="text-field"
+                      color="primary"
+                      disabled={isSubmitting}
+                      onClick={submitForm}
+                    >
                     Submit
-                  </Button>
-                </Form>
-              </MuiPickersUtilsProvider>
-            )}
-          </Formik>
+                    </Button>
+                  </Form>
+                </MuiPickersUtilsProvider>
+              )}
+            </Formik>
+          </div>
         </Grid>
         <Grid item xs={1} sm={2} md={3} lg={4} />
       </Grid>
@@ -146,12 +169,23 @@ const EditProfile = () => {
   );
 };
 
-const requestProfileInfo = (dispatch) => {
+const requestProfileInfo = (
+    dispatch,
+    setSnackbarAlertMessage,
+    setSnackbarAlertSeverity,
+) => {
   API.getProfileInfo({id: 2})
       .then((response) => {
         handleProfileInfoResponse(dispatch, response.data);
       })
       .catch((error) => {
+        showSnackbar(
+            Constants.EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE,
+            Constants.SNACKBAR_ERROR_SEVERITY,
+            dispatch,
+            setSnackbarAlertMessage,
+            setSnackbarAlertSeverity,
+        );
       });
 };
 
@@ -160,7 +194,6 @@ const handleProfileInfoResponse = (dispatch, data) => {
 };
 
 const saveProfileInfo = (dispatch, data) => {
-  console.log(data);
   dispatch(Actions.setProfileInfo({
     bio: data.bio,
     birthday: data.birth_date,
@@ -171,7 +204,31 @@ const saveProfileInfo = (dispatch, data) => {
   }));
 };
 
-const onSubmitClicked = (dispatch, profileInfo, data) => {
+const showSnackbar = (
+    message,
+    severity,
+    dispatch,
+    setSnackbarAlertMessage,
+    setSnackbarAlertSeverity,
+) => {
+  setSnackbarAlertMessage(
+      message);
+  setSnackbarAlertSeverity(
+      severity);
+  dispatch(
+      Actions.setSnackBarState({
+        isSnackbarOpen: true,
+      }),
+  );
+};
+
+const onSubmitClicked = (
+    dispatch,
+    profileInfo,
+    data,
+    setSnackbarAlertMessage,
+    setSnackbarAlertSeverity,
+) => {
   if (typeof(data.birthday) === 'number') {
     data.birthday = profileInfo.birthday;
   }
@@ -191,12 +248,30 @@ const onSubmitClicked = (dispatch, profileInfo, data) => {
     API.updateProfileInfo(2, dataToSend)
         .then((response) => {
           saveProfileInfo(dispatch, response.data);
-          console.log(response);
+          showSnackbar(
+              Constants.EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE,
+              Constants.SNACKBAR_SUCCESS_SEVERITY,
+              dispatch,
+              setSnackbarAlertMessage,
+              setSnackbarAlertSeverity,
+          );
         }).catch((error) => {
-          console.log(error);
+          showSnackbar(
+              Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
+              Constants.SNACKBAR_ERROR_SEVERITY,
+              dispatch,
+              setSnackbarAlertMessage,
+              setSnackbarAlertSeverity,
+          );
         });
   } else {
-    console.log('no changes');
+    showSnackbar(
+        Constants.EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE,
+        Constants.SNACKBAR_ERROR_SEVERITY,
+        dispatch,
+        setSnackbarAlertMessage,
+        setSnackbarAlertSeverity,
+    );
   }
 };
 
@@ -220,6 +295,7 @@ const checkDataChanged = (profileInfo, data) => {
   if (data.website !== profileInfo.website) {
     return true;
   }
+
   return false;
 };
 
