@@ -87,3 +87,15 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFollowing
         fields = ['user_id']
+
+
+class GlobalUserSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
+
+
+class GlobalTweetSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Restaurant
+        fields = '__all__'
