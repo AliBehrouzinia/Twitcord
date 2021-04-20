@@ -63,6 +63,7 @@ const EditProfile = () => {
               ) {
                 errors.website = 'Invalid Url';
               }
+
               return errors;
             }}
             onSubmit={(values, {setSubmitting}) => {
@@ -77,7 +78,6 @@ const EditProfile = () => {
                     component={TextField}
                     className="text-field"
                     label="User Name"
-                    value={profileInfo.username || ''}
                     disabled
                     variant="outlined"
                     name="username"
@@ -88,7 +88,6 @@ const EditProfile = () => {
                     className="text-field"
                     label="First Name"
                     variant="outlined"
-                    value={profileInfo.firstName || '1'}
                     name="firstName"
                   />
 
@@ -97,7 +96,6 @@ const EditProfile = () => {
                     className="text-field"
                     label="Last Name"
                     variant="outlined"
-                    value={profileInfo.lastName || ''}
                     name="lastName"
                   />
 
@@ -107,7 +105,6 @@ const EditProfile = () => {
                     variant="outlined"
                     name="birthday"
                     label="Birth Day"
-                    value={profileInfo.birthday || ''}
                     maxDate={new Date()}
                   />
 
@@ -116,7 +113,6 @@ const EditProfile = () => {
                     className="text-field"
                     label="Website"
                     variant="outlined"
-                    value={profileInfo.website || ''}
                     name="website"
                   />
 
@@ -126,7 +122,6 @@ const EditProfile = () => {
                     label="Bio"
                     variant="outlined"
                     name="bio"
-                    value={profileInfo.bio || ''}
                     multiline
                     rows={4}
                   />
@@ -161,8 +156,17 @@ const requestProfileInfo = (dispatch) => {
 };
 
 const handleProfileInfoResponse = (dispatch, data) => {
-  console.log(data);
-  dispatch(Actions.setProfileInfo(data));
+  console.log(data.last_name);
+  dispatch(Actions.setProfileInfo({
+    bio: data.bio,
+    birthday: data.birth_date,
+    email: data.email,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    website: data.website,
+    username: data.username,
+    profileImage: data.profile_img},
+  ));
 };
 
 export default EditProfile;

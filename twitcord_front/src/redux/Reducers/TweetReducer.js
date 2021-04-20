@@ -69,13 +69,13 @@ const tweetReducer = (state = initialState, action) => {
         profileInfo: {
           ...state.profileInfo,
           bio: action.bio,
-          birthday: action.birth_date,
+          birthday: action.birthday,
           email: action.email,
-          firstName: action.first_name,
-          lastName: action.last_name,
+          firstName: action.firstName,
+          lastName: action.lastName,
           website: action.website,
           username: action.username,
-          profileImage: action.profile_image,
+          profileImage: action.profileImage,
         },
       };
     }
