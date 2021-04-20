@@ -155,3 +155,30 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
         self.check_object_permissions(request=self.request, obj=follow_request)
         return follow_request
+
+
+class GlobalUserSearchList(generics.ListAPIView):
+    serializer_class = serializers.GlobalUserSearchSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        user = self.request.user
+        query = self.request.query_params.get('query', None)
+        users = models.TwitcordUser.objects.filter(Q(username__icontains=query))
+        return users
+
+
+class GlobalTweetSearchList(generics.ListAPIView):
+    serializer_class = serializers.GlobalTweetSearchSerializer
+    permission_classes = [AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        query = self.request.query_params.get('query', None)
+        tweets = models.Tweet.objects.filter(Q(content__icontains=query))
+        serializer_data = serializers.TweetSerializer(instance=tweets, many=True).data
+        for data in serializer_data:
+            user = models.TwitcordUser.objects.get(id=data['user'])
+            data['username'] = user.username
+            data['profile_img'] = user.profile_img.url
+            data['is_public'] = user.is_public
+        return Response(data=serializer_data, status=status.HTTP_200_OK)
