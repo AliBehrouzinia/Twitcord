@@ -68,7 +68,7 @@ const EditProfile = () => {
             }}
             onSubmit={(values, {setSubmitting}) => {
               setSubmitting(false);
-              alert(JSON.stringify(values, null, 2));
+              onSubmitClicked(dispatch, profileInfo, values);
             }}
           >
             {({submitForm, isSubmitting}) => (
@@ -156,17 +156,71 @@ const requestProfileInfo = (dispatch) => {
 };
 
 const handleProfileInfoResponse = (dispatch, data) => {
-  console.log(data.last_name);
+  saveProfileInfo(dispatch, data);
+};
+
+const saveProfileInfo = (dispatch, data) => {
+  console.log(data);
   dispatch(Actions.setProfileInfo({
     bio: data.bio,
     birthday: data.birth_date,
-    email: data.email,
     firstName: data.first_name,
     lastName: data.last_name,
     website: data.website,
     username: data.username,
-    profileImage: data.profile_img},
-  ));
+  }));
+};
+
+const onSubmitClicked = (dispatch, profileInfo, data) => {
+  if (typeof(data.birthday) === 'number') {
+    data.birthday = profileInfo.birthday;
+  }
+
+  const isDataChanged = checkDataChanged(profileInfo, data);
+
+  if (isDataChanged) {
+    const dataToSend = {
+      bio: data.bio,
+      birth_date: data.birthday,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      website: data.website,
+      username: data.username,
+    };
+
+    API.updateProfileInfo(2, dataToSend)
+        .then((response) => {
+          saveProfileInfo(dispatch, response.data);
+          console.log(response);
+        }).catch((error) => {
+          console.log(error);
+        });
+  } else {
+    console.log('no changes');
+  }
+};
+
+const checkDataChanged = (profileInfo, data) => {
+  if (data.firstName !== profileInfo.firstName) {
+    return true;
+  }
+
+  if (data.lastName !== profileInfo.lastName) {
+    return true;
+  }
+
+  if (data.birthday !== profileInfo.birthday) {
+    return true;
+  }
+
+  if (data.bio !== profileInfo.bio) {
+    return true;
+  }
+
+  if (data.website !== profileInfo.website) {
+    return true;
+  }
+  return false;
 };
 
 export default EditProfile;

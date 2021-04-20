@@ -16,12 +16,10 @@ const initialState = {
   profileInfo: {
     bio: '',
     birthday: '',
-    email: '',
     firstName: '',
     lastName: '',
     website: '',
     username: '',
-    profileImage: '',
   },
 };
 
@@ -70,12 +68,10 @@ const tweetReducer = (state = initialState, action) => {
           ...state.profileInfo,
           bio: action.bio,
           birthday: action.birthday,
-          email: action.email,
           firstName: action.firstName,
           lastName: action.lastName,
           website: action.website,
           username: action.username,
-          profileImage: action.profileImage,
         },
       };
     }
