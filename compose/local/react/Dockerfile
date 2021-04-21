@@ -1,22 +1,21 @@
 # Step 1
-FROM node:alpine
+FROM node:12.19.0
 
-WORKDIR /app
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+WORKDIR /usr/src/app/twitcord_front/
+
+EXPOSE 3000
 
 # install app dependencies
-COPY --chown=node:node ./twitcord_front/package.json ./
-COPY --chown=node:node ./twitcord_front/package-lock.json ./
+COPY ./twitcord_front/package.json /usr/src/app/twitcord_front/
 
 RUN npm install --silent
-RUN npm install react-scripts@3.4.1 -g
+RUN npm install react-scripts@4.0.3 --silent
 
 # add app
-COPY --chown=node:node ./twitcord_front ./
+COPY  ./twitcord_front /usr/src/app/twitcord_front/
 
-USER node
+COPY ./compose/local/react/entrypoint.sh /usr/src/app/entrypoint.sh
 
-# start app
-CMD ["npm", "start"]
+RUN chmod +x ../entrypoint.sh
+
