@@ -1,3 +1,4 @@
+import rest_framework.pagination
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -16,6 +17,7 @@ import datetime
 from allauth.account.views import ConfirmEmailView
 from django.contrib.auth import get_user_model
 import enum
+from itertools import chain
 
 from django.db.models import Q
 
@@ -29,12 +31,12 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class TweetsView(generics.ListCreateAPIView):
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly,]
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly, ]
     serializer_class = serializers.TweetSerializer
 
     def get_queryset(self):
         user_id = self.kwargs.get('id')
-        return models.Tweet.objects.filter(user_id = user_id)
+        return models.Tweet.objects.filter(user_id=user_id)
 
 
 class TweetsView(generics.CreateAPIView):
@@ -160,12 +162,26 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
 class GlobalUserSearchList(generics.ListAPIView):
     serializer_class = serializers.GlobalUserSearchSerializer
     permission_classes = [AllowAny]
+    pagination_class = rest_framework.pagination.PageNumberPagination
 
     def get_queryset(self):
         user = self.request.user
         query = self.request.query_params.get('query', None)
-        users = models.TwitcordUser.objects.filter(Q(username__icontains=query))
-        return users
+        user_following = models.UserFollowing.objects.filter(user_id=user)
+        if not (self.request.query_params.get('page')).isdigit():
+            return Response(data={"error: ": "the page number is not correct."}, status=status.HTTP_400_BAD_REQUEST)
+        first_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(pk__in=user_following))
+                                                         | (Q(first_name__icontains=query) & Q(
+                                                            pk__in=user_following)))
+        second_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(is_public=True))
+                                                         | (Q(first_name__icontains=query) & Q(
+                                                            is_public=True)))
+        users = list(chain(first_query, second_query))
+        all_results = []
+        for user in users:
+            if user not in all_results:
+                all_results.append(user)
+        return all_results
 
 
 class GlobalTweetSearchList(generics.ListAPIView):
@@ -174,7 +190,11 @@ class GlobalTweetSearchList(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         query = self.request.query_params.get('query', None)
-        tweets = models.Tweet.objects.filter(Q(content__icontains=query))
+        if not (self.request.query_params.get('page')).isdigit():
+            return Response(data={"error: ": "the page number is not correct."}, status=status.HTTP_400_BAD_REQUEST)
+        page_number = int(self.request.query_params.get('page'))
+        tweets = models.Tweet.objects.filter(Q(content__icontains=query)).order_by('-create_date')[
+                 (page_number - 1) * 10:page_number * 10]
         serializer_data = serializers.TweetSerializer(instance=tweets, many=True).data
         for data in serializer_data:
             user = models.TwitcordUser.objects.get(id=data['user'])

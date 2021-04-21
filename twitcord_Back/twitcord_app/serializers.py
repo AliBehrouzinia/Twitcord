@@ -91,11 +91,11 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
 
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Restaurant
-        fields = '__all__'
+        model = TwitcordUser
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'profile_img', 'email']
 
 
 class GlobalTweetSearchSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Restaurant
+        model = Tweet
         fields = '__all__'
