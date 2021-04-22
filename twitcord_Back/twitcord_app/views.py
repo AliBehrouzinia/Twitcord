@@ -167,9 +167,7 @@ class GlobalUserSearchList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         query = self.request.query_params.get('query', None)
-        user_following = models.UserFollowing.objects.filter(user_id=user)
-        if not (self.request.query_params.get('page')).isdigit():
-            return Response(data={"error: ": "the page number is not correct."}, status=status.HTTP_400_BAD_REQUEST)
+        user_following = models.UserFollowing.objects.filter(user_id=user.id)
         first_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(pk__in=user_following))
                                                          | (Q(first_name__icontains=query) & Q(
                                                             pk__in=user_following)))
