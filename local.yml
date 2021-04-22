@@ -1,4 +1,5 @@
-version: '3'
+
+version: '3.7'
 
 volumes:
   local_postgres_data: {}
@@ -38,13 +39,18 @@ services:
     build:
       context: .
       dockerfile: ./compose/local/react/Dockerfile
-    image: twitcord_local_react
+    image: twitcord_local_react:dev
     container_name: twitcord_react
+    command: sh -c "/usr/src/app/entrypoint.sh"
     volumes:
-      - ./twitcord_front:/app:z
-      - /app/node_modules
+      - './twitcord_front:/usr/src/app/twitcord_front'
+      - '/usr/src/app/twitcord_front/node_modules'
     ports:
       - "3000:3000"
+    deploy:
+      restart_policy:
+        condition: on-failure
+    stdin_open: true
 
 
 
