@@ -1,24 +1,21 @@
-import react from 'react';
+import react,{useEffect} from 'react';
 import React, { Component } from 'react';
 import './ProfileTweetlist.css'
 import * as Constants from '../../Utils/Constants.js';
 import * as API from '../../Utils/API/index';
-import * as Actions from '../../redux/Actions/index';
+import * as Actions from '../../redux/Actions/index.js';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
+
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ChatBubbleTwoToneIcon from '@material-ui/icons/ChatBubbleTwoTone';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
 const ProfileTweetlist = () => {
     
@@ -51,12 +48,6 @@ const ProfileTweetlist = () => {
         const year = date.getFullYear();
         const month = date.getMonth()+1;
         const dt = date.getDate();
-      
-    
-        API.tweetInfo(store.getState().tweet.tweetInfo)
-
-
-
     return (
         <Grid container className="tweetlist">
             <Grid item xs={12}>
@@ -64,12 +55,12 @@ const ProfileTweetlist = () => {
                     <CardHeader>
                         <text className="grid-username" > username
                      
-                        {useSelector((state) => state).tweet.ProfileTweetlist.username}
+                        {ProfileTweetlist.username}
                     </text>
-                    {/* <text className="grid-name" > name
+                     <text className="grid-name" > name
                     
-                        {useSelector((state) => state).tweet.profileInfo.name}
-                    </text> */}
+                        {ProfileTweetlist.name}
+                    </text> 
                         <text className="grid-joined" > joined
            
                          { '    '+dt + '    ' + monthNumberToLabelMap[month]}
