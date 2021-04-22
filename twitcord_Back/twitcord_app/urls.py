@@ -1,6 +1,13 @@
-from django.urls import path
+from django.urls import path, re_path
+
 from . import views
+from allauth.account.views import confirm_email
+
 
 urlpatterns = [
-    path('tweets/',views.TweetsView.as_view())
+    path('profile/<int:id>/header/', views.ProfileDetailsView.as_view()),
+    path('tweets/', views.TweetsView.as_view()),
+    path('tweets/<int:id>/', views.TweetsView.as_view()),
+    re_path('accounts-rest/registration/account-confirm-email/(?P<key>.+)/', confirm_email,
+            name='account_confirm_email'),
 ]
