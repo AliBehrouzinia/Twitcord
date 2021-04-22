@@ -14,7 +14,7 @@ const initialState = {
   profileinfo: {
     username: '',
     bio: '',
-    joinedat: '',
+    date_joined: '',
     followers: 0,
     following: 0,
   },
@@ -64,7 +64,7 @@ const tweetReducer = (state = initialState, action) => {
           ...state.profileinfo,
           username: action.username,
           bio: action.bio,
-          joinedat: action.joinedat,
+          date_joined: action.date_joined,
           followers: action.followers,
           following: action.following,
         },

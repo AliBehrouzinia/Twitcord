@@ -5,6 +5,7 @@ import './ProfileUserinfo.css';
 // import {useStore} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
+// import dateFormat from 'dateformat';
 
 import image from '../../assets/image.png';
 import * as API from '../../Utils/API/index';
@@ -15,7 +16,21 @@ const ProfileUserinfo = () => {
   // const store = useStore();
   const dispatch = useDispatch();
   const profileInfo = useSelector((state) => state).tweet.profileinfo;
-
+  const monthNumberToLabelMap = {
+    [1]: 'January',
+    [2]: 'February',
+    [3]: 'March',
+    [4]: 'April',
+    [5]: 'May',
+    [6]: 'June',
+    [7]: 'July',
+    [8]: 'August',
+    [9]: 'September',
+    [10]: 'October',
+    [11]: 'November',
+    [12]: 'December',
+  };
+  // const [date, setdate] = useState('');
   useEffect(() => {
     API.profileinfo({id: 1})
         .then((response) => {
@@ -35,7 +50,10 @@ const ProfileUserinfo = () => {
           );
         });
   }, []);
-
+  const date = new Date(profileInfo.date_joined);
+  const year = date.getFullYear();
+  const month = date.getMonth()+1;
+  const dt = date.getDate();
   return (
     <div className="user-info">
       <Grid container direction="column">
@@ -49,21 +67,21 @@ const ProfileUserinfo = () => {
       </div>
       <div container className="grid-info">
         <div className="info1">
-          <text className="grid-username" > username
+          <text className="grid-username" >username
+            {profileInfo.username}
+          </text>
+          <text className="grid-bio" >
             {profileInfo.bio}
           </text>
-          <text className="grid-bio" > bio
-
-          </text>
           <text className="grid-joined" > joined
-            {/* {store.getState().tweet.profileInfo.joinedat} */}
+            { '    '+dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
           </text>
         </div>
         <div className = "info2">
-          <text className = "followers" > followers
+          <text className = "followers" > followers 0
             {/* {store.getState().tweet.profileInfo.followers} */}
           </text>
-          <text className = "followings" > followings
+          <text className = "followings" > followings 0
             {/* {store.getState().tweet.profileInfo.followings} */}
           </text>
         </div>

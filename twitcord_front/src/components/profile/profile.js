@@ -2,14 +2,12 @@
 import React from 'react';
 import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
 import ProfileTweetlist from '../ProfileTweetlist/ProfileTweetlist';
-import * as Actions from '../../redux/Actions/index.js';
-import {useStore} from 'react-redux';
-import './profile.css';
+// import {useSelector} from 'react-redux';
+import './Profile.css';
+import {useState} from 'react';
 import PropTypes from 'prop-types';
-import {useDispatch} from 'react-redux';
 const Profile = () => {
-  const dispatch = useDispatch();
-  const store = useStore();
+  const [componentid, setcomponentid] = useState('');
   return (
     <div className = "profile">
       <div className = "profile_info">
@@ -17,20 +15,22 @@ const Profile = () => {
         </ProfileUserinfo>
         <div className= "info3">
           <button className="button-tweet"
-            id='1' onClick={() => dispatch(Actions.setcomponentid(1))}>tweets</button>
+            id='1' onClick={() => setcomponentid(1)}>tweets</button>
           <button className="button"
-            id='2' onClick={() => dispatch(Actions.setcomponentid(2))}>replys</button>
+            id='2'onClick={() => setcomponentid(2)}>replys</button>
           <button className="button"
-            id='3' onClick={() => dispatch(Actions.setcomponentid(3))}>likes</button>
+            id='3' onClick={() => setcomponentid(3)}>likes</button>
           <button className="button-rooms"
-            id='4' onClick={() => dispatch(Actions.setcomponentid(4))}>rooms</button>
+            id='4' onClick={() => setcomponentid(4)}>rooms</button>
         </div>
       </div>
       <div className ="profiletabs">
-        {store.getState().tweet.componentid === 1 ? (
+        {componentid === 1 ? (
             <ProfileTweetlist/>
           ) : (
-            <p> </p>
+            <div className = "choose">
+              <div > choose a tab</div>
+            </div>
           )}
       </div>
     </div>
