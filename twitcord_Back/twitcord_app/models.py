@@ -15,11 +15,11 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     profile_img = models.ImageField(default='profiles/defaults/user-profile-image.jpg', upload_to='profiles', null=True)
     username = models.TextField(max_length=15)
     is_admin = True
-    first_name = models.CharField(null=True, max_length=50)
-    last_name = models.CharField(null=True, max_length=50)
-    bio = models.TextField(null=True, max_length=160)
-    birth_date = models.DateTimeField(null=True)
-    website = models.URLField(null=True)
+    first_name = models.CharField(null=True, max_length=50, blank = True)
+    last_name = models.CharField(null=True, max_length=50, blank = True)
+    bio = models.TextField(null=True, max_length=160, blank = True)
+    birth_date = models.DateTimeField(null=True, blank = True)
+    website = models.URLField(null=True, blank = True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -58,12 +58,12 @@ class Tweet(models.Model):
 
 
 class UserFollowing(models.Model):
-    user_id = models.ForeignKey("TwitcordUser", related_name="following", on_delete=models.CASCADE)
-    following_user_id = models.ForeignKey("TwitcordUser", related_name="followers", on_delete=models.CASCADE)
+    user = models.ForeignKey("TwitcordUser", related_name="following", on_delete=models.CASCADE)
+    following_user = models.ForeignKey("TwitcordUser", related_name="followers", on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user_id", "following_user_id")
+        unique_together = ("user", "following_user")
         ordering = ["-created"]
 
 
