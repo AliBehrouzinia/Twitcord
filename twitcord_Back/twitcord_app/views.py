@@ -6,7 +6,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
-from . import models, serializers
+from . import models, serializers, paginations
 from allauth.account.views import ConfirmEmailView
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseBadRequest, Http404
@@ -162,21 +162,32 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
 class GlobalUserSearchList(generics.ListAPIView):
     serializer_class = serializers.GlobalUserSearchSerializer
     permission_classes = [AllowAny]
-    pagination_class = rest_framework.pagination.PageNumberPagination
+    pagination_class = paginations.MyPagination
 
     def get_queryset(self):
         user = self.request.user
         query = self.request.query_params.get('query', None)
-        user_following = models.UserFollowing.objects.filter(user_id=user.id)
+        user_following = models.UserFollowing.objects.filter(user=user.id)
+        user_follower = models.UserFollowing.objects.filter(following_user=user.id)
         first_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(pk__in=user_following))
                                                          | (Q(first_name__icontains=query) & Q(
-                                                            pk__in=user_following)))
-        second_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(is_public=True))
-                                                         | (Q(first_name__icontains=query) & Q(
-                                                            is_public=True)))
-        users = list(chain(first_query, second_query))
+                                                         pk__in=user_following)) | (Q(last_name__icontains=query)
+                                                         & Q(pk__in=user_following)))
+        second_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(pk__in=user_follower))
+                                                          | (Q(first_name__icontains=query) & Q(
+                                                           pk__in=user_follower)) | (Q(last_name__icontains=query)
+                                                            & Q(pk__in=user_following)))
+        third_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(is_public=True))
+                                                         | (Q(first_name__icontains=query) & Q(is_public=True)) |
+                                                          (Q(last_name__icontains=query) & Q(is_public=True)))
+        initial_users = list(chain(first_query, second_query))
+        initial_results = []
         all_results = []
-        for user in users:
+        for user in initial_users:
+            if user not in initial_results:
+                initial_results.append(user)
+        secondary_results = list(chain(initial_results, third_query))
+        for user in secondary_results:
             if user not in all_results:
                 all_results.append(user)
         return all_results
