@@ -196,18 +196,9 @@ class GlobalUserSearchList(generics.ListAPIView):
 class GlobalTweetSearchList(generics.ListAPIView):
     serializer_class = serializers.GlobalTweetSearchSerializer
     permission_classes = [AllowAny]
+    pagination_class = paginations.MyPagination
 
-    def get(self, request, *args, **kwargs):
+    def get_queryset(self):
         query = self.request.query_params.get('query', None)
-        if not (self.request.query_params.get('page')).isdigit():
-            return Response(data={"error: ": "the page number is not correct."}, status=status.HTTP_400_BAD_REQUEST)
-        page_number = int(self.request.query_params.get('page'))
-        tweets = models.Tweet.objects.filter(Q(content__icontains=query)).order_by('-create_date')[
-                 (page_number - 1) * 10:page_number * 10]
-        serializer_data = serializers.TweetSerializer(instance=tweets, many=True).data
-        for data in serializer_data:
-            user = models.TwitcordUser.objects.get(id=data['user'])
-            data['username'] = user.username
-            data['profile_img'] = user.profile_img.url
-            data['is_public'] = user.is_public
-        return Response(data=serializer_data, status=status.HTTP_200_OK)
+        tweets = models.Tweet.objects.filter(Q(content__icontains=query)).order_by('-create_date')
+        return tweets
