@@ -4,6 +4,7 @@ version: '3.7'
 volumes:
   local_postgres_data: {}
   local_postgres_data_backups: {}
+  local_storage_minio:
 
 services:
   django:
@@ -52,5 +53,14 @@ services:
         condition: on-failure
     stdin_open: true
 
-
+  minio:
+    image: "minio/minio"
+    command: server /storage
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ROOT_USER: minio_user
+      MINIO_ROOT_PASSWORD: minio_pass
+    volumes:
+      - local_storage_minio:/storage
 
