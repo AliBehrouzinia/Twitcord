@@ -5,7 +5,7 @@ import './EditProfile.css';
 import image from '../../assets/image.png';
 import {Formik, Form, Field} from 'formik';
 import {Button} from '@material-ui/core';
-import {TextField} from 'formik-material-ui';
+import {TextField,CheckboxWithLabel} from 'formik-material-ui';
 import {DatePicker} from 'formik-material-ui-pickers';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {useSelector} from 'react-redux';
@@ -13,6 +13,7 @@ import {useDispatch} from 'react-redux';
 import DateFnsUtils from '@date-io/date-fns';
 import * as API from '../../Utils/API/index';
 import * as Actions from '../../redux/Actions/index';
+import FormGroup from "@material-ui/core/FormGroup";
 import * as Constants from '../../Utils/Constants.js';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -58,6 +59,7 @@ const EditProfile = () => {
                 website: profileInfo.website || '',
                 bio: profileInfo.bio || '',
                 birthday: Date.parse(profileInfo.birthday) || '',
+                privateAccount: '',
               }}
               validate={(values) => {
                 const errors = {};
@@ -147,7 +149,14 @@ const EditProfile = () => {
                       multiline
                       rows={4}
                     />
-
+                    <FormGroup className="check-box">
+                      <Field
+                        component={CheckboxWithLabel}
+                        type="checkbox"
+                        Label={{ label: 'Private Account' }}
+                        name="privateAccount"
+                      />
+                    </FormGroup>
                     <Button
                       variant="contained"
                       className="text-field"
