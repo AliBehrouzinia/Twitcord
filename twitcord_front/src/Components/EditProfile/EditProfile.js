@@ -59,7 +59,7 @@ const EditProfile = () => {
                 website: profileInfo.website || '',
                 bio: profileInfo.bio || '',
                 birthday: Date.parse(profileInfo.birthday) || '',
-                privateAccount: '',
+                isPublic: !profileInfo.isPublic,
               }}
               validate={(values) => {
                 const errors = {};
@@ -89,7 +89,7 @@ const EditProfile = () => {
                 onSubmitClicked(
                     dispatch,
                     profileInfo,
-                    values,
+                    {...values,isPublic : !values.isPublic},
                     setSnackbarAlertMessage,
                     setSnackbarAlertSeverity,
                 );
@@ -155,7 +155,7 @@ const EditProfile = () => {
                         type="checkbox"
                         color="primary"
                         Label={{ label: 'Private Account' }}
-                        name="privateAccount"
+                        name="isPublic"
                       />
                     </FormGroup>
                     <Button
@@ -211,6 +211,7 @@ const saveProfileInfo = (dispatch, data) => {
     lastName: data.last_name,
     website: data.website,
     username: data.username,
+    isPublic: data.is_public
   }));
 };
 
@@ -253,6 +254,7 @@ const onSubmitClicked = (
       last_name: data.lastName,
       website: data.website,
       username: data.username,
+      is_public: data.isPublic
     };
 
     API.updateProfileInfo(2, dataToSend)
@@ -303,6 +305,10 @@ const checkDataChanged = (profileInfo, data) => {
   }
 
   if (data.website !== profileInfo.website) {
+    return true;
+  }
+
+  if (data.isPublic !== profileInfo.isPublic) {
     return true;
   }
 
