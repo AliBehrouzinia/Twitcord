@@ -153,6 +153,7 @@ const EditProfile = () => {
                       <Field
                         component={CheckboxWithLabel}
                         type="checkbox"
+                        color="primary"
                         Label={{ label: 'Private Account' }}
                         name="privateAccount"
                       />
