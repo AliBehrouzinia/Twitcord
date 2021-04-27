@@ -30,18 +30,13 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
     lookup_url_kwarg = 'id'
 
 
-class TweetsView(generics.ListCreateAPIView):
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly, ]
+class TweetsListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly,]
     serializer_class = serializers.TweetSerializer
 
     def get_queryset(self):
         user_id = self.kwargs.get('id')
         return models.Tweet.objects.filter(user_id=user_id)
-
-
-class TweetsView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, ]
-    serializer_class = serializers.TweetSerializer
 
 
 class ActionOnFollowRequestType(enum.Enum):
