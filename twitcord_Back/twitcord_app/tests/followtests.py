@@ -2,9 +2,9 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
-from . import models
+from .. import models
 
-from .models import FollowRequest, UserFollowing, TwitcordUser
+from ..models import FollowRequest, UserFollowing, TwitcordUser
 
 
 class FollowingsTest(APITestCase):
