@@ -17,6 +17,12 @@ const initialState = {
     date_joined: '',
     followers: 0,
     following: 0,
+    birthday: '',
+    firstName: '',
+    lastName: '',
+    website: '',
+    isPublic: false,
+
   },
   tweetText: '',
   tweetCharCount: 0,
