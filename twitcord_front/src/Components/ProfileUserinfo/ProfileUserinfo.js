@@ -2,18 +2,13 @@ import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import './ProfileUserinfo.css';
-// import {useStore} from 'react-redux';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
-// import dateFormat from 'dateformat';
-
 import image from '../../assets/image.png';
 import * as API from '../../Utils/API/index';
 import PropTypes from 'prop-types';
-// import * as Constants from '../../Utils/Constants.js';
 import * as Actions from '../../redux/Actions/index.js';
 const ProfileUserinfo = () => {
-  // const store = useStore();
   const dispatch = useDispatch();
   const profileInfo = useSelector((state) => state).tweet.profileinfo;
   const monthNumberToLabelMap = {
@@ -30,24 +25,13 @@ const ProfileUserinfo = () => {
     [11]: 'November',
     [12]: 'December',
   };
-  // const [date, setdate] = useState('');
   useEffect(() => {
     API.profileinfo({id: 1})
         .then((response) => {
-          console.log(response.data);
           dispatch(Actions.setProfileInfo(response.data));
-          dispatch(
-              Actions.setSnackBarState({
-                isSnackbarOpen: true,
-              }),
-          );
         })
         .catch((error) => {
-          dispatch(
-              Actions.setSnackBarState({
-                isSnackbarOpen: true,
-              }),
-          );
+          console.log('failed to load data');
         });
   }, []);
   const date = new Date(profileInfo.date_joined);
@@ -55,9 +39,9 @@ const ProfileUserinfo = () => {
   const month = date.getMonth()+1;
   const dt = date.getDate();
   return (
-    <div className="user-info">
+    <Grid className="user-info" >
       <Grid container direction="column">
-        <Grid item className="grid-item" >
+        <Grid item className="grid-item">
           <img src={image} alt="img" className="profile_cover" />
           <Avatar className="avatar" />
         </Grid>
@@ -86,7 +70,7 @@ const ProfileUserinfo = () => {
           </text>
         </div>
       </div>
-    </div>
+    </Grid>
   );
 };
 

@@ -5,7 +5,7 @@ const instance = axios.create({
   baseURL: Constants.BASE_URL,
   responseType: 'json',
   headers: {
-    'Authorization': 'token ' + 'd2c52b086b30019c8842401a8ac2a25c3a6bcd9d',
+    'Authorization': 'token ' + localStorage.getItem('token'),
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },

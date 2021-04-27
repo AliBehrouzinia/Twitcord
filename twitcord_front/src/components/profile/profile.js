@@ -1,8 +1,6 @@
-/* eslint-disable max-len */
 import React from 'react';
 import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
 import ProfileTweetlist from '../ProfileTweetlist/ProfileTweetlist';
-// import {useSelector} from 'react-redux';
 import './Profile.css';
 import {useState} from 'react';
 import PropTypes from 'prop-types';
@@ -11,8 +9,7 @@ const Profile = () => {
   return (
     <div className = "profile">
       <div className = "profile_info">
-        <ProfileUserinfo>
-        </ProfileUserinfo>
+        <ProfileUserinfo/>
         <div className= "info3">
           <button className="button-tweet"
             id='1' onClick={() => setcomponentid(1)}>tweets</button>
