@@ -99,6 +99,7 @@ const EditProfile = () => {
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <Form className="form">
                     <Field
+                      id="username"
                       component={TextField}
                       className="text-field"
                       label="User Name"
