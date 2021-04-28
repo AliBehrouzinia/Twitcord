@@ -29,12 +29,12 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class TweetsListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly,]
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.TweetSerializer
 
     def get_queryset(self):
         user_id = self.kwargs.get('id')
-        return models.Tweet.objects.filter(user_id = user_id)
+        return models.Tweet.objects.filter(user_id=user_id)
 
 
 class ActionOnFollowRequestType(enum.Enum):
@@ -62,7 +62,10 @@ class ListOfFollowersView(generics.ListAPIView):
 
 
 class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, UserIsOwnerOrReadonly)
+    queryset = models.UserFollowing.objects.all()
+    serializer_class = serializers.FollowingsSerializer
+    lookup_url_kwarg = 'id'
 
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
@@ -71,11 +74,6 @@ class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
         instance.delete()
         return Response()
 
-    def patch(self, request, *args, **kwargs):
-        user_id = self.request.user.id
-        following_user_id = self.kwargs.get('id')
-        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
-        
 
 class FollowingRequestView(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
