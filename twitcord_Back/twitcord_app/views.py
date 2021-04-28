@@ -37,7 +37,6 @@ class TweetsListCreateView(generics.ListCreateAPIView):
         return models.Tweet.objects.filter(user_id = user_id)
 
 
-
 class ActionOnFollowRequestType(enum.Enum):
     accept = 1,
     reject = 2
@@ -62,7 +61,7 @@ class ListOfFollowersView(generics.ListAPIView):
         return queryset
 
 
-class DeleteFollowingsView(generics.DestroyAPIView):
+class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
 
     def delete(self, request, *args, **kwargs):
@@ -72,6 +71,11 @@ class DeleteFollowingsView(generics.DestroyAPIView):
         instance.delete()
         return Response()
 
+    def patch(self, request, *args, **kwargs):
+        user_id = self.request.user.id
+        following_user_id = self.kwargs.get('id')
+        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
+        
 
 class FollowingRequestView(generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
@@ -151,10 +155,3 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
         self.check_object_permissions(request=self.request, obj=follow_request)
         return follow_request
-
-
-class FollowingStatusView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated, UserIsOwnerOrReadonly]
-
-    def patch(self, request, *args, **kwargs):
-        pass
