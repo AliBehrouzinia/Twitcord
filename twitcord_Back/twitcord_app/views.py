@@ -151,10 +151,3 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
         self.check_object_permissions(request=self.request, obj=follow_request)
         return follow_request
-
-
-class FollowingStatusView(generics.UpdateAPIView):
-    permission_classes = [IsAuthenticated, UserIsOwnerOrReadonly]
-
-    def patch(self, request, *args, **kwargs):
-        pass
