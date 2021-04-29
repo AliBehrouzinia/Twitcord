@@ -29,6 +29,12 @@ const request = (data, url, method) => {
           url: url,
           data,
         });
+      case Constants.GET_REQUEST_METHOD:
+        return instance ({
+          method: method,
+          url: url,
+          data,
+        });
     }
   } else {
     return withoutAuthInstance({
@@ -60,5 +66,13 @@ export const logIn = (data) => {
       data,
       Constants.URL_LOG_IN,
       Constants.POST_REQUEST_METHOD,
+  );
+};
+
+export const userGeneralInfo = (data) => {
+  return request (
+    data,
+    Constants.URL_USER_GENERAL_INFO,
+    Constants.GET_REQUEST_METHOD,
   );
 };
