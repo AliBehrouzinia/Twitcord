@@ -11,7 +11,7 @@ const initialState = {
     email: '',
     password: '',
   },
-  profileinfo: {
+  profileInfo: {
     username: '',
     bio: '',
     date_joined: '',
@@ -60,13 +60,18 @@ const tweetReducer = (state = initialState, action) => {
     case ActionTypes.SET_PROFILE_INFO:
       return {
         ...state,
-        profileinfo: {
+        profileInfo: {
           ...state.profileinfo,
           username: action.username,
           bio: action.bio,
           date_joined: action.date_joined,
           followers: action.followers,
           following: action.following,
+          birthday: action.birthday,
+          firstName: action.firstName,
+          lastName: action.lastName,
+          website: action.website,
+          isPublic: action.isPublic,
         },
       };
     case ActionTypes.SET_SNACKBAR_STATE: {

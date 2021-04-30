@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 import * as Actions from '../../redux/Actions/index.js';
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
-  const profileInfo = useSelector((state) => state).tweet.profileinfo;
+  const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const monthNumberToLabelMap = {
     [1]: 'January',
     [2]: 'February',
