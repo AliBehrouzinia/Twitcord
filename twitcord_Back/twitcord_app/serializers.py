@@ -20,6 +20,12 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 
 
 class ProfileDetailsViewSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
+        result['followings_count'] = UserFollowing.objects.filter(user_id=instance.id).count()
+        result['followers_count'] = UserFollowing.objects.filter(following_user_id=instance.id).count()
+        return result
+
     class Meta:
         model = TwitcordUser
         fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio', 'website', 'is_public')
