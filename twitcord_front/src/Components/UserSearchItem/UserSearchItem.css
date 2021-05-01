@@ -7,6 +7,10 @@
   height: 60px !important;
 }
 
+.avatar-container:hover{
+  cursor: pointer;
+}
+
 .avatar-container {
   display: flex;
 }
@@ -48,6 +52,10 @@
   white-space: nowrap;
 }
 
+.name:hover{
+  text-decoration: underline;
+}
+
 .username {
   color: gray;
   margin: 0;
@@ -55,6 +63,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.username:hover{
+  text-decoration: underline;
 }
 
 .desc {
