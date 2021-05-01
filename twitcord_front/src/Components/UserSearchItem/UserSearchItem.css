@@ -1,0 +1,42 @@
+.root {
+  padding: 20px !important;
+}
+
+.avatar {
+  width: 60px !important;
+  height: 60px !important;
+}
+
+.avatar-container {
+  display: flex;
+}
+
+.name-container {
+  display: flex;
+}
+
+.lock-icon{
+  margin-left: 5px;
+  margin-top: 3px;
+  font-size: medium !important;
+  align-self: center;
+}
+
+.username-container {
+  margin-left: 20px;
+}
+
+.follow-button {
+  float: right;
+  width: 100%;
+}
+
+.name {
+  margin: 0;
+  font-size: x-large !important;
+}
+
+.username {
+  color: gray;
+  margin: 0;
+}
