@@ -93,3 +93,23 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFollowing
         fields = ['user']
+
+
+class GlobalUserSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TwitcordUser
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'profile_img', 'email']
+
+
+class GlobalTweetSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tweet
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super(GlobalTweetSearchSerializer, self).to_representation(instance)
+        user = instance.user
+        result['id'] = result.pop('user')
+        result['profile_img'] = user.profile_img.url
+        result['username'] = user.username
+        return result
