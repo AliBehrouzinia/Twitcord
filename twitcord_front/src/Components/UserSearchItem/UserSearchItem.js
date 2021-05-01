@@ -13,7 +13,7 @@ export const UserSearchItem = () => {
       spacing={6}
       className="root"
       justify="space-between">
-      <Grid item xs={6} >
+      <Grid item xs={6} sm={9} md={10}>
         <div className="avatar-container">
           <Avatar className="avatar" alt="avatar"/>
           <div className="username-container">
@@ -33,7 +33,14 @@ export const UserSearchItem = () => {
       </Grid>
 
       <Grid xs={12} item>
-        <Typography> Weve inspired people around the world to fight
+        <Typography className="desc">
+          Weve inspired people around the world to fight
+             for bottom-up change since 2011, when we liberated a
+             square block of Manhattans Financial District.Weve
+             inspired people around the world to fight
+             for bottom-up change since 2011, when we liberated a
+             square block of Manhattans Financial District.Weve
+             inspired people around the world to fight
              for bottom-up change since 2011, when we liberated a
              square block of Manhattans Financial District. </Typography>
       </Grid>
