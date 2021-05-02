@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
 import {SearchBar} from '../SearchBar/SearchBar';
-import * as API from '../../Utils/API/index';
 
 
 export const Search = () => {
@@ -12,15 +11,6 @@ export const Search = () => {
   const handleChange = (event, selectedTab) => {
     setSelectedTab(selectedTab);
   };
-
-  useEffect(() => {
-    API.searchUsers({}, {query: 'a', page: 1})
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-        });
-  });
 
   return (
     <div>
@@ -40,4 +30,13 @@ export const Search = () => {
       </Paper>
     </div>
   );
+
+  /* const searchUser = (query, page) => {
+    API.searchUsers({}, {query: query, page: page})
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+        });
+  };*/
 };
