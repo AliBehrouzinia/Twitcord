@@ -136,6 +136,10 @@ const EditProfile = () => {
   };
 
   const checkDataChanged = (profileInfo, data) => {
+    if (data.username !== profileInfo.username) {
+      return true;
+    }
+
     if (data.firstName !== profileInfo.firstName) {
       return true;
     }
@@ -239,8 +243,7 @@ const EditProfile = () => {
                       id="username"
                       component={TextField}
                       className="text-field"
-                      label="User Name"
-                      disabled
+                      label="Username"
                       variant="outlined"
                       name="username"
                     />
