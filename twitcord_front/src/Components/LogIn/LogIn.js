@@ -61,8 +61,17 @@ const LogIn = () => {
       API.userGeneralInfo({})
           .then((response) => {
             dispatch(Actions.setUserGeneralInfo(response.data));
-            console.log(store.getState().tweet.userGeneralInfo);
-          }).catch((error) => {});
+          }).catch((error) => {
+            setSnackbarAlertMessage(
+              Constants.GET_USER_INFO_FAILURE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_ERROR_SEVERITY);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+          });
     }
   }
 

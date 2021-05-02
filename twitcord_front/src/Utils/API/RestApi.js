@@ -22,20 +22,11 @@ const withoutAuthInstance = axios.create({
 
 const request = (data, url, method) => {
   if (url !== Constants.URL_SIGN_UP && url !== Constants.URL_LOG_IN) {
-    switch (method) {
-      case Constants.POST_REQUEST_METHOD:
-        return instance({
-          method: method,
-          url: url,
-          data,
-        });
-      case Constants.GET_REQUEST_METHOD:
-        return instance ({
-          method: method,
-          url: url,
-          data,
-        });
-    }
+    return instance({
+      method: method,
+      url: url,
+      data,
+    });
   } else {
     return withoutAuthInstance({
       method: method,
