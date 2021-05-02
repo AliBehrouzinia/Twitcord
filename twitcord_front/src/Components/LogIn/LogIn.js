@@ -61,6 +61,7 @@ const LogIn = () => {
       API.userGeneralInfo({})
           .then((response) => {
             dispatch(Actions.setUserGeneralInfo(response.data));
+            localStorage.setItem('general', response.data);
           }).catch((error) => {
             setSnackbarAlertMessage(
               Constants.GET_USER_INFO_FAILURE);
