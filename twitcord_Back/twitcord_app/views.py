@@ -1,3 +1,4 @@
+import rest_framework.pagination
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -5,7 +6,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
-from . import models, serializers
+from . import models, serializers, paginations
 from allauth.account.views import ConfirmEmailView
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseBadRequest, Http404
@@ -16,6 +17,7 @@ import datetime
 from allauth.account.views import ConfirmEmailView
 from django.contrib.auth import get_user_model
 import enum
+from itertools import chain
 
 from django.db.models import Q
 
@@ -28,18 +30,13 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
     lookup_url_kwarg = 'id'
 
 
-class TweetsView(generics.ListCreateAPIView):
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly,]
+class TweetsListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly,]
     serializer_class = serializers.TweetSerializer
 
     def get_queryset(self):
         user_id = self.kwargs.get('id')
-        return models.Tweet.objects.filter(user_id = user_id)
-
-
-class TweetsView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, ]
-    serializer_class = serializers.TweetSerializer
+        return models.Tweet.objects.filter(user_id=user_id)
 
 
 class ActionOnFollowRequestType(enum.Enum):
@@ -62,7 +59,7 @@ class ListOfFollowersView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user.id
-        queryset = models.UserFollowing.objects.filter(Q(following_user_id=user))
+        queryset = models.UserFollowing.objects.filter(Q(following_user=user))
         return queryset
 
 
@@ -72,7 +69,7 @@ class DeleteFollowingsView(generics.DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
         following_user_id = self.kwargs.get('id')
-        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user_id=following_user_id)
+        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
         instance.delete()
         return Response()
 
@@ -155,3 +152,48 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
         self.check_object_permissions(request=self.request, obj=follow_request)
         return follow_request
+
+
+class GlobalUserSearchList(generics.ListAPIView):
+    serializer_class = serializers.GlobalUserSearchSerializer
+    permission_classes = [AllowAny]
+    pagination_class = paginations.MyPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        query = self.request.query_params.get('query', None)
+        user_following = models.UserFollowing.objects.filter(user=user.id)
+        user_follower = models.UserFollowing.objects.filter(following_user=user.id)
+        first_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(pk__in=user_following))
+                                                         | (Q(first_name__icontains=query) & Q(
+                                                         pk__in=user_following)) | (Q(last_name__icontains=query)
+                                                         & Q(pk__in=user_following)))
+        second_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(pk__in=user_follower))
+                                                          | (Q(first_name__icontains=query) & Q(
+                                                           pk__in=user_follower)) | (Q(last_name__icontains=query)
+                                                            & Q(pk__in=user_following)))
+        third_query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(is_public=True))
+                                                         | (Q(first_name__icontains=query) & Q(is_public=True)) |
+                                                          (Q(last_name__icontains=query) & Q(is_public=True)))
+        initial_users = list(chain(first_query, second_query))
+        initial_results = []
+        all_results = []
+        for user in initial_users:
+            if user not in initial_results:
+                initial_results.append(user)
+        secondary_results = list(chain(initial_results, third_query))
+        for user in secondary_results:
+            if user not in all_results:
+                all_results.append(user)
+        return all_results
+
+
+class GlobalTweetSearchList(generics.ListAPIView):
+    serializer_class = serializers.GlobalTweetSearchSerializer
+    permission_classes = [AllowAny]
+    pagination_class = paginations.MyPagination
+
+    def get_queryset(self):
+        query = self.request.query_params.get('query', None)
+        tweets = models.Tweet.objects.filter(Q(content__icontains=query)).order_by('-create_date')
+        return tweets

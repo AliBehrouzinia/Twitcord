@@ -58,12 +58,21 @@ class Tweet(models.Model):
 
 
 class UserFollowing(models.Model):
-    user_id = models.ForeignKey("TwitcordUser", related_name="following", on_delete=models.CASCADE)
-    following_user_id = models.ForeignKey("TwitcordUser", related_name="followers", on_delete=models.CASCADE)
+    following_TYPES = [
+        ('family', 'family'),
+        ('friend', 'friend'),
+        ('close friend', 'close friend'),
+        ('celebrity', 'celebrity'),
+        ('familiar person', 'familiar person'),
+        ('unfamiliar person', 'unfamiliar person'),
+    ]
+    type = models.CharField(max_length=30, choices=following_TYPES, default='unfamiliar person')
+    user = models.ForeignKey("TwitcordUser", related_name="following", on_delete=models.CASCADE)
+    following_user = models.ForeignKey("TwitcordUser", related_name="followers", on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user_id", "following_user_id")
+        unique_together = ("user", "following_user")
         ordering = ["-created"]
 
 
