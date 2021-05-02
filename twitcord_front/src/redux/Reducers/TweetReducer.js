@@ -1,6 +1,11 @@
 import {ActionTypes} from '../Actions/actionTypes.js';
 
 const initialState = {
+  userGeneralInfo: {
+    userID: null,
+    userEmail: '',
+    userProfile: '',
+  },
   signUpInfo: {
     username: '',
     email: '',
@@ -61,6 +66,7 @@ const tweetReducer = (state = initialState, action) => {
         isSnackbarOpen: action.isSnackbarOpen,
       };
     }
+<<<<<<< HEAD
 
     case ActionTypes.SET_PROFILE_INFO: {
       return {
@@ -78,6 +84,19 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
+=======
+    case ActionTypes.SET_USER_GENERAL_INFO: {
+      return {
+        ...state,
+        userGeneralInfo: {
+          ...state.userGeneralInfo,
+          userID: action.pk,
+          userEmail: action.email,
+          userProfile: action.profile_img,
+        },
+      };
+    }
+>>>>>>> ddfaf156e31af0a8c4391205547cc3444b042a9e
     default:
       return state;
   }

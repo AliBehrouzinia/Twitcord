@@ -11,13 +11,18 @@ export const PATCH_REQUEST_METHOD = 'PATCH';
 export const URL_POST_TWEET = '/tweets/';
 export const URL_SIGN_UP = '/rest-auth/registration/';
 export const URL_LOG_IN = '/rest-auth/login/';
+<<<<<<< HEAD
 export const URL_PROFILE_INFO = '/profile/{id}/header/';
+=======
+export const URL_USER_GENERAL_INFO= '/rest-auth/user/';
+>>>>>>> ddfaf156e31af0a8c4391205547cc3444b042a9e
 
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;
 export const TWEET_CHAR_LIMIT = 140;
 export const LOG_IN_VERIFICATION_ERROR_MESSAGE = 'Verify your email or checkout your password again';
 export const LOG_IN_SUCCESS_MESSAGE = 'You are logged in';
+export const GET_USER_INFO_FAILURE= 'Could not get your info, try again later.';
 export const SIGN_UP_EMAIL_ERROR_MESSAGE = 'A user is already registered with this e-mail or username';
 export const SIGN_UP_VERIFICATION_SUCCESS_MESSAGE = 'Verification email is sent';
 export const EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE = 'Profile updated successfuly';
