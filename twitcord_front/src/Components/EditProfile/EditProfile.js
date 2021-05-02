@@ -24,7 +24,46 @@ const EditProfile = () => {
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
+  const profileId = useSelector((state) => state).tweet.userGeneralInfo.userID;
   const dispatch = useDispatch();
+
+  const requestProfileInfo = (
+    dispatch,
+    setSnackbarAlertMessage,
+    setSnackbarAlertSeverity,
+  ) => {
+  API.getProfileInfo({id: profileId})
+      .then((response) => {
+        handleProfileInfoResponse(dispatch, response.data);
+      })
+      .catch((error) => {
+        showSnackbar(
+            Constants.EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE,
+            Constants.SNACKBAR_ERROR_SEVERITY,
+            dispatch,
+            setSnackbarAlertMessage,
+            setSnackbarAlertSeverity,
+        );
+      });
+  };
+
+  const showSnackbar = (
+    message,
+    severity,
+    dispatch,
+    setSnackbarAlertMessage,
+    setSnackbarAlertSeverity,
+) => {
+  setSnackbarAlertMessage(
+      message);
+  setSnackbarAlertSeverity(
+      severity);
+  dispatch(
+      Actions.setSnackBarState({
+        isSnackbarOpen: true,
+      }),
+  );
+};
 
   useEffect(() => {
     requestProfileInfo(
@@ -178,142 +217,104 @@ const EditProfile = () => {
       </Grid>
     </Grid>
   );
-};
 
-const requestProfileInfo = (
-    dispatch,
-    setSnackbarAlertMessage,
-    setSnackbarAlertSeverity,
-) => {
-  API.getProfileInfo({id: 2})
-      .then((response) => {
-        handleProfileInfoResponse(dispatch, response.data);
-      })
-      .catch((error) => {
-        showSnackbar(
-            Constants.EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE,
-            Constants.SNACKBAR_ERROR_SEVERITY,
-            dispatch,
-            setSnackbarAlertMessage,
-            setSnackbarAlertSeverity,
-        );
-      });
-};
+  const handleProfileInfoResponse = (dispatch, data) => {
+    saveProfileInfo(dispatch, data);
+  };
 
-const handleProfileInfoResponse = (dispatch, data) => {
-  saveProfileInfo(dispatch, data);
-};
-
-const saveProfileInfo = (dispatch, data) => {
-  dispatch(Actions.setProfileInfo({
-    bio: data.bio,
-    birthday: data.birth_date,
-    firstName: data.first_name,
-    lastName: data.last_name,
-    website: data.website,
-    username: data.username,
-    isPublic: data.is_public
-  }));
-};
-
-const showSnackbar = (
-    message,
-    severity,
-    dispatch,
-    setSnackbarAlertMessage,
-    setSnackbarAlertSeverity,
-) => {
-  setSnackbarAlertMessage(
-      message);
-  setSnackbarAlertSeverity(
-      severity);
-  dispatch(
-      Actions.setSnackBarState({
-        isSnackbarOpen: true,
-      }),
-  );
-};
-
-const onSubmitClicked = (
-    dispatch,
-    profileInfo,
-    data,
-    setSnackbarAlertMessage,
-    setSnackbarAlertSeverity,
-) => {
-  if (typeof(data.birthday) === 'number') {
-    data.birthday = profileInfo.birthday;
-  }
-
-  const isDataChanged = checkDataChanged(profileInfo, data);
-
-  if (isDataChanged) {
-    const dataToSend = {
+  const saveProfileInfo = (dispatch, data) => {
+    dispatch(Actions.setProfileInfo({
       bio: data.bio,
-      birth_date: data.birthday,
-      first_name: data.firstName,
-      last_name: data.lastName,
+      birthday: data.birth_date,
+      firstName: data.first_name,
+      lastName: data.last_name,
       website: data.website,
       username: data.username,
-      is_public: data.isPublic
-    };
+      isPublic: data.is_public
+    }));
+  };
 
-    API.updateProfileInfo(2, dataToSend)
-        .then((response) => {
-          saveProfileInfo(dispatch, response.data);
-          showSnackbar(
-              Constants.EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE,
-              Constants.SNACKBAR_SUCCESS_SEVERITY,
-              dispatch,
-              setSnackbarAlertMessage,
-              setSnackbarAlertSeverity,
-          );
-        }).catch((error) => {
-          showSnackbar(
-              Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
-              Constants.SNACKBAR_ERROR_SEVERITY,
-              dispatch,
-              setSnackbarAlertMessage,
-              setSnackbarAlertSeverity,
-          );
-        });
-  } else {
-    showSnackbar(
-        Constants.EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE,
-        Constants.SNACKBAR_ERROR_SEVERITY,
-        dispatch,
-        setSnackbarAlertMessage,
-        setSnackbarAlertSeverity,
-    );
-  }
-};
+  const onSubmitClicked = (
+      dispatch,
+      profileInfo,
+      data,
+      setSnackbarAlertMessage,
+      setSnackbarAlertSeverity,
+  ) => {
+    if (typeof(data.birthday) === 'number') {
+      data.birthday = profileInfo.birthday;
+    }
 
-const checkDataChanged = (profileInfo, data) => {
-  if (data.firstName !== profileInfo.firstName) {
-    return true;
-  }
+    const isDataChanged = checkDataChanged(profileInfo, data);
 
-  if (data.lastName !== profileInfo.lastName) {
-    return true;
-  }
+    if (isDataChanged) {
+      const dataToSend = {
+        bio: data.bio,
+        birth_date: data.birthday,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        website: data.website,
+        username: data.username,
+        is_public: data.isPublic
+      };
 
-  if (data.birthday !== profileInfo.birthday) {
-    return true;
-  }
+      API.updateProfileInfo(profileId, dataToSend)
+          .then((response) => {
+            saveProfileInfo(dispatch, response.data);
+            showSnackbar(
+                Constants.EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE,
+                Constants.SNACKBAR_SUCCESS_SEVERITY,
+                dispatch,
+                setSnackbarAlertMessage,
+                setSnackbarAlertSeverity,
+            );
+          }).catch((error) => {
+            showSnackbar(
+                Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
+                Constants.SNACKBAR_ERROR_SEVERITY,
+                dispatch,
+                setSnackbarAlertMessage,
+                setSnackbarAlertSeverity,
+            );
+          });
+    } else {
+      showSnackbar(
+          Constants.EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE,
+          Constants.SNACKBAR_ERROR_SEVERITY,
+          dispatch,
+          setSnackbarAlertMessage,
+          setSnackbarAlertSeverity,
+      );
+    }
+  };
 
-  if (data.bio !== profileInfo.bio) {
-    return true;
-  }
+  const checkDataChanged = (profileInfo, data) => {
+    if (data.firstName !== profileInfo.firstName) {
+      return true;
+    }
 
-  if (data.website !== profileInfo.website) {
-    return true;
-  }
+    if (data.lastName !== profileInfo.lastName) {
+      return true;
+    }
 
-  if (data.isPublic !== profileInfo.isPublic) {
-    return true;
-  }
+    if (data.birthday !== profileInfo.birthday) {
+      return true;
+    }
 
-  return false;
+    if (data.bio !== profileInfo.bio) {
+      return true;
+    }
+
+    if (data.website !== profileInfo.website) {
+      return true;
+    }
+
+    if (data.isPublic !== profileInfo.isPublic) {
+      return true;
+    }
+
+    return false;
+  };
 };
 
 export default EditProfile;
