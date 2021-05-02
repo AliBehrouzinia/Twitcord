@@ -24,3 +24,5 @@ export const SIGN_UP_VERIFICATION_SUCCESS_MESSAGE = 'Verification email is sent'
 
 export const SNACKBAR_ERROR_SEVERITY = 'error';
 export const SNACKBAR_SUCCESS_SEVERITY = 'success';
+
+export const GENERAL_USER_INFO = 'GENERAL_USER_INFO';
