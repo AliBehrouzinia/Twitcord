@@ -20,16 +20,14 @@ const withoutAuthInstance = axios.create({
   },
 });
 
-const request = (data, url, method) => {
+const request = (data, params, url, method) => {
   if (url !== Constants.URL_SIGN_UP && url !== Constants.URL_LOG_IN) {
-    switch (method) {
-      case Constants.POST_REQUEST_METHOD:
-        return instance({
-          method: method,
-          url: url,
-          data,
-        });
-    }
+    return instance({
+      method: method,
+      url: url,
+      params: params,
+      data,
+    });
   } else {
     return withoutAuthInstance({
       method: method,
@@ -42,6 +40,7 @@ const request = (data, url, method) => {
 export const signUp = (data) => {
   return request(
       data,
+      {},
       Constants.URL_SIGN_UP,
       Constants.POST_REQUEST_METHOD,
   );
@@ -50,6 +49,7 @@ export const signUp = (data) => {
 export const postTweet = (data) => {
   return request(
       data,
+      {},
       Constants.URL_POST_TWEET,
       Constants.POST_REQUEST_METHOD,
   );
@@ -58,7 +58,17 @@ export const postTweet = (data) => {
 export const logIn = (data) => {
   return request(
       data,
+      {},
       Constants.URL_LOG_IN,
       Constants.POST_REQUEST_METHOD,
+  );
+};
+
+export const searchUsers = (data, params) => {
+  return request(
+      data,
+      params,
+      Constants.URL_SEARCH_USER,
+      Constants.GET_REQUEST_METHOD,
   );
 };
