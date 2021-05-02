@@ -25,11 +25,7 @@ const request = (data, url, method) => {
     return instance({
       method: method,
       url: url,
-<<<<<<< HEAD
-      data: data,
-=======
       data,
->>>>>>> ddfaf156e31af0a8c4391205547cc3444b042a9e
     });
   } else {
     return withoutAuthInstance({
@@ -64,7 +60,6 @@ export const logIn = (data) => {
   );
 };
 
-<<<<<<< HEAD
 export const getProfileInfo = (data) => {
   return request(
       {},
@@ -77,13 +72,14 @@ export const updateProfileInfo = (id, data) => {
   return request(
       data,
       Constants.URL_PROFILE_INFO.replace('{id}', id),
-      Constants.PATCH_REQUEST_METHOD,
-=======
+      Constants.PATCH_REQUEST_METHOD, 
+  );
+};
+
 export const userGeneralInfo = (data) => {
   return request (
     data,
     Constants.URL_USER_GENERAL_INFO,
     Constants.GET_REQUEST_METHOD,
->>>>>>> ddfaf156e31af0a8c4391205547cc3444b042a9e
   );
 };
