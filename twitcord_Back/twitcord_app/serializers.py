@@ -93,3 +93,12 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFollowing
         fields = ['user']
+
+
+class TimeLineSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        pass
+
+    class Meta:
+        model = Tweet
+        fields = '__all__'

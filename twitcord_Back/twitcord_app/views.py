@@ -151,3 +151,14 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
         self.check_object_permissions(request=self.request, obj=follow_request)
         return follow_request
+
+
+class TimeLineView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = serializers.TimeLineSerializer
+
+    def get_queryset(self):
+        user = self.request.id
+        user_following = models.UserFollowing.objects.filter(user_id=user)
+        tweets = models.Tweet.objects.filter(user_in=user_following).order_by('create_date')
+        return tweets
