@@ -4,9 +4,13 @@ import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import './SearchBar.css';
 import * as API from '../../Utils/API/index';
+import {useDispatch} from 'react-redux';
+import * as Actions from '../../redux/Actions/index.js';
 
 
 export const SearchBar = () => {
+  const dispatch = useDispatch();
+
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       searchUser(event.target.value);
@@ -16,7 +20,10 @@ export const SearchBar = () => {
   const searchUser = (query, page=1) => {
     API.searchUsers({}, {query: query, page: page})
         .then((response) => {
-          console.log(response.data);
+          const data = response.data;
+          dispatch(Actions.setUserSearchResults({
+            users: data.results,
+          }));
         })
         .catch((error) => {
         });

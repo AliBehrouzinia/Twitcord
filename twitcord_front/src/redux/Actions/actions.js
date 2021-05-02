@@ -19,3 +19,8 @@ export const setSnackBarState = (data) => ({
   type: ActionTypes.SET_SNACKBAR_STATE,
   ...data,
 });
+
+export const setUserSearchResults = (data) => ({
+  type: ActionTypes.SET_USER_SEARCH_RESULT,
+  ...data,
+});
