@@ -1,6 +1,11 @@
 import {ActionTypes} from '../Actions/actionTypes.js';
 
 const initialState = {
+  userGeneralInfo: {
+    userID: null,
+    userEmail: '',
+    userProfile: '',
+  },
   signUpInfo: {
     username: '',
     email: '',
@@ -48,6 +53,17 @@ const tweetReducer = (state = initialState, action) => {
       return {
         ...state,
         isSnackbarOpen: action.isSnackbarOpen,
+      };
+    }
+    case ActionTypes.SET_USER_GENERAL_INFO: {
+      return {
+        ...state,
+        userGeneralInfo: {
+          ...state.userGeneralInfo,
+          userID: action.pk,
+          userEmail: action.email,
+          userProfile: action.profile_img,
+        },
       };
     }
     default:
