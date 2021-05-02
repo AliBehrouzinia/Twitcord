@@ -29,3 +29,5 @@ export const EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE = 'Profile info fetch fail
 
 export const SNACKBAR_ERROR_SEVERITY = 'error';
 export const SNACKBAR_SUCCESS_SEVERITY = 'success';
+
+export const GENERAL_USER_INFO = 'GENERAL_USER_INFO';
