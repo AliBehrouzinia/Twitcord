@@ -158,7 +158,11 @@ class TimeLineView(generics.ListAPIView):
     serializer_class = serializers.TimeLineSerializer
 
     def get_queryset(self):
-        user = self.request.id
-        user_following = models.UserFollowing.objects.filter(user_id=user)
-        tweets = models.Tweet.objects.filter(user_in=user_following).order_by('create_date')
+        user = self.request.user.id
+        user_followings = models.UserFollowing.objects.filter(user_id=user)
+        queryset = []
+        for instance in user_followings:
+            queryset.append(instance.following_user)
+        print(queryset)
+        tweets = models.Tweet.objects.filter(user_id__in=queryset).order_by('create_date')
         return tweets
