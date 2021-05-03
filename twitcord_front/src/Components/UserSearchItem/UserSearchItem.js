@@ -12,7 +12,7 @@ export const UserSearchItem = (props) => {
     <Grid container
       direction="row"
       spacing={6}
-      className="root"
+      className="container"
       justify="space-between">
       <Grid item xs={12} sm={9} md={10}>
         <div className="avatar-container">
