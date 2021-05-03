@@ -33,9 +33,9 @@ export const UserSearchItem = (props) => {
         </Button>
       </Grid>
 
-      <Grid xs={12} item className="item-desc">
+      {props.desc != null && <Grid xs={12} item className="item-desc">
         <Typography className="desc">{props.desc}</Typography>
-      </Grid>
+      </Grid>}
     </Grid>
   );
 };
