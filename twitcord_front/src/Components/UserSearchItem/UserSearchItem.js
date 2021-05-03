@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import {Icon} from '@material-ui/core';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
 import './UserSearchItem.css';
 
 export const UserSearchItem = (props) => {
@@ -19,10 +20,14 @@ export const UserSearchItem = (props) => {
           <Avatar className="avatar" alt="avatar"/>
           <div className="username-container">
             <div className="name-container">
-              <Typography className="name" >{props.name}</Typography>
+              <Tooltip title={props.name} placement="top-start">
+                <Typography className="name" >{props.name}</Typography>
+              </Tooltip>
               {!props.isPublic && <Icon className="lock-icon">lock</Icon>}
             </div>
-            <Typography className="username">@{props.username}</Typography>
+            <Tooltip title={'@'+props.username} placement="top-start">
+              <Typography className="username">@{props.username}</Typography>
+            </Tooltip>
           </div>
         </div>
       </Grid>
