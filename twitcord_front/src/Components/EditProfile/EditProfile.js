@@ -24,7 +24,11 @@ const EditProfile = () => {
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
-  const profileId = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO)).pk;
+  const profileId = -1;
+  const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
+  if (userGeneralInfo != null){
+    profileId = userGeneralInfo.pk;
+  }
   const dispatch = useDispatch();
 
   const requestProfileInfo = (

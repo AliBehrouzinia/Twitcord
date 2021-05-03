@@ -14,11 +14,6 @@ describe('EditProfile', () => {
         const wrapper = mount( <Provider store={store}><EditProfile /></Provider>);
       });
 
-    it('should check username field disablity', () => {
-        const wrapper = mount( <Provider store={store}><EditProfile /></Provider>);
-        expect(wrapper.find('#username').at(0).prop('disabled')).toBe(true);
-      });
-
     it('should set profileInfo in store', () => {
       let date = new Date()
       expect(tweetReducer(
