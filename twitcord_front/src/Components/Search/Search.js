@@ -43,7 +43,7 @@ export const Search = () => {
           <Tab label="tweets" />
         </Tabs>
       </Paper>
-      { userResult }
+      {tabSelected == 0 && userResult }
     </div>
   );
 };
