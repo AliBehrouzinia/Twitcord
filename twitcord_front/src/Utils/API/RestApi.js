@@ -69,3 +69,10 @@ export const profileinfo = (data) => {
   );
 };
 
+export const userGeneralInfo = (data) => {
+  return request (
+    data,
+    Constants.URL_USER_GENERAL_INFO,
+    Constants.GET_REQUEST_METHOD,
+  );
+};

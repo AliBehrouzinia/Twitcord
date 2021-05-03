@@ -64,4 +64,3 @@ describe('TweetBox', () => {
     )).toEqual({tweetText: 'text', tweetCharCount: 4});
   });
 });
-
