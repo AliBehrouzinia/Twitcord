@@ -18,7 +18,15 @@ const initialState = {
   },
   tweetText: '',
   tweetCharCount: 0,
-
+  profileInfo: {
+    bio: '',
+    birthday: '',
+    firstName: '',
+    lastName: '',
+    website: '',
+    username: '',
+    isPublic: false,
+  },
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -34,6 +42,7 @@ const tweetReducer = (state = initialState, action) => {
           password2: action.confirmPassword,
         },
       };
+
     case ActionTypes.SET_LOG_IN_INFO:
       return {
         ...state,
@@ -43,18 +52,37 @@ const tweetReducer = (state = initialState, action) => {
           password: action.password,
         },
       };
+
     case ActionTypes.SET_TWEET_TEXT:
       return {
         ...state,
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
+
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
         isSnackbarOpen: action.isSnackbarOpen,
       };
     }
+
+    case ActionTypes.SET_PROFILE_INFO: {
+      return {
+        ...state,
+        profileInfo: {
+          ...state.profileInfo,
+          bio: action.bio,
+          birthday: action.birthday,
+          firstName: action.firstName,
+          lastName: action.lastName,
+          website: action.website,
+          username: action.username,
+          isPublic: action.isPublic,
+        },
+      };
+    }
+
     case ActionTypes.SET_USER_GENERAL_INFO: {
       return {
         ...state,
@@ -66,6 +94,7 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
+    
     default:
       return state;
   }

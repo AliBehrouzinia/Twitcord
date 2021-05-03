@@ -11,6 +11,7 @@ export const PATCH_REQUEST_METHOD = 'PATCH';
 export const URL_POST_TWEET = '/tweets/';
 export const URL_SIGN_UP = '/rest-auth/registration/';
 export const URL_LOG_IN = '/rest-auth/login/';
+export const URL_PROFILE_INFO = '/profile/{id}/header/';
 export const URL_USER_GENERAL_INFO= '/rest-auth/user/';
 
 export const TWEET_BOX_ROW_MIN = 6;
@@ -21,6 +22,10 @@ export const LOG_IN_SUCCESS_MESSAGE = 'You are logged in';
 export const GET_USER_INFO_FAILURE= 'Could not get your info, try again later.';
 export const SIGN_UP_EMAIL_ERROR_MESSAGE = 'A user is already registered with this e-mail or username';
 export const SIGN_UP_VERIFICATION_SUCCESS_MESSAGE = 'Verification email is sent';
+export const EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE = 'Profile updated successfuly';
+export const EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE = 'Please change at least one field to update!';
+export const EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE = 'Profile update failed!';
+export const EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE = 'Profile info fetch failed!';
 
 export const SNACKBAR_ERROR_SEVERITY = 'error';
 export const SNACKBAR_SUCCESS_SEVERITY = 'success';
