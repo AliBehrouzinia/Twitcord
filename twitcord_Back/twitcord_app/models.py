@@ -49,6 +49,8 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Tweet(models.Model):
+    parent = models.ForeignKey("Tweet", on_delete=models.CASCADE, default=None)
+    is_reply = models.BooleanField(default=False)
     user = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
     content = models.TextField(max_length=280)
     create_date = models.DateTimeField(default=timezone.now)
