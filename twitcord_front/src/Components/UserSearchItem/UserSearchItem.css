@@ -43,6 +43,14 @@
   width: 100%;
 }
 
+.item-follow{
+  order: 1;
+}
+
+.item-desc{
+  order: 2;
+}
+
 .name {
   margin: 0;
   font-size: x-large !important;
@@ -75,4 +83,20 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  margin-top: -30px !important;
+  padding-left: 80px;
+}
+
+@media screen and (max-width: 600px) {
+  .item-desc {
+    order: 1
+  }
+
+  .item-follow{
+    order: 2;
+  }
+
+  .follow-button{
+    margin-top: -30px !important;
+  }
 }

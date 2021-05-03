@@ -27,13 +27,13 @@ export const UserSearchItem = (props) => {
         </div>
       </Grid>
 
-      <Grid item xs={12} sm={3} md={2} >
+      <Grid item xs={12} sm={3} md={2} className="item-follow">
         <Button className="follow-button" color="primary" variant="outlined">
              follow
         </Button>
       </Grid>
 
-      <Grid xs={12} item>
+      <Grid xs={12} item className="item-desc">
         <Typography className="desc">{props.desc}</Typography>
       </Grid>
     </Grid>
