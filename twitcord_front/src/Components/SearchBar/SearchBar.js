@@ -9,11 +9,12 @@ import * as Actions from '../../redux/Actions/index.js';
 
 
 export const SearchBar = () => {
+  let userInput = '';
   const dispatch = useDispatch();
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      searchUser(event.target.value);
+      searchUser(userInput);
     }
   };
 
@@ -35,13 +36,16 @@ export const SearchBar = () => {
       className="root">
       <InputBase
         onKeyDown={handleKeyDown}
+        onChange={(e)=>{
+          userInput = e.target.value;
+        }}
         className="input-base"
         placeholder="Search"/>
       <IconButton
         className="search-icon"
         type="submit"
         onClick={(event) => {
-          searchUser(event.target.value);
+          searchUser(userInput);
         }}
         aria-label="search">
         <SearchIcon />
