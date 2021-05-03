@@ -4,6 +4,7 @@ import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
 import {useSelector} from 'react-redux';
 import {SearchBar} from '../SearchBar/SearchBar';
+import Divider from '@material-ui/core/Divider';
 import {UserSearchItem} from '../UserSearchItem/UserSearchItem';
 
 
@@ -12,13 +13,14 @@ export const Search = () => {
   const [tabSelected, setSelectedTab] = React.useState(0);
 
   const userResult = users.map(
-      (user) => <UserSearchItem
-        key={user.id}
-        name={user.first_name + ' ' + user.last_name}
-        username={user.username}
-        desc={user.desc}
-        isPublic={user.is_public}
-      />,
+      (user) => <div key={user.id}>
+        <UserSearchItem
+          name={user.first_name + ' ' + user.last_name}
+          username={user.username}
+          desc={user.desc}
+          isPublic={user.is_public}/>
+        <Divider />
+      </div>,
   );
 
   const handleChange = (event, selectedTab) => {
