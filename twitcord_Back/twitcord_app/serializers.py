@@ -98,7 +98,7 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'profile_img', 'email']
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'profile_img', 'email', 'bio']
 
 
 class GlobalTweetSearchSerializer(serializers.ModelSerializer):
