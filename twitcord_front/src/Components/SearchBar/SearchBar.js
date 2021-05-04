@@ -15,6 +15,7 @@ export const SearchBar = () => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       searchUser(userInput);
+      searchTweet(userInput);
     }
   };
 
@@ -24,6 +25,18 @@ export const SearchBar = () => {
           const data = response.data;
           dispatch(Actions.setUserSearchResults({
             users: data.results,
+          }));
+        })
+        .catch((error) => {
+        });
+  };
+
+  const searchTweet = (query, page=1) => {
+    API.searchTweets({}, {query: query, page: page})
+        .then((response) => {
+          const data = response.data;
+          dispatch(Actions.setTweetSearchResults({
+            tweets: data.results,
           }));
         })
         .catch((error) => {
@@ -46,6 +59,7 @@ export const SearchBar = () => {
         type="submit"
         onClick={(event) => {
           searchUser(userInput);
+          searchTweet(userInput);
         }}
         aria-label="search">
         <SearchIcon />

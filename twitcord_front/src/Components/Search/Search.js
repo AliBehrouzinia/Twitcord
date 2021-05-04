@@ -10,6 +10,8 @@ import {UserSearchItem} from '../UserSearchItem/UserSearchItem';
 
 export const Search = () => {
   const users = useSelector((state) => state).tweet.userSearchResult;
+  const tweets = useSelector((state) => state).tweet.tweetSearchResult;
+
   const [tabSelected, setSelectedTab] = React.useState(0);
 
   const userResult = users.map(
@@ -19,6 +21,21 @@ export const Search = () => {
           username={user.username}
           desc={user.desc}
           isPublic={user.is_public}/>
+        <Divider />
+      </div>,
+  );
+
+  const tweetResult = tweets.map(
+      (tweet) => <div key={tweet.id}>
+        <UserSearchItem
+          id={tweet.id}
+          name={tweet.first_name + ' ' + tweet.last_name}
+          username={tweet.username}
+          createDate={tweet.create_date}
+          content={tweet.content}
+          userId={tweet.user}
+          profileImg={tweet.profile_img}
+          isPublic={tweet.is_public}/>
         <Divider />
       </div>,
   );
@@ -44,6 +61,7 @@ export const Search = () => {
         </Tabs>
       </Paper>
       {tabSelected == 0 && userResult }
+      {tabSelected == 1 && tweetResult }
     </div>
   );
 };
