@@ -37,7 +37,6 @@ class TweetsListCreateView(generics.ListCreateAPIView):
         return models.Tweet.objects.filter(user_id = user_id)
 
 
-
 class ActionOnFollowRequestType(enum.Enum):
     accept = 1,
     reject = 2
@@ -160,9 +159,25 @@ class TimeLineView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user.id
         user_followings = models.UserFollowing.objects.filter(user_id=user)
+
         queryset = []
         for instance in user_followings:
             queryset.append(instance.following_user)
-        print(queryset)
+        result = self.calculate_threshold(user, queryset)
         tweets = models.Tweet.objects.filter(user_id__in=queryset).order_by('create_date')
         return tweets
+
+    def calculate_threshold(self, user, followings):
+        result = {}
+        tweets = models.Tweet.objects.filter(user_id__in=followings).order_by('create_date')
+        for tweet in tweets:
+            result[tweet] = 100
+        followings_of_own_followings = models.UserFollowing.objects.filter(user_id__in=followings)
+        queryset = []
+        for instance in followings_of_own_followings:
+            queryset.append(instance.following_user)
+        tweets = models.Tweet.objects.filter(user_id__in=queryset).order_by('create_date')
+        for tweet in tweets:
+            result[tweet] = 50
+        print(result)
+        return 0
