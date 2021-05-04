@@ -31,7 +31,7 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class TweetsListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly,]
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.TweetSerializer
 
     def get_queryset(self):
@@ -63,8 +63,11 @@ class ListOfFollowersView(generics.ListAPIView):
         return queryset
 
 
-class DeleteFollowingsView(generics.DestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, UserIsOwnerOrReadonly)
+    queryset = models.UserFollowing.objects.all()
+    serializer_class = serializers.FollowingsSerializer
+    lookup_url_kwarg = 'id'
 
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
