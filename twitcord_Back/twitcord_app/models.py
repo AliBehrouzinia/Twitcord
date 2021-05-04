@@ -15,11 +15,11 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     profile_img = models.ImageField(default='profiles/defaults/user-profile-image.jpg', upload_to='profiles', null=True)
     username = models.TextField(max_length=15)
     is_admin = True
-    first_name = models.CharField(null=True, max_length=50, blank = True)
-    last_name = models.CharField(null=True, max_length=50, blank = True)
-    bio = models.TextField(null=True, max_length=160, blank = True)
-    birth_date = models.DateTimeField(null=True, blank = True)
-    website = models.URLField(null=True, blank = True)
+    first_name = models.CharField(null=True, max_length=50, blank=True)
+    last_name = models.CharField(null=True, max_length=50, blank=True)
+    bio = models.TextField(null=True, max_length=160, blank=True)
+    birth_date = models.DateTimeField(null=True, blank=True)
+    website = models.URLField(null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
