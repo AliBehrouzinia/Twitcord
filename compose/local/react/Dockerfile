@@ -8,9 +8,9 @@ EXPOSE 3000
 
 RUN npm cache clean --force
 RUN npm config set package-lock.json true
-# install app dependencies
-COPY ./twitcord_front/package.json /usr/src/app/twitcord_front/
 
+# install app dependencies
+COPY ./twitcord_front/package*.json /usr/src/app/twitcord_front/
 
 RUN npm install --silent
 RUN npm install react-scripts@4.0.3 --silent
