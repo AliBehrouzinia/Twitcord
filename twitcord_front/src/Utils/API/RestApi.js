@@ -25,7 +25,10 @@ const request = (data, params, url, method) => {
     return instance({
       method: method,
       url: url,
+<<<<<<< HEAD
       params: params,
+=======
+>>>>>>> c561fe336b74d07327206e2930b781daada91765
       data,
     });
   } else {
@@ -64,6 +67,7 @@ export const logIn = (data) => {
   );
 };
 
+<<<<<<< HEAD
 export const searchUsers = (data, params) => {
   return request(
       data,
@@ -72,3 +76,28 @@ export const searchUsers = (data, params) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+=======
+export const getProfileInfo = (data) => {
+  return request(
+      {},
+      Constants.URL_PROFILE_INFO.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const updateProfileInfo = (id, data) => {
+  return request(
+      data,
+      Constants.URL_PROFILE_INFO.replace('{id}', id),
+      Constants.PATCH_REQUEST_METHOD, 
+  );
+};
+
+export const userGeneralInfo = (data) => {
+  return request (
+    data,
+    Constants.URL_USER_GENERAL_INFO,
+    Constants.GET_REQUEST_METHOD,
+  );
+};
+>>>>>>> c561fe336b74d07327206e2930b781daada91765

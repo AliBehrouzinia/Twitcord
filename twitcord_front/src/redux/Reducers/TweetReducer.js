@@ -1,6 +1,11 @@
 import {ActionTypes} from '../Actions/actionTypes.js';
 
 const initialState = {
+  userGeneralInfo: {
+    userID: null,
+    userEmail: '',
+    userProfile: '',
+  },
   signUpInfo: {
     username: '',
     email: '',
@@ -13,7 +18,19 @@ const initialState = {
   },
   tweetText: '',
   tweetCharCount: 0,
+<<<<<<< HEAD
   userSearchResult: [],
+=======
+  profileInfo: {
+    bio: '',
+    birthday: '',
+    firstName: '',
+    lastName: '',
+    website: '',
+    username: '',
+    isPublic: false,
+  },
+>>>>>>> c561fe336b74d07327206e2930b781daada91765
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -54,6 +71,7 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
+<<<<<<< HEAD
     case ActionTypes.SET_USER_SEARCH_RESULT: {
       return {
         ...state,
@@ -61,6 +79,36 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
+=======
+    case ActionTypes.SET_PROFILE_INFO: {
+      return {
+        ...state,
+        profileInfo: {
+          ...state.profileInfo,
+          bio: action.bio,
+          birthday: action.birthday,
+          firstName: action.firstName,
+          lastName: action.lastName,
+          website: action.website,
+          username: action.username,
+          isPublic: action.isPublic,
+        },
+      };
+    }
+
+    case ActionTypes.SET_USER_GENERAL_INFO: {
+      return {
+        ...state,
+        userGeneralInfo: {
+          ...state.userGeneralInfo,
+          userID: action.pk,
+          userEmail: action.email,
+          userProfile: action.profile_img,
+        },
+      };
+    }
+    
+>>>>>>> c561fe336b74d07327206e2930b781daada91765
     default:
       return state;
   }
