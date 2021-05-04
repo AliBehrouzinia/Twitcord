@@ -58,7 +58,7 @@ class ListOfFollowersView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user.id
-        queryset = models.UserFollowing.objects.filter(Q(following_user_id=user))
+        queryset = models.UserFollowing.objects.filter(Q(following_user=user))
         return queryset
 
 
@@ -68,7 +68,7 @@ class DeleteFollowingsView(generics.DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
         following_user_id = self.kwargs.get('id')
-        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user_id=following_user_id)
+        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
         instance.delete()
         return Response()
 
