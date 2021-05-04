@@ -112,4 +112,6 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
         result['id'] = result.pop('user')
         result['profile_img'] = user.profile_img.url
         result['username'] = user.username
+        result['first_name'] = user.first_name
+        result['last_name'] = user.last_name
         return result
