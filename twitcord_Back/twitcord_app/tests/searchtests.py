@@ -22,6 +22,7 @@ class SearchUserTest(APITestCase):
     def test_search_users(self):
         twitcord_user = get_user_model()
         self.user = twitcord_user.objects.create(email='mmd@gmail.com', username='test', password='test_pass')
+        # url = reverse('usersearch')
         url = '/search/user/?query=t'.format(self.user.id)
         response = self.client.get(url, content_type='application/json')
         print(response.data)
@@ -40,7 +41,7 @@ class SearchUserTest(APITestCase):
                             }]
                 }
         self.assertEqual(response.data['count'], 1)
-        self.assertEqual(dict(response.data)['next'], None)
+        self.assertEqual(response, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
