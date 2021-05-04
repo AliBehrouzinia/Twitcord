@@ -65,7 +65,6 @@ class UserFollowing(models.Model):
         ('friend', 'friend'),
         ('close friend', 'close friend'),
         ('celebrity', 'celebrity'),
-        ('familiar person', 'familiar person'),
         ('unfamiliar person', 'unfamiliar person'),
     ]
     type = models.CharField(max_length=30, choices=following_TYPES, default='unfamiliar person')
