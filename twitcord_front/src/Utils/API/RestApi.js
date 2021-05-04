@@ -22,14 +22,11 @@ const withoutAuthInstance = axios.create({
 
 const request = (data, url, method) => {
   if (url !== Constants.URL_SIGN_UP && url !== Constants.URL_LOG_IN) {
-    switch (method) {
-      case Constants.POST_REQUEST_METHOD:
-        return instance({
-          method: method,
-          url: url,
-          data,
-        });
-    }
+    return instance({
+      method: method,
+      url: url,
+      data,
+    });
   } else {
     return withoutAuthInstance({
       method: method,
@@ -60,5 +57,29 @@ export const logIn = (data) => {
       data,
       Constants.URL_LOG_IN,
       Constants.POST_REQUEST_METHOD,
+  );
+};
+
+export const getProfileInfo = (data) => {
+  return request(
+      {},
+      Constants.URL_PROFILE_INFO.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const updateProfileInfo = (id, data) => {
+  return request(
+      data,
+      Constants.URL_PROFILE_INFO.replace('{id}', id),
+      Constants.PATCH_REQUEST_METHOD, 
+  );
+};
+
+export const userGeneralInfo = (data) => {
+  return request (
+    data,
+    Constants.URL_USER_GENERAL_INFO,
+    Constants.GET_REQUEST_METHOD,
   );
 };

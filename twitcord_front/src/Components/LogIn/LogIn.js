@@ -21,9 +21,12 @@ const LogIn = () => {
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
-  const handleSubmit = (values) => {
+  
+
+  function logInRequest(values) {
     dispatch(Actions.setLogInInfo(values));
-    API.logIn(store.getState().tweet.logInInfo)
+    return new Promise(function (resolve, reject) {
+      API.logIn(store.getState().tweet.logInInfo)
         .then((response) => {
           localStorage.setItem('token', response.data.key);
           setSnackbarAlertMessage(
@@ -35,6 +38,7 @@ const LogIn = () => {
                 isSnackbarOpen: true,
               }),
           );
+          resolve(response);
         })
         .catch((error) => {
           setSnackbarAlertMessage(
@@ -46,8 +50,32 @@ const LogIn = () => {
                 isSnackbarOpen: true,
               }),
           );
+          reject(error);
         });
-  };
+    });
+  }
+  
+  async function handleSubmit(values) {
+    await logInRequest(values);
+    if (localStorage.getItem('token')) {
+      API.userGeneralInfo({})
+          .then((response) => {
+            dispatch(Actions.setUserGeneralInfo(response.data));
+            localStorage.setItem(Constants.GENERAL_USER_INFO, JSON.stringify(response.data));
+          }).catch((error) => {
+            setSnackbarAlertMessage(
+              Constants.GET_USER_INFO_FAILURE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_ERROR_SEVERITY);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+          });
+    }
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       {isSnackbarOpen && (<SnackbarAlert

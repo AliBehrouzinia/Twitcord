@@ -19,3 +19,13 @@ export const setSnackBarState = (data) => ({
   type: ActionTypes.SET_SNACKBAR_STATE,
   ...data,
 });
+
+export const setProfileInfo = (data) => ({
+  type: ActionTypes.SET_PROFILE_INFO,
+  ...data,
+});
+
+export const setUserGeneralInfo = (data) => ({
+  type: ActionTypes.SET_USER_GENERAL_INFO,
+  ...data,
+});

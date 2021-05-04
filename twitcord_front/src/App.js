@@ -6,6 +6,7 @@ import SignUp from './Components/SignUp/SignUp.js';
 import {Provider} from 'react-redux';
 import store from './redux/store.js';
 import {BrowserRouter, Route} from 'react-router-dom';
+import EditProfile from './Components/EditProfile/EditProfile';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         {/* <TweetBox /> */}
         <BrowserRouter>
           <div>
+            <Route exact path="/edit-profile" component={EditProfile} />
             <Route exact path="/login" component={LogIn} />
             <Route exact path="/signup" component={SignUp} />
           </div>
