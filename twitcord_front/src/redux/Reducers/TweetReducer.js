@@ -19,6 +19,7 @@ const initialState = {
   tweetText: '',
   tweetCharCount: 0,
   userSearchResult: [],
+  tweetSearchResult: [],
   profileInfo: {
     bio: '',
     birthday: '',
@@ -72,6 +73,13 @@ const tweetReducer = (state = initialState, action) => {
       return {
         ...state,
         userSearchResult: action.users,
+      };
+    }
+
+    case ActionTypes.SET_TWEET_SEARCH_RESULT: {
+      return {
+        ...state,
+        userSearchResult: action.tweets,
       };
     }
 

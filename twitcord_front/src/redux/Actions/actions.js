@@ -25,6 +25,11 @@ export const setUserSearchResults = (data) => ({
   ...data,
 });
 
+export const setTweetSearchResults = (data) => ({
+  type: ActionTypes.SET_TWEET_SEARCH_RESULT,
+  ...data,
+});
+
 export const setProfileInfo = (data) => ({
   type: ActionTypes.SET_PROFILE_INFO,
   ...data,
