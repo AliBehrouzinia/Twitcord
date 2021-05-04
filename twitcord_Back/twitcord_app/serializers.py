@@ -105,13 +105,20 @@ class GlobalUserSearchSerializer(serializers.ModelSerializer):
         instance_user = instance.pk
         request_user = self.context['request'].user
         followings = UserFollowing.objects.filter(user_id=request_user.id)
-        queryset = []
+        requests = FollowRequest.objects.filter(request_from=request_user.id)
+        queryset1 = []
         for item in followings:
-            queryset.append(item.following_user.id)
-        if instance_user in queryset:
-            result['follow'] = True
+            queryset1.append(item.following_user.id)
+        queryset2 = []
+        for item in requests:
+            queryset2.append(item.request_to.id)
+            print(item.request_to.id)
+        if instance_user in queryset2:
+            result['status'] = "pending"
+        elif instance_user in queryset1:
+            result['status'] = "following"
         else:
-            result['follow'] = False
+            result['status'] = "not following"
         return result
 
 

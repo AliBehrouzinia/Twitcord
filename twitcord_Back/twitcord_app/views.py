@@ -167,15 +167,15 @@ class GlobalUserSearchList(generics.ListAPIView):
         query = self.request.query_params.get('query', None)
         user_following = models.UserFollowing.objects.filter(user=user.id)
         user_follower = models.UserFollowing.objects.filter(following_user=user.id)
+        requests = models.FollowRequest.objects.filter(request_from=user.id)
         query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(pk__in=user_following)) |
                                                    (Q(first_name__icontains=query) & Q(pk__in=user_following)) |
                                                    (Q(last_name__icontains=query) & Q(pk__in=user_following)) |
                                                    (Q(username__icontains=query) & Q(pk__in=user_follower)) |
                                                    (Q(first_name__icontains=query) & Q(pk__in=user_follower)) |
                                                    (Q(last_name__icontains=query) & Q(pk__in=user_following)) |
-                                                   (Q(username__icontains=query) & Q(is_public=True)) |
-                                                   (Q(first_name__icontains=query) & Q(is_public=True)) |
-                                                   (Q(last_name__icontains=query) & Q(is_public=True)))
+                                                   (Q(username__icontains=query)) | (Q(first_name__icontains=query)) |
+                                                   (Q(last_name__icontains=query)))
         return query
 
 
