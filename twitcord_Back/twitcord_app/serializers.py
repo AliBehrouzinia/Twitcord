@@ -100,6 +100,20 @@ class GlobalUserSearchSerializer(serializers.ModelSerializer):
         model = TwitcordUser
         fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'profile_img', 'email', 'bio']
 
+    def to_representation(self, instance):
+        result = super(GlobalUserSearchSerializer, self).to_representation(instance)
+        instance_user = instance.pk
+        request_user = self.context['request'].user
+        followings = UserFollowing.objects.filter(user_id=request_user.id)
+        queryset = []
+        for item in followings:
+            queryset.append(item.following_user.id)
+        if instance_user in queryset:
+            result['follow'] = True
+        else:
+            result['follow'] = False
+        return result
+
 
 class GlobalTweetSearchSerializer(serializers.ModelSerializer):
     class Meta:

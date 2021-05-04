@@ -159,7 +159,7 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
 
 class GlobalUserSearchList(generics.ListAPIView):
     serializer_class = serializers.GlobalUserSearchSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     pagination_class = paginations.MyPagination
 
     def get_queryset(self):
