@@ -73,6 +73,15 @@ export const searchUsers = (data, params) => {
   );
 };
 
+export const searchTweets = (data, params) => {
+  return request(
+      data,
+      params,
+      Constants.URL_SEARCH_TWEET,
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
 export const getProfileInfo = (data) => {
   return request(
       {},
