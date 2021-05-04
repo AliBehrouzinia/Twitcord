@@ -21,57 +21,59 @@ const LogIn = () => {
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
-  
+
 
   function logInRequest(values) {
     dispatch(Actions.setLogInInfo(values));
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       API.logIn(store.getState().tweet.logInInfo)
-        .then((response) => {
-          localStorage.setItem('token', response.data.key);
-          setSnackbarAlertMessage(
-              Constants.LOG_IN_SUCCESS_MESSAGE);
-          setSnackbarAlertSeverity(
-              Constants.SNACKBAR_SUCCESS_SEVERITY);
-          dispatch(
-              Actions.setSnackBarState({
-                isSnackbarOpen: true,
-              }),
-          );
-          resolve(response);
-        })
-        .catch((error) => {
-          setSnackbarAlertMessage(
-              Constants.LOG_IN_VERIFICATION_ERROR_MESSAGE);
-          setSnackbarAlertSeverity(
-              Constants.SNACKBAR_ERROR_SEVERITY);
-          dispatch(
-              Actions.setSnackBarState({
-                isSnackbarOpen: true,
-              }),
-          );
-          reject(error);
-        });
+          .then((response) => {
+            localStorage.setItem('token', response.data.key);
+            setSnackbarAlertMessage(
+                Constants.LOG_IN_SUCCESS_MESSAGE);
+            setSnackbarAlertSeverity(
+                Constants.SNACKBAR_SUCCESS_SEVERITY);
+            dispatch(
+                Actions.setSnackBarState({
+                  isSnackbarOpen: true,
+                }),
+            );
+            resolve(response);
+          })
+          .catch((error) => {
+            setSnackbarAlertMessage(
+                Constants.LOG_IN_VERIFICATION_ERROR_MESSAGE);
+            setSnackbarAlertSeverity(
+                Constants.SNACKBAR_ERROR_SEVERITY);
+            dispatch(
+                Actions.setSnackBarState({
+                  isSnackbarOpen: true,
+                }),
+            );
+            reject(error);
+          });
     });
   }
-  
+
   async function handleSubmit(values) {
     await logInRequest(values);
     if (localStorage.getItem('token')) {
       API.userGeneralInfo({})
           .then((response) => {
             dispatch(Actions.setUserGeneralInfo(response.data));
-            localStorage.setItem(Constants.GENERAL_USER_INFO, JSON.stringify(response.data));
+            localStorage.setItem(
+                Constants.GENERAL_USER_INFO, JSON.stringify(response.data),
+            );
           }).catch((error) => {
             setSnackbarAlertMessage(
-              Constants.GET_USER_INFO_FAILURE);
-          setSnackbarAlertSeverity(
-              Constants.SNACKBAR_ERROR_SEVERITY);
-          dispatch(
-              Actions.setSnackBarState({
-                isSnackbarOpen: true,
-              }),
-          );
+                Constants.GET_USER_INFO_FAILURE);
+            setSnackbarAlertSeverity(
+                Constants.SNACKBAR_ERROR_SEVERITY);
+            dispatch(
+                Actions.setSnackBarState({
+                  isSnackbarOpen: true,
+                }),
+            );
           });
     }
   }

@@ -20,10 +20,11 @@ export const setSnackBarState = (data) => ({
   ...data,
 });
 
-<<<<<<< HEAD
 export const setUserSearchResults = (data) => ({
   type: ActionTypes.SET_USER_SEARCH_RESULT,
-=======
+  ...data,
+});
+
 export const setProfileInfo = (data) => ({
   type: ActionTypes.SET_PROFILE_INFO,
   ...data,
@@ -31,6 +32,5 @@ export const setProfileInfo = (data) => ({
 
 export const setUserGeneralInfo = (data) => ({
   type: ActionTypes.SET_USER_GENERAL_INFO,
->>>>>>> c561fe336b74d07327206e2930b781daada91765
   ...data,
 });

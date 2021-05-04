@@ -18,9 +18,7 @@ const initialState = {
   },
   tweetText: '',
   tweetCharCount: 0,
-<<<<<<< HEAD
   userSearchResult: [],
-=======
   profileInfo: {
     bio: '',
     birthday: '',
@@ -30,7 +28,6 @@ const initialState = {
     username: '',
     isPublic: false,
   },
->>>>>>> c561fe336b74d07327206e2930b781daada91765
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -71,7 +68,6 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
-<<<<<<< HEAD
     case ActionTypes.SET_USER_SEARCH_RESULT: {
       return {
         ...state,
@@ -79,7 +75,6 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
-=======
     case ActionTypes.SET_PROFILE_INFO: {
       return {
         ...state,
@@ -107,8 +102,7 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
-    
->>>>>>> c561fe336b74d07327206e2930b781daada91765
+
     default:
       return state;
   }
