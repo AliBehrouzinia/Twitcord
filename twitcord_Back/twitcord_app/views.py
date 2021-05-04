@@ -160,7 +160,6 @@ class GlobalUserSearchList(generics.ListAPIView):
     pagination_class = paginations.MyPagination
 
     def get_queryset(self):
-        print("aaaaaa")
         user = self.request.user
         query = self.request.query_params.get('query', None)
         user_following = models.UserFollowing.objects.filter(user=user.id)
