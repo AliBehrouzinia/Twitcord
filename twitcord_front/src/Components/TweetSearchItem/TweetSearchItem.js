@@ -11,6 +11,20 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 
+const monthNumberToLabelMap = {
+  [1]: 'January',
+  [2]: 'February',
+  [3]: 'March',
+  [4]: 'April',
+  [5]: 'May',
+  [6]: 'June',
+  [7]: 'July',
+  [8]: 'August',
+  [9]: 'September',
+  [10]: 'October',
+  [11]: 'November',
+  [12]: 'December',
+};
 
 export const TweetSearchItem = (props) => {
   const extractTime = (dateString) => {
@@ -19,26 +33,18 @@ export const TweetSearchItem = (props) => {
 
     if (date.getMinutes() < currentDate.getMinutes()) {
       const diff = currentDate.getUTCHours() - date.getUTCHours();
-      if ( diff < 1) {
-        return '1 minute';
-      } else {
-        return diff + ' minutes';
-      }
+      return diff + ' m';
     }
 
     if (date.getUTCHours() < currentDate.getUTCHours()) {
       const diff = currentDate.getUTCHours() - date.getUTCHours();
-      if ( diff < 1) {
-        return '1 hour';
-      } else {
-        return diff + ' hours';
-      }
+      return diff + ' h';
     }
 
     if (date.getDate() < currentDate.getDate()) {
       return date.getFullYear() +
-      ',' + ( date.getMonth() + 1 ) +
-      ',' + date.getDate();
+      ' ' + ( monthNumberToLabelMap[date.getMonth() + 1] ) +
+      ' ' + date.getDate();
     }
 
     return 'now';
@@ -60,17 +66,15 @@ export const TweetSearchItem = (props) => {
                 <Typography className="name" >{props.name}</Typography>
               </Tooltip>
               {!props.isPublic && <Icon className="lock-icon">lock</Icon>}
-            </div>
-            <div className="date-container">
-              <Tooltip title={'@'+props.username} placement="top-start">
-                <Typography className="username">@{props.username}
-                </Typography>
-              </Tooltip>
               <Typography className="date">
-                <span className="dot"> ^</span>
+                <div className="dot"/>
                 {extractTime(props.createDate)}
               </Typography>
             </div>
+            <Tooltip title={'@'+props.username} placement="top-start">
+              <Typography className="username">@{props.username}
+              </Typography>
+            </Tooltip>
           </div>
         </div>
       </Grid>
