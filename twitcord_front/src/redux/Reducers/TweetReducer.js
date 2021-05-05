@@ -20,8 +20,6 @@ const initialState = {
     username: '',
     bio: '',
     date_joined: '',
-    followers: 0,
-    following: 0,
     birthday: '',
     firstName: '',
     lastName: '',
@@ -32,7 +30,6 @@ const initialState = {
   },
   tweetText: '',
   tweetCharCount: 0,
-
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -48,6 +45,7 @@ const tweetReducer = (state = initialState, action) => {
           password2: action.confirmPassword,
         },
       };
+
     case ActionTypes.SET_LOG_IN_INFO:
       return {
         ...state,
@@ -57,29 +55,12 @@ const tweetReducer = (state = initialState, action) => {
           password: action.password,
         },
       };
+
     case ActionTypes.SET_TWEET_TEXT:
       return {
         ...state,
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
-      };
-    case ActionTypes.SET_PROFILE_INFO:
-      return {
-        ...state,
-        profileInfo: {
-          ...state.profileinfo,
-          username: action.username,
-          bio: action.bio,
-          date_joined: action.date_joined,
-          followers: action.followers,
-          following: action.following,
-          birthday: action.birthday,
-          firstName: action.firstName,
-          lastName: action.lastName,
-          website: action.website,
-          isPublic: action.isPublic,
-          email: action.email,
-        },
       };
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
@@ -87,6 +68,25 @@ const tweetReducer = (state = initialState, action) => {
         isSnackbarOpen: action.isSnackbarOpen,
       };
     }
+
+    case ActionTypes.SET_PROFILE_INFO: {
+      return {
+        ...state,
+        profileInfo: {
+          ...state.profileInfo,
+          bio: action.bio,
+          birthday: action.birthday,
+          firstName: action.firstName,
+          lastName: action.lastName,
+          website: action.website,
+          username: action.username,
+          isPublic: action.isPublic,
+          email: action.email,
+          date_joined: action.date_joined,
+        },
+      };
+    }
+
     case ActionTypes.SET_USER_GENERAL_INFO: {
       return {
         ...state,
@@ -98,6 +98,7 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
+    
     default:
       return state;
   }

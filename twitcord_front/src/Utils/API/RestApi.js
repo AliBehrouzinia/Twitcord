@@ -63,9 +63,24 @@ export const logIn = (data) => {
 
 export const profileinfo = (data) => {
   return request(
+    {},
+    Constants.URL_PROFILE_INFO.replace('{id}', data.id),
+    Constants.GET_REQUEST_METHOD,
+);
+};
+export const getProfileInfo = (data) => {
+  return request(
       {},
       Constants.URL_PROFILE_INFO.replace('{id}', data.id),
       Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const updateProfileInfo = (id, data) => {
+  return request(
+      data,
+      Constants.URL_PROFILE_INFO.replace('{id}', id),
+      Constants.PATCH_REQUEST_METHOD, 
   );
 };
 

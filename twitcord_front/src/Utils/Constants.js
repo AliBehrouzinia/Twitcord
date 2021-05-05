@@ -22,6 +22,10 @@ export const LOG_IN_SUCCESS_MESSAGE = 'You are logged in';
 export const GET_USER_INFO_FAILURE= 'Could not get your info, try again later.';
 export const SIGN_UP_EMAIL_ERROR_MESSAGE = 'A user is already registered with this e-mail or username';
 export const SIGN_UP_VERIFICATION_SUCCESS_MESSAGE = 'Verification email is sent';
+export const EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE = 'Profile updated successfuly';
+export const EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE = 'Please change at least one field to update!';
+export const EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE = 'Profile update failed!';
+export const EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE = 'Profile info fetch failed!';
 
 export const SNACKBAR_ERROR_SEVERITY = 'error';
 export const SNACKBAR_SUCCESS_SEVERITY = 'success';
