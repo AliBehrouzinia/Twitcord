@@ -104,3 +104,17 @@ class LikeSerializer(serializers.ModelSerializer):
         data['user'] = self.context['request'].user.id
         data['tweet'] = self.context['tweet_id']
         return super().to_internal_value(data)
+
+
+class UsersLikedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        result['email'] = instance.user.email
+        result['username'] = instance.user.username
+        result['first_name'] = instance.user.first_name
+        result['last_name'] = instance.user.last_name
+        return result
