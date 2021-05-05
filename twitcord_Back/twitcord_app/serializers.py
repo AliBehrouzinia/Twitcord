@@ -93,3 +93,14 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFollowing
         fields = ['user']
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = '__all__'
+
+    def to_internal_value(self, data):
+        data['user'] = self.context['request'].user.id
+        data['tweet'] = self.context['tweet_id']
+        return super().to_internal_value(data)
