@@ -8,9 +8,13 @@ import image from '../../assets/image.png';
 import * as API from '../../Utils/API/index';
 import PropTypes from 'prop-types';
 import * as Actions from '../../redux/Actions/index.js';
+import * as Constants from '../../Utils/Constants.js';
+import {useState} from 'react';
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
+  const [profilemail, setprofilemail] = useState('');
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
+  const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
   const monthNumberToLabelMap = {
     [1]: 'January',
     [2]: 'February',
@@ -46,12 +50,11 @@ const ProfileUserinfo = () => {
           <Avatar className="avatar" />
         </Grid>
       </Grid>
-      <div className="button-edit">
-        <button className="edit-button">edit profile</button>
-      </div>
+      <div className="info-buttom">
+      
       <div container className="grid-info">
         <div className="info1">
-          <text className="grid-username" >username
+          <text className="grid-username" > user
             {profileInfo.username}
           </text>
           <text className="grid-bio" >
@@ -62,13 +65,21 @@ const ProfileUserinfo = () => {
           </text>
         </div>
         <div className = "info2">
-          <text className = "followers" > followers 0
+          <text className = "followers" > followers {' '} 0
             {/* {store.getState().tweet.profileInfo.followers} */}
           </text>
-          <text className = "followings" > followings 0
+          <text className = "followings" > followings {' '}0
             {/* {store.getState().tweet.profileInfo.followings} */}
           </text>
         </div>
+      </div>
+      <div className="button-edit">
+      { userGeneralInfo.email === profileInfo.email ? (
+            <button className="edit-button">edit profile</button>
+          ) : (
+            <button className="edit-button">follow</button>
+          )}
+      </div>
       </div>
     </Grid>
   );

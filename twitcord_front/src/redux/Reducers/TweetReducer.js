@@ -27,6 +27,7 @@ const initialState = {
     lastName: '',
     website: '',
     isPublic: false,
+    email: '',
 
   },
   tweetText: '',
@@ -77,6 +78,7 @@ const tweetReducer = (state = initialState, action) => {
           lastName: action.lastName,
           website: action.website,
           isPublic: action.isPublic,
+          email: action.email,
         },
       };
     case ActionTypes.SET_SNACKBAR_STATE: {
