@@ -31,7 +31,7 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class TweetsListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly,]
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.TweetSerializer
 
     def get_queryset(self):
@@ -63,8 +63,11 @@ class ListOfFollowersView(generics.ListAPIView):
         return queryset
 
 
-class DeleteFollowingsView(generics.DestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, UserIsOwnerOrReadonly)
+    queryset = models.UserFollowing.objects.all()
+    serializer_class = serializers.FollowingsSerializer
+    lookup_url_kwarg = 'id'
 
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
@@ -156,7 +159,7 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
 
 class GlobalUserSearchList(generics.ListAPIView):
     serializer_class = serializers.GlobalUserSearchSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     pagination_class = paginations.MyPagination
 
     def get_queryset(self):
@@ -164,15 +167,15 @@ class GlobalUserSearchList(generics.ListAPIView):
         query = self.request.query_params.get('query', None)
         user_following = models.UserFollowing.objects.filter(user=user.id)
         user_follower = models.UserFollowing.objects.filter(following_user=user.id)
+        requests = models.FollowRequest.objects.filter(request_from=user.id)
         query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(pk__in=user_following)) |
                                                    (Q(first_name__icontains=query) & Q(pk__in=user_following)) |
                                                    (Q(last_name__icontains=query) & Q(pk__in=user_following)) |
                                                    (Q(username__icontains=query) & Q(pk__in=user_follower)) |
                                                    (Q(first_name__icontains=query) & Q(pk__in=user_follower)) |
                                                    (Q(last_name__icontains=query) & Q(pk__in=user_following)) |
-                                                   (Q(username__icontains=query) & Q(is_public=True)) |
-                                                   (Q(first_name__icontains=query) & Q(is_public=True)) |
-                                                   (Q(last_name__icontains=query) & Q(is_public=True)))
+                                                   (Q(username__icontains=query)) | (Q(first_name__icontains=query)) |
+                                                   (Q(last_name__icontains=query)))
         return query
 
 
