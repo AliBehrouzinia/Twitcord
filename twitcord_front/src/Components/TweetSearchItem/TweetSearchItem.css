@@ -38,15 +38,6 @@
   white-space: nowrap;
 }
 
-.follow-button {
-  float: right;
-  width: 100%;
-}
-
-.item-follow{
-  order: 1;
-}
-
 .item-desc{
   order: 2;
 }
@@ -63,6 +54,8 @@
 .icon-bottom-bar{
   order: 3;
   justify-content: space-around;
+  margin-top: -30px !important;
+  padding: 15px !important;
 }
 
 .name:hover{
@@ -106,10 +99,6 @@
 @media screen and (max-width: 600px) {
   .item-desc {
     order: 1
-  }
-
-  .item-follow{
-    order: 3;
   }
 
   .icon-bottom-bar{

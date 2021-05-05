@@ -2,7 +2,6 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import {Icon} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -74,12 +73,6 @@ export const TweetSearchItem = (props) => {
             </div>
           </div>
         </div>
-      </Grid>
-
-      <Grid item xs={12} sm={3} md={2} className="item-follow">
-        <Button className="follow-button" color="primary" variant="outlined">
-             follow
-        </Button>
       </Grid>
 
       <Grid xs={12} item className="item-desc">
