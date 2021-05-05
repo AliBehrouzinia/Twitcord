@@ -33,6 +33,7 @@ describe('ProfileUserinfo', () => {
                 lastName: '',
                 website: '',
                 isPublic: false,
+                email: '',
             }
           },
           Actions.setProfileInfo({ 
@@ -46,6 +47,7 @@ describe('ProfileUserinfo', () => {
               website: 'www.google.com',
               username: 'jm1243',
               isPublic: false,
+              email: 'hanakariman@yahoo.com',
           })
         )).toEqual({ profileInfo: {
           bio: 'bio',
@@ -58,6 +60,7 @@ describe('ProfileUserinfo', () => {
           website: 'www.google.com',
           username: 'jm1243',
           isPublic: false,
+          email: 'hanakariman@yahoo.com',
           
        }});
     });

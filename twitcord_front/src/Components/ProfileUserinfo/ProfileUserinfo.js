@@ -74,7 +74,7 @@ const ProfileUserinfo = () => {
         </div>
       </div>
       <div className="button-edit">
-      { userGeneralInfo.email === profileInfo.email ? (
+      {  userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email  ? (
             <button className="edit-button">edit profile</button>
           ) : (
             <button className="edit-button">follow</button>
