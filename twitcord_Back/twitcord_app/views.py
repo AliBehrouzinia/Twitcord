@@ -153,3 +153,16 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
         self.check_object_permissions(request=self.request, obj=follow_request)
         return follow_request
+
+
+class LikeCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = serializers.LikeSerializer
+
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self,
+            "tweet_id": self.kwargs['id']
+        }
