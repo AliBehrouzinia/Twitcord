@@ -156,7 +156,7 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
 
 
 class LikeCreateView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, PrivateAccountPermission]
     serializer_class = serializers.LikeSerializer
 
     def get_serializer_context(self):
