@@ -9,6 +9,38 @@ import Tooltip from '@material-ui/core/Tooltip';
 import './TweetSearchItem.css';
 
 export const TweetSearchItem = (props) => {
+  const extractTime = (dateString) => {
+    const date = new Date(dateString);
+    const currentDate = new Date();
+
+    if (date.getMinutes() < currentDate.getMinutes()) {
+      const diff = currentDate.getUTCHours() - date.getUTCHours();
+      if ( diff < 1) {
+        return '1 minute';
+      } else {
+        return diff + ' minutes';
+      }
+    }
+
+    if (date.getUTCHours() < currentDate.getUTCHours()) {
+      const diff = currentDate.getUTCHours() - date.getUTCHours();
+      if ( diff < 1) {
+        return '1 hour';
+      } else {
+        return diff + ' hours';
+      }
+    }
+
+    if (date.getDate() < currentDate.getDate()) {
+      return date.getFullYear() +
+      ',' + ( date.getMonth() + 1 ) +
+      ',' + date.getDate();
+    }
+
+    return 'now';
+  };
+
+
   return (
     <Grid container
       direction="row"
@@ -25,9 +57,16 @@ export const TweetSearchItem = (props) => {
               </Tooltip>
               {!props.isPublic && <Icon className="lock-icon">lock</Icon>}
             </div>
-            <Tooltip title={'@'+props.username} placement="top-start">
-              <Typography className="username">@{props.username}</Typography>
-            </Tooltip>
+            <div className="date-container">
+              <Tooltip title={'@'+props.username} placement="top-start">
+                <Typography className="username">@{props.username}
+                </Typography>
+              </Tooltip>
+              <Typography className="date">
+                <span className="dot"> ^</span>
+                {extractTime(props.createDate)}
+              </Typography>
+            </div>
           </div>
         </div>
       </Grid>
@@ -38,8 +77,8 @@ export const TweetSearchItem = (props) => {
         </Button>
       </Grid>
 
-      {props.desc != null && <Grid xs={12} item className="item-desc">
-        <Typography className="desc">{props.desc}</Typography>
+      {props.content != null && <Grid xs={12} item className="item-desc">
+        <Typography className="desc">{props.content}</Typography>
       </Grid>}
     </Grid>
   );
@@ -48,6 +87,7 @@ export const TweetSearchItem = (props) => {
 TweetSearchItem.propTypes = {
   name: PropTypes.string,
   username: PropTypes.string,
-  desc: PropTypes.string,
+  content: PropTypes.string,
   isPublic: PropTypes.bool,
+  createDate: PropTypes.string,
 };

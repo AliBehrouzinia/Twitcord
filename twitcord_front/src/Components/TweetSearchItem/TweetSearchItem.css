@@ -73,6 +73,12 @@
   white-space: nowrap;
 }
 
+.dot{
+  display: inline-block;
+  width: 15px;
+  text-align: right;
+}
+
 .username:hover{
   text-decoration: underline;
 }
