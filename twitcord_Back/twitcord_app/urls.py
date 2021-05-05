@@ -17,4 +17,6 @@ urlpatterns = [
     path('followings/requests/<int:id>/', views.DeleteFollowRequestView.as_view()),
     path('followers/requests/', views.FollowersRequestsView.as_view()),
     path('followers/requests/<int:id>/', views.AnswerFollowRequestView.as_view()),
+    path('search/user/', views.GlobalUserSearchList.as_view()),
+    path('search/tweet/', views.GlobalTweetSearchList.as_view()),
 ]
