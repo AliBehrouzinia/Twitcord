@@ -85,12 +85,3 @@ class FollowRequest(models.Model):
     class Meta:
         unique_together = ("request_from", "request_to")
         ordering = ['-date']
-
-
-class Like(models.Model):
-    user = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
-    tweet = models.ForeignKey(Tweet, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ("user", "tweet")
