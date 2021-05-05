@@ -79,7 +79,7 @@ const tweetReducer = (state = initialState, action) => {
     case ActionTypes.SET_TWEET_SEARCH_RESULT: {
       return {
         ...state,
-        userSearchResult: action.tweets,
+        tweetSearchResult: action.tweets,
       };
     }
 

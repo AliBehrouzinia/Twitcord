@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux';
 import {SearchBar} from '../SearchBar/SearchBar';
 import Divider from '@material-ui/core/Divider';
 import {UserSearchItem} from '../UserSearchItem/UserSearchItem';
+import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
 
 
 export const Search = () => {
@@ -27,7 +28,7 @@ export const Search = () => {
 
   const tweetResult = tweets.map(
       (tweet) => <div key={tweet.id}>
-        <UserSearchItem
+        <TweetSearchItem
           id={tweet.id}
           name={tweet.first_name + ' ' + tweet.last_name}
           username={tweet.username}
