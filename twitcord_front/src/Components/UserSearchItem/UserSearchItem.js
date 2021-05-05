@@ -38,8 +38,8 @@ export const UserSearchItem = (props) => {
         </Button>
       </Grid>
 
-      {props.desc != null && <Grid xs={12} item className="item-desc">
-        <Typography className="desc">{props.desc}</Typography>
+      {props.bio != null && <Grid xs={12} item className="item-desc">
+        <Typography className="desc">{props.bio}</Typography>
       </Grid>}
     </Grid>
   );
@@ -48,6 +48,6 @@ export const UserSearchItem = (props) => {
 UserSearchItem.propTypes = {
   name: PropTypes.string,
   username: PropTypes.string,
-  desc: PropTypes.string,
+  bio: PropTypes.string,
   isPublic: PropTypes.bool,
 };

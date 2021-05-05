@@ -20,7 +20,8 @@ export const Search = () => {
         <UserSearchItem
           name={user.first_name + ' ' + user.last_name}
           username={user.username}
-          desc={user.desc}
+          bio={user.bio}
+          followState={user.status}
           isPublic={user.is_public}/>
         <Divider />
       </div>,
