@@ -7,6 +7,11 @@ import {Icon} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import './TweetSearchItem.css';
+import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import CachedIcon from '@material-ui/icons/Cached';
+import IconButton from '@material-ui/core/IconButton';
+
 
 export const TweetSearchItem = (props) => {
   const extractTime = (dateString) => {
@@ -77,9 +82,29 @@ export const TweetSearchItem = (props) => {
         </Button>
       </Grid>
 
-      {props.content != null && <Grid xs={12} item className="item-desc">
+      <Grid xs={12} item className="item-desc">
         <Typography className="desc">{props.content}</Typography>
-      </Grid>}
+      </Grid>
+
+      <Grid xs={12} container item className="icon-bottom-bar">
+        <Grid item>
+          <IconButton>
+            <FavoriteBorderIcon/>
+          </IconButton>
+        </Grid>
+
+        <Grid item>
+          <IconButton>
+            <ChatBubbleOutlineIcon/>
+          </IconButton>
+        </Grid>
+
+        <Grid item>
+          <IconButton>
+            <CachedIcon/>
+          </IconButton>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

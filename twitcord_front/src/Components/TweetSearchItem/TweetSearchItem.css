@@ -60,6 +60,11 @@
   white-space: nowrap;
 }
 
+.icon-bottom-bar{
+  order: 3;
+  justify-content: space-around;
+}
+
 .name:hover{
   text-decoration: underline;
 }
@@ -83,6 +88,11 @@
   text-decoration: underline;
 }
 
+.date-container{
+  display: flex;
+  color: rgb(190, 190, 190);
+}
+
 .desc {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -99,6 +109,10 @@
   }
 
   .item-follow{
+    order: 3;
+  }
+
+  .icon-bottom-bar{
     order: 2;
   }
 
