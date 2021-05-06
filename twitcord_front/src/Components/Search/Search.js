@@ -9,7 +9,7 @@ import {UserSearchItem} from '../UserSearchItem/UserSearchItem';
 import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
 
 
-export const Search = () => {
+const Search = () => {
   const users = useSelector((state) => state).tweet.userSearchResult;
   const tweets = useSelector((state) => state).tweet.tweetSearchResult;
 
@@ -58,8 +58,8 @@ export const Search = () => {
           textColor="primary"
           aria-label="disabled tabs example"
         >
-          <Tab label="users" />
-          <Tab label="tweets" />
+          <Tab id="tab-users" label="users" />
+          <Tab id="tab-tweets" label="tweets" />
         </Tabs>
       </Paper>
       {tabSelected == 0 && userResult }
@@ -67,3 +67,5 @@ export const Search = () => {
     </div>
   );
 };
+
+export default Search;
