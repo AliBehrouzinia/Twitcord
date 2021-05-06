@@ -23,6 +23,12 @@
 	width: 25%;
 	outline: none;
 }
+
+.profile-content{
+	text-align: center;
+	color: gray;
+}
+
 .button-rooms {
 	background-color: white;
 	border: none;
