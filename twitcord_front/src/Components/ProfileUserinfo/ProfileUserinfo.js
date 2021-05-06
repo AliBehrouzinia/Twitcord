@@ -9,12 +9,15 @@ import * as API from '../../Utils/API/index';
 import PropTypes from 'prop-types';
 import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
-import {useState} from 'react';
+import { Input } from '@material-ui/core';
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
-  const [profilemail, setprofilemail] = useState('');
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
+  var profileId = -1;
   const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
+  if (userGeneralInfo != null){
+    profileId = userGeneralInfo.pk;
+  }
   const monthNumberToLabelMap = {
     [1]: 'January',
     [2]: 'February',
@@ -30,7 +33,7 @@ const ProfileUserinfo = () => {
     [12]: 'December',
   };
   useEffect(() => {
-    API.profileinfo({id: 1})
+    API.profileinfo({id: profileId})
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data));
         })
@@ -50,10 +53,10 @@ const ProfileUserinfo = () => {
           <Avatar className="avatar" />
         </Grid>
       </Grid>
-      <div className="info-buttom">
+      <Grid className="info-buttom">
       
-      <div container className="grid-info">
-        <div className="info1">
+      <Grid container className="grid-info">
+        <Grid className="info1">
           <text className="grid-username" > user
             {profileInfo.username}
           </text>
@@ -63,24 +66,24 @@ const ProfileUserinfo = () => {
           <text className="grid-joined" > joined
             { '    '+dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
           </text>
-        </div>
-        <div className = "info2">
-          <text className = "followers" > followers {' '} 0
+        </Grid>
+        <Grid className = "info2">
+          <text className = "followers" > followers {' '} 
             {/* {store.getState().tweet.profileInfo.followers} */}
           </text>
-          <text className = "followings" > followings {' '}0
+          <text className = "followings" > followings {' '}
             {/* {store.getState().tweet.profileInfo.followings} */}
           </text>
-        </div>
-      </div>
-      <div className="button-edit">
+        </Grid>
+      </Grid>
+      <Grid className="button-edit">
       {  userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email  ? (
-            <button className="edit-button">edit profile</button>
+            <button className="edit-button">edit </button>
           ) : (
             <button className="edit-button">follow</button>
           )}
-      </div>
-      </div>
+      </Grid>
+      </Grid>
     </Grid>
   );
 };

@@ -23,10 +23,14 @@
 	border-radius: 4px;
 	border: 0.5px solid #757bad;
 	background-color: transparent;
-	padding: 10px 24px;
-	font-size: calc(9px + 0.2vw);
-	outline: none;
+	padding: 4px 30px;
+	font-size: calc(10px + 0.2vw);
+
 	
+}
+.edit-button :hover {
+   background-color: rgb(187, 184, 184);
+   cursor: pointer;
 }
 .grid-info {
 	display: flex;
@@ -60,14 +64,15 @@
 }
 .followings {
 	color: rgb(115, 115, 122);
-	font-size: calc(10px + 0.3vw);
+	font-size: calc(11px + 0.3vw);
+	background-color: transparent;
 	margin-left: 5px;
-	margin-top: 1%;
+	margin-top: 2%;
 }
 .followers {
 	color: rgb(115, 115, 122);
-	font-size: calc(10px + 0.3vw);
-	margin-top: 1%;
+	font-size: calc(11px + 0.3vw);
+	margin-top: 2%;
 }
 
 .grid-username {
@@ -75,12 +80,12 @@
 	font-size: calc(12px + 1vw);
 }
 .grid-bio {
-	margin-top: 1%;
+	margin-top: 2%;
 	color: rgb(115, 115, 122);
-	font-size: calc(10px + 0.5vw);
+	font-size: calc(11px + 0.5vw);
 }
 .grid-joined {
-	margin-top: 1%;
+	margin-top: 2%;
 	color: rgb(115, 115, 122);
-	font-size: calc(10px + 0.3vw);
+	font-size: calc(11px + 0.3vw);
 }
