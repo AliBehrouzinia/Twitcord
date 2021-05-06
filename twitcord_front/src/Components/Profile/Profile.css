@@ -1,15 +1,7 @@
-.profile {
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-	width: 100%;
-}
-.profile_info {
+.grid-item{
+	align-self: center;	
 	justify-content: center;
-	margin-right: 20%;
-	margin-left: 20%;
-	display: flex;
-	flex-direction: column;
+	min-width: 30rem;
 }
 .info3 {
 	display: flex;
@@ -50,10 +42,6 @@
 .button-rooms:hover {
 	background-color: rgb(230, 230, 230);
 	border-bottom: 0.5px solid rgb(105, 105, 105);
-}
-.profiletabs {
-	margin-right: 20%;
-	margin-left: 20%;
 }
 .choose {
 	display: flex;

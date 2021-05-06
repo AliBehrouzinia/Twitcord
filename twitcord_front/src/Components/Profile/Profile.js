@@ -4,11 +4,12 @@ import ProfileTweetlist from '../ProfileTweetlist/ProfileTweetlist';
 import './Profile.css';
 import {useState} from 'react';
 import PropTypes from 'prop-types';
+import Grid from '@material-ui/core/Grid';
 const Profile = () => {
   const [componentid, setcomponentid] = useState('');
   return (
-    <div className = "profile">
-      <div className = "profile_info">
+    <Grid container item className="grid-item">
+      <Grid  xs={12} sm={10} md={8}>
         <ProfileUserinfo/>
         <div className= "info3">
           <button className="button-tweet"
@@ -20,8 +21,8 @@ const Profile = () => {
           <button className="button-rooms"
             id='4' onClick={() => setcomponentid(4)}>rooms</button>
         </div>
-      </div>
-      <div className ="profiletabs">
+      </Grid>
+      <Grid  xs={12} sm={10} md={8}>
         {componentid === 1 ? (
             <ProfileTweetlist/>
           ) : (
@@ -29,8 +30,8 @@ const Profile = () => {
               <div > choose a tab</div>
             </div>
           )}
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 };
 Profile.propTypes = {
