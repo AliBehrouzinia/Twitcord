@@ -155,9 +155,20 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         return follow_request
 
 
-class LikeCreateView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, PrivateAccountPermission]
+class LikeCreateView(generics.CreateAPIView, generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated, PrivateAccountTweetPermission]
     serializer_class = serializers.LikeSerializer
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        user_id = self.request.user.id
+        obj = get_object_or_404(queryset, user=user_id)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def get_queryset(self):
+        tweet_id = self.kwargs.get('id')
+        return models.Like.objects.filter(tweet=tweet_id)
 
     def get_serializer_context(self):
         return {
@@ -169,7 +180,7 @@ class LikeCreateView(generics.CreateAPIView):
 
 
 class UsersLikedTweetListView(generics.ListAPIView):
-    permission_classes = [PrivateAccountPermission]
+    permission_classes = [PrivateAccountTweetPermission]
     serializer_class = serializers.UsersLikedSerializer
 
     def get_queryset(self):

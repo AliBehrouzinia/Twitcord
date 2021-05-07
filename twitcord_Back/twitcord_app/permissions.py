@@ -22,7 +22,7 @@ class AnswerFollowRequestPermission(permissions.BasePermission):
         return obj.request_to == request.user
 
 
-class PrivateAccountPermission(permissions.BasePermission):
+class PrivateAccountTweetPermission(permissions.BasePermission):
     message = "You can't access the private account you are not following."
 
     def has_permission(self, request, view):
@@ -31,6 +31,9 @@ class PrivateAccountPermission(permissions.BasePermission):
         tweet = get_object_or_404(models.Tweet, id=tweet_id)
 
         if tweet.user.is_public:
+            return True
+
+        if tweet.user == user:
             return True
 
         if models.UserFollowing.objects.filter(user=user, following_user=tweet.user).exists():
