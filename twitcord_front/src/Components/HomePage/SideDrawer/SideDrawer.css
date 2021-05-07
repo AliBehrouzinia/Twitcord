@@ -20,14 +20,18 @@
     float: right;
     display: flex;
     cursor: pointer;  
+    margin-top: 3px;
     border-radius: 55px;
     align-items: center;
+
 }
 
 .sd-container{
     width: min-content;
     float: right;
     padding:20px;
+    display: grid;
+    justify-items: center;
 }
 
 .sd-item:hover{
@@ -40,6 +44,26 @@
     float: right;
     display: flex;
     align-items: center;
+    margin-top: 3px;
     border-radius: 55px;
     background: rgb(231, 231, 231);
+}
+
+@media screen and (max-width: 900px)  {
+    .sd-title {
+        display: none;
+      }
+
+    .app-name{
+        padding: 0px !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+      .app-name{
+          display: none;
+      }
+      .sd-container{
+        padding:5%;
+    }
 }
