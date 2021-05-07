@@ -27,6 +27,7 @@ const initialState = {
     username: '',
     isPublic: false,
   },
+  drawerSelectedTab: -1
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -93,6 +94,13 @@ const tweetReducer = (state = initialState, action) => {
           userProfile: action.profile_img,
         },
       };
+    }
+
+    case ActionTypes.SET_DRAWER_SELECTED_TAB: {
+      return {
+        ...state,
+        drawerSelectedTab : action.selectedTab
+      }
     }
     
     default:

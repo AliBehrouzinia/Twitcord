@@ -7,19 +7,26 @@ import RecordVoiceOverRoundedIcon from '@material-ui/icons/RecordVoiceOverRounde
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Typography from '@material-ui/core/Typography';
 import './SideDrawer.css'
+import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import * as Actions from '../../../redux/Actions/index';
 
 
 const SideDrawer = () => {
   const windowHeight = window['innerHeight']
-
-  const [selectedIndex, setSelectedIndex] = useState(-1);  
+  const selectedIndex = useSelector((state) => state).tweet.drawerSelectedTab;
+  const dispatch = useDispatch();
 
   return (
       <div style={{height:windowHeight}}>
         <div className="sd-container">
             <Typography className="app-name">TweetCord</Typography>
             <div 
-            onClick={() => setSelectedIndex(0)}
+            onClick={() => dispatch(
+              Actions.setDrawerSelectedTab({
+                selectedTab: 0,
+              }),
+            )}
             className={selectedIndex === 0 ? "sd-item-selected" : "sd-item"}
             >
               <HomeRoundedIcon className="sd-icon" />
@@ -27,7 +34,11 @@ const SideDrawer = () => {
             </div>
 
             <div 
-            onClick={() => setSelectedIndex(1)}
+            onClick={() => dispatch(
+              Actions.setDrawerSelectedTab({
+                selectedTab: 1,
+              }),
+            )}
             className={selectedIndex === 1 ? "sd-item-selected" : "sd-item"}
             >
               <PersonRoundedIcon className="sd-icon" />
@@ -35,7 +46,11 @@ const SideDrawer = () => {
             </div>
 
             <div
-            onClick={() => setSelectedIndex(2)}
+            onClick={() => dispatch(
+              Actions.setDrawerSelectedTab({
+                selectedTab: 2,
+              }),
+            )}
             className={selectedIndex === 2 ? "sd-item-selected" : "sd-item"}
             >
               <NotificationsRoundedIcon className="sd-icon" />
@@ -43,7 +58,11 @@ const SideDrawer = () => {
             </div>
 
             <div
-            onClick={() => setSelectedIndex(3)}
+            onClick={() => dispatch(
+              Actions.setDrawerSelectedTab({
+                selectedTab: 3,
+              }),
+            )}
             className={selectedIndex === 3 ? "sd-item-selected" : "sd-item"}
             >
               <SearchRoundedIcon className="sd-icon"/>
@@ -51,7 +70,11 @@ const SideDrawer = () => {
             </div>
 
             <div 
-            onClick={() => setSelectedIndex(4)}
+            onClick={() => dispatch(
+              Actions.setDrawerSelectedTab({
+                selectedTab: 4,
+              }),
+            )}
             className={selectedIndex === 4 ? "sd-item-selected" : "sd-item"}
             >
               <RecordVoiceOverRoundedIcon className="sd-icon"/>
@@ -59,7 +82,11 @@ const SideDrawer = () => {
             </div>
 
             <div 
-            onClick={() => setSelectedIndex(5)}
+            onClick={() => dispatch(
+              Actions.setDrawerSelectedTab({
+                selectedTab: 5,
+              }),
+            )}
             className={selectedIndex === 5 ? "sd-item-selected" : "sd-item"}
             >
               <MailOutlineIcon className="sd-icon"/>

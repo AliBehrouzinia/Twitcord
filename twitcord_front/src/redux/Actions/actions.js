@@ -29,3 +29,8 @@ export const setUserGeneralInfo = (data) => ({
   type: ActionTypes.SET_USER_GENERAL_INFO,
   ...data,
 });
+
+export const setDrawerSelectedTab = (data) => ({
+  type: ActionTypes.SET_DRAWER_SELECTED_TAB,
+  ...data,
+});
