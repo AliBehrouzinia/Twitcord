@@ -1,0 +1,10 @@
+.tweetlist{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(230, 230, 230);
+    min-width: 30rem;
+    height: 100px;
+    color: grey;
+    
+}
