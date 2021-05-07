@@ -18,5 +18,6 @@ urlpatterns = [
     path('followers/requests/', views.FollowersRequestsView.as_view()),
     path('followers/requests/<int:id>/', views.AnswerFollowRequestView.as_view()),
     path('like/tweet/<int:id>/', views.LikeCreateView.as_view()),
-    path('users/like/tweet/<int:id>/', views.UsersLikedTweetListView.as_view())
+    path('users/like/tweet/<int:id>/', views.UsersLikedTweetListView.as_view()),
+    path('tweets/like/user/<int:id>/', views.TweetsLikedListView.as_view())
 ]

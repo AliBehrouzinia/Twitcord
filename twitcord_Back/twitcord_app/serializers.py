@@ -118,3 +118,11 @@ class UsersLikedSerializer(serializers.ModelSerializer):
         result['first_name'] = instance.user.first_name
         result['last_name'] = instance.user.last_name
         return result
+
+
+class TweetsLikedListSerializer(serializers.ModelSerializer):
+    tweet = TweetSerializer(read_only=True)
+
+    class Meta:
+        model = Like
+        fields = '__all__'

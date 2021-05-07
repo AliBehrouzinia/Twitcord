@@ -186,3 +186,12 @@ class UsersLikedTweetListView(generics.ListAPIView):
     def get_queryset(self):
         tweet_id = self.kwargs.get('id')
         return models.Like.objects.filter(tweet=tweet_id)
+
+
+class TweetsLikedListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountUserPermission]
+    serializer_class = serializers.TweetsLikedListSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['id']
+        return models.Like.objects.filter(user=user_id)
