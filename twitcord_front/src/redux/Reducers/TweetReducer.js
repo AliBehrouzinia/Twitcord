@@ -28,12 +28,9 @@ const initialState = {
     email: '',
 
   },
-<<<<<<< HEAD
-  drawerSelectedTab: -1
-=======
+  drawerSelectedTab: -1,
   tweetText: '',
   tweetCharCount: 0,
->>>>>>> b5059350740923c83ee7524e19bf01cc3c8bda72
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -109,7 +106,7 @@ const tweetReducer = (state = initialState, action) => {
         drawerSelectedTab : action.selectedTab
       }
     }
-    
+
     default:
       return state;
   }
