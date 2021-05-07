@@ -46,7 +46,7 @@ class ActionOnFollowRequestType(enum.Enum):
 
 class ListOfFollowingsView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.FollowingsSerializer
+    serializer_class = serializers.ListOfFollowingsSerializer
 
     def get_queryset(self):
         user = self.request.user.id
@@ -55,7 +55,7 @@ class ListOfFollowingsView(generics.ListAPIView):
 
 class ListOfFollowersView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.FollowingsSerializer
+    serializer_class = serializers.ListOfFollowersSerializer
 
     def get_queryset(self):
         user = self.request.user.id
