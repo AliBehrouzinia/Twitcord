@@ -2,6 +2,7 @@
 import React from 'react';
 import LogIn from './Components/LogIn/LogIn.js';
 import SignUp from './Components/SignUp/SignUp.js';
+import HomePage from './Components/HomePage/HomePage.js';
 // import TweetBox from './Components/TweetBox/TweetBox';
 import {Provider} from 'react-redux';
 import store from './redux/store.js';
@@ -16,6 +17,7 @@ function App() {
         {/* <TweetBox /> */}
         <BrowserRouter>
           <div>
+            <Route exact path="/hp" component={HomePage} />
             <Route exact path="/edit-profile" component={EditProfile} />
             <Route exact path="/login" component={LogIn} />
             <Route exact path="/signup" component={SignUp} />
