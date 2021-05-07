@@ -16,19 +16,22 @@ const initialState = {
     email: '',
     password: '',
   },
-  tweetText: '',
-  tweetCharCount: 0,
   userSearchResult: [],
   tweetSearchResult: [],
   profileInfo: {
+    username: '',
     bio: '',
+    date_joined: '',
     birthday: '',
     firstName: '',
     lastName: '',
     website: '',
-    username: '',
     isPublic: false,
+    email: '',
+
   },
+  tweetText: '',
+  tweetCharCount: 0,
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -61,7 +64,6 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
-
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
@@ -95,6 +97,8 @@ const tweetReducer = (state = initialState, action) => {
           website: action.website,
           username: action.username,
           isPublic: action.isPublic,
+          email: action.email,
+          date_joined: action.date_joined,
         },
       };
     }
