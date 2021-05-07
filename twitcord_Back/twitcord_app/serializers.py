@@ -102,6 +102,10 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
         result['is_public'] = user.is_public
         return result
 
+    class Meta:
+        model = UserFollowing
+        fields = ['user']
+
 
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
