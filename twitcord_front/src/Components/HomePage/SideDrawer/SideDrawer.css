@@ -1,0 +1,45 @@
+.app-name{
+    font-size: x-large !important;
+    text-align: right;
+    font-family: monospace !important;
+    font-weight: bold;
+    padding-right: 45px !important;
+    float: right;
+    margin-bottom: 50px !important;
+}
+
+.sd-icon{
+    padding: 20px;
+}
+
+.sd-title{
+    width: 120px;
+}
+
+.sd-item{
+    float: right;
+    display: flex;
+    cursor: pointer;  
+    border-radius: 55px;
+    align-items: center;
+}
+
+.sd-container{
+    width: min-content;
+    float: right;
+    padding:20px;
+}
+
+.sd-item:hover{
+    float: right;
+    border-radius: 55px;
+    background: rgb(248, 248, 248);
+}
+
+.sd-item-selected{
+    float: right;
+    display: flex;
+    align-items: center;
+    border-radius: 55px;
+    background: rgb(231, 231, 231);
+}
