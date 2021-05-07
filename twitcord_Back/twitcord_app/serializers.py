@@ -147,4 +147,5 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
         result['username'] = user.username
         result['first_name'] = user.first_name
         result['last_name'] = user.last_name
+        result['is_public'] = user.is_public
         return result
