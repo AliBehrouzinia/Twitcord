@@ -25,7 +25,7 @@ const request = (data, url, method) => {
     return instance({
       method: method,
       url: url,
-      data,
+      data: data,
     });
   } else {
     return withoutAuthInstance({
@@ -60,6 +60,14 @@ export const logIn = (data) => {
   );
 };
 
+
+export const profileinfo = (data) => {
+  return request(
+    {},
+    Constants.URL_PROFILE_INFO.replace('{id}', data.id),
+    Constants.GET_REQUEST_METHOD,
+);
+};
 export const getProfileInfo = (data) => {
   return request(
       {},

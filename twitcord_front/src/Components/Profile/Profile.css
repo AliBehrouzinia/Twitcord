@@ -1,0 +1,59 @@
+.grid-item{
+	align-self: center;	
+	justify-content: center;
+	min-width: 30rem;
+}
+.info3 {
+	display: flex;
+	flex-direction: row;
+	min-width: 30rem;
+}
+.button {
+	background-color: white;
+	border: none;
+	font-size: 12px;
+	width: 25%;
+	outline: none;
+}
+.button-tweet {
+	background-color: white;
+	border: none;
+	border-left: 0.5px solid black;
+	font-size: 12px;
+	width: 25%;
+	outline: none;
+}
+
+.profile-content{
+	text-align: center;
+	color: gray;
+}
+
+.button-rooms {
+	background-color: white;
+	border: none;
+	border-right: 0.5px solid black;
+	font-size: 12px;
+	width: 25%;
+	outline: none;
+}
+.button:hover {
+	background-color: rgb(230, 230, 230);
+	border-bottom: 0.5px solid rgb(105, 105, 105);
+}
+.button-tweet:hover {
+	background-color: rgb(230, 230, 230);
+	border-bottom: 0.5px solid rgb(105, 105, 105);
+}
+.button-rooms:hover {
+	background-color: rgb(230, 230, 230);
+	border-bottom: 0.5px solid rgb(105, 105, 105);
+}
+.choose {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding-top: 7%;
+	color: rgb(175, 170, 170);
+	min-width: 30rem;
+}
