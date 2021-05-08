@@ -21,9 +21,14 @@
     display: flex;
     cursor: pointer;  
     margin-top: 3px;
+    box-sizing: unset;
     border-radius: 55px;
     align-items: center;
+}
 
+.sd-root{
+    position: fixed;
+    width: 30%;
 }
 
 .sd-container{
@@ -37,6 +42,7 @@
 .sd-item:hover{
     float: right;
     border-radius: 55px;
+    box-sizing: unset;
     background: rgb(248, 248, 248);
 }
 
@@ -44,6 +50,7 @@
     float: right;
     display: flex;
     align-items: center;
+    box-sizing: unset;
     margin-top: 3px;
     border-radius: 55px;
     background: rgb(231, 231, 231);
