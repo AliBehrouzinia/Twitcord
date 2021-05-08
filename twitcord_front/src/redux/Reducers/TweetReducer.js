@@ -30,7 +30,7 @@ const initialState = {
     email: '',
 
   },
-  drawerSelectedTab: -1,
+  sideDrawerEnable: true,
   tweetText: '',
   tweetCharCount: 0,
 };
@@ -65,6 +65,7 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
+
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
@@ -116,10 +117,10 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
-    case ActionTypes.SET_DRAWER_SELECTED_TAB: {
+    case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
       return {
         ...state,
-        drawerSelectedTab: action.selectedTab,
+        sideDrawerEnable: action.enable,
       };
     }
 

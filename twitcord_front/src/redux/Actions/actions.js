@@ -40,7 +40,7 @@ export const setUserGeneralInfo = (data) => ({
   ...data,
 });
 
-export const setDrawerSelectedTab = (data) => ({
-  type: ActionTypes.SET_DRAWER_SELECTED_TAB,
+export const setSideDrawerEnable = (data) => ({
+  type: ActionTypes.SET_SIDE_DRAWER_ENABLE,
   ...data,
 });

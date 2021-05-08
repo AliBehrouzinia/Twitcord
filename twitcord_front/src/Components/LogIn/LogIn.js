@@ -39,6 +39,11 @@ const LogIn = () => {
                 }),
             );
             resolve(response);
+            dispatch(
+                Actions.setSideDrawerEnable({
+                  enable: true,
+                }),
+            );
           })
           .catch((error) => {
             setSnackbarAlertMessage(

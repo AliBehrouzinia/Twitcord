@@ -43,14 +43,3 @@
   float: right;
 }
 
-@media screen and (max-width: 600px) and (min-width: 0px) {
-  .tweet-box {
-    width: 90% !important;
-  }
-}
-
-@media screen and (max-width: 900px) and (min-width: 600px) {
-  .tweet-box {
-    width: 80% !important;
-  }
-}

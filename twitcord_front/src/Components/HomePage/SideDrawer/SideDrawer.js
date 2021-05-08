@@ -1,32 +1,54 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import NotificationsRoundedIcon from '@material-ui/icons/NotificationsRounded';
 import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import RecordVoiceOverRoundedIcon from
   '@material-ui/icons/RecordVoiceOverRounded';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Typography from '@material-ui/core/Typography';
 import './SideDrawer.css';
-import {useSelector} from 'react-redux';
+import Avatar from '@material-ui/core/Avatar';
+import Menu from '@material-ui/core/Menu';
 import {useDispatch} from 'react-redux';
+import MenuItem from '@material-ui/core/MenuItem';
+import * as Constants from '../../../Utils/Constants.js';
 import * as Actions from '../../../redux/Actions/index';
-
 
 const SideDrawer = () => {
   const history = useHistory();
-  const windowHeight = window['innerHeight'];
-  const selectedIndex = useSelector((state) => state).tweet.drawerSelectedTab;
   const dispatch = useDispatch();
+  const windowHeight = window['innerHeight'];
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (index) => {
-    console.log(index);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleMenuClose();
+    localStorage.setItem(
+        Constants.GENERAL_USER_INFO, null,
+    );
+
     dispatch(
-        Actions.setDrawerSelectedTab({
-          selectedTab: index,
+        Actions.setSideDrawerEnable({
+          enable: false,
         }),
     );
+
+    history.push('/login');
+  };
+
+  const handleClick = (index) => {
+    setSelectedIndex(index);
 
     switch (index) {
       case 0:
@@ -106,6 +128,20 @@ const SideDrawer = () => {
           <Typography className="sd-title">Message</Typography>
         </div>
       </div>
+      <div className="sd-account" onClick={handleMenuClick}>
+        <Avatar className="sd-avatar" />
+        <Typography className="sd-user-email sd-title">username</Typography>
+      </div>
+      <Menu
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}>
+        <MenuItem onClick={handleLogout}>
+          <ExitToAppIcon className="sd-logout-icon"/>
+          <Typography>Logout</Typography>
+        </MenuItem>
+      </Menu>
     </div>
   );
 };

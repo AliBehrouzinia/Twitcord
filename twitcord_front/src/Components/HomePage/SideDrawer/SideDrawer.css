@@ -26,6 +26,30 @@
     align-items: center;
 }
 
+.sd-user-email{
+    width: fit-content;
+}
+
+.sd-avatar{
+    margin: 20px;
+}
+
+.sd-logout-icon{
+    margin-right: 20px;
+}
+
+.sd-account{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 30px;
+    margin-right: 45px;
+    width: fit-content;
+}
+
 .sd-root{
     position: fixed;
     width: 30%;
@@ -64,6 +88,10 @@
     .app-name{
         padding: 0px !important;
     }
+
+    .sd-account{
+        margin-right: 30px;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -73,4 +101,9 @@
       .sd-container{
         padding:5%;
     }
+
+    .sd-account{
+        margin-right: 0px;
+    }
+    
 }
