@@ -116,16 +116,13 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
-<<<<<<< HEAD
     case ActionTypes.SET_DRAWER_SELECTED_TAB: {
       return {
         ...state,
-        drawerSelectedTab : action.selectedTab
-      }
+        drawerSelectedTab: action.selectedTab,
+      };
     }
 
-=======
->>>>>>> 3428b6f1a781d9c0f2d08d8ac6565c99217ed189
     default:
       return state;
   }
