@@ -14,6 +14,8 @@ import * as API from '../../Utils/API/index';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import * as Constants from '../../Utils/Constants.js';
 import './SignUp.css';
+import logo from '../../assets/twitcord.png';
+
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
   const store = useStore();
@@ -49,12 +51,13 @@ const SignUp = () => {
   };
   return (
     <div>
-      <Container component="main" maxWidth="xs">
+      <Container className="su-root" component="main" maxWidth="xs">
         {isSnackbarOpen && (<SnackbarAlert
           alertMessage={snackbarAlertMessage}
           severity={snackbarAlertSeverity}/>)}
         <CssBaseline />
-        <div>
+        <div className="su-content-container">
+          <img className="su-logo" src={logo} />
           <Formik
             initialValues={{
               username: '',

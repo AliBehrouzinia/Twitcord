@@ -14,6 +14,8 @@ import PropTypes from 'prop-types';
 import * as Constants from '../../Utils/Constants.js';
 import * as Actions from '../../redux/Actions/index.js';
 import './LogIn.css';
+import logo from '../../assets/twitcord.png';
+
 /* eslint-disable require-jsdoc */
 const LogIn = () => {
   const store = useStore();
@@ -84,12 +86,14 @@ const LogIn = () => {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container className="lg-root" component="main" maxWidth="xs">
       {isSnackbarOpen && (<SnackbarAlert
         alertMessage={snackbarAlertMessage}
         severity={snackbarAlertSeverity}/>)}
       <CssBaseline />
-      <div>
+      <div className="lg-content-container">
+        <img className="lg-logo" src={logo} />
+
         <Formik
           initialValues={{
             email: '',

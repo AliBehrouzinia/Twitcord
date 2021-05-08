@@ -4,7 +4,6 @@
   }
   
 .form {
-    margin-top: 50px;
     margin-bottom: 50px;
     display: flex;
     flex-direction: column;
@@ -20,4 +19,22 @@ form .grid-item {
   margin-top: 5px;
 }
   
-  
+.su-root{
+  box-shadow: 0px 0px 82px 120px #e4e4e4;
+  border-radius: 7px;
+  padding-bottom: 1px;
+  position: absolute;
+  top: 20%;
+  right: 50%;
+  transform: translateY(-50%);
+  transform: translateX(50%);
+}
+
+.su-content-container{
+  text-align: center;
+}
+
+.su-logo{
+  width: 120px;
+  padding-top: 30px;
+}
