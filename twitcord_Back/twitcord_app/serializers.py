@@ -102,7 +102,6 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
         result['is_public'] = user.is_public
         return result
 
-<<<<<<< HEAD
     class Meta:
         model = UserFollowing
         fields = ['user']
@@ -150,7 +149,6 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
         result['last_name'] = user.last_name
         result['is_public'] = user.is_public
         return result
-=======
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -183,4 +181,3 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
->>>>>>> 4fb7c29d057943b9b724292b0110e24a45648014
