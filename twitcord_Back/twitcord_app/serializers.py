@@ -102,6 +102,53 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
         result['is_public'] = user.is_public
         return result
 
+    class Meta:
+        model = UserFollowing
+        fields = ['user']
+
+
+class GlobalUserSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TwitcordUser
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'profile_img', 'email', 'bio']
+
+    def to_representation(self, instance):
+        result = super(GlobalUserSearchSerializer, self).to_representation(instance)
+        instance_user = instance.pk
+        request_user = self.context['request'].user
+        followings = UserFollowing.objects.filter(user_id=request_user.id)
+        requests = FollowRequest.objects.filter(request_from=request_user.id)
+        queryset1 = []
+        for item in followings:
+            queryset1.append(item.following_user.id)
+        queryset2 = []
+        for item in requests:
+            queryset2.append(item.request_to.id)
+            print(item.request_to.id)
+        if instance_user in queryset2:
+            result['status'] = "pending"
+        elif instance_user in queryset1:
+            result['status'] = "following"
+        else:
+            result['status'] = "not following"
+        return result
+
+
+class GlobalTweetSearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tweet
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super(GlobalTweetSearchSerializer, self).to_representation(instance)
+        user = instance.user
+        result['id'] = result.pop('user')
+        result['profile_img'] = user.profile_img.url
+        result['username'] = user.username
+        result['first_name'] = user.first_name
+        result['last_name'] = user.last_name
+        result['is_public'] = user.is_public
+        return result
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:

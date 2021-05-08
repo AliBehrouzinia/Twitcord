@@ -5,7 +5,7 @@ import './EditProfile.css';
 import image from '../../assets/image.png';
 import {Formik, Form, Field} from 'formik';
 import {Button} from '@material-ui/core';
-import {TextField,CheckboxWithLabel} from 'formik-material-ui';
+import {TextField, CheckboxWithLabel} from 'formik-material-ui';
 import {DatePicker} from 'formik-material-ui-pickers';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {useSelector} from 'react-redux';
@@ -13,7 +13,7 @@ import {useDispatch} from 'react-redux';
 import DateFnsUtils from '@date-io/date-fns';
 import * as API from '../../Utils/API/index';
 import * as Actions from '../../redux/Actions/index';
-import FormGroup from "@material-ui/core/FormGroup";
+import FormGroup from '@material-ui/core/FormGroup';
 import * as Constants from '../../Utils/Constants.js';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -25,38 +25,40 @@ const EditProfile = () => {
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const profileId = -1;
-  const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
-  if (userGeneralInfo != null){
+  const userGeneralInfo = JSON.parse(
+      localStorage.getItem(Constants.GENERAL_USER_INFO),
+  );
+  if (userGeneralInfo != null) {
     profileId = userGeneralInfo.pk;
   }
   const dispatch = useDispatch();
 
   const requestProfileInfo = (
-    dispatch,
-    setSnackbarAlertMessage,
-    setSnackbarAlertSeverity,
+      dispatch,
+      setSnackbarAlertMessage,
+      setSnackbarAlertSeverity,
   ) => {
-  API.getProfileInfo({id: profileId})
-      .then((response) => {
-        handleProfileInfoResponse(dispatch, response.data);
-      })
-      .catch((error) => {
-        showSnackbar(
-            Constants.EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE,
-            Constants.SNACKBAR_ERROR_SEVERITY,
-            dispatch,
-            setSnackbarAlertMessage,
-            setSnackbarAlertSeverity,
-        );
-      });
+    API.getProfileInfo({id: profileId})
+        .then((response) => {
+          handleProfileInfoResponse(dispatch, response.data);
+        })
+        .catch((error) => {
+          showSnackbar(
+              Constants.EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE,
+              Constants.SNACKBAR_ERROR_SEVERITY,
+              dispatch,
+              setSnackbarAlertMessage,
+              setSnackbarAlertSeverity,
+          );
+        });
   };
 
   const showSnackbar = (
-    message,
-    severity,
-    dispatch,
-    setSnackbarAlertMessage,
-    setSnackbarAlertSeverity,
+      message,
+      severity,
+      dispatch,
+      setSnackbarAlertMessage,
+      setSnackbarAlertSeverity,
   ) => {
     setSnackbarAlertMessage(
         message);
@@ -81,7 +83,7 @@ const EditProfile = () => {
       lastName: data.last_name,
       website: data.website,
       username: data.username,
-      isPublic: data.is_public
+      isPublic: data.is_public,
     }));
   };
 
@@ -96,38 +98,38 @@ const EditProfile = () => {
       data.birthday = profileInfo.birthday;
     }
 
-  const isDataChanged = checkDataChanged(profileInfo, data);
+    const isDataChanged = checkDataChanged(profileInfo, data);
 
-  if (isDataChanged) {
-    const dataToSend = {
-      bio: data.bio,
-      birth_date: data.birthday,
-      first_name: data.firstName,
-      last_name: data.lastName,
-      website: data.website,
-      username: data.username,
-      is_public: data.isPublic
-    };
+    if (isDataChanged) {
+      const dataToSend = {
+        bio: data.bio,
+        birth_date: data.birthday,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        website: data.website,
+        username: data.username,
+        is_public: data.isPublic,
+      };
 
-    API.updateProfileInfo(profileId, dataToSend)
-        .then((response) => {
-          saveProfileInfo(dispatch, response.data);
-          showSnackbar(
-              Constants.EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE,
-              Constants.SNACKBAR_SUCCESS_SEVERITY,
-              dispatch,
-              setSnackbarAlertMessage,
-              setSnackbarAlertSeverity,
-          );
-        }).catch((error) => {
-          showSnackbar(
-              Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
-              Constants.SNACKBAR_ERROR_SEVERITY,
-              dispatch,
-              setSnackbarAlertMessage,
-              setSnackbarAlertSeverity,
-          );
-        });
+      API.updateProfileInfo(profileId, dataToSend)
+          .then((response) => {
+            saveProfileInfo(dispatch, response.data);
+            showSnackbar(
+                Constants.EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE,
+                Constants.SNACKBAR_SUCCESS_SEVERITY,
+                dispatch,
+                setSnackbarAlertMessage,
+                setSnackbarAlertSeverity,
+            );
+          }).catch((error) => {
+            showSnackbar(
+                Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
+                Constants.SNACKBAR_ERROR_SEVERITY,
+                dispatch,
+                setSnackbarAlertMessage,
+                setSnackbarAlertSeverity,
+            );
+          });
     } else {
       showSnackbar(
           Constants.EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE,
@@ -234,7 +236,7 @@ const EditProfile = () => {
                 onSubmitClicked(
                     dispatch,
                     profileInfo,
-                    {...values,isPublic : !values.isPublic},
+                    {...values, isPublic: !values.isPublic},
                     setSnackbarAlertMessage,
                     setSnackbarAlertSeverity,
                 );
@@ -299,7 +301,7 @@ const EditProfile = () => {
                         component={CheckboxWithLabel}
                         type="checkbox"
                         color="primary"
-                        Label={{ label: 'Private Account' }}
+                        Label={{label: 'Private Account'}}
                         name="isPublic"
                       />
                     </FormGroup>
