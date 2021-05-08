@@ -9,13 +9,15 @@ import * as API from '../../Utils/API/index';
 import PropTypes from 'prop-types';
 import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
-import { Input } from '@material-ui/core';
+
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
-  var profileId = -1;
-  const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
-  if (userGeneralInfo != null){
+  let profileId = -1;
+  const userGeneralInfo = JSON.parse(
+      localStorage.getItem(Constants.GENERAL_USER_INFO),
+  );
+  if (userGeneralInfo != null) {
     profileId = userGeneralInfo.pk;
   }
   const monthNumberToLabelMap = {
@@ -54,35 +56,38 @@ const ProfileUserinfo = () => {
         </Grid>
       </Grid>
       <Grid className="info-buttom">
-      
-      <Grid container className="grid-info">
-        <Grid className="info1">
-          <text className="grid-username" > user
-            {profileInfo.username}
-          </text>
-          <text className="grid-bio" >
-            {profileInfo.bio}
-          </text>
-          <text className="grid-joined" > joined
-            { '    '+dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
-          </text>
+
+        <Grid container className="grid-info">
+          <Grid className="info1">
+            <text className="grid-username" > user
+              {profileInfo.username}
+            </text>
+            <text className="grid-bio" >
+              {profileInfo.bio}
+            </text>
+            <text className="grid-joined" > joined
+              { '    '+dt + '    ' +
+              monthNumberToLabelMap[month] +
+               '    ' + year}
+            </text>
+          </Grid>
+          <Grid className = "info2">
+            <text className = "followers" > followers {' '}
+              {/* {store.getState().tweet.profileInfo.followers} */}
+            </text>
+            <text className = "followings" > followings {' '}
+              {/* {store.getState().tweet.profileInfo.followings} */}
+            </text>
+          </Grid>
         </Grid>
-        <Grid className = "info2">
-          <text className = "followers" > followers {' '} 
-            {/* {store.getState().tweet.profileInfo.followers} */}
-          </text>
-          <text className = "followings" > followings {' '}
-            {/* {store.getState().tweet.profileInfo.followings} */}
-          </text>
-        </Grid>
-      </Grid>
-      <Grid className="button-edit">
-      {  userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email  ? (
+        <Grid className="button-edit">
+          { userGeneralInfo !== null &&
+           userGeneralInfo.email === profileInfo.email ? (
             <button className="edit-button">edit </button>
           ) : (
             <button className="edit-button">follow</button>
           )}
-      </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );

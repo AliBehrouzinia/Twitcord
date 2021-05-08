@@ -8,7 +8,6 @@ import store from './redux/store.js';
 import {BrowserRouter, Route} from 'react-router-dom';
 import Search from './Components/Search/Search.js';
 import Profile from './Components/Profile/Profile.js';
-import EditProfile from './Components/EditProfile/EditProfile';
 
 function App() {
   return (
