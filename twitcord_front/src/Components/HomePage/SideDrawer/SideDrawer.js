@@ -16,6 +16,7 @@ import {useDispatch} from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import * as Constants from '../../../Utils/Constants.js';
 import * as Actions from '../../../redux/Actions/index';
+import logo from '../../../assets/twitcord.png';
 
 const SideDrawer = () => {
   const history = useHistory();
@@ -79,7 +80,7 @@ const SideDrawer = () => {
   return (
     <div style={{height: windowHeight}} className="sd-root">
       <div className="sd-container">
-        <Typography className="app-name">TweetCord</Typography>
+        <img className="sd-logo" src={logo} />
         <div
           onClick={() => handleClick(0)}
           className={selectedIndex === 0 ? 'sd-item-selected' : 'sd-item'}
