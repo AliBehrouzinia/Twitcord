@@ -1,3 +1,4 @@
+import rest_framework.pagination
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -5,7 +6,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
-from . import models, serializers
+from . import models, serializers, paginations
 from allauth.account.views import ConfirmEmailView
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseBadRequest, Http404
@@ -16,6 +17,7 @@ import datetime
 from allauth.account.views import ConfirmEmailView
 from django.contrib.auth import get_user_model
 import enum
+from itertools import chain
 
 from django.db.models import Q
 
@@ -153,3 +155,76 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
         self.check_object_permissions(request=self.request, obj=follow_request)
         return follow_request
+
+
+class GlobalUserSearchList(generics.ListAPIView):
+    serializer_class = serializers.GlobalUserSearchSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = paginations.MyPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        query = self.request.query_params.get('query', None)
+        user_following = models.UserFollowing.objects.filter(user=user.id)
+        user_follower = models.UserFollowing.objects.filter(following_user=user.id)
+        requests = models.FollowRequest.objects.filter(request_from=user.id)
+        query = models.TwitcordUser.objects.filter((Q(username__icontains=query) & Q(pk__in=user_following)) |
+                                                   (Q(first_name__icontains=query) & Q(pk__in=user_following)) |
+                                                   (Q(last_name__icontains=query) & Q(pk__in=user_following)) |
+                                                   (Q(username__icontains=query) & Q(pk__in=user_follower)) |
+                                                   (Q(first_name__icontains=query) & Q(pk__in=user_follower)) |
+                                                   (Q(last_name__icontains=query) & Q(pk__in=user_following)) |
+                                                   (Q(username__icontains=query)) | (Q(first_name__icontains=query)) |
+                                                   (Q(last_name__icontains=query)))
+        return query
+
+
+class GlobalTweetSearchList(generics.ListAPIView):
+    serializer_class = serializers.GlobalTweetSearchSerializer
+    permission_classes = [AllowAny]
+    pagination_class = paginations.MyPagination
+
+    def get_queryset(self):
+        query = self.request.query_params.get('query', None)
+        tweets = models.Tweet.objects.filter(Q(content__icontains=query)).order_by('-create_date')
+        return tweets
+class LikeCreateView(generics.CreateAPIView, generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated, PrivateAccountTweetPermission]
+    serializer_class = serializers.LikeSerializer
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        user_id = self.request.user.id
+        obj = get_object_or_404(queryset, user=user_id)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def get_queryset(self):
+        tweet_id = self.kwargs.get('id')
+        return models.Like.objects.filter(tweet=tweet_id)
+
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self,
+            "tweet_id": self.kwargs['id']
+        }
+
+
+class UsersLikedTweetListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountTweetPermission]
+    serializer_class = serializers.UsersLikedSerializer
+
+    def get_queryset(self):
+        tweet_id = self.kwargs.get('id')
+        return models.Like.objects.filter(tweet=tweet_id)
+
+
+class TweetsLikedListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountUserPermission]
+    serializer_class = serializers.TweetsLikedListSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['id']
+        return models.Like.objects.filter(user=user_id)

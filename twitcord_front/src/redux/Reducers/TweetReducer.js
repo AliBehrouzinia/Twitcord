@@ -16,6 +16,8 @@ const initialState = {
     email: '',
     password: '',
   },
+  userSearchResult: [],
+  tweetSearchResult: [],
   profileInfo: {
     username: '',
     bio: '',
@@ -70,6 +72,20 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
+    case ActionTypes.SET_USER_SEARCH_RESULT: {
+      return {
+        ...state,
+        userSearchResult: action.users,
+      };
+    }
+
+    case ActionTypes.SET_TWEET_SEARCH_RESULT: {
+      return {
+        ...state,
+        tweetSearchResult: action.tweets,
+      };
+    }
+
     case ActionTypes.SET_PROFILE_INFO: {
       return {
         ...state,
@@ -100,6 +116,7 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
+<<<<<<< HEAD
     case ActionTypes.SET_DRAWER_SELECTED_TAB: {
       return {
         ...state,
@@ -107,6 +124,8 @@ const tweetReducer = (state = initialState, action) => {
       }
     }
 
+=======
+>>>>>>> 3428b6f1a781d9c0f2d08d8ac6565c99217ed189
     default:
       return state;
   }
