@@ -91,3 +91,17 @@ export const userGeneralInfo = (data) => {
     Constants.GET_REQUEST_METHOD,
   );
 };
+export const followerslist = (data) => {
+  return request (
+    data,
+    Constants.URL_FOLLOWERS,
+    Constants.GET_REQUEST_METHOD,
+  );
+};
+export const followingslist = (data) => {
+  return request (
+    data,
+    Constants.URL_FOLLOWINGS,
+    Constants.GET_REQUEST_METHOD,
+  );
+};

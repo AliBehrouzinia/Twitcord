@@ -1,12 +1,11 @@
-.paper {
-    position: 'absolute';
-    width: 40%;
-    background-Color: rgba(108, 109, 110, 0.808);
-    border: '2px solid #000';
+.root {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    max-Width: 375px;
+   background-color: transparent;
+    height: 100%;
   }
- .modal {
-    display: flex;
-    justify-Content: center;
-  } 
+.inline {
+    display: inline,
+  }
