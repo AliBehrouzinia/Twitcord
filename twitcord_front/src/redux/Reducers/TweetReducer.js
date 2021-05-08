@@ -16,6 +16,8 @@ const initialState = {
     email: '',
     password: '',
   },
+  userSearchResult: [],
+  tweetSearchResult: [],
   profileInfo: {
     username: '',
     bio: '',
@@ -69,6 +71,20 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
+    case ActionTypes.SET_USER_SEARCH_RESULT: {
+      return {
+        ...state,
+        userSearchResult: action.users,
+      };
+    }
+
+    case ActionTypes.SET_TWEET_SEARCH_RESULT: {
+      return {
+        ...state,
+        tweetSearchResult: action.tweets,
+      };
+    }
+
     case ActionTypes.SET_PROFILE_INFO: {
       return {
         ...state,
@@ -98,7 +114,7 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
-    
+
     default:
       return state;
   }
