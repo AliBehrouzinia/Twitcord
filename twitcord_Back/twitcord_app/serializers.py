@@ -107,6 +107,21 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
         fields = ['user']
 
 
+class FollowCountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TwitcordUser
+        fields = ['pk']
+
+    def to_representation(self, instance):
+        result = super(FollowCountSerializer, self).to_representation(instance)
+        user = instance.pk
+        followings = UserFollowing.objects.filter(user_id=user).count()
+        followers = UserFollowing.objects.filter(following_user_id=user).count()
+        result['followers_count'] = followers
+        result['followings_count'] = followings
+        return result
+
+
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
@@ -124,7 +139,6 @@ class GlobalUserSearchSerializer(serializers.ModelSerializer):
         queryset2 = []
         for item in requests:
             queryset2.append(item.request_to.id)
-            print(item.request_to.id)
         if instance_user in queryset2:
             result['status'] = "pending"
         elif instance_user in queryset1:
@@ -149,6 +163,7 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
         result['last_name'] = user.last_name
         result['is_public'] = user.is_public
         return result
+
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
