@@ -38,6 +38,7 @@ class TweetsListCreateView(generics.ListCreateAPIView):
         user_id = self.kwargs.get('id')
         return models.Tweet.objects.filter(user_id=user_id)
 
+
 class ActionOnFollowRequestType(enum.Enum):
     accept = 1,
     reject = 2
