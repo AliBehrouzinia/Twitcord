@@ -9,7 +9,7 @@ import * as API from '../../Utils/API/index';
 import PropTypes from 'prop-types';
 import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
-
+import {Typography} from '@material-ui/core';
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
@@ -55,44 +55,48 @@ const ProfileUserinfo = () => {
           <Avatar className="avatar" />
         </Grid>
       </Grid>
-      <Grid className="info-buttom">
-
-        <Grid container className="grid-info">
-          <Grid className="info1">
-            <text className="grid-username" > user
+      <Grid container >
+        <Grid item className="grid-info1" xs={6}>
+          <Grid item className="info1">
+            <Typography variant="h5" className="grid-username">
+              {' '}
+            user
               {profileInfo.username}
-            </text>
-            <text className="grid-bio" >
-              {profileInfo.bio}
-            </text>
-            <text className="grid-joined" > joined
-              { '    '+dt + '    ' +
+            </Typography>
+            <Typography className="grid-bio">{profileInfo.bio}</Typography>
+            <Typography className="grid-joined">
+              {' '}
+            joined
+              {'    ' + dt + '    ' +
               monthNumberToLabelMap[month] +
-               '    ' + year}
-            </text>
+              '    ' + year}
+            </Typography>
           </Grid>
-          <Grid className = "info2">
-            <text className = "followers" > followers {' '}
-              {/* {store.getState().tweet.profileInfo.followers} */}
-            </text>
-            <text className = "followings" > followings {' '}
-              {/* {store.getState().tweet.profileInfo.followings} */}
-            </text>
+          <Grid item>
+            <button type="followers" className="followers" >
+            followers
+            </button>
+            <button type="followings" className="followings" >
+            followings
+            </button>
+
+            <button type="requests" className="requests" >
+            requests
+            </button>
           </Grid>
         </Grid>
-        <Grid className="button-edit">
-          { userGeneralInfo !== null &&
-           userGeneralInfo.email === profileInfo.email ? (
-            <button className="edit-button">edit </button>
-          ) : (
-            <button className="edit-button">follow</button>
-          )}
+        <Grid item xs={6} className="grid-info2">
+          {userGeneralInfo !== null &&
+          userGeneralInfo.email === profileInfo.email ? (
+          <button className="edit-button">edit profile</button>
+        ) : (
+          <button className="edit-button">follow</button>
+        )}
         </Grid>
       </Grid>
     </Grid>
   );
 };
-
 // eslint-disable-next-line no-unused-vars
 const handleFormValidationResults = (values) => {
   if (values.name == null && values.website == null) {
