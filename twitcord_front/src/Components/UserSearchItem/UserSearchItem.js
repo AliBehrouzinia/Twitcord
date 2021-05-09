@@ -13,33 +13,38 @@ export const UserSearchItem = (props) => {
     <Grid container
       direction="row"
       spacing={6}
-      className="container"
+      className="usi-container"
       justify="space-between">
       <Grid item xs={12} sm={9} md={10}>
-        <div className="avatar-container">
-          <Avatar className="avatar" alt="avatar"/>
-          <div className="username-container">
-            <div className="name-container">
+        <div className="usi-avatar-container">
+          <Avatar className="usi-avatar" alt="avatar"/>
+          <div className="usi-username-container">
+            <div className="usi-name-container">
               <Tooltip title={props.name} placement="top-start">
-                <Typography className="name" >{props.name}</Typography>
+                <Typography className="usi-name" >{props.name}</Typography>
               </Tooltip>
-              {!props.isPublic && <Icon className="lock-icon">lock</Icon>}
+              {!props.isPublic && <Icon className="usi-lock-icon">lock</Icon>}
             </div>
             <Tooltip title={'@'+props.username} placement="top-start">
-              <Typography className="username">@{props.username}</Typography>
+              <Typography className="usi-username">
+                @{props.username}
+              </Typography>
             </Tooltip>
           </div>
         </div>
       </Grid>
 
-      <Grid item xs={12} sm={3} md={2} className="item-follow">
-        <Button className="follow-button" color="primary" variant="outlined">
+      <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
+        <Button
+          className="usi-follow-button"
+          color="primary"
+          variant="outlined">
              follow
         </Button>
       </Grid>
 
-      {props.bio != null && <Grid xs={12} item className="item-desc">
-        <Typography className="desc">{props.bio}</Typography>
+      {props.bio != null && <Grid xs={12} item className="usi-item-desc">
+        <Typography className="usi-desc">{props.bio}</Typography>
       </Grid>}
     </Grid>
   );
