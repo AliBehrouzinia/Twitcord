@@ -17,13 +17,24 @@ import MenuItem from '@material-ui/core/MenuItem';
 import * as Constants from '../../../Utils/Constants.js';
 import * as Actions from '../../../redux/Actions/index';
 import logo from '../../../assets/twitcord.png';
+import {useSelector} from 'react-redux';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const SideDrawer = () => {
+  const userGeneralInfo = useSelector((state) => state).tweet.userGeneralInfo;
   const history = useHistory();
   const dispatch = useDispatch();
   const windowHeight = window['innerHeight'];
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
+  let email;
+  let profileImg;
+
+  if (userGeneralInfo != null) {
+    email = userGeneralInfo.userEmail;
+    profileImg = userGeneralInfo.userProfile;
+  }
+
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -130,8 +141,10 @@ const SideDrawer = () => {
         </div>
       </div>
       <div className="sd-account" onClick={handleMenuClick}>
-        <Avatar className="sd-avatar" />
-        <Typography className="sd-user-email sd-title">username</Typography>
+        <Avatar className="sd-avatar" src={profileImg}/>
+        <Tooltip title={email} placement="top-start">
+          <Typography className="sd-user-email sd-title">{email}</Typography>
+        </Tooltip>
       </div>
       <Menu
         anchorEl={anchorEl}

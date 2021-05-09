@@ -28,6 +28,9 @@
 
 .sd-user-email{
     width: fit-content;
+    max-width: 140px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 
 .sd-avatar{
