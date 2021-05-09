@@ -20,6 +20,16 @@ export const setSnackBarState = (data) => ({
   ...data,
 });
 
+export const setUserSearchResults = (data) => ({
+  type: ActionTypes.SET_USER_SEARCH_RESULT,
+  ...data,
+});
+
+export const setTweetSearchResults = (data) => ({
+  type: ActionTypes.SET_TWEET_SEARCH_RESULT,
+  ...data,
+});
+
 export const setProfileInfo = (data) => ({
   type: ActionTypes.SET_PROFILE_INFO,
   ...data,

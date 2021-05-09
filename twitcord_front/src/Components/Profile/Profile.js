@@ -1,6 +1,5 @@
 import React from 'react';
 import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
-import ProfileTweetlist from '../ProfileTweetlist/ProfileTweetlist';
 import './Profile.css';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
@@ -16,25 +15,25 @@ const Profile = () => {
 
   return (
     <Grid container direction="column" >
-      <Grid  item xs={12} sm={10} md={8} className="grid-item">
+      <Grid item xs={12} sm={10} md={8} className="grid-item">
         <ProfileUserinfo/>
-        <Tabs 
-        variant="fullWidth"
-        value={tabSelected} 
-        onChange={handleChange} 
-        indicatorColor="primary"
-        textColor="primary">
-          <Tab label="tweets"  />
-          <Tab label="replys"  />
+        <Tabs
+          variant="fullWidth"
+          value={tabSelected}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary">
+          <Tab label="tweets" />
+          <Tab label="replys" />
           <Tab label="likes" />
-          <Tab label="rooms"  />
+          <Tab label="rooms" />
         </Tabs>
       </Grid>
       <Grid item xs={12} sm={10} md={8} className="grid-item">
-      {tabSelected == 0 && <p className="profile-content">tweets</p> }
-      {tabSelected == 1 && <p className="profile-content">replys</p> }
-      {tabSelected == 2 && <p className="profile-content">likes</p> }
-      {tabSelected == 3 && <p className="profile-content">rooms</p> }
+        {tabSelected == 0 && <p className="profile-content">tweets</p> }
+        {tabSelected == 1 && <p className="profile-content">replys</p> }
+        {tabSelected == 2 && <p className="profile-content">likes</p> }
+        {tabSelected == 3 && <p className="profile-content">rooms</p> }
       </Grid>
     </Grid>
   );
