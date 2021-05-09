@@ -30,6 +30,7 @@ const initialState = {
     email: '',
 
   },
+  sideDrawerEnable: true,
   tweetText: '',
   tweetCharCount: 0,
 };
@@ -64,6 +65,7 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
+
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
@@ -112,6 +114,13 @@ const tweetReducer = (state = initialState, action) => {
           userEmail: action.email,
           userProfile: action.profile_img,
         },
+      };
+    }
+
+    case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
+      return {
+        ...state,
+        sideDrawerEnable: action.enable,
       };
     }
 

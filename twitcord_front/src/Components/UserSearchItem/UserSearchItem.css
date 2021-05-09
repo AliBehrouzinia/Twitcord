@@ -1,21 +1,21 @@
-.container {
+.usi-container {
   padding: 15px !important;
 }
 
-.avatar {
+.usi-avatar {
   width: 60px !important;
   height: 60px !important;
 }
 
-.avatar-container:hover{
+.usi-avatar-container:hover{
   cursor: pointer;
 }
 
-.avatar-container {
+.usi-avatar-container {
   display: flex;
 }
 
-.name-container {
+.usi-name-container {
   display: flex;
   max-width: 100%;
   overflow: hidden;
@@ -23,14 +23,14 @@
   white-space: nowrap;
 }
 
-.lock-icon {
+.usi-lock-icon {
   margin-left: 5px;
   margin-top: 3px;
   font-size: medium !important;
   align-self: center;
 }
 
-.username-container {
+.usi-username-container {
   margin-left: 20px;
   max-width: 100%;
   overflow: hidden;
@@ -38,20 +38,20 @@
   white-space: nowrap;
 }
 
-.follow-button {
+.usi-follow-button {
   float: right;
   width: 100%;
 }
 
-.item-follow{
+.usi-item-follow{
   order: 1;
 }
 
-.item-desc{
+.usi-item-desc{
   order: 2;
 }
 
-.name {
+.usi-name {
   margin: 0;
   font-size: x-large !important;
   display: inline-block;
@@ -60,11 +60,11 @@
   white-space: nowrap;
 }
 
-.name:hover{
+.usi-name:hover{
   text-decoration: underline;
 }
 
-.username {
+.usi-username {
   color: gray;
   margin: 0;
   max-width: 100%;
@@ -73,11 +73,11 @@
   white-space: nowrap;
 }
 
-.username:hover{
+.usi-username:hover{
   text-decoration: underline;
 }
 
-.desc {
+.usi-desc {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -88,15 +88,15 @@
 }
 
 @media screen and (max-width: 600px) {
-  .item-desc {
+  .usi-item-desc {
     order: 1
   }
 
-  .item-follow{
+  .usi-item-follow{
     order: 2;
   }
 
-  .follow-button{
+  .usi-follow-button{
     margin-top: -30px !important;
   }
 }
