@@ -13,9 +13,11 @@ import { Input, Typography } from '@material-ui/core';
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
-  var profileId = -1;
-  const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
-  if (userGeneralInfo != null){
+  let profileId = -1;
+  const userGeneralInfo = JSON.parse(
+      localStorage.getItem(Constants.GENERAL_USER_INFO),
+  );
+  if (userGeneralInfo != null) {
     profileId = userGeneralInfo.pk;
   }
   const monthNumberToLabelMap = {
@@ -33,7 +35,7 @@ const ProfileUserinfo = () => {
     [12]: 'December',
   };
   useEffect(() => {
-    API.profileinfo({id: profileId})
+    API.getProfileInfo({id: profileId})
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data));
         })

@@ -51,3 +51,11 @@ class FollowRequestAdmin(admin.ModelAdmin):
 
 
 admin.site.register(FollowRequest, FollowRequestAdmin)
+
+
+class LikeAdmin(admin.ModelAdmin):
+    model = Like
+    list_display = ('user', 'tweet', 'date')
+
+
+admin.site.register(Like, LikeAdmin)

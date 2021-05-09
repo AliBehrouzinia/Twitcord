@@ -5,7 +5,7 @@ import './EditProfile.css';
 import image from '../../assets/image.png';
 import {Formik, Form, Field} from 'formik';
 import {Button} from '@material-ui/core';
-import {TextField,CheckboxWithLabel} from 'formik-material-ui';
+import {TextField, CheckboxWithLabel} from 'formik-material-ui';
 import {DatePicker} from 'formik-material-ui-pickers';
 import {MuiPickersUtilsProvider} from '@material-ui/pickers';
 import {useSelector} from 'react-redux';
@@ -13,7 +13,7 @@ import {useDispatch} from 'react-redux';
 import DateFnsUtils from '@date-io/date-fns';
 import * as API from '../../Utils/API/index';
 import * as Actions from '../../redux/Actions/index';
-import FormGroup from "@material-ui/core/FormGroup";
+import FormGroup from '@material-ui/core/FormGroup';
 import * as Constants from '../../Utils/Constants.js';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,39 +24,41 @@ const EditProfile = () => {
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
-  const profileId = -1;
-  const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
-  if (userGeneralInfo != null){
+  let profileId = -1;
+  const userGeneralInfo = JSON.parse(
+      localStorage.getItem(Constants.GENERAL_USER_INFO),
+  );
+  if (userGeneralInfo != null) {
     profileId = userGeneralInfo.pk;
   }
   const dispatch = useDispatch();
 
   const requestProfileInfo = (
-    dispatch,
-    setSnackbarAlertMessage,
-    setSnackbarAlertSeverity,
+      dispatch,
+      setSnackbarAlertMessage,
+      setSnackbarAlertSeverity,
   ) => {
-  API.getProfileInfo({id: profileId})
-      .then((response) => {
-        handleProfileInfoResponse(dispatch, response.data);
-      })
-      .catch((error) => {
-        showSnackbar(
-            Constants.EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE,
-            Constants.SNACKBAR_ERROR_SEVERITY,
-            dispatch,
-            setSnackbarAlertMessage,
-            setSnackbarAlertSeverity,
-        );
-      });
+    API.getProfileInfo({id: profileId})
+        .then((response) => {
+          handleProfileInfoResponse(dispatch, response.data);
+        })
+        .catch((error) => {
+          showSnackbar(
+              Constants.EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE,
+              Constants.SNACKBAR_ERROR_SEVERITY,
+              dispatch,
+              setSnackbarAlertMessage,
+              setSnackbarAlertSeverity,
+          );
+        });
   };
 
   const showSnackbar = (
-    message,
-    severity,
-    dispatch,
-    setSnackbarAlertMessage,
-    setSnackbarAlertSeverity,
+      message,
+      severity,
+      dispatch,
+      setSnackbarAlertMessage,
+      setSnackbarAlertSeverity,
   ) => {
     setSnackbarAlertMessage(
         message);
@@ -81,7 +83,7 @@ const EditProfile = () => {
       lastName: data.last_name,
       website: data.website,
       username: data.username,
-      isPublic: data.is_public
+      isPublic: data.is_public,
     }));
   };
 
@@ -96,38 +98,38 @@ const EditProfile = () => {
       data.birthday = profileInfo.birthday;
     }
 
-  const isDataChanged = checkDataChanged(profileInfo, data);
+    const isDataChanged = checkDataChanged(profileInfo, data);
 
-  if (isDataChanged) {
-    const dataToSend = {
-      bio: data.bio,
-      birth_date: data.birthday,
-      first_name: data.firstName,
-      last_name: data.lastName,
-      website: data.website,
-      username: data.username,
-      is_public: data.isPublic
-    };
+    if (isDataChanged) {
+      const dataToSend = {
+        bio: data.bio,
+        birth_date: data.birthday,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        website: data.website,
+        username: data.username,
+        is_public: data.isPublic,
+      };
 
-    API.updateProfileInfo(profileId, dataToSend)
-        .then((response) => {
-          saveProfileInfo(dispatch, response.data);
-          showSnackbar(
-              Constants.EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE,
-              Constants.SNACKBAR_SUCCESS_SEVERITY,
-              dispatch,
-              setSnackbarAlertMessage,
-              setSnackbarAlertSeverity,
-          );
-        }).catch((error) => {
-          showSnackbar(
-              Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
-              Constants.SNACKBAR_ERROR_SEVERITY,
-              dispatch,
-              setSnackbarAlertMessage,
-              setSnackbarAlertSeverity,
-          );
-        });
+      API.updateProfileInfo(profileId, dataToSend)
+          .then((response) => {
+            saveProfileInfo(dispatch, response.data);
+            showSnackbar(
+                Constants.EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE,
+                Constants.SNACKBAR_SUCCESS_SEVERITY,
+                dispatch,
+                setSnackbarAlertMessage,
+                setSnackbarAlertSeverity,
+            );
+          }).catch((error) => {
+            showSnackbar(
+                Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
+                Constants.SNACKBAR_ERROR_SEVERITY,
+                dispatch,
+                setSnackbarAlertMessage,
+                setSnackbarAlertSeverity,
+            );
+          });
     } else {
       showSnackbar(
           Constants.EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE,
@@ -181,15 +183,13 @@ const EditProfile = () => {
 
   return (
     <Grid container direction="column">
-      <Grid item className="grid-item" xs={12} sm={10} md={8}>
-        <img src={image} alt="img" className="profile_cover" />
-        <Avatar className="avatar" />
+      <Grid item className="ep-grid-item" xs>
+        <img src={image} alt="img" className="ep-profile_cover" />
+        <Avatar className="ep-avatar" />
       </Grid>
 
       <Grid container>
-        <Grid item xs={1} sm={2} md={3} lg={4} />
-
-        <Grid item xs={10} sm={8} md={6} lg={4}>
+        <Grid item xs>
           <div>
             {isSnackbarOpen && (<SnackbarAlert
               alertMessage={snackbarAlertMessage}
@@ -234,7 +234,7 @@ const EditProfile = () => {
                 onSubmitClicked(
                     dispatch,
                     profileInfo,
-                    {...values,isPublic : !values.isPublic},
+                    {...values, isPublic: !values.isPublic},
                     setSnackbarAlertMessage,
                     setSnackbarAlertSeverity,
                 );
@@ -242,11 +242,11 @@ const EditProfile = () => {
             >
               {({submitForm, isSubmitting}) => (
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Form className="form">
+                  <Form className="ep-form">
                     <Field
                       id="username"
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="Username"
                       variant="outlined"
                       name="username"
@@ -254,7 +254,7 @@ const EditProfile = () => {
 
                     <Field
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="First Name"
                       variant="outlined"
                       name="firstName"
@@ -262,7 +262,7 @@ const EditProfile = () => {
 
                     <Field
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="Last Name"
                       variant="outlined"
                       name="lastName"
@@ -270,7 +270,7 @@ const EditProfile = () => {
 
                     <Field
                       component={DatePicker}
-                      className="text-field"
+                      className="ep-text-field"
                       variant="outlined"
                       name="birthday"
                       label="Birth Day"
@@ -279,7 +279,7 @@ const EditProfile = () => {
 
                     <Field
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="Website"
                       variant="outlined"
                       name="website"
@@ -287,25 +287,25 @@ const EditProfile = () => {
 
                     <Field
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="Bio"
                       variant="outlined"
                       name="bio"
                       multiline
                       rows={4}
                     />
-                    <FormGroup className="check-box">
+                    <FormGroup className="ep-check-box">
                       <Field
                         component={CheckboxWithLabel}
                         type="checkbox"
                         color="primary"
-                        Label={{ label: 'Private Account' }}
+                        Label={{label: 'Private Account'}}
                         name="isPublic"
                       />
                     </FormGroup>
                     <Button
                       variant="contained"
-                      className="text-field"
+                      className="ep-text-field"
                       color="primary"
                       disabled={isSubmitting}
                       onClick={submitForm}
@@ -318,7 +318,6 @@ const EditProfile = () => {
             </Formik>
           </div>
         </Grid>
-        <Grid item xs={1} sm={2} md={3} lg={4} />
       </Grid>
     </Grid>
   );
