@@ -26,7 +26,7 @@ const Counter = (props) => {
   return (
     <div>
       <div id="counter-container">
-        <p>{props.numChar}</p>
+        <p className="char-count">{props.numChar}</p>
         <svg>
           <circle id="gray" cx="20px" cy="20px" r="16"></circle>
           <circle
