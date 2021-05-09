@@ -47,47 +47,51 @@ const ProfileUserinfo = () => {
   const dt = date.getDate();
   return (
     <Grid className="user-info" >
-      <Grid container direction="column">
-        <Grid item className="grid-item">
-          <img src={image} alt="img" className="profile_cover" />
-          <Avatar className="avatar" />
-        </Grid>
-      </Grid>
-      <Grid className="info-buttom">
-      
-      <Grid container className="grid-info">
-        <Grid className="info1">
-          <Typography  variant="h6"  > user
-            {profileInfo.username}
-          </Typography>
-          <Typography  variant="h7">
-            {profileInfo.bio}
-          </Typography>
-          <Typography  variant="h7" > joined
-            { '    '+dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
-          </Typography>
-        </Grid>
-        <Grid className = "info2">
-          <text className = "followers" > followers {' '} 
-            {/* {store.getState().tweet.profileInfo.followers} */}
-          </text>
-          <text className = "followings" > followings {' '}
-            {/* {store.getState().tweet.profileInfo.followings} */}
-          </text>
-        </Grid>
-      </Grid>
-      <Grid className="button-edit">
-      {  userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email  ? (
-            <button className="edit-button">edit </button>
-          ) : (
-            <button className="edit-button">follow</button>
-          )}
-      </Grid>
+    <Grid container direction="column">
+      <Grid item className="grid-item">
+        <img src={image} alt="img" className="profile_cover" />
+        <Avatar className="avatar" />
       </Grid>
     </Grid>
+    <Grid container >
+      <Grid item  className="grid-info1" xs={6}>
+        <Grid item className="info1">
+          <Typography variant="h5" className="grid-username">
+            {' '}
+            user
+            {profileInfo.username}
+          </Typography>
+          <Typography className="grid-bio">{profileInfo.bio}</Typography>
+          <Typography className="grid-joined">
+            {' '}
+            joined
+            {'    ' + dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
+          </Typography>
+          </Grid>
+        <Grid item>
+          <button type="followers" className="followers" >
+            followers
+          </button>
+          <button type="followings" className="followings" >
+            followings
+          </button>
+         
+          <button type="requests" className="requests" >
+            requests
+          </button>
+        </Grid>
+      </Grid>
+      <Grid item xs={6} className="grid-info2">
+        {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
+          <button className="edit-button">edit profile</button>
+        ) : (
+          <button className="edit-button">follow</button>
+        )}
+      </Grid>
+    </Grid>
+  </Grid>
   );
 };
-
 // eslint-disable-next-line no-unused-vars
 const handleFormValidationResults = (values) => {
   if (values.name == null && values.website == null) {
