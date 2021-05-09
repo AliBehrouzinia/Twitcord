@@ -1,0 +1,125 @@
+.container {
+    max-width: 800px;
+    padding: 15px !important;
+  }
+  
+  .avatar {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .avatar-container:hover{
+    cursor: pointer;
+  }
+  
+  .avatar-container {
+    display: flex;
+  }
+  
+  .name-container {
+    display: flex;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .lock-icon {
+    margin-left: 5px;
+    margin-top: 3px;
+    font-size: medium !important;
+    align-self: center;
+  }
+  
+  .username-container {
+    margin-left: 20px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .item-desc{
+    order: 2;
+  }
+  
+  .name {
+    margin: 0;
+    font-size: x-large !important;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .icon-bottom-bar{
+    order: 3;
+    justify-content: space-around;
+    margin-top: -30px !important;
+    padding: 15px !important;
+  }
+  
+  .name:hover{
+    text-decoration: underline;
+  }
+  
+  .username {
+    color: gray;
+    margin: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .dot{
+    display: inline-block;
+    text-align: right;
+    background: rgb(190, 190, 190);
+    width: 3px;
+    margin-bottom: 3px;
+    height: 3px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 100px;
+  }
+  
+  .username:hover{
+    text-decoration: underline;
+  }
+  
+  .date{
+    color: rgb(190, 190, 190);
+    align-self: flex-end;
+    padding: 3px;
+  }
+  
+  .desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-top: -30px !important;
+    padding-left: 80px;
+  }
+  .like:hover{
+      background-color: red;
+      color: red;
+
+  }
+  
+  @media screen and (max-width: 600px) {
+    .item-desc {
+      order: 1
+    }
+  
+    .icon-bottom-bar{
+      order: 2;
+    }
+  
+    .follow-button{
+      margin-top: -30px !important;
+    }
+  }
+  

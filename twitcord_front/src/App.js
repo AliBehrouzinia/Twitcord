@@ -2,7 +2,7 @@
 import React from 'react';
 // import LogIn from './Components/LogIn/LogIn.js';
 // import SignUp from './Components/SignUp/SignUp.js';
-import ProfileTweetlist from './Components/ProfileTweetlist/ProfileTweetlist';
+import ProfileTweetlist from './Components/ProfileTweetList/ProfileTweetList.js';
 // import TweetBox from './Components/TweetBox/TweetBox';
 import { Provider } from 'react-redux';
 import store from './redux/store.js';

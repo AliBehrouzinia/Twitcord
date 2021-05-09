@@ -56,7 +56,7 @@ const tweetReducer = (state = initialState, action) => {
           ...state.tweetInfo,
           username: action.username,
           name: action.name,
-          dateTweeted: action.dateTweeted,
+          creatdate: action.createdate,
         },
 
       };
