@@ -53,7 +53,12 @@ class FollowersRequestsSerializer(serializers.ModelSerializer):
         result = super(FollowersRequestsSerializer, self).to_representation(instance)
         from_user = instance.request_from
         result['profile_img'] = from_user.profile_img.url
-        result['username'] = from_user.email
+        result['username'] = from_user.username
+        result['email'] = from_user.email
+        result['first_name'] = from_user.first_name
+        result['last_name'] = from_user.last_name
+        result['is_public'] = from_user.is_public
+        result['bio'] = from_user.bio
         return result
 
     class Meta:
