@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {useStore} from 'react-redux';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {TextField} from 'formik-material-ui';
-import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import {Formik, Form, Field} from 'formik';
 import * as API from '../../Utils/API/index';
@@ -14,14 +14,19 @@ import PropTypes from 'prop-types';
 import * as Constants from '../../Utils/Constants.js';
 import * as Actions from '../../redux/Actions/index.js';
 import './LogIn.css';
+import logo from '../../assets/twitcord.png';
+
 /* eslint-disable require-jsdoc */
 const LogIn = () => {
   const store = useStore();
+  const history = useHistory();
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
-
+  const handleSignUpClick = () => {
+    history.push('/signup');
+  };
 
   function logInRequest(values) {
     dispatch(Actions.setLogInInfo(values));
@@ -39,6 +44,12 @@ const LogIn = () => {
                 }),
             );
             resolve(response);
+            history.push('/');
+            dispatch(
+                Actions.setSideDrawerEnable({
+                  enable: true,
+                }),
+            );
           })
           .catch((error) => {
             setSnackbarAlertMessage(
@@ -79,12 +90,14 @@ const LogIn = () => {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container className="lg-root" component="main" maxWidth="xs">
       {isSnackbarOpen && (<SnackbarAlert
         alertMessage={snackbarAlertMessage}
         severity={snackbarAlertSeverity}/>)}
       <CssBaseline />
-      <div>
+      <div className="lg-content-container">
+        <img className="lg-logo" src={logo} />
+
         <Formik
           initialValues={{
             email: '',
@@ -138,10 +151,8 @@ const LogIn = () => {
               >
                     Log In
               </Button>
-              <div className='log-in-redirection'>
-                <Link href='signup' variant="body2">
+              <div onClick={handleSignUpClick} className='log-in-redirection'>
                 Do not have an account? Sign Up
-                </Link>
               </div>
             </Form>
           )}

@@ -83,35 +83,35 @@ export const TweetSearchItem = (props) => {
     <Grid container
       direction="row"
       spacing={6}
-      className="container"
+      className="tsi-container"
       justify="space-between">
       <Grid item xs={12} sm={9} md={10}>
-        <div className="avatar-container">
-          <Avatar className="avatar" alt="avatar"/>
-          <div className="username-container">
-            <div className="name-container">
+        <div className="tsi-avatar-container">
+          <Avatar className="tsi-avatar" alt="avatar"/>
+          <div className="tsi-username-container">
+            <div className="tsi-name-container">
               <Tooltip title={props.name} placement="top-start">
-                <Typography className="name" >{props.name}</Typography>
+                <Typography className="tsi-name" >{props.name}</Typography>
               </Tooltip>
-              {!props.isPublic && <Icon className="lock-icon">lock</Icon>}
-              <Typography className="date">
-                <div className="dot"/>
+              {!props.isPublic && <Icon className="tsi-lock-icon">lock</Icon>}
+              <Typography className="tsi-date">
+                <div className="tsi-dot"/>
                 {extractTime(props.createDate)}
               </Typography>
             </div>
             <Tooltip title={'@'+props.username} placement="top-start">
-              <Typography className="username">@{props.username}
+              <Typography className="tsi-username">@{props.username}
               </Typography>
             </Tooltip>
           </div>
         </div>
       </Grid>
 
-      <Grid xs={12} item className="item-desc">
-        <Typography className="desc">{props.content}</Typography>
+      <Grid xs={12} item className="tsi-item-desc">
+        <Typography className="tsi-desc">{props.content}</Typography>
       </Grid>
 
-      <Grid xs={12} container item className="icon-bottom-bar">
+      <Grid xs={12} container item className="tsi-icon-bottom-bar">
         <Grid item>
           <IconButton>
             <FavoriteBorderIcon/>
