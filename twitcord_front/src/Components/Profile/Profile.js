@@ -18,7 +18,11 @@ const Profile = () => {
     <Grid container direction="column">
       <Grid item className="grid-item" xs={12} sm={10} md={8}>
         <ProfileUserinfo/>
+        </Grid>
+        <Grid item className="grid-item" xs={12} sm={10} md={8}>
         <Tabs 
+        item
+        xs={12} sm={10} md={8}
         variant="fullWidth"
         value={tabSelected} 
         onChange={handleChange} 
@@ -29,7 +33,7 @@ const Profile = () => {
           <Tab label="likes" />
           <Tab label="rooms"  />
         </Tabs>
-      </Grid>
+        </Grid>
       <Grid item xs={12} sm={10} md={8} className="grid-item">
       {tabSelected == 0 && <p className="profile-content">tweets</p> }
       {tabSelected == 1 && <p className="profile-content">replys</p> }
