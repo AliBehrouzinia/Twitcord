@@ -14,6 +14,7 @@ import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
 import { Input } from '@material-ui/core';
 import Followers from '../Follows/Followers';
+import Requests from '../Follows/Requests';
 import Followings from '../Follows/Followings';
 const ProfileUserinfo = () => {
 	const dispatch = useDispatch();
@@ -44,6 +45,10 @@ const ProfileUserinfo = () => {
 		setOpen(true);
 		setValue(1);
 	};
+  const handlerequests = () => {
+		setOpen(true);
+		setValue(3);
+	};
 	const handleOpenfollowing = () => {
 		setOpen(true);
 		setValue(2);
@@ -53,7 +58,7 @@ const ProfileUserinfo = () => {
 	};
 	const body = (
 		<div className="paper" xs={12} md={8}>
-			{Value === 1 ? <Followers /> : <Followings />}
+			{Value === 1 ?( <Followers /> ): Value === 2 ?( <Followings />): ( <Requests/>)}
 		</div>
 	);
 	useEffect(() => {
@@ -70,16 +75,16 @@ const ProfileUserinfo = () => {
 	const month = date.getMonth() + 1;
 	const dt = date.getDate();
 	return (
-		<Grid className="user-info">
+		<Grid className="user-info" >
 			<Grid container direction="column">
 				<Grid item className="grid-item">
 					<img src={image} alt="img" className="profile_cover" />
 					<Avatar className="avatar" />
 				</Grid>
 			</Grid>
-			<Grid className="info-buttom">
-				<Grid container className="grid-info">
-					<Grid className="info1">
+			<Grid container >
+				<Grid item  className="grid-info1" xs={6}>
+					<Grid item className="info1">
 						<Typography variant="h5" className="grid-username">
 							{' '}
 							user
@@ -91,8 +96,8 @@ const ProfileUserinfo = () => {
 							joined
 							{'    ' + dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
 						</Typography>
-					</Grid>
-					<Grid className="info2">
+						</Grid>
+					<Grid item>
 						<button type="followers" className="followers" onClick={handleOpenfollowers}>
 							followers
 						</button>
@@ -128,8 +133,29 @@ const ProfileUserinfo = () => {
 						>
 							<Fade in={open}>{body}</Fade>
 						</Modal>
-					</Grid>
+            <button type="requests" className="requests" onClick={handlerequests}>
+							requests
+						</button>
+						<Modal
+							open={open}
+							onClose={handleClose}
+							aria-labelledby="simple-modal-title"
+							aria-describedby="sim"
+							value="requests"
+							id="2"
+							BackdropComponent={Backdrop}
+							className="modal"
+							BackdropProps={{
+								timeout: 500
+							}}
+						>
+							<Fade in={open}>{body}</Fade>
+						</Modal>
+
+				
+          </Grid>
 				</Grid>
+        <Grid item xs={6}className="grid-info2">
 				<Grid className="button-edit">
 					{userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
 						<button className="edit-button">edit </button>
@@ -137,6 +163,7 @@ const ProfileUserinfo = () => {
 						<button className="edit-button">follow</button>
 					)}
 				</Grid>
+        </Grid>
 			</Grid>
 		</Grid>
 	);

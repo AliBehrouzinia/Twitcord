@@ -105,3 +105,10 @@ export const followingslist = (data) => {
     Constants.GET_REQUEST_METHOD,
   );
 };
+export const requests = (data) => {
+  return request (
+    data,
+    Constants.URL_REQUESTS,
+    Constants.GET_REQUEST_METHOD,
+  );
+};

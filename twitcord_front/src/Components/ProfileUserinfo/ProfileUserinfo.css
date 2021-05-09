@@ -3,7 +3,6 @@
 	border-right: 0.3px solid rgb(236, 236, 236);
 	background-color: white;
 	padding-bottom: 1%;
-
 }
 .avatar {
 	width: 124px !important;
@@ -13,7 +12,6 @@
 	position: relative;
 	background-color: white;
 }
-
 .profile_cover {
 	width: 100%;
 	height: 150px;
@@ -25,72 +23,52 @@
 	background-color: transparent;
 	padding: 4px 30px;
 	font-size: calc(10px + 0.2vw);
-
-	
 }
 .edit-button :hover {
-   background-color: rgb(187, 184, 184);
-   cursor: pointer;
+	background-color: rgb(187, 184, 184);
+	cursor: pointer;
 }
-.grid-info {
+.grid-info1 {
 	display: flex;
 	flex-direction: column;
-	margin-left: 7%;
-	margin-top: 1%;
-	margin-bottom: 2%;
-	
-	
+	padding-left: 9%;
+	padding-bottom: 4%;
 }
-.button-edit {
-	margin-right: 8%;
-	padding-left: 40vw;
-	
-}
-.info-buttom{
+.grid-info2 {
 	display: flex;
-	align-items: flex-start;
-	justify-content: left;
-	
-	min-width: 30rem;
+	flex-direction: column;
+	padding-left: 30%;
+	padding-bottom: 4%;
 }
 .info1 {
-	display: flex;
-	flex-direction: column;
-	margin-left:4%;
+	padding-left: 2%;
 	color: grey;
-	height: 100%;
 }
-
 .paper {
-    position: 'absolute';
-    width: 375px;
-    background-Color: rgba(255, 255, 255, 0.959);
-    border: '2px solid #000';
-	
-	
-  }
+	position: 'absolute';
+	width: 375px;
+	background-Color: rgba(255, 255, 255, 0.959);
+	border: '2px solid #000';
+}
 .modal {
-    display: flex;
-    justify-Content: center;
-	
-	
-  } 
+	display: flex;
+	justify-Content: center;
+}
 .followings {
-	font-size: 14px ;
+	font-size: 14px;
 	background-color: transparent;
 	border: none;
 	color: rgb(115, 115, 122);
 }
 .followers {
-	font-size: 14px ;
+	font-size: 14px;
 	background-color: transparent;
 	border: none;
 	color: rgb(115, 115, 122);
-} 
-.info2 {
-	display: flex;
-	flex-direction: row;
-	padding-right: 10%;
-	
 }
-
+.requests {
+	font-size: 14px;
+	background-color: transparent;
+	border: none;
+	color: rgb(115, 115, 122);
+}
