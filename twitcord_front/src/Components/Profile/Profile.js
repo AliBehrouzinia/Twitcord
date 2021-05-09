@@ -15,8 +15,8 @@ const Profile = () => {
   };
 
   return (
-    <Grid container item className="grid-item">
-      <Grid  xs={12}  md={8}>
+    <Grid container direction="column" >
+      <Grid  item xs={12} sm={10} md={8} className="grid-item">
         <ProfileUserinfo/>
         <Tabs 
         variant="fullWidth"
@@ -30,7 +30,7 @@ const Profile = () => {
           <Tab label="rooms"  />
         </Tabs>
       </Grid>
-      <Grid  xs={12}  md={8}>
+      <Grid item xs={12} sm={10} md={8} className="grid-item">
       {tabSelected == 0 && <p className="profile-content">tweets</p> }
       {tabSelected == 1 && <p className="profile-content">replys</p> }
       {tabSelected == 2 && <p className="profile-content">likes</p> }
