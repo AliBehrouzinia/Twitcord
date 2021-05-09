@@ -9,7 +9,7 @@ import * as API from '../../Utils/API/index';
 import PropTypes from 'prop-types';
 import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
-import { Input } from '@material-ui/core';
+import { Input, Typography } from '@material-ui/core';
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
@@ -57,15 +57,15 @@ const ProfileUserinfo = () => {
       
       <Grid container className="grid-info">
         <Grid className="info1">
-          <text className="grid-username" > user
+          <Typography  variant="h6"  > user
             {profileInfo.username}
-          </text>
-          <text className="grid-bio" >
+          </Typography>
+          <Typography  variant="h7">
             {profileInfo.bio}
-          </text>
-          <text className="grid-joined" > joined
+          </Typography>
+          <Typography  variant="h7" > joined
             { '    '+dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
-          </text>
+          </Typography>
         </Grid>
         <Grid className = "info2">
           <text className = "followers" > followers {' '} 
