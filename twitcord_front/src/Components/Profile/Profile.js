@@ -30,10 +30,10 @@ const Profile = () => {
         </Tabs>
       </Grid>
       <Grid item xs={12} sm={10} md={8} className="grid-item">
-      {tabSelected == 0 && <p className="profile-content">tweets</p> }
-      {tabSelected == 1 && <p className="profile-content">replys</p> }
-      {tabSelected == 2 && <p className="profile-content">likes</p> }
-      {tabSelected == 3 && <p className="profile-content">rooms</p> }
+        {tabSelected == 0 && <p className="profile-content">tweets</p> }
+        {tabSelected == 1 && <p className="profile-content">replys</p> }
+        {tabSelected == 2 && <p className="profile-content">likes</p> }
+        {tabSelected == 3 && <p className="profile-content">rooms</p> }
       </Grid>
     </Grid>
   );
