@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {useStore} from 'react-redux';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {TextField} from 'formik-material-ui';
-import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import {Formik, Form, Field} from 'formik';
 import * as API from '../../Utils/API/index';
@@ -19,11 +19,14 @@ import logo from '../../assets/twitcord.png';
 /* eslint-disable require-jsdoc */
 const LogIn = () => {
   const store = useStore();
+  const history = useHistory();
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
-
+  const handleSignUpClick = () => {
+    history.push('/signup');
+  };
 
   function logInRequest(values) {
     dispatch(Actions.setLogInInfo(values));
@@ -41,6 +44,7 @@ const LogIn = () => {
                 }),
             );
             resolve(response);
+            history.push('/');
             dispatch(
                 Actions.setSideDrawerEnable({
                   enable: true,
@@ -147,10 +151,8 @@ const LogIn = () => {
               >
                     Log In
               </Button>
-              <div className='log-in-redirection'>
-                <Link href='signup' variant="body2">
+              <div onClick={handleSignUpClick} className='log-in-redirection'>
                 Do not have an account? Sign Up
-                </Link>
               </div>
             </Form>
           )}

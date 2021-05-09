@@ -16,7 +16,12 @@ form .grid-item {
   }
 
 .log-in-redirection {
-  margin-top: 5px;
+  margin-top: 15px;
+}
+
+.log-in-redirection:hover {
+  font-weight: 600;
+  cursor: pointer;
 }
   
 .su-root{
