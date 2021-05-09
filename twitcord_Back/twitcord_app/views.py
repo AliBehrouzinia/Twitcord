@@ -187,6 +187,8 @@ class GlobalTweetSearchList(generics.ListAPIView):
         query = self.request.query_params.get('query', None)
         tweets = models.Tweet.objects.filter(Q(content__icontains=query)).order_by('-create_date')
         return tweets
+
+
 class LikeCreateView(generics.CreateAPIView, generics.DestroyAPIView):
     permission_classes = [IsAuthenticated, PrivateAccountTweetPermission]
     serializer_class = serializers.LikeSerializer
