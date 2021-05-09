@@ -10,7 +10,7 @@ import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
 
 const ProfileTweetlist = () => {
-    const tweets = useSelector((state) => state).tweet.Tweets;
+    const tweets = useSelector((state) => state).tweet.tweetinfo;
     const dispatch = useDispatch();
     const tweetlist = () => {
         API.tweetlist({ id: profileid })
@@ -42,7 +42,7 @@ const ProfileTweetlist = () => {
         <Grid container item className="tweetlist">
             <Grid xs={12} md={8}>
                 <Tweets />
-
+                tweetslist
             </Grid>
 
         </Grid>

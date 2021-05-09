@@ -11,11 +11,7 @@ const initialState = {
     email: '',
     password: '',
   },
-  tweetInfo: {
-    username: '',
-    name: '',
-    dateTweeted: '',
-  },
+  tweetInfo: [],
   tweetText: '',
   tweetCharCount: 0,
 
@@ -52,12 +48,7 @@ const tweetReducer = (state = initialState, action) => {
     case ActionTypes.SET_TWEET_LIST_INFO:
       return {
         ...state,
-        tweetInfo: {
-          ...state.tweetInfo,
-          username: action.username,
-          name: action.name,
-          creatdate: action.createdate,
-        },
+        tweetInfo: action.tweetInfo,
 
       };
     case ActionTypes.SET_SNACKBAR_STATE: {
