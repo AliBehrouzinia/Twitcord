@@ -19,15 +19,23 @@ const initialState = {
   tweetInfo: [],
   tweetText: '',
   tweetCharCount: 0,
+  userSearchResult: [],
+  tweetSearchResult: [],
   profileInfo: {
+    username: '',
     bio: '',
+    date_joined: '',
     birthday: '',
     firstName: '',
     lastName: '',
     website: '',
-    username: '',
     isPublic: false,
+    email: '',
+
   },
+  sideDrawerEnable: true,
+  tweetText: '',
+  tweetCharCount: 0,
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -73,6 +81,20 @@ const tweetReducer = (state = initialState, action) => {
       };
     }
 
+    case ActionTypes.SET_USER_SEARCH_RESULT: {
+      return {
+        ...state,
+        userSearchResult: action.users,
+      };
+    }
+
+    case ActionTypes.SET_TWEET_SEARCH_RESULT: {
+      return {
+        ...state,
+        tweetSearchResult: action.tweets,
+      };
+    }
+
     case ActionTypes.SET_PROFILE_INFO: {
       return {
         ...state,
@@ -85,6 +107,8 @@ const tweetReducer = (state = initialState, action) => {
           website: action.website,
           username: action.username,
           isPublic: action.isPublic,
+          email: action.email,
+          date_joined: action.date_joined,
         },
       };
     }
@@ -98,6 +122,13 @@ const tweetReducer = (state = initialState, action) => {
           userEmail: action.email,
           userProfile: action.profile_img,
         },
+      };
+    }
+
+    case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
+      return {
+        ...state,
+        sideDrawerEnable: action.enable,
       };
     }
 
