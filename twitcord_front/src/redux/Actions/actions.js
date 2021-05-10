@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ActionTypes } from './actionTypes';
 
 export const setSignUpInfo = (data) => ({

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import './Tweets.css';
 import { useSelector } from 'react-redux';

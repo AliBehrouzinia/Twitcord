@@ -1,21 +1,19 @@
-/* eslint-disable require-jsdoc */
+/* eslint-disable */
 import React from 'react';
-import ProfileTweetlist from './Components/ProfileTweetList/ProfileTweetList.js';
+import ProfileTweetlist from './Components/ProfileTweetlist/ProfileTweetlist.js';
 import { Provider } from 'react-redux';
 import store from './redux/store.js';
-import { BrowserRouter, Route } from 'react-router-dom';
 import LogIn from './Components/LogIn/LogIn.js';
 import SignUp from './Components/SignUp/SignUp.js';
 import HomePage from './Components/HomePage/HomePage.js';
-import { Provider } from 'react-redux';
-import store from './redux/store.js';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
-import Profile from './Components/Profile/Profile.js';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+// import Profile from './Components/Profile/Profile.js';
 import Search from './Components/Search/Search.js';
 import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './Components/EditProfile/EditProfile.js';
 import SideDrawer from './Components/HomePage/SideDrawer/SideDrawer.js';
+
 
 function App() {
   const windowHeight = window['innerHeight'];
@@ -31,14 +29,19 @@ function App() {
           <Grid item xs>
             <div className="App">
               <div>
-                <Route exact path="/" render={() =>
-                  (<Redirect to="/homepage" />)} />
-                <Route exact path="/search" component={Search} />
-                <Route exact path="/homepage" component={HomePage} />
-                <Route exact path="/login" component={LogIn} />
-                <Route exact path="/signup" component={SignUp} />
-                <Route exact path="/profile" component={Profile} />
-                <Route exact path="/notification" component={EditProfile} />
+                <Switch>
+                  <Route exact path="/tweets" component={ProfileTweetlist} />
+                  <Route exact path="/" render={() =>
+                    (<Redirect to="/homepage" />)} />
+                  <Route exact path="/search" component={Search} />
+                  <Route exact path="/homepage" component={HomePage} />
+                  <Route exact path="/login" component={LogIn} />
+                  <Route exact path="/signup" component={SignUp} />
+                  {/* <Route exact path="/profile" component={Profile} /> */}
+                  <Route exact path="/notification" component={EditProfile} />
+
+                </Switch>
+
               </div>
             </div>
           </Grid>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from 'axios';
 import * as Constants from '../Constants.js';
 
@@ -74,6 +75,13 @@ export const searchUsers = (data, params) => {
   );
 };
 
+export const tweetlist = (data) => {
+  return request(
+    data,
+    Constants.URL_TWEET_LIST,
+    Constants.GET_REQUEST_METHOD,
+  );
+};
 export const searchTweets = (data, params) => {
   return request(
     data,
