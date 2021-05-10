@@ -49,7 +49,7 @@ class ListOfFollowingsView(generics.ListAPIView):
     serializer_class = serializers.ListOfFollowingsSerializer
 
     def get_queryset(self):
-        user = self.request.user.id
+        user = self.kwargs.get('id')
         return models.UserFollowing.objects.filter(user_id=user)
 
 
@@ -58,7 +58,7 @@ class ListOfFollowersView(generics.ListAPIView):
     serializer_class = serializers.ListOfFollowersSerializer
 
     def get_queryset(self):
-        user = self.request.user.id
+        user = self.kwargs.get('id')
         queryset = models.UserFollowing.objects.filter(Q(following_user=user))
         return queryset
 
@@ -155,6 +155,16 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
         self.check_object_permissions(request=self.request, obj=follow_request)
         return follow_request
+
+
+class FollowCountView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.FollowCountSerializer
+
+    def get_queryset(self):
+        user = self.kwargs.get('id')
+        queryset = models.TwitcordUser.objects.filter(pk=user)
+        return queryset
 
 
 class GlobalUserSearchList(generics.ListAPIView):
