@@ -26,7 +26,6 @@ const Followings = () => {
     API.followingslist({id: profileId})
         .then((response) => {
           setFollowList(response.data.results);
-          console.log(FollowList);
         })
         .catch((error) => {
           console.log('failed to load data');
@@ -34,7 +33,7 @@ const Followings = () => {
   }, []);
 
   return (
-    <List >
+    <List className="root">
       {FollowList.map((postdetail, index) => {
         return (
           <div key={index} >

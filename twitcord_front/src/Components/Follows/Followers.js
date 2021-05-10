@@ -24,14 +24,13 @@ const Followers = () => {
     API.followerslist({id: profileId})
         .then((response) => {
           setFollowList(response.data.results);
-          console.log(FollowList);
         })
         .catch((error) => {
           console.log(error);
         });
   }, []);
   return (
-    <List >
+    <List className="root" >
       {FollowList.map((postdetail, index) => {
         return (
           <div key={index} >

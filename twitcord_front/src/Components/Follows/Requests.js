@@ -28,50 +28,82 @@ const Followings = () => {
     API.requests({id: profileId})
         .then((response) => {
           setFollowList(response.data.results);
-          console.log(FollowList);
         })
         .catch((error) => {
           console.log('failed to load data');
         });
   }, []);
 
+  function handledelete(id) {
+    console.log(id);
+    const newList = FollowList.filter((item) => item.id !== id);
+    setFollowList(newList);
+    console.log(newList);
+    API.rejectfollowrequest({id: id})
+        .then((response) => {
+          setFollowList(response.data.results);
+        })
+        .catch((error) => {
+          console.log('failed to load data');
+        });
+  }
+  function handleaccept(id) {
+    console.log(id);
+    const newList = FollowList.filter((item) => item.id !== id);
+    setFollowList(FollowList);
+    console.log(newList);
+    API.acceptfollowrequest({id: id})
+        .then((response) => {
+          setFollowList(response.data.results);
+        })
+        .catch((error) => {
+          console.log('failed to load data');
+        });
+  }
   return (
-    <List >
-      {FollowList.map((postdetail, index) => {
-        return (
-          <div key={index}>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              </ListItemAvatar>
-              <ListItemText
-                primary={postdetail.username}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      className="inline"
-                      color="textPrimary"
-                    >
-                      {postdetail.first_name + postdetail.last_name}
-                    </Typography>
-                    {' — ' + postdetail.type }
-                    {postdetail.email}
-                  </React.Fragment>
-                }
-              />
-              <IconButton aria-label="delete" style={{color: green[500]}} fontSize="small">
-                <CheckIcon />
-              </IconButton>
-              <IconButton aria-label="delete" color="primary">
-                <DeleteIcon />
-              </IconButton>
-            </ListItem>
-            <Divider variant="inset" component="li" />
-          </div>
-        );
-      })}
+    <List className="root" >
+      {FollowList === [] ?(
+         <div>nothing to show</div>
+      ):(
+        <div>
+          {FollowList.map((postdetail, index) => {
+            return (
+              <div key={index}>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={postdetail.username}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className="inline"
+                          color="textPrimary"
+                        >
+                          {postdetail.first_name + postdetail.last_name}
+                        </Typography>
+                        {' — ' + postdetail.email }
+                      </React.Fragment>
+                    }
+                  />
+                  <IconButton aria-label="delete" style={{color: green[500]}} fontSize="small" onClick={() => handleaccept(postdetail.id)} >
+                    <CheckIcon />
+                  </IconButton>
+                  <IconButton aria-label="delete" color="primary" onClick={() => handledelete(postdetail.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </div>
+            );
+          })}
+        </div>
+
+      )}
+
     </List>
   );
 };

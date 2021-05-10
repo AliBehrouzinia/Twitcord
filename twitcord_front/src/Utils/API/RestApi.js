@@ -64,6 +64,23 @@ export const logIn = (data) => {
   );
 };
 
+export const rejectfollowrequest = (data, params) => {
+  return request(
+      data,
+      params,
+      Constants.REJECT_FOLLOW_REQUEST.replace('{id}', data.id),
+      Constants.PATCH_REQUEST_METHOD,
+  );
+};
+export const acceptfollowrequest = (data, params) => {
+  return request(
+      data,
+      params,
+      Constants.ACCEPT_FOLLOW_REQUEST.replace('{id}', data.id),
+      Constants.PATCH_REQUEST_METHOD,
+  );
+};
+
 export const searchUsers = (data, params) => {
   return request(
       data,
@@ -121,7 +138,7 @@ export const followerslist = (data) => {
   return request(
       data,
       {},
-      Constants.URL_FOLLOWERS,
+      Constants.URL_FOLLOWERS.replace('{id}', data.id),
       Constants.GET_REQUEST_METHOD,
   );
 };
@@ -129,7 +146,7 @@ export const followingslist = (data) => {
   return request(
       data,
       {},
-      Constants.URL_FOLLOWINGS,
+      Constants.URL_FOLLOWINGS.replace('{id}', data.id),
       Constants.GET_REQUEST_METHOD,
   );
 };

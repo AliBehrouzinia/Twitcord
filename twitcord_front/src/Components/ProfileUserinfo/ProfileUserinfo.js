@@ -97,7 +97,6 @@ const ProfileUserinfo = () => {
         <Grid item className="grid-info1" xs={6}>
           <Grid item className="info1">
             <Typography variant="h5" className="grid-username">
-							user
               {profileInfo.username}
             </Typography>
             <Typography className="grid-bio">{profileInfo.bio}</Typography>
