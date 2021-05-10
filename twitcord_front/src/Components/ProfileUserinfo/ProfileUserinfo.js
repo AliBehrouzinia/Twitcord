@@ -143,7 +143,7 @@ const ProfileUserinfo = () => {
             >
               <Fade in={open}>{body}</Fade>
             </Modal>
-            {profileInfo.isPublic === false ?(
+            {profileInfo.is_public === false ?(
               <div>
                 <button type="requests" className="requests" onClick={handlerequests}>
               requests
