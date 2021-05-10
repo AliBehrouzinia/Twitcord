@@ -26,7 +26,7 @@ const initialState = {
     firstName: '',
     lastName: '',
     website: '',
-    isPublic: false,
+    is_public: false,
     email: '',
 
   },
@@ -113,7 +113,7 @@ const tweetReducer = (state = initialState, action) => {
           lastName: action.lastName,
           website: action.website,
           username: action.username,
-          isPublic: action.isPublic,
+          is_public: action.is_public,
           email: action.email,
           date_joined: action.date_joined,
         },

@@ -28,6 +28,7 @@ const Followings = () => {
     API.requests({id: profileId})
         .then((response) => {
           setFollowList(response.data.results);
+          console.log(FollowList[0]);
         })
         .catch((error) => {
           console.log('failed to load data');
@@ -57,12 +58,12 @@ const Followings = () => {
           setFollowList(response.data.results);
         })
         .catch((error) => {
-          console.log('failed to load data');
+          console.log(error);
         });
   }
   return (
     <List className="root" >
-      {FollowList === [] ?(
+      {FollowList[0] === null ?(
          <div>nothing to show</div>
       ):(
         <div>

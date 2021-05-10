@@ -67,6 +67,7 @@ const ProfileUserinfo = () => {
     API.getProfileInfo({id: profileId})
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data));
+          console.log(profileInfo.is_public);
         })
         .catch((error) => {
           console.log(error);
@@ -99,7 +100,7 @@ const ProfileUserinfo = () => {
             <Typography variant="h5" className="grid-username">
               {profileInfo.username}
             </Typography>
-            <Typography className="grid-bio">{profileInfo.bio}</Typography>
+            <Typography className="grid-bio">{profileInfo.bio}{profileInfo.is_public}</Typography>
             <Typography className="grid-joined">
               {' '}
 							joined
@@ -142,24 +143,29 @@ const ProfileUserinfo = () => {
             >
               <Fade in={open}>{body}</Fade>
             </Modal>
-            <button type="requests" className="requests" onClick={handlerequests}>
+            {profileInfo.isPublic === false ?(
+              <div>
+                <button type="requests" className="requests" onClick={handlerequests}>
               requests
-            </button>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="sim"
-              value="requests"
-              id="2"
-              BackdropComponent={Backdrop}
-              className="modal"
-              BackdropProps={{
-                timeout: 500,
-              }}
-            >
-              <Fade in={open}>{body}</Fade>
-            </Modal>
+                </button>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="simple-modal-title"
+                  aria-describedby="sim"
+                  value="requests"
+                  id="2"
+                  BackdropComponent={Backdrop}
+                  className="modal"
+                  BackdropProps={{
+                    timeout: 500,
+                  }}
+                >
+                  <Fade in={open}>{body}</Fade>
+                </Modal>
+              </div>):(
+              <div/>
+            )}
 
 
           </Grid>

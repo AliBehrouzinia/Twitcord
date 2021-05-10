@@ -32,7 +32,7 @@ describe('ProfileUserinfo', () => {
             firstName: '',
             lastName: '',
             website: '',
-            isPublic: false,
+            is_public: false,
             email: '',
           },
         },
@@ -44,7 +44,7 @@ describe('ProfileUserinfo', () => {
           lastName: 'sykk',
           website: 'www.google.com',
           username: 'jm1243',
-          isPublic: false,
+          is_public: false,
           email: 'hanakariman@yahoo.com',
         }),
     )).toEqual({profileInfo: {
@@ -55,7 +55,7 @@ describe('ProfileUserinfo', () => {
       lastName: 'sykk',
       website: 'www.google.com',
       username: 'jm1243',
-      isPublic: false,
+      is_public: false,
       email: 'hanakariman@yahoo.com',
 
     }});
