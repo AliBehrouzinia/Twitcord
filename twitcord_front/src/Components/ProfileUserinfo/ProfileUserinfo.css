@@ -6,11 +6,10 @@
 }
 .avatar {
     width: 124px !important;
-    height: 124px !important;
-    float: left;
-    margin: -60px 10px 0 5%;
-    position: relative;
-    background-color: white;
+  height: 124px !important;
+  float: left;
+  margin: -60px 10px 0 5%;
+  position: relative;
 }
 .profile_cover {
     width: 100%;

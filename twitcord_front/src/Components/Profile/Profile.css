@@ -1,15 +1,13 @@
-.grid-item{
-	align-self: center;	
-	justify-content: center;
-	min-width: 30rem;
-	width: 100%;
-}
+
 .profile-content{
 	text-align: center;
 	color: gray;
 }
 .tabs{
 	width: 25%;
+}
+.hello{
+	background-color: black;
 }
 
 

@@ -12,9 +12,10 @@ const Profile = () => {
   const handleChange = (event, selectedTab) => {
     setSelectedTab(selectedTab);
   };
+
   return (
     <Grid container direction="column">
-      <Grid item className="grid-item" xs={12} sm={10} md={8}>
+      <Grid item className="grid-item" xs={12} sm={12} md={8}>
         <ProfileUserinfo/>
       </Grid>
       <Grid item className="grid-item" xs={12} sm={10} md={8}>

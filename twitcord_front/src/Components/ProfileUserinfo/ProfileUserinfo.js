@@ -9,6 +9,7 @@ import * as API from '../../Utils/API/index';
 import PropTypes from 'prop-types';
 import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
+import {Button} from '@material-ui/core';
 import {Typography} from '@material-ui/core';
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
@@ -49,18 +50,17 @@ const ProfileUserinfo = () => {
   const dt = date.getDate();
   return (
     <Grid className="user-info" >
-      <Grid container direction="column">
+      <Grid item container direction="column">
         <Grid item className="grid-item">
           <img src={image} alt="img" className="profile_cover" />
           <Avatar className="avatar" />
         </Grid>
       </Grid>
-      <Grid container >
+      <Grid item container >
         <Grid item className="grid-info1" xs={6}>
           <Grid item className="info1">
             <Typography variant="h5" className="grid-username">
               {' '}
-            user
               {profileInfo.username}
             </Typography>
             <Typography className="grid-bio">{profileInfo.bio}</Typography>
@@ -88,9 +88,13 @@ const ProfileUserinfo = () => {
         <Grid item xs={6} className="grid-info2">
           {userGeneralInfo !== null &&
           userGeneralInfo.email === profileInfo.email ? (
-          <button className="edit-button">edit profile</button>
+          <Button
+            variant="outlined"
+            color="primary">
+            edit
+          </Button>
         ) : (
-          <button className="edit-button">follow</button>
+          <Button variant="primary" >follow</Button>
         )}
         </Grid>
       </Grid>
@@ -103,6 +107,7 @@ const handleFormValidationResults = (values) => {
     alert;
   }
 };
+
 ProfileUserinfo.propTypes = {
   username: PropTypes.string,
   bio: PropTypes.string,
