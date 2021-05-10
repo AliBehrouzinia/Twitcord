@@ -24,7 +24,7 @@ const EditProfile = () => {
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
-  const profileId = -1;
+  let profileId = -1;
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
   );
@@ -183,15 +183,13 @@ const EditProfile = () => {
 
   return (
     <Grid container direction="column">
-      <Grid item className="grid-item" xs={12} sm={10} md={8}>
-        <img src={image} alt="img" className="profile_cover" />
-        <Avatar className="avatar" />
+      <Grid item className="ep-grid-item" xs>
+        <img src={image} alt="img" className="ep-profile_cover" />
+        <Avatar className="ep-avatar" />
       </Grid>
 
       <Grid container>
-        <Grid item xs={1} sm={2} md={3} lg={4} />
-
-        <Grid item xs={10} sm={8} md={6} lg={4}>
+        <Grid item xs>
           <div>
             {isSnackbarOpen && (<SnackbarAlert
               alertMessage={snackbarAlertMessage}
@@ -244,11 +242,11 @@ const EditProfile = () => {
             >
               {({submitForm, isSubmitting}) => (
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Form className="form">
+                  <Form className="ep-form">
                     <Field
                       id="username"
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="Username"
                       variant="outlined"
                       name="username"
@@ -256,7 +254,7 @@ const EditProfile = () => {
 
                     <Field
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="First Name"
                       variant="outlined"
                       name="firstName"
@@ -264,7 +262,7 @@ const EditProfile = () => {
 
                     <Field
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="Last Name"
                       variant="outlined"
                       name="lastName"
@@ -272,7 +270,7 @@ const EditProfile = () => {
 
                     <Field
                       component={DatePicker}
-                      className="text-field"
+                      className="ep-text-field"
                       variant="outlined"
                       name="birthday"
                       label="Birth Day"
@@ -281,7 +279,7 @@ const EditProfile = () => {
 
                     <Field
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="Website"
                       variant="outlined"
                       name="website"
@@ -289,14 +287,14 @@ const EditProfile = () => {
 
                     <Field
                       component={TextField}
-                      className="text-field"
+                      className="ep-text-field"
                       label="Bio"
                       variant="outlined"
                       name="bio"
                       multiline
                       rows={4}
                     />
-                    <FormGroup className="check-box">
+                    <FormGroup className="ep-check-box">
                       <Field
                         component={CheckboxWithLabel}
                         type="checkbox"
@@ -307,7 +305,7 @@ const EditProfile = () => {
                     </FormGroup>
                     <Button
                       variant="contained"
-                      className="text-field"
+                      className="ep-text-field"
                       color="primary"
                       disabled={isSubmitting}
                       onClick={submitForm}
@@ -320,7 +318,6 @@ const EditProfile = () => {
             </Formik>
           </div>
         </Grid>
-        <Grid item xs={1} sm={2} md={3} lg={4} />
       </Grid>
     </Grid>
   );

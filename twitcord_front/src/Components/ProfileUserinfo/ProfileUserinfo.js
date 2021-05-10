@@ -178,13 +178,13 @@ const ProfileUserinfo = () => {
     </Grid>
   );
 };
-
 // eslint-disable-next-line no-unused-vars
 const handleFormValidationResults = (values) => {
   if (values.name == null && values.website == null) {
     alert;
   }
 };
+
 ProfileUserinfo.propTypes = {
   username: PropTypes.string,
   bio: PropTypes.string,

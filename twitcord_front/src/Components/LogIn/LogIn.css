@@ -4,7 +4,6 @@
   }
   
 .form {
-    margin-top: 50px;
     margin-bottom: 50px;
     display: flex;
     flex-direction: column;
@@ -18,4 +17,24 @@ form .grid-item {
 
 .log-in-redirection {
   margin-top: 5px;
+}
+
+.lg-root{
+  box-shadow: 0px 0px 82px 120px #e4e4e4;
+  border-radius: 7px;
+  padding-bottom: 1px;
+  position: absolute;
+  top: 30%;
+  right: 50%;
+  transform: translateY(-50%);
+  transform: translateX(50%);
+}
+
+.lg-content-container{
+  text-align: center;
+}
+
+.lg-logo{
+  width: 120px;
+  padding-top: 30px;
 }

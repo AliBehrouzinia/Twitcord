@@ -42,5 +42,9 @@ export const setUserGeneralInfo = (data) => ({
 
 export const setfollowcount = (data) => ({
   type: ActionTypes.SET_FOLLOW_COUNT,
+});
+
+export const setSideDrawerEnable = (data) => ({
+  type: ActionTypes.SET_SIDE_DRAWER_ENABLE,
   ...data,
 });
