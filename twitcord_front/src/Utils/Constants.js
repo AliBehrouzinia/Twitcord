@@ -18,6 +18,7 @@ export const URL_USER_GENERAL_INFO= '/rest-auth/user/';
 export const URL_FOLLOWINGS= '/followings/';
 export const URL_FOLLOWERS= '/followers/';
 export const URL_REQUESTS= '/followers/requests/';
+export const URL_FOLLOW_COUNT= '/follow/count/{id}/';
 
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;

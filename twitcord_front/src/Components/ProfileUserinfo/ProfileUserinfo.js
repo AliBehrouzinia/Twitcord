@@ -20,6 +20,7 @@ import Followings from '../Follows/Followings';
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
+  const followcount = useSelector((state) => state).tweet.followcount;
   let profileId = -1;
   const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
   if (userGeneralInfo != null) {
@@ -68,7 +69,16 @@ const ProfileUserinfo = () => {
           dispatch(Actions.setProfileInfo(response.data));
         })
         .catch((error) => {
-          console.log('failed to load data');
+          console.log(error);
+        });
+  }, []);
+  useEffect(() => {
+    API.followcount({id: profileId})
+        .then((response) => {
+          dispatch(Actions.setfollowcount(response.data.results[0]));
+        })
+        .catch((error) => {
+          console.log(error);
         });
   }, []);
   const date = new Date(profileInfo.date_joined);
@@ -99,7 +109,7 @@ const ProfileUserinfo = () => {
           </Grid>
           <Grid item>
             <button type="followers" className="followers" onClick={handleOpenfollowers}>
-							followers
+              {'followers' +'   '+ followcount.followers_count}
             </button>
             <Modal
               open={open}
@@ -116,7 +126,7 @@ const ProfileUserinfo = () => {
               <Fade in={open}>{body}</Fade>
             </Modal>
             <button type="followings" className="followings" onClick={handleOpenfollowing}>
-							followings
+              {'followings' +'   '+ followcount.followings_count}
             </button>
             <Modal
               open={open}
@@ -134,7 +144,7 @@ const ProfileUserinfo = () => {
               <Fade in={open}>{body}</Fade>
             </Modal>
             <button type="requests" className="requests" onClick={handlerequests}>
-							requests
+              requests
             </button>
             <Modal
               open={open}

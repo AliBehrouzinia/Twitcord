@@ -30,6 +30,11 @@ const initialState = {
     email: '',
 
   },
+  followcount: {
+    pk: 0,
+    followers_count: 0,
+    followings_count: 0,
+  },
   tweetText: '',
   tweetCharCount: 0,
 };
@@ -77,7 +82,17 @@ const tweetReducer = (state = initialState, action) => {
         userSearchResult: action.users,
       };
     }
-
+    case ActionTypes.SET_FOLLOW_COUNT: {
+      return {
+        ...state,
+        followcount: {
+          ...state.followcount,
+          pk: action.pk,
+          followers_count: action.followers_count,
+          followings_count: action.followings_count,
+        },
+      };
+    }
     case ActionTypes.SET_TWEET_SEARCH_RESULT: {
       return {
         ...state,

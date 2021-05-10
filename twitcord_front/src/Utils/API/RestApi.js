@@ -100,6 +100,15 @@ export const updateProfileInfo = (id, data) => {
   );
 };
 
+export const followcount = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_FOLLOW_COUNT.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
 export const userGeneralInfo = (data) => {
   return request(
       data,
