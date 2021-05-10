@@ -138,7 +138,7 @@ class AnswerFollowRequestView(generics.UpdateAPIView):
             return HttpResponseBadRequest("error: problem in query params.")
 
         if action == ActionOnFollowRequestType.accept.name:
-            data = {'user_id': follow_request.request_from.id, 'following_user_id': follow_request.request_to.id}
+            data = {'user': follow_request.request_from.id, 'following_user': follow_request.request_to.id}
             serializer = serializers.FollowingsSerializer(data=data)
             if serializer.is_valid(True):
                 serializer.save()
