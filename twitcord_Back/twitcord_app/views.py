@@ -49,7 +49,7 @@ class ListOfFollowingsView(generics.ListAPIView):
     serializer_class = serializers.ListOfFollowingsSerializer
 
     def get_queryset(self):
-        user = self.request.user.id
+        user = self.kwargs.get('id')
         return models.UserFollowing.objects.filter(user_id=user)
 
 
@@ -58,7 +58,7 @@ class ListOfFollowersView(generics.ListAPIView):
     serializer_class = serializers.ListOfFollowersSerializer
 
     def get_queryset(self):
-        user = self.request.user.id
+        user = self.kwargs.get('id')
         queryset = models.UserFollowing.objects.filter(Q(following_user=user))
         return queryset
 
@@ -157,6 +157,16 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         return follow_request
 
 
+class FollowCountView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.FollowCountSerializer
+
+    def get_queryset(self):
+        user = self.kwargs.get('id')
+        queryset = models.TwitcordUser.objects.filter(pk=user)
+        return queryset
+
+
 class GlobalUserSearchList(generics.ListAPIView):
     serializer_class = serializers.GlobalUserSearchSerializer
     permission_classes = [IsAuthenticated]
@@ -188,6 +198,8 @@ class GlobalTweetSearchList(generics.ListAPIView):
         query = self.request.query_params.get('query', None)
         tweets = models.Tweet.objects.filter(Q(content__icontains=query)).order_by('-create_date')
         return tweets
+
+
 class LikeCreateView(generics.CreateAPIView, generics.DestroyAPIView):
     permission_classes = [IsAuthenticated, PrivateAccountTweetPermission]
     serializer_class = serializers.LikeSerializer
