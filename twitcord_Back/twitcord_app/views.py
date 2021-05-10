@@ -249,13 +249,15 @@ class TimeLineView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user.id
         user_followings = models.UserFollowing.objects.filter(user_id=user)
-
         queryset = []
         for instance in user_followings:
             queryset.append(instance.following_user)
         result = self.calculate_threshold(user, queryset)
-        tweets = models.Tweet.objects.filter(user_id__in=queryset).order_by('create_date')
-        return tweets
+        sorted_tweets = sorted(result.items(), key=lambda x: x[1], reverse=True)
+        final_result = []
+        for key, value in sorted_tweets:
+            final_result.append(key)
+        return final_result
 
     def calculate_threshold(self, user, followings):
         result = {}
@@ -294,8 +296,4 @@ class TimeLineView(generics.ListAPIView):
                         result[tweet] *= 1
                     elif (type_status, type_status) == models.UserFollowing.following_TYPES[4]:
                         result[tweet] *= 0.8
-        for tweet in result:
-            print(result[tweet])
-
-        print(result)
-        return 0
+        return result
