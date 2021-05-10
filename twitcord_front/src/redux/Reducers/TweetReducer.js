@@ -16,6 +16,8 @@ const initialState = {
     email: '',
     password: '',
   },
+  userSearchResult: [],
+  tweetSearchResult: [],
   profileInfo: {
     username: '',
     bio: '',
@@ -26,8 +28,8 @@ const initialState = {
     website: '',
     isPublic: false,
     email: '',
-
   },
+  sideDrawerEnable: true,
   tweetText: '',
   tweetCharCount: 0,
 };
@@ -62,10 +64,25 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
+
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
         isSnackbarOpen: action.isSnackbarOpen,
+      };
+    }
+
+    case ActionTypes.SET_USER_SEARCH_RESULT: {
+      return {
+        ...state,
+        userSearchResult: action.users,
+      };
+    }
+
+    case ActionTypes.SET_TWEET_SEARCH_RESULT: {
+      return {
+        ...state,
+        tweetSearchResult: action.tweets,
       };
     }
 
@@ -98,7 +115,14 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
-    
+
+    case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
+      return {
+        ...state,
+        sideDrawerEnable: action.enable,
+      };
+    }
+
     default:
       return state;
   }
