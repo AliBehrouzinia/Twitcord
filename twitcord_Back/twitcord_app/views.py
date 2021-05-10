@@ -94,7 +94,7 @@ class FollowingRequestView(generics.CreateAPIView):
         request_to_user = get_object_or_404(models.TwitcordUser, id=data['request_to'])
 
         if request_to_user.is_public:
-            follow_user_data = {"user_id": data['request_from'], "following_user_id": data['request_to']}
+            follow_user_data = {"user": data['request_from'], "following_user": data['request_to']}
             serializer = serializers.FollowingsSerializer(data=follow_user_data)
             if serializer.is_valid(True):
                 serializer.save()
