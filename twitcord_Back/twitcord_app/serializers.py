@@ -20,10 +20,16 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 
 
 class ProfileDetailsViewSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
+        result['followings_count'] = UserFollowing.objects.filter(user_id=instance.id).count()
+        result['followers_count'] = UserFollowing.objects.filter(following_user_id=instance.id).count()
+        return result
+
     class Meta:
         model = TwitcordUser
         fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio', 'website', 'is_public')
-        read_only_fields = ('email','username')
+        read_only_fields = ('email', )
 
 
 class TweetSerializer(serializers.ModelSerializer):
@@ -62,28 +68,36 @@ class FollowingsSerializer(serializers.ModelSerializer):
 
 
 class ListOfFollowingsSerializer(serializers.ModelSerializer):
-    def to_representation(self, instance):
-        result = super(ListOfFollowingsSerializer, self).to_representation(instance)
-        user = instance.following_user_id
-        result['id'] = result.pop('following_user_id')
-        result['profile_img'] = user.profile_img.url
-        result['username'] = user.email
-        return result
-
     class Meta:
         model = UserFollowing
-        fields = ['following_user_id']
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super(ListOfFollowingsSerializer, self).to_representation(instance)
+        user = instance.following_user
+        result['id'] = result.pop('following_user')
+        result['profile_img'] = user.profile_img.url
+        result['username'] = user.username
+        result['email'] = user.email
+        result['first_name'] = user.first_name
+        result['last_name'] = user.last_name
+        result['is_public'] = user.is_public
+        return result
 
 
 class ListOfFollowersSerializer(serializers.ModelSerializer):
-    def to_representation(self, instance):
-        result = super(ListOfFollowersSerializer, self).to_representation(instance)
-        user = instance.user_id
-        result['id'] = result.pop('user_id')
-        result['profile_img'] = user.profile_img.url
-        result['username'] = user.email
-        return result
-
     class Meta:
         model = UserFollowing
-        fields = ['user_id']
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super(ListOfFollowersSerializer, self).to_representation(instance)
+        user = instance.user
+        result['id'] = result.pop('user')
+        result['profile_img'] = user.profile_img.url
+        result['username'] = user.username
+        result['email'] = user.email
+        result['first_name'] = user.first_name
+        result['last_name'] = user.last_name
+        result['is_public'] = user.is_public
+        return result

@@ -28,18 +28,13 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
     lookup_url_kwarg = 'id'
 
 
-class TweetsView(generics.ListCreateAPIView):
-    permission_classes = [DjangoModelPermissionsOrAnonReadOnly,]
+class TweetsListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.TweetSerializer
 
     def get_queryset(self):
         user_id = self.kwargs.get('id')
-        return models.Tweet.objects.filter(user_id = user_id)
-
-
-class TweetsView(generics.CreateAPIView):
-    permission_classes = [IsAuthenticated, ]
-    serializer_class = serializers.TweetSerializer
+        return models.Tweet.objects.filter(user_id=user_id)
 
 
 class ActionOnFollowRequestType(enum.Enum):
@@ -49,7 +44,7 @@ class ActionOnFollowRequestType(enum.Enum):
 
 class ListOfFollowingsView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.FollowingsSerializer
+    serializer_class = serializers.ListOfFollowingsSerializer
 
     def get_queryset(self):
         user = self.request.user.id
@@ -58,21 +53,24 @@ class ListOfFollowingsView(generics.ListAPIView):
 
 class ListOfFollowersView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
-    serializer_class = serializers.FollowingsSerializer
+    serializer_class = serializers.ListOfFollowersSerializer
 
     def get_queryset(self):
         user = self.request.user.id
-        queryset = models.UserFollowing.objects.filter(Q(following_user_id=user))
+        queryset = models.UserFollowing.objects.filter(Q(following_user=user))
         return queryset
 
 
-class DeleteFollowingsView(generics.DestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, UserIsOwnerOrReadonly)
+    queryset = models.UserFollowing.objects.all()
+    serializer_class = serializers.FollowingsSerializer
+    lookup_url_kwarg = 'id'
 
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
         following_user_id = self.kwargs.get('id')
-        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user_id=following_user_id)
+        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
         instance.delete()
         return Response()
 

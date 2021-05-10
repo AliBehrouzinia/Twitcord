@@ -10,7 +10,7 @@ import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
 
 const ProfileTweetlist = () => {
-    const tweets = useSelector((state) => state).tweet.tweetinfo;
+    const tweets = useSelector((state) => state).tweet.tweetInfo;
     const dispatch = useDispatch();
     const tweetlist = () => {
         API.tweetlist({ id: profileid })
@@ -21,28 +21,24 @@ const ProfileTweetlist = () => {
             .catch((error) => {
             });
     };
-
-    const tweetslist = tweets.map(
-        (tweet) => <div key={tweet.id}>
-            <Tweets
-                id={tweet.id}
-                name={tweet.first_name + ' ' + tweet.last_name}
-                username={tweet.username}
-                createDate={tweet.create_date}
-                content={tweet.content}
-                userId={tweet.user}
-                isPublic={tweet.is_public} />
-            <Divider />
-        </div>,
-    );
-
-
-
     return (
         <Grid container item className="tweetlist">
             <Grid xs={12} md={8}>
-                <Tweets />
-                tweetslist
+                {
+                    tweets.map(
+                        (tweet) => <div key={tweet.id}>
+                            <Tweets
+                                id={tweet.id}
+                                name={tweet.first_name + ' ' + tweet.last_name}
+                                username={tweet.username}
+                                createDate={tweet.create_date}
+                                content={tweet.content}
+                                userId={tweet.user}
+                                isPublic={tweet.is_public} />
+                            <Divider />
+                        </div>,
+                    )
+                }
             </Grid>
 
         </Grid>

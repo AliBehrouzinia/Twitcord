@@ -1,6 +1,11 @@
 import { ActionTypes } from '../Actions/actionTypes.js';
 
 const initialState = {
+  userGeneralInfo: {
+    userID: null,
+    userEmail: '',
+    userProfile: '',
+  },
   signUpInfo: {
     username: '',
     email: '',
@@ -14,7 +19,15 @@ const initialState = {
   tweetInfo: [],
   tweetText: '',
   tweetCharCount: 0,
-
+  profileInfo: {
+    bio: '',
+    birthday: '',
+    firstName: '',
+    lastName: '',
+    website: '',
+    username: '',
+    isPublic: false,
+  },
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -30,6 +43,7 @@ const tweetReducer = (state = initialState, action) => {
           password2: action.confirmPassword,
         },
       };
+
     case ActionTypes.SET_LOG_IN_INFO:
       return {
         ...state,
@@ -39,6 +53,7 @@ const tweetReducer = (state = initialState, action) => {
           password: action.password,
         },
       };
+
     case ActionTypes.SET_TWEET_TEXT:
       return {
         ...state,
@@ -57,6 +72,35 @@ const tweetReducer = (state = initialState, action) => {
         isSnackbarOpen: action.isSnackbarOpen,
       };
     }
+
+    case ActionTypes.SET_PROFILE_INFO: {
+      return {
+        ...state,
+        profileInfo: {
+          ...state.profileInfo,
+          bio: action.bio,
+          birthday: action.birthday,
+          firstName: action.firstName,
+          lastName: action.lastName,
+          website: action.website,
+          username: action.username,
+          isPublic: action.isPublic,
+        },
+      };
+    }
+
+    case ActionTypes.SET_USER_GENERAL_INFO: {
+      return {
+        ...state,
+        userGeneralInfo: {
+          ...state.userGeneralInfo,
+          userID: action.pk,
+          userEmail: action.email,
+          userProfile: action.profile_img,
+        },
+      };
+    }
+
     default:
       return state;
   }
