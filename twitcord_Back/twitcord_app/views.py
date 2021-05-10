@@ -269,5 +269,33 @@ class TimeLineView(generics.ListAPIView):
         tweets = models.Tweet.objects.filter(user_id__in=queryset).order_by('create_date')
         for tweet in tweets:
             result[tweet] = 50
+        liked_tweets_id = []
+        likes = models.Like.objects.filter(user_id__in=followings)
+        for like in likes:
+            liked_tweets_id.append(like.tweet.id)
+        liked_tweets = models.Tweet.objects.filter(pk__in=liked_tweets_id)
+        for tweet in liked_tweets:
+            result[tweet] += 20
+        followers_of_own_user = models.UserFollowing.objects.filter(following_user_id=user)
+        followers_of_own_user_id = []
+        for item in followers_of_own_user:
+            followers_of_own_user_id.append(item.user)
+        for tweet in result:
+            tweet_user = tweet.user
+            for user_id in followers_of_own_user_id:
+                if user_id == tweet_user:
+                    users = models.UserFollowing.objects.filter(Q(user_id=user_id) & Q(following_user_id=user))
+                    type_status = users[0].type
+                    if (type_status, type_status) == models.UserFollowing.following_TYPES[0]:
+                        result[tweet] *= 2
+                    elif (type_status, type_status) == models.UserFollowing.following_TYPES[2]:
+                        result[tweet] *= 1.5
+                    elif (type_status, type_status) == models.UserFollowing.following_TYPES[1]:
+                        result[tweet] *= 1
+                    elif (type_status, type_status) == models.UserFollowing.following_TYPES[4]:
+                        result[tweet] *= 0.8
+        for tweet in result:
+            print(result[tweet])
+
         print(result)
         return 0

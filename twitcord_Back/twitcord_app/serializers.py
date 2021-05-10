@@ -211,3 +211,4 @@ class TimeLineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
+        fields = '__all__'
