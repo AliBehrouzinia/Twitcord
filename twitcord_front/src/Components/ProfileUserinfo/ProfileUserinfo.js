@@ -81,7 +81,7 @@ const ProfileUserinfo = () => {
               '    ' + year}
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid item className="grid-follow-container">
             <button type="followers" className="followers" >
             followers
             </button>
