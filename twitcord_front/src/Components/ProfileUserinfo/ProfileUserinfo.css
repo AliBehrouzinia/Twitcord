@@ -74,10 +74,48 @@
 	border: none;
 	color: rgb(43, 43, 44);
 }
+
 .requests {
 	font-size: 14px;
 	background-color: transparent;
 	border: none;
 	color: rgb(43, 43, 44);
+}
+
+.followings:hover {
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.followers:hover {
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.requests:hover {
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.grid-username{
+    margin-top: 15px !important;
+    font-size: x-large !important;
+    color: rgb(75, 75, 75);
+}
+
+.grid-joined{
+    font-size: medium !important;
+    color: rgb(163, 162, 162);
+}
+
+.grid-bio{
+    font-size: large !important;
+}
+
+.grid-follow-container{
+    margin-top: 5px !important;
 }
 

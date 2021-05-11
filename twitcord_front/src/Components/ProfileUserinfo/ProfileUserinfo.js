@@ -18,8 +18,11 @@ import * as Constants from '../../Utils/Constants.js';
 import Followers from '../Follows/Followers';
 import Requests from '../Follows/Requests';
 import Followings from '../Follows/Followings';
+/* eslint-disable */
+
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const followcount = useSelector((state) => state).tweet.followcount;
   let profileId = -1;
@@ -43,7 +46,7 @@ const ProfileUserinfo = () => {
   };
   const [open, setOpen] = React.useState(false);
   const [Value, setValue] = React.useState(0);
-  const history = useHistory();
+
   const handleOpenfollowers = () => {
     setOpen(true);
     setValue(1);
@@ -90,6 +93,11 @@ const ProfileUserinfo = () => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const dt = date.getDate();
+
+  const handleEditProfileClick = () => {
+    history.push('/edit-profile');
+  };
+
   return (
     <Grid className="user-info" >
       <Grid container direction="column">
@@ -104,9 +112,8 @@ const ProfileUserinfo = () => {
             <Typography variant="h5" className="grid-username">
               {profileInfo.username}
             </Typography>
-            <Typography className="grid-bio">{profileInfo.bio}{profileInfo.is_public}</Typography>
+            <Typography className="grid-bio">{profileInfo.bio}</Typography>
             <Typography className="grid-joined">
-              {' '}
 							joined
               {'    ' + dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
             </Typography>

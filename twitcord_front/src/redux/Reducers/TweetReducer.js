@@ -38,6 +38,7 @@ const initialState = {
   sideDrawerEnable: true,
   tweetText: '',
   tweetCharCount: 0,
+  searchInput: '',
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -136,6 +137,13 @@ const tweetReducer = (state = initialState, action) => {
       return {
         ...state,
         sideDrawerEnable: action.enable,
+      };
+    }
+
+    case ActionTypes.SET_SEARCH_INPUT: {
+      return {
+        ...state,
+        searchInput: action.input,
       };
     }
 
