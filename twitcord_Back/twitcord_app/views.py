@@ -157,6 +157,17 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         return follow_request
 
 
+class TakeUserForRequestView(generics.ListAPIView):
+    permissions_classes = IsAuthenticated
+    serializer_class = serializers.TakeUserForRequestSerializer
+
+    def get_queryset(self):
+        user = self.request.user.id
+        following_user_id = self.kwargs.get('id')
+        follow_request = models.FollowRequest.objects.filter(Q(request_from_id=user) & Q(request_to_id=following_user_id))
+        return follow_request
+
+
 class FollowCountView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.FollowCountSerializer

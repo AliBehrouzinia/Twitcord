@@ -123,6 +123,12 @@ class FollowCountSerializer(serializers.ModelSerializer):
         return result
 
 
+class TakeUserForRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FollowRequest
+        fields = '__all__'
+
+
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
