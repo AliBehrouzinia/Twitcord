@@ -80,7 +80,8 @@ export const searchUsers = (data, params) => {
 export const tweetlist = (data) => {
   return request(
     data,
-    Constants.URL_TWEET_LIST,
+    {},
+    Constants.URL_TWEET_LIST.replace('{id}', data.id),
     Constants.GET_REQUEST_METHOD,
   );
 };
