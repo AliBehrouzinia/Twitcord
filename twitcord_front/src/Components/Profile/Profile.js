@@ -14,27 +14,24 @@ const Profile = () => {
   };
 
   return (
-    <Grid container>
-      <Grid item className="grid-item" xs={12} md={5} lg={8}>
-        <ProfileUserinfo/>
-        <Tabs
-          variant="fullWidth"
-          value={tabSelected}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary">
-          <Tab label="tweets" />
-          <Tab label="replys" />
-          <Tab label="likes" />
-          <Tab label="rooms" />
-        </Tabs>
-      </Grid>
-      <Grid item xs={12} md={5} lg={8} className="grid-item">
-        {tabSelected == 0 && <p className="profile-content">tweets</p> }
-        {tabSelected == 1 && <p className="profile-content">replys</p> }
-        {tabSelected == 2 && <p className="profile-content">likes</p> }
-        {tabSelected == 3 && <p className="profile-content">rooms</p> }
-      </Grid>
+
+    <Grid xs={12} lg={8} >
+      <ProfileUserinfo/>
+      <Tabs
+        variant="fullWidth"
+        value={tabSelected}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary">
+        <Tab label="tweets" />
+        <Tab label="replys" />
+        <Tab label="likes" />
+        <Tab label="rooms" />
+      </Tabs>
+      {tabSelected == 0 && <p className="profile-content">tweets</p> }
+      {tabSelected == 1 && <p className="profile-content">replys</p> }
+      {tabSelected == 2 && <p className="profile-content">likes</p> }
+      {tabSelected == 3 && <p className="profile-content">rooms</p> }
     </Grid>
   );
 };

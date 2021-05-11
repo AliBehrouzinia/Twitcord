@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -7,24 +8,30 @@ import {SearchBar} from '../SearchBar/SearchBar';
 import Divider from '@material-ui/core/Divider';
 import {UserSearchItem} from '../UserSearchItem/UserSearchItem';
 import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
-
+import * as Constants from '../../Utils/Constants.js';
 
 const Search = () => {
   const users = useSelector((state) => state).tweet.userSearchResult;
   const tweets = useSelector((state) => state).tweet.tweetSearchResult;
-
+  let profileId = -1;
+  const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
+  if (userGeneralInfo != null) {
+    profileId = userGeneralInfo.pk;
+  }
   const [tabSelected, setSelectedTab] = React.useState(0);
 
   const userResult = users.map(
-      (user) => <div key={user.id}>
+      (user) => user.id !== profileId ? <div key={user.id}>
         <UserSearchItem
           name={user.first_name + ' ' + user.last_name}
           username={user.username}
           bio={user.bio}
           followState={user.status}
-          isPublic={user.is_public}/>
+          isPublic={user.is_public}
+          id={user.id}
+          status= {user.status}/>
         <Divider />
-      </div>,
+      </div> : <div></div>,
   );
 
   const tweetResult = tweets.map(

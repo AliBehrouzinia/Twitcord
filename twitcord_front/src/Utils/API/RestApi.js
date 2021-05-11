@@ -158,3 +158,30 @@ export const requests = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const follownewuser = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_FOLLOW_NEW_USER,
+      Constants.POST_REQUEST_METHOD,
+  );
+};
+
+export const unfollowuser = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_UNFOLLOW_USER.replace('{id}', data.id),
+      Constants.DELETE_REQUEST_METHOD,
+  );
+};
+
+export const unrequest = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_UNREQUEST.replace('{id}', data.id),
+      Constants.DELETE_REQUEST_METHOD,
+  );
+};

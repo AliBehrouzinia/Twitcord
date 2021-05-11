@@ -28,7 +28,7 @@ const Followings = () => {
           setFollowList(response.data.results);
         })
         .catch((error) => {
-          console.log('failed to load data');
+          console.log(error);
         });
   }, []);
 

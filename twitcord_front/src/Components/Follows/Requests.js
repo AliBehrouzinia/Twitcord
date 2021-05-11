@@ -28,7 +28,6 @@ const Followings = () => {
     API.requests({id: profileId})
         .then((response) => {
           setFollowList(response.data.results);
-          console.log(FollowList[0]);
         })
         .catch((error) => {
           console.log('failed to load data');
@@ -43,15 +42,16 @@ const Followings = () => {
     API.rejectfollowrequest({id: id})
         .then((response) => {
           setFollowList(response.data.results);
+          console.log(FollowList);
         })
         .catch((error) => {
-          console.log('failed to load data');
+          console.log(error);
         });
   }
   function handleaccept(id) {
     console.log(id);
     const newList = FollowList.filter((item) => item.id !== id);
-    setFollowList(FollowList);
+    setFollowList(newList);
     console.log(newList);
     API.acceptfollowrequest({id: id})
         .then((response) => {
@@ -63,7 +63,7 @@ const Followings = () => {
   }
   return (
     <List className="root" >
-      {FollowList[0] === null ?(
+      {FollowList.length === 0 ?(
          <div>nothing to show</div>
       ):(
         <div>

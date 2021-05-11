@@ -3,6 +3,7 @@
 import React, {useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
+import {useHistory} from 'react-router-dom';
 import {Modal, Typography} from '@material-ui/core';
 import './ProfileUserinfo.css';
 import Fade from '@material-ui/core/Fade';
@@ -42,7 +43,7 @@ const ProfileUserinfo = () => {
   };
   const [open, setOpen] = React.useState(false);
   const [Value, setValue] = React.useState(0);
-
+  const history = useHistory();
   const handleOpenfollowers = () => {
     setOpen(true);
     setValue(1);
@@ -54,6 +55,9 @@ const ProfileUserinfo = () => {
   const handleOpenfollowing = () => {
     setOpen(true);
     setValue(2);
+  };
+  const handleedit = () =>{
+    history.push('/notification');
   };
   const handleClose = () => {
     setOpen(false);
@@ -94,8 +98,8 @@ const ProfileUserinfo = () => {
           <Avatar className="avatar" />
         </Grid>
       </Grid>
-      <Grid container >
-        <Grid item className="grid-info1" xs={6}>
+      <Grid container xs={12}>
+        <Grid item className="grid-info1" xs={8}>
           <Grid item className="info1">
             <Typography variant="h5" className="grid-username">
               {profileInfo.username}
@@ -170,10 +174,10 @@ const ProfileUserinfo = () => {
 
           </Grid>
         </Grid>
-        <Grid item xs={6}className="grid-info2">
+        <Grid item xs={4}className="grid-info2">
           <Grid className="button-edit">
             {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
-						<button className="edit-button">edit </button>
+						<button className="edit-button" onClick={() => handleedit()}>edit </button>
 					) : (
 						<button className="edit-button">follow</button>
 					)}

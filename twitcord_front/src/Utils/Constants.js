@@ -20,6 +20,9 @@ export const URL_FOLLOWINGS= '/followings/list/{id}/';
 export const URL_FOLLOWERS= '/followers/list/{id}/';
 export const URL_REQUESTS= '/followers/requests/';
 export const URL_FOLLOW_COUNT= '/follow/count/{id}/';
+export const URL_FOLLOW_NEW_USER= '/followings/requests/';
+export const URL_UNFOLLOW_USER= '/followings/{id}/';
+export const URL_UNREQUEST= '/followings/requests/{id}/';
 export const REJECT_FOLLOW_REQUEST= '/followers/requests/{id}/?action=reject';
 export const ACCEPT_FOLLOW_REQUEST= '/followers/requests/{id}/?action=accept';
 
