@@ -34,7 +34,7 @@ function App() {
                 <Route exact path="/login" component={LogIn} />
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/profile" component={Profile} />
-                <Route exact path="/notification" component={EditProfile} />
+                <Route exact path="/edit-profile" component={EditProfile} />
               </div>
             </div>
           </Grid>
