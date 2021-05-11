@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
@@ -15,6 +15,7 @@ import SnackbarAlert from '../Snackbar/Snackbar';
 import * as Constants from '../../Utils/Constants.js';
 import './SignUp.css';
 import logo from '../../assets/twitcord.png';
+/* eslint-disable */
 
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
@@ -27,6 +28,18 @@ const SignUp = () => {
   const handleLoginClick = () => {
     history.push('/login');
   };
+
+  useMemo(
+    () => {
+        dispatch(
+          Actions.setSideDrawerEnable({
+            enable: false,
+          }),
+      );
+    },
+    []
+  );
+
   const handleSubmit = (values) => {
     dispatch(Actions.setSignUpInfo(values));
     API.signUp(store.getState().tweet.signUpInfo)
