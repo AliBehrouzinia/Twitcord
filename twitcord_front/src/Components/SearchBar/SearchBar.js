@@ -5,11 +5,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import './SearchBar.css';
 import * as API from '../../Utils/API/index';
 import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 import * as Actions from '../../redux/Actions/index.js';
+/* eslint-disable */
 
 
 export const SearchBar = () => {
-  let userInput = '';
+  const userInput = useSelector((state) => state).tweet.searchInput;
   const dispatch = useDispatch();
 
   const handleKeyDown = (event) => {
@@ -17,6 +19,12 @@ export const SearchBar = () => {
       searchUser(userInput);
       searchTweet(userInput);
     }
+  };
+
+  const handleInputChange = (e) => {
+    dispatch(Actions.setSearchInput({
+      input: e.target.value,
+    }));  
   };
 
   const searchUser = (query, page=1) => {
@@ -49,9 +57,8 @@ export const SearchBar = () => {
       className="root">
       <InputBase
         onKeyDown={handleKeyDown}
-        onChange={(e)=>{
-          userInput = e.target.value;
-        }}
+        onChange={handleInputChange}
+        value={userInput}
         className="input-base"
         placeholder="Search"/>
       <IconButton
