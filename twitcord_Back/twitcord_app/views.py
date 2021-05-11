@@ -296,4 +296,15 @@ class TimeLineView(generics.ListAPIView):
                         result[tweet] *= 1
                     elif (type_status, type_status) == models.UserFollowing.following_TYPES[4]:
                         result[tweet] *= 0.8
+        list_of_mutual = {}
+        for second_level_user in followings_of_own_followings:
+            mutual_followers = 0
+            for first_level_user in followings:
+                first_cond = models.UserFollowing.objects.filter(user_id=second_level_user, following_user_id=
+                                                                 first_level_user).exists()
+                second_cond = models.UserFollowing.objects.filter(user_id=first_level_user, following_user_id=
+                                                                  second_level_user).exists()
+                if first_cond and second_cond:
+                    mutual_followers += 1
+            list_of_mutual[second_level_user] = mutual_followers
         return result
