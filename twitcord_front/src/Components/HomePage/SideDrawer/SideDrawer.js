@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {useHistory} from 'react-router-dom';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import NotificationsRoundedIcon from '@material-ui/icons/NotificationsRounded';
@@ -19,6 +19,7 @@ import * as Actions from '../../../redux/Actions/index';
 import logo from '../../../assets/twitcord.png';
 import {useSelector} from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
+/* eslint-disable */
 
 const SideDrawer = () => {
   const userGeneralInfo = useSelector((state) => state).tweet.userGeneralInfo;
@@ -29,6 +30,15 @@ const SideDrawer = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   let email;
   let profileImg;
+
+  useMemo(
+    () => {
+        if (userGeneralInfo == null || userGeneralInfo.userID == null){
+          history.push('/login')
+        }
+    },
+    []
+  );
 
   if (userGeneralInfo != null) {
     email = userGeneralInfo.userEmail;
