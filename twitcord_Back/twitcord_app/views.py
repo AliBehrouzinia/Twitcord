@@ -151,10 +151,12 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
     """Delete a follow request"""
     permission_classes = [IsAuthenticated, DeleteFollowRequestPermission]
 
-    def get_object(self):
-        follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
-        self.check_object_permissions(request=self.request, obj=follow_request)
-        return follow_request
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user.id
+        following = self.kwargs.get('id')
+        instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
+        instance.delete()
+        return Response()
 
 
 class FollowCountView(generics.ListAPIView):
