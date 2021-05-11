@@ -5,7 +5,6 @@ const instance = axios.create({
   baseURL: Constants.BASE_URL,
   responseType: 'json',
   headers: {
-    'Authorization': 'token ' + localStorage.getItem('token'),
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
@@ -27,6 +26,9 @@ const request = (data, params, url, method) => {
       url: url,
       params: params,
       data,
+      headers: {
+        'Authorization': 'token ' + localStorage.getItem('token'),
+      },
     });
   } else {
     return withoutAuthInstance({
