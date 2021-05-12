@@ -13,6 +13,8 @@ import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './Components/EditProfile/EditProfile.js';
 import SideDrawer from './Components/HomePage/SideDrawer/SideDrawer.js';
+/* eslint-disable */
+
 
 
 function App() {
@@ -29,19 +31,15 @@ function App() {
           <Grid item xs>
             <div className="App">
               <div>
-                <Switch>
-                  <Route exact path="/tweets" component={ProfileTweetlist} />
-                  <Route exact path="/" render={() =>
-                    (<Redirect to="/homepage" />)} />
-                  <Route exact path="/search" component={Search} />
-                  <Route exact path="/homepage" component={HomePage} />
-                  <Route exact path="/login" component={LogIn} />
-                  <Route exact path="/signup" component={SignUp} />
-                  {/* <Route exact path="/profile" component={Profile} /> */}
-                  <Route exact path="/notification" component={EditProfile} />
-
-                </Switch>
-
+                <Route exact path="/" render={() =>
+                  (<Redirect to="/homepage" />)} />
+                <Route exact path="/tweets" component={ProfileTweetlist} />
+                <Route exact path="/search" component={Search} />
+                <Route exact path="/homepage" component={HomePage} />
+                <Route exact path="/login" component={LogIn} />
+                <Route exact path="/signup" component={SignUp} />
+                <Route exact path="/profile" component={Profile} />
+                <Route exact path="/edit-profile" component={EditProfile} />
               </div>
             </div>
           </Grid>

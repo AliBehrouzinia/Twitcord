@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
@@ -15,6 +15,7 @@ import * as Constants from '../../Utils/Constants.js';
 import * as Actions from '../../redux/Actions/index.js';
 import './LogIn.css';
 import logo from '../../assets/twitcord.png';
+/* eslint-disable */
 
 /* eslint-disable require-jsdoc */
 const LogIn = () => {
@@ -27,6 +28,17 @@ const LogIn = () => {
   const handleSignUpClick = () => {
     history.push('/signup');
   };
+
+  useMemo(
+    () => {
+        dispatch(
+          Actions.setSideDrawerEnable({
+            enable: false,
+          }),
+      );
+    },
+    []
+  );
 
   function logInRequest(values) {
     dispatch(Actions.setLogInInfo(values));
@@ -45,11 +57,6 @@ const LogIn = () => {
             );
             resolve(response);
             history.push('/');
-            dispatch(
-                Actions.setSideDrawerEnable({
-                  enable: true,
-                }),
-            );
           })
           .catch((error) => {
             setSnackbarAlertMessage(
@@ -75,6 +82,11 @@ const LogIn = () => {
             localStorage.setItem(
                 Constants.GENERAL_USER_INFO, JSON.stringify(response.data),
             );
+            dispatch(
+              Actions.setSideDrawerEnable({
+                enable: true,
+              }),
+          );
           }).catch((error) => {
             setSnackbarAlertMessage(
                 Constants.GET_USER_INFO_FAILURE);
