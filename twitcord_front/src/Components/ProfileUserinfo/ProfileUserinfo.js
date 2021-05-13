@@ -1,4 +1,7 @@
-import React from 'react';
+/* eslint-disable */
+import React, { useEffect } from 'react';;
+
+/* eslint-disable */
 // import Grid from "@material-ui/core/Grid";
 // import Avatar from "@material-ui/core/Avatar";
 import './ProfileUserinfo.css';
@@ -12,8 +15,8 @@ import * as Constants from '../../Utils/Constants.js';
 import { Button } from '@material-ui/core';
 import { Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-/* eslint-disable */
-
+import Avatar from '@material-ui/core/Avatar'
+import Grid from '@material-ui/core/Grid';
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
   const history = useHistory();

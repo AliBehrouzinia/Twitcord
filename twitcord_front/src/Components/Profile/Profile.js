@@ -1,12 +1,13 @@
 import React from 'react';
+/* eslint-disable */
 import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
 import './Profile.css';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { useSelector } from 'react-redux';
 import ProfileTweetlist from '../ProfileTweetlist/ProfileTweetlist';
-
 const Profile = () => {
   const [tabSelected, setSelectedTab] = React.useState(0);
 
@@ -50,6 +51,7 @@ const Profile = () => {
         {tabSelected == 2 && <p className="profile-content">likes</p>}
         {tabSelected == 3 && <p className="profile-content">rooms</p>}
       </Grid>
+      <ProfileTweetlist />
     </Grid>
   );
 };
