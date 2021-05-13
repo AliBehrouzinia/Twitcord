@@ -252,3 +252,12 @@ class TweetsLikedListView(generics.ListAPIView):
 class ReplyTweetCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ReplySerializer
+
+
+class ReplysListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountUserPermission]
+    serializer_class = serializers.ReplySerializer
+    
+    def get_queryset(self):
+        user_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
