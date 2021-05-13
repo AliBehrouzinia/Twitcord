@@ -62,7 +62,7 @@ const Followings = () => {
         });
   }
   return (
-    <List className="root" >
+    <List className="fl-root" >
       {FollowList.length === 0 ?(
          <div>nothing to show</div>
       ):(
@@ -81,7 +81,7 @@ const Followings = () => {
                         <Typography
                           component="span"
                           variant="body2"
-                          className="inline"
+                          className="fl-inline"
                           color="textPrimary"
                         >
                           {postdetail.first_name + postdetail.last_name}

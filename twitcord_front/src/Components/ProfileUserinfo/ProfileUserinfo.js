@@ -18,6 +18,8 @@ import * as Constants from '../../Utils/Constants.js';
 import Followers from '../Follows/Followers';
 import Requests from '../Follows/Requests';
 import Followings from '../Follows/Followings';
+import Button from '@material-ui/core/Button';
+
 /* eslint-disable */
 
 const ProfileUserinfo = () => {
@@ -118,10 +120,12 @@ const ProfileUserinfo = () => {
               {'    ' + dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
             </Typography>
           </Grid>
+          <Grid container item spacing={2} className="grid-follow-container">
+
           <Grid item>
-            <button type="followers" className="followers" onClick={handleOpenfollowers}>
+            <Typography type="followers" className="followers" onClick={handleOpenfollowers}>
               {'followers' +'   '+ followcount.followers_count}
-            </button>
+            </Typography>
             <Modal
               open={open}
               onClose={handleClose}
@@ -136,9 +140,12 @@ const ProfileUserinfo = () => {
             >
               <Fade in={open}>{body}</Fade>
             </Modal>
-            <button type="followings" className="followings" onClick={handleOpenfollowing}>
+            </Grid>
+
+            <Grid item>
+            <Typography type="followings" className="followings" onClick={handleOpenfollowing}>
               {'followings' +'   '+ followcount.followings_count}
-            </button>
+            </Typography>
             <Modal
               open={open}
               onClose={handleClose}
@@ -154,11 +161,14 @@ const ProfileUserinfo = () => {
             >
               <Fade in={open}>{body}</Fade>
             </Modal>
+            </Grid>
+
             {profileInfo.is_public === false ?(
-              <div>
-                <button type="requests" className="requests" onClick={handlerequests}>
+            <Grid item>
+
+                <Typography type="requests" className="requests" onClick={handlerequests}>
               requests
-                </button>
+                </Typography>
                 <Modal
                   open={open}
                   onClose={handleClose}
@@ -174,19 +184,15 @@ const ProfileUserinfo = () => {
                 >
                   <Fade in={open}>{body}</Fade>
                 </Modal>
-              </div>):(
-              <div/>
-            )}
-
-
+                </Grid>):null}
           </Grid>
         </Grid>
         <Grid item xs={4}className="grid-info2">
           <Grid className="button-edit">
             {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
-						<button className="edit-button" onClick={() => handleedit()}>edit </button>
+						<Button variant="outlined" color="primary" className="edit-button" onClick={handleEditProfileClick}>edit</Button>
 					) : (
-						<button className="edit-button">follow</button>
+						<Button variant="outlined" color="primary" className="edit-button">follow</Button>
 					)}
           </Grid>
         </Grid>

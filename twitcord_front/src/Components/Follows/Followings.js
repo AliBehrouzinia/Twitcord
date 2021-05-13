@@ -33,7 +33,7 @@ const Followings = () => {
   }, []);
 
   return (
-    <List className="root">
+    <List className="fl-root">
       {FollowList.map((postdetail, index) => {
         return (
           <div key={index} >
@@ -45,7 +45,7 @@ const Followings = () => {
                 primary={postdetail.username}
                 secondary={
                   <React.Fragment direction="column">
-                    <Typography component="span" variant="body2" className="inline" color="textPrimary" >
+                    <Typography component="span" variant="body2" className="fl-inline" color="textPrimary" >
                       {postdetail.first_name+postdetail.last_name}
                     </Typography>
 					  {' — ' + postdetail.type + '\n' + postdetail.email}
