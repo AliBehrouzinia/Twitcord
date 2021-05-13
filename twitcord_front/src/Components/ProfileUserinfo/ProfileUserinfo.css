@@ -1,0 +1,107 @@
+.user-info {
+    border-left: 0.3px solid rgb(236, 236, 236);
+    border-right: 0.3px solid rgb(236, 236, 236);
+    background-color: white;
+    padding-bottom: 1%;
+}
+.avatar {
+    width: 124px !important;
+    height: 124px !important;
+    float: left;
+    margin: -60px 10px 0 5%;
+    position: relative;
+    background-color: white;
+}
+.profile_cover {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+.edit-button {
+    border-radius: 4px;
+    border: 0.5px solid #757bad;
+    background-color: transparent;
+    padding: 4px 10px;
+    font-size: calc(10px + 0.2vw);
+}
+.edit-button :hover {
+    background-color: rgb(187, 184, 184);
+    cursor: pointer;
+}
+.grid-info1 {
+    display: flex;
+    flex-direction: column;
+    padding-left: 9%;
+    padding-bottom: 4%;
+}
+.grid-info2 {
+    display: flex;
+    flex-direction: column;
+    padding-left: 25%;
+	padding-right: 5%;
+    padding-bottom: 4%;
+}
+.info1 {
+    padding-left: 2%;
+    color: grey;
+    margin-top: 25px !important;
+}
+.followings {
+    font-size: large !important;
+    background-color: transparent;
+    border: none;
+    color: rgb(115, 115, 122);
+}
+.followers {
+    background-color: transparent;
+    border: none;
+    color: rgb(115, 115, 122);
+    font-size: large !important;
+}
+
+.requests {
+    font-size: large !important;
+    background-color: transparent;
+    border: none;
+    color: rgb(115, 115, 122);
+}
+
+.followings:hover {
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.followers:hover {
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.requests:hover {
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.grid-username{
+    margin-top: 15px !important;
+    font-size: x-large !important;
+    color: rgb(75, 75, 75);
+}
+
+.grid-joined{
+    margin-top: 15px !important;
+    font-size: medium !important;
+    color: rgb(163, 162, 162);
+}
+
+.grid-bio{
+    margin-top: 15px !important;
+    font-size: large !important;
+}
+
+.grid-follow-container{
+    margin-top: 5px !important;
+}
+

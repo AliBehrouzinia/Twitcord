@@ -1,11 +1,6 @@
 
 version: '3.7'
 
-volumes:
-  local_postgres_data: {}
-  local_postgres_data_backups: {}
-  local_storage_minio:
-
 services:
   django:
     build:
@@ -45,7 +40,7 @@ services:
     command: sh -c "/usr/src/app/entrypoint.sh"
     volumes:
       - './twitcord_front:/usr/src/app/twitcord_front'
-      - '/usr/src/app/twitcord_front/node_modules'
+      - 'twitcord_node_modules:/usr/src/app/twitcord_front/node_modules'
     ports:
       - "3000:3000"
     deploy:
@@ -64,3 +59,9 @@ services:
     volumes:
       - local_storage_minio:/storage
 
+volumes:
+  twitcord:
+  local_postgres_data: { }
+  local_postgres_data_backups: { }
+  twitcord_node_modules:
+  local_storage_minio:

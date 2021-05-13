@@ -1,0 +1,11 @@
+.grid-item{
+	align-self: center;	
+	justify-content: center;
+	min-width: 30rem;
+}
+.profile-content{
+	text-align: center;
+	color: gray;
+}
+
+
