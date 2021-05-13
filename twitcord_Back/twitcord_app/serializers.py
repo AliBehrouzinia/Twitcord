@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 class CustomUserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
-        fields = ('email', 'pk', 'profile_img')
+        fields = ('email', 'pk')
         read_only_fields = ('email',)
 
 
@@ -28,7 +28,7 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TwitcordUser
-        fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio', 'website', 'is_public')
+        fields = ('email', 'username', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio', 'website', 'is_public')
         read_only_fields = ('email', )
 
 
@@ -52,7 +52,6 @@ class FollowersRequestsSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(FollowersRequestsSerializer, self).to_representation(instance)
         from_user = instance.request_from
-        result['profile_img'] = from_user.profile_img.url
         result['username'] = from_user.username
         result['email'] = from_user.email
         result['first_name'] = from_user.first_name
@@ -81,7 +80,6 @@ class ListOfFollowingsSerializer(serializers.ModelSerializer):
         result = super(ListOfFollowingsSerializer, self).to_representation(instance)
         user = instance.following_user
         result['id'] = result.pop('following_user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['email'] = user.email
         result['first_name'] = user.first_name
@@ -99,7 +97,6 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
         result = super(ListOfFollowersSerializer, self).to_representation(instance)
         user = instance.user
         result['id'] = result.pop('user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['email'] = user.email
         result['first_name'] = user.first_name
@@ -158,7 +155,6 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
         result = super(GlobalTweetSearchSerializer, self).to_representation(instance)
         user = instance.user
         result['id'] = result.pop('user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['first_name'] = user.first_name
         result['last_name'] = user.last_name

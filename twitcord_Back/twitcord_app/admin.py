@@ -13,8 +13,9 @@ class TwitcordUserAdmin(UserAdmin):
     list_display = ('email', 'date_joined', 'profile_img')
     list_filter = ('email', 'date_joined')
     fieldsets = (
-        (None, {'fields': ('email', 'password','first_name','last_name','bio','website','birth_date')}),
-        ('Permissions', {'fields': ('date_joined', 'is_public', 'profile_img')}),
+        (None, {'fields': ('email', 'password','first_name','last_name','bio','website','birth_date',
+                           'has_profile_img')}),
+        ('Permissions', {'fields': ('date_joined', 'is_public')}),
     )
     add_fieldsets = (
         (None, {
