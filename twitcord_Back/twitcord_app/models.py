@@ -13,7 +13,6 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     is_public = models.BooleanField(default=True)
-    # profile_img = models.ImageField(default='profiles/defaults/user-profile-image.jpg', upload_to='profiles', null=True)
     username = models.TextField(max_length=15)
     is_admin = True
     first_name = models.CharField(null=True, max_length=50, blank=True)
@@ -21,7 +20,10 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     bio = models.TextField(null=True, max_length=160, blank=True)
     birth_date = models.DateTimeField(null=True, blank=True)
     website = models.URLField(null=True, blank=True)
+
+    # Profile Image
     has_profile_img = models.BooleanField(default=False)
+    PROFILE_IMG_DIRECTORY = f"profile_images"
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -32,22 +34,27 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     @property
-    def profile_img(self):
-        upload_host = settings.AWS_S3_ENDPOINT_URL
-        download_host = 'http://localhost:9000'
+    def profile_img_upload_details(self):
         bucket_name = settings.MEDIA_BUCKET_NAME
-        directory = f"profile_images"
-
-        default_name = 'profile_img_default.jpg'
-        name = f"profile_img_{self.id}.jpg" if self.has_profile_img else default_name
+        directory = self.PROFILE_IMG_DIRECTORY
+        name = f"profile_img_{self.id}.jpg"
 
         image = {
-            'download_host': download_host,
-            'upload_host': upload_host,
             'bucket_name': bucket_name,
             'object_name': f"{directory}/{name}"
         }
-        return imageq
+        return image
+
+    @property
+    def profile_img(self):
+        download_host = 'http://localhost:9000'
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.PROFILE_IMG_DIRECTORY
+        default_name = 'profile_img_default.jpg'
+        name = f"profile_img_{self.id}.jpg" if self.has_profile_img else default_name
+
+        url = f"{download_host}/{bucket_name}/{directory}/{name}"
+        return url
 
     @property
     def is_superuser(self):
