@@ -33,6 +33,7 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
         fields = ('email', 'username', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio',
                   'website', 'is_public', 'has_profile_img', 'profile_img', 'profile_img_upload_details')
         read_only_fields = ('email', 'profile_img', 'profile_img_upload_details')
+        extra_kwargs = {'has_profile_img': {'write_only': True}}
 
     def get_profile_img_upload_details(self, obj):
         if self.context['request'].user.id == obj.id:

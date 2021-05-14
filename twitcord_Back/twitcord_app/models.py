@@ -35,13 +35,11 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def profile_img_upload_details(self):
-        upload_host = settings.AWS_S3_ENDPOINT_URL
         bucket_name = settings.MEDIA_BUCKET_NAME
         directory = self.PROFILE_IMG_DIRECTORY
         name = f"profile_img_{self.id}.jpg"
 
         image = {
-            'upload_host': upload_host,
             'bucket_name': bucket_name,
             'object_name': f"{directory}/{name}"
         }
