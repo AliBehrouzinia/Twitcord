@@ -193,12 +193,17 @@ class GlobalUserSearchList(generics.ListAPIView):
 
 class GlobalTweetSearchList(generics.ListAPIView):
     serializer_class = serializers.GlobalTweetSearchSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     pagination_class = paginations.MyPagination
 
     def get_queryset(self):
         query = self.request.query_params.get('query', None)
-        tweets = models.Tweet.objects.filter(Q(content__icontains=query)).order_by('-create_date')
+        user = self.request.user.id
+        followings = models.UserFollowing.objects.filter(user_id=user)
+        followings_id = models.TwitcordUser.objects.filter(pk__in=followings)
+        tweets = models.Tweet.objects.filter(Q(content__icontains=query, user__is_public=True) |
+                                             Q(content__icontains=query, user_id__in=followings_id, user__is_public
+                                             =False)).order_by('-create_date')
         return tweets
 
 
