@@ -44,3 +44,8 @@ export const setSideDrawerEnable = (data) => ({
   type: ActionTypes.SET_SIDE_DRAWER_ENABLE,
   ...data,
 });
+
+export const setSearchInput = (data) => ({
+  type: ActionTypes.SET_SEARCH_INPUT,
+  ...data,
+});
