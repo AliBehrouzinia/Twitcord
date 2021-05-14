@@ -69,12 +69,13 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
-    case ActionTypes.SET_TWEET_LIST_INFO:
+    case ActionTypes.SET_TWEET_LIST_INFO: {
       return {
         ...state,
         tweetInfo: action.tweetInfo,
 
       };
+    }
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,

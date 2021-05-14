@@ -23,6 +23,7 @@ export const setSnackBarState = (data) => ({
 
 export const setTweetListInfo = (data) => ({
   type: ActionTypes.SET_TWEET_LIST_INFO,
+  ...data,
 });
 
 export const setUserSearchResults = (data) => ({

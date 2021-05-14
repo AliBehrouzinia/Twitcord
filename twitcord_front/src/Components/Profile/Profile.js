@@ -14,20 +14,20 @@ const Profile = () => {
   const handleChange = (event, selectedTab) => {
     setSelectedTab(selectedTab);
   };
-  const tweets = useSelector((state) => state).tweet.tweetInfo;
+  // const tweets = useSelector((state) => state).tweet.tweetInfo;
 
 
-  const tweetlists = tweets.map(
-    (user) => <div key={user.id}>
-      <ProfileTweetlist
-        name={user.first_name + ' ' + user.last_name}
-        username={user.username}
-        bio={user.bio}
-        followState={user.status}
-        isPublic={user.is_public} />
-      <Divider />
-    </div>,
-  )
+  // const tweetlists = tweets.map(
+  //   (user) => <div key={user.id}>
+  //     <ProfileTweetlist
+  //       name={user.first_name + ' ' + user.last_name}
+  //       username={user.username}
+  //       bio={user.bio}
+  //       followState={user.status}
+  //       isPublic={user.is_public} />
+  //     <Divider />
+  //   </div>,
+  // )
 
   return (
     <Grid container direction="column">
@@ -46,12 +46,11 @@ const Profile = () => {
         </Tabs>
       </Grid>
       <Grid item xs={12} className="grid-item">
-        {tabSelected == 0 && tweetlists}
+        {tabSelected == 0 && <p className="profile-content"> <ProfileTweetlist /></p>}
         {tabSelected == 1 && <p className="profile-content">replys</p>}
         {tabSelected == 2 && <p className="profile-content">likes</p>}
         {tabSelected == 3 && <p className="profile-content">rooms</p>}
       </Grid>
-      <ProfileTweetlist />
     </Grid>
   );
 };

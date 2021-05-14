@@ -7,7 +7,6 @@ import LogIn from './Components/LogIn/LogIn.js';
 import SignUp from './Components/SignUp/SignUp.js';
 import HomePage from './Components/HomePage/HomePage.js';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-// import Profile from './Components/Profile/Profile.js';
 import Search from './Components/Search/Search.js';
 import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';

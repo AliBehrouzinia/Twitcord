@@ -1,16 +1,17 @@
-/* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, {useEffect} from 'react';
 import Tweets from '../Tweets/Tweets';
 import Grid from '@material-ui/core/Grid';
 import './ProfileTweetlist.css';
 import Divider from '@material-ui/core/Divider';
 import * as API from '../../Utils/API/index';
 import * as Constants from '../../Utils/Constants.js';
-
+import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
+import * as Actions from '../../redux/Actions/index.js';
 
 const ProfileTweetlist = () => {
-  const [Tweets, setTweets] = useState([]);
-
+  const tweetInfo = useSelector((state) => state).tweet.tweetInfo;
+  const dispatch = useDispatch();
   let profileId = -1;
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -21,35 +22,36 @@ const ProfileTweetlist = () => {
   useEffect(() => {
     API.tweetlist({id: profileId})
         .then((data) => {
-          console.log(data);
-          setTweets(data.data.results);
+          const d = data.data;
+          console.log(data.data.results);
+          dispatch(Actions.setTweetListInfo({
+            tweetInfo: d.results,
+          }));
+          console.log(tweetInfo);
         })
         .catch((error) => {
           console.log(error);
         });
-  });
+  }, []);
+
   return (
-    <div>
-      <Grid container item className="tweetlist">
-        <Grid xs={12} md={8}>
-          {tweets.map((tweet) => {
-            return (
-              <div key={Tweet.id}>
-                <Tweets
-                  id={Tweet.id}
-                  name={Tweet.first_name + ' ' + tweet.last_name}
-                  username={Tweet.username}
-                  createDate={Tweet.create_date}
-                  content={Tweet.content}
-                  isPublic={Tweet.is_public}
-                />
-                <Divider />
-              </div>
-            );
-          })}
-        </Grid>
-      </Grid>
-    </div>
+    <Grid container item className="tweetlist">
+      {tweetInfo.map((tweet) => {
+        return (
+          <div key={tweet.id}>
+            <Tweets
+              id={tweet.id}
+              name={tweet.first_name + ' ' + tweet.last_name}
+              username={tweet.username}
+              createDate={tweet.create_date}
+              content={tweet.content}
+              isPublic={tweet.is_public}
+            />
+            <Divider />
+          </div>
+        );
+      })}
+    </Grid>
   );
 };
 

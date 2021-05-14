@@ -1,8 +1,6 @@
-/* eslint-disable */
-import React, { Component } from 'react';
+/* eslint-disable max-len */
+import React from 'react';
 import './Tweets.css';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
@@ -11,7 +9,7 @@ import CachedOutlinedIcon from '@material-ui/icons/CachedOutlined';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import { Icon } from '@material-ui/core';
+import {Icon} from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const monthNumberToLabelMap = {
@@ -30,16 +28,13 @@ const monthNumberToLabelMap = {
 };
 
 export const Tweets = (props) => {
-  const dispatch = useDispatch();
-  const tweetInfo = useSelector((state) => state).tweet.tweetInfo;
-
   const dhm = (t) => {
     const cd = 24 * 60 * 60 * 1000;
     const ch = 60 * 60 * 1000;
     let d = Math.floor(t / cd);
     let h = Math.floor((t - d * cd) / ch);
     let m = Math.round((t - d * cd - h * ch) / 60000);
-    const pad = function (n) {
+    const pad = function(n) {
       return n < 10 ? 0 + n : n;
     };
     if (m === 60) {
@@ -87,50 +82,43 @@ export const Tweets = (props) => {
     return showingDate;
   };
 
-  // useEffect(() => {
-  //     API.tweetlist({ id: 1 })
-  //         .then((response) => {
-  //             console.log(response.data);
-  //             dispatch(Actions.setTweetListInfo(response.data));
-  //         })
-  // }, []);
-
   return (
     <Grid
       container
       direction="row"
       spacing={6}
-      className="container"
+      className="t-container"
       justify="space-between"
     >
-      <Grid item xs={6} sm={4} md={5}>
-        <div className="avatar-container">
-          <Avatar className="avatar" alt="avatar" />
-          <div className="username-container">
-            <div className="name-container">
+      <Grid item xs={12} sm={9} md={10}>
+        <Avatar className="avatar" alt="avatar" />
+        <div className="t-avatar-container">
+
+          <div className="t-username-container">
+            <div className="t-name-container">
               <Tooltip title={props.name} placement="top-start">
-                <Typography className="name">{props.name}</Typography>
+                <Typography className="t-name">{props.name}</Typography>
               </Tooltip>
-              {!props.isPublic && <Icon className="lock-icon">lock</Icon>}
-              <Typography className="date">
-                <div className="dot" />
+              {!props.isPublic && <Icon className="t-lock-icon">lock</Icon>}
+              <Typography className="t-date">
+                <div className="t-dot" />
                 {extractTime(props.createDate)}
               </Typography>
             </div>
             <Tooltip title={'@' + props.username} placement="top-start">
-              <Typography className="username">@{props.username}</Typography>
+              <Typography className="t-username">@{props.username}</Typography>
             </Tooltip>
           </div>
         </div>
       </Grid>
 
-      <Grid xs={12} item className="item-desc">
-        <Typography className="desc">{props.content}</Typography>
+      <Grid xs={12} item className="t-item-desc">
+        <Typography className="t-desc">{props.content}</Typography>
       </Grid>
 
-      <Grid xs={12} container item className="icon-bottom-bar">
+      <Grid xs={12} container item className="t-icon-bottom-bar">
         <Grid item>
-          <IconButton className="like" aria-label="like">
+          <IconButton className="t-like" aria-label="like">
             <FavoriteBorderOutlinedIcon />
           </IconButton>
         </Grid>
@@ -157,6 +145,6 @@ Tweets.propTypes = {
   content: PropTypes.string,
   isPublic: PropTypes.bool,
   createDate: PropTypes.string,
+  id: PropTypes.number,
 };
-
 export default Tweets;
