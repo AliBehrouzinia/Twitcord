@@ -197,3 +197,17 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    is_reply = serializers.BooleanField()
+    parent = serializers.PrimaryKeyRelatedField(queryset=Tweet.objects.all())
+
+    class Meta:
+        model = Tweet
+        fields = '__all__'
+
+    def to_internal_value(self, data):
+        data['user'] = self.context['request'].user.id
+        data['is_reply'] = True
+        return super().to_internal_value(data)

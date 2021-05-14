@@ -51,4 +51,6 @@ class PrivateAccountUserPermission(permissions.BasePermission):
         following_user = get_object_or_404(models.TwitcordUser, id=following_user_id)
         if following_user.is_public:
             return True
+        if user == following_user:
+            return True
         return models.UserFollowing.objects.filter(user=user.id, following_user=following_user_id).exists()
