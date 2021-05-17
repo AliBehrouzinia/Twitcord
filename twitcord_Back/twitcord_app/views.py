@@ -263,7 +263,8 @@ class TimeLineView(generics.ListAPIView):
         sorted_tweets = sorted(result.items(), key=lambda x: x[1], reverse=True)
         final_result = []
         for key, value in sorted_tweets:
-            final_result.append(key)
+            if value > 50:
+                final_result.append(key)
         return final_result
 
     def calculate_threshold(self, user, followings):
@@ -316,16 +317,14 @@ class TimeLineView(generics.ListAPIView):
             list_of_mutual[second_level_user.following_user] = mutual_followers
         for item in list_of_mutual:
             user = models.TwitcordUser.objects.filter(email=item)
-            print(user)
-            print(item)
             level_two_tweets = models.Tweet.objects.filter(user_id=user[0].id).order_by('create_date')
             if list_of_mutual[item] < 3:
                 for tweet in level_two_tweets:
-                    result[tweet] = 0.2
+                    result[tweet] = 20
             elif 3 <= list_of_mutual[item] <= 5:
                 for tweet in level_two_tweets:
-                    result[tweet] = 0.5
+                    result[tweet] = 50
             elif list_of_mutual[item] > 5:
                 for tweet in level_two_tweets:
-                    result[tweet] = 0.8
+                    result[tweet] = 80
         return result
