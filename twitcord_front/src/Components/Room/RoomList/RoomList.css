@@ -1,0 +1,18 @@
+.rl-root{
+    position: relative;
+}
+
+.rl-fab{
+    position: fixed !important;
+    bottom: 25px;
+    right: 26%;
+}
+
+
+@media screen and (max-width: 1280px) {
+    .rl-fab{
+        position: fixed !important;
+        bottom: 25px;
+        right: 25px;
+    }
+  }
