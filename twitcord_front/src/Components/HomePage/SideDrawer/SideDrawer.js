@@ -19,12 +19,12 @@ const SideDrawer = () => {
   const userGeneralInfo = useSelector((state) => state).tweet.userGeneralInfo;
   const history = useHistory();
   const navItems = [
-    { title:'Home', route:'/homepage'},
-    { title:'Profile', route:'/profile'},
-    { title:'Notification', route:'/notification'},
-    { title:'Search', route:'/search'},
-    { title:'Room', route:'/room'},
-    { title:'Message', route:'/message'}
+    { id: 0, title:'Home', route:'/homepage'},
+    { id: 1, title:'Profile', route:'/profile'},
+    { id: 2, title:'Notification', route:'/notification'},
+    { id: 3, title:'Search', route:'/search'},
+    { id: 4, title:'Room', route:'/room'},
+    { id: 5, title:'Message', route:'/message'}
   ]
   const dispatch = useDispatch();
   const windowHeight = window['innerHeight'];
@@ -77,7 +77,7 @@ const SideDrawer = () => {
         <img className="sd-logo" src={logo} />
 
         {navItems.map((item) => (
-            <NavLink to={item.route} activeClassName='sd-item-selected' className='sd-item'>
+            <NavLink key={item.id} to={item.route} activeClassName='sd-item-selected' className='sd-item'>
               <HomeRoundedIcon className="sd-icon" />
               <Typography className="sd-title">{item.title}</Typography>
             </NavLink>
