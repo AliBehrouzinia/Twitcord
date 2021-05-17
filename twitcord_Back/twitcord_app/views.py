@@ -307,11 +307,25 @@ class TimeLineView(generics.ListAPIView):
         for second_level_user in followings_of_own_followings:
             mutual_followers = 0
             for first_level_user in followings:
-                first_cond = models.UserFollowing.objects.filter(user_id=second_level_user, following_user_id=
-                                                                 first_level_user).exists()
-                second_cond = models.UserFollowing.objects.filter(user_id=first_level_user, following_user_id=
-                                                                  second_level_user).exists()
+                first_cond = models.UserFollowing.objects.filter(user_id=second_level_user.following_user.id,
+                                                                 following_user_id=first_level_user.id).exists()
+                second_cond = models.UserFollowing.objects.filter(user_id=first_level_user.id, following_user_id=
+                                                                  second_level_user.following_user.id).exists()
                 if first_cond and second_cond:
                     mutual_followers += 1
-            list_of_mutual[second_level_user] = mutual_followers
+            list_of_mutual[second_level_user.following_user] = mutual_followers
+        for item in list_of_mutual:
+            user = models.TwitcordUser.objects.filter(email=item)
+            print(user)
+            print(item)
+            level_two_tweets = models.Tweet.objects.filter(user_id=user[0].id).order_by('create_date')
+            if list_of_mutual[item] < 3:
+                for tweet in level_two_tweets:
+                    result[tweet] = 0.2
+            elif 3 <= list_of_mutual[item] <= 5:
+                for tweet in level_two_tweets:
+                    result[tweet] = 0.5
+            elif list_of_mutual[item] > 5:
+                for tweet in level_two_tweets:
+                    result[tweet] = 0.8
         return result
