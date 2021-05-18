@@ -204,7 +204,6 @@ class TimeLineSerializer(serializers.ModelSerializer):
         result = super(TimeLineSerializer, self).to_representation(instance)
         user = instance.user
         result['id'] = result.pop('user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['first_name'] = user.first_name
         return result
