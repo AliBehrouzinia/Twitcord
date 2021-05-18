@@ -1,7 +1,14 @@
 import React, {useState, useMemo} from 'react';
 import {useHistory, NavLink} from 'react-router-dom';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import NotificationsRoundedIcon from
+  '@material-ui/icons/NotificationsRounded';
+import SearchRoundedIcon from '@material-ui/icons/SearchRounded';
+import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import RecordVoiceOverRoundedIcon from
+  '@material-ui/icons/RecordVoiceOverRounded';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Typography from '@material-ui/core/Typography';
 import './SideDrawer.css';
 import Avatar from '@material-ui/core/Avatar';
@@ -13,18 +20,19 @@ import * as Actions from '../../../redux/Actions/index';
 import logo from '../../../assets/twitcord.png';
 import {useSelector} from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
+
 /* eslint-disable */
 
 const SideDrawer = () => {
   const userGeneralInfo = useSelector((state) => state).tweet.userGeneralInfo;
   const history = useHistory();
   const navItems = [
-    { id: 0, title:'Home', route:'/homepage'},
-    { id: 1, title:'Profile', route:'/profile'},
-    { id: 2, title:'Notification', route:'/notification'},
-    { id: 3, title:'Search', route:'/search'},
-    { id: 4, title:'Room', route:'/room'},
-    { id: 5, title:'Message', route:'/message'}
+    { id: 0, title:'Home', route:'/homepage',icon:<HomeRoundedIcon className="sd-icon" />},
+    { id: 1, title:'Profile', route:'/profile',icon:<PersonRoundedIcon className="sd-icon" />},
+    { id: 2, title:'Notification', route:'/notification',icon:<NotificationsRoundedIcon className="sd-icon" />},
+    { id: 3, title:'Search', route:'/search',icon:<SearchRoundedIcon className="sd-icon" />},
+    { id: 4, title:'Room', route:'/room',icon:<RecordVoiceOverRoundedIcon className="sd-icon" />},
+    { id: 5, title:'Message', route:'/message',icon:<MailOutlineIcon className="sd-icon" />}
   ]
   const dispatch = useDispatch();
   const windowHeight = window['innerHeight'];
@@ -78,7 +86,7 @@ const SideDrawer = () => {
 
         {navItems.map((item) => (
             <NavLink key={item.id} to={item.route} activeClassName='sd-item-selected' className='sd-item'>
-              <HomeRoundedIcon className="sd-icon" />
+              {item.icon}
               <Typography className="sd-title">{item.title}</Typography>
             </NavLink>
         ))}
