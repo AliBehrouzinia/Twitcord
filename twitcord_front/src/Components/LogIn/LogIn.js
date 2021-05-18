@@ -161,7 +161,7 @@ const LogIn = () => {
                     Log In
               </Button>
               <Link to="/signup" className='log-in-redirection'>
-                  Do not have an account? Sign Up yes
+                  Do not have an account? Sign Up
               </Link>
             </Form>
           )}
