@@ -26,9 +26,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 const SideDrawer = () => {
   const userGeneralInfo = useSelector((state) => state).tweet.userGeneralInfo;
   const history = useHistory();
+  const userId = JSON.parse(
+    localStorage.getItem(Constants.GENERAL_USER_INFO),
+  ).pk;
   const navItems = [
     { id: 0, title:'Home', route:'/homepage',icon:<HomeRoundedIcon className="sd-icon" />},
-    { id: 1, title:'Profile', route:'/profile',icon:<PersonRoundedIcon className="sd-icon" />},
+    { id: 1, title:'Profile', route:'/profile/' + userId,icon:<PersonRoundedIcon className="sd-icon" />},
     { id: 2, title:'Notification', route:'/notification',icon:<NotificationsRoundedIcon className="sd-icon" />},
     { id: 3, title:'Search', route:'/search',icon:<SearchRoundedIcon className="sd-icon" />},
     { id: 4, title:'Room', route:'/room',icon:<RecordVoiceOverRoundedIcon className="sd-icon" />},
