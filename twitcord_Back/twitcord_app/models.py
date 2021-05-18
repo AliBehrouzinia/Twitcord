@@ -5,6 +5,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from .managers import TwitcordUserManager
+from twitcord_Back.settings import minio_client
 
 
 class TwitcordUser(AbstractBaseUser, PermissionsMixin):
@@ -24,6 +25,7 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     # Profile Image
     has_profile_img = models.BooleanField(default=False)
     PROFILE_IMG_DIRECTORY = f"profile_images"
+    PROFILE_IMG_DEFAULT_NAME = "profile_img_default.jpg"
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -34,10 +36,15 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     @property
+    def get_profile_img_name(self):
+        PROFILE_IMG_NAME = f"profile_img_{self.id}.jpg"
+        return PROFILE_IMG_NAME
+
+    @property
     def profile_img_upload_details(self):
         bucket_name = settings.MEDIA_BUCKET_NAME
         directory = self.PROFILE_IMG_DIRECTORY
-        name = f"profile_img_{self.id}.jpg"
+        name = self.get_profile_img_name
 
         image = {
             'bucket_name': bucket_name,
@@ -47,13 +54,13 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def profile_img(self):
-        download_host = 'http://localhost:9000'
         bucket_name = settings.MEDIA_BUCKET_NAME
         directory = self.PROFILE_IMG_DIRECTORY
-        default_name = 'profile_img_default.jpg'
-        name = f"profile_img_{self.id}.jpg" if self.has_profile_img else default_name
+        default_name = self.PROFILE_IMG_DEFAULT_NAME
+        name = self.get_profile_img_name if self.has_profile_img else default_name
+        object_name = f"{directory}/{name}"
 
-        url = f"{download_host}/{bucket_name}/{directory}/{name}"
+        url = minio_client.get_presigned_url("GET", bucket_name, object_name)
         return url
 
     @property
