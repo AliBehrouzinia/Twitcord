@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import './EditProfile.css';
-import image from '../../assets/image.png';
 import {Formik, Form, Field} from 'formik';
 import {Button} from '@material-ui/core';
 import {TextField, CheckboxWithLabel} from 'formik-material-ui';
@@ -84,6 +83,8 @@ const EditProfile = () => {
       website: data.website,
       username: data.username,
       isPublic: data.is_public,
+      profile_img: data.profile_img,
+      profile_img_upload_details: data.profile_img_upload_details,
     }));
   };
 
@@ -109,6 +110,8 @@ const EditProfile = () => {
         website: data.website,
         username: data.username,
         is_public: data.isPublic,
+        profile_img: data.profile_img,
+        profile_img_upload_details: data.profile_img_upload_details,
       };
 
       API.updateProfileInfo(profileId, dataToSend)
@@ -184,8 +187,8 @@ const EditProfile = () => {
   return (
     <Grid container direction="column">
       <Grid item className="ep-grid-item" xs>
-        <img src={image} alt="img" className="ep-profile_cover" />
-        <Avatar className="ep-avatar" />
+        <img src={profileInfo.profile_img} className="ep-profile_cover" />
+        <Avatar src={profileInfo.profile_img} className="ep-avatar" />
       </Grid>
 
       <Grid container>

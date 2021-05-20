@@ -102,6 +102,8 @@ const tweetReducer = (state = initialState, action) => {
           isPublic: action.isPublic,
           email: action.email,
           date_joined: action.date_joined,
+          profile_img: action.profile_img,
+          profile_img_upload_details: action.profile_img_upload_details,
         },
       };
     }
