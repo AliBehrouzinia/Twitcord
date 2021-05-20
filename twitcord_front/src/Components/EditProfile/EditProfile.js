@@ -89,6 +89,8 @@ const EditProfile = () => {
       website: data.website,
       username: data.username,
       isPublic: data.is_public,
+      has_profile: data.has_profile,
+      has_cover: data.has_cover,
       profile_img: data.profile_img,
       profile_img_upload_details: data.profile_img_upload_details,
     }));
@@ -116,6 +118,8 @@ const EditProfile = () => {
         website: data.website,
         username: data.username,
         is_public: data.isPublic,
+        has_profile: data.has_profile,
+        has_cover: data.has_cover,
         profile_img: data.profile_img,
         profile_img_upload_details: data.profile_img_upload_details,
       };
@@ -223,12 +227,14 @@ const EditProfile = () => {
           <AddAPhotoOutlinedIcon />
         </Avatar>
         <AddAPhotoIcon className="ep-edit-cover-icon"/>
+        { profileInfo.has_cover &&
         <HighlightOffIcon className="ep-clear-cover-icon"/>
-        <Avatar
+        }
+        { profileInfo.has_profile && <Avatar
           onClick={handleUploadProfileCoverClick}
           className="ep-clear-photo-icon">
           <HighlightOffIcon />
-        </Avatar>
+        </Avatar> }
         <input
           type="file"
           id="file"
