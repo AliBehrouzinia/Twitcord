@@ -16,13 +16,19 @@ import FormGroup from '@material-ui/core/FormGroup';
 import * as Constants from '../../Utils/Constants.js';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import AddAPhotoOutlinedIcon from '@material-ui/icons/AddAPhotoOutlined';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import minioClient from '../../Utils/Minio';
 
 const EditProfile = () => {
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
+  let photoInput;
+  let coverInput;
+
   let profileId = -1;
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -176,6 +182,28 @@ const EditProfile = () => {
     return false;
   };
 
+
+  const handleUploadProfilePhotoClick = () => {
+    photoInput.click();
+  };
+
+  const handleUploadProfileCoverClick = () => {
+    coverInput.click();
+  };
+
+  const uploadPhoto = (file, path) => {
+    console.log( profileInfo.profile_img_upload_details.object_name+
+      ' ' + profileInfo.profile_img_upload_details.bucket_name);
+    minioClient.putObject(profileInfo.profile_img_upload_details.bucket_name,
+        profileInfo.profile_img_upload_details.object_name,
+        path,
+        {},
+        function(err, etag) {
+          if (err) return console.log(err);
+          console.log('File uploaded successfully.');
+        });
+  };
+
   useEffect(() => {
     requestProfileInfo(
         dispatch,
@@ -189,6 +217,32 @@ const EditProfile = () => {
       <Grid item className="ep-grid-item" xs>
         <img src={profileInfo.profile_img} className="ep-profile_cover" />
         <Avatar src={profileInfo.profile_img} className="ep-avatar" />
+        <Avatar
+          onClick={handleUploadProfilePhotoClick}
+          className="ep-edit-photo-icon">
+          <AddAPhotoOutlinedIcon />
+        </Avatar>
+        <AddAPhotoIcon className="ep-edit-cover-icon"/>
+        <HighlightOffIcon className="ep-clear-cover-icon"/>
+        <Avatar
+          onClick={handleUploadProfileCoverClick}
+          className="ep-clear-photo-icon">
+          <HighlightOffIcon />
+        </Avatar>
+        <input
+          type="file"
+          id="file"
+          accept="image/*"
+          onChange={(e) => uploadPhoto(e.target.files[0], e.target.value)}
+          ref={(ref) => photoInput = ref}
+          style={{display: 'none'}}/>
+        <input
+          type="file"
+          id="file"
+          accept="image/*"
+          onChange={(e) => uploadPhoto(e.target.files[0], e.target.value)}
+          ref={(ref) => coverInput = ref}
+          style={{display: 'none'}}/>
       </Grid>
 
       <Grid container>
