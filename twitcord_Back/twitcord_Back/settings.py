@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
+from minio import Minio
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -122,8 +123,8 @@ DATABASES = {
         'NAME': 'twitcord',
         'USER': 'twitcord',
         'PASSWORD': 'twitcord',
-        'HOST': 'twitcord_postgres',
-        'PORT': '5432',
+        'HOST': 'localhost',
+        'PORT': '5435',
     }
 }
 
@@ -207,4 +208,11 @@ AWS_SECRET_ACCESS_KEY = 'twitcord'
 AWS_STORAGE_BUCKET_NAME = 'twitcord'
 AWS_S3_USE_SSL = False
 # AWS_S3_VERIFY = True
-AWS_S3_ENDPOINT_URL = 'http://minio:9000'
+AWS_S3_ENDPOINT_URL = 'localhost:9000'
+
+minio_client = Minio(
+    endpoint=AWS_S3_ENDPOINT_URL,
+    access_key=AWS_ACCESS_KEY_ID,
+    secret_key=AWS_SECRET_ACCESS_KEY,
+    secure=AWS_S3_USE_SSL
+)
