@@ -21,6 +21,7 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 
 class ProfileDetailsViewSerializer(serializers.ModelSerializer):
     profile_img_upload_details = serializers.SerializerMethodField()
+    header_img_upload_details = serializers.SerializerMethodField()
 
     def to_representation(self, instance):
         result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
@@ -31,13 +32,20 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
         fields = ('email', 'username', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio',
-                  'website', 'is_public', 'has_profile_img', 'profile_img', 'profile_img_upload_details')
-        read_only_fields = ('email', 'profile_img', 'profile_img_upload_details')
-        extra_kwargs = {'has_profile_img': {'write_only': True}}
+                  'website', 'is_public', 'has_profile_img', 'profile_img', 'profile_img_upload_details',
+                  'has_header_img', 'header_img', 'header_img_upload_details')
+        read_only_fields = ('email', 'profile_img', 'profile_img_upload_details',
+                            'header_img', 'header_img_upload_details')
 
     def get_profile_img_upload_details(self, obj):
         if self.context['request'].user.id == obj.id:
             return obj.profile_img_upload_details
+        else:
+            return None
+
+    def get_header_img_upload_details(self, obj):
+        if self.context['request'].user.id == obj.id:
+            return obj.header_img_upload_details
         else:
             return None
 
