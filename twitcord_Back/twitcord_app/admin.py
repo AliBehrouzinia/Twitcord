@@ -59,11 +59,3 @@ class LikeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Like, LikeAdmin)
-
-
-class RoomAdmin(admin.ModelAdmin):
-    model = Room
-    list_display = ('title', 'owner')
-
-
-admin.site.register(Room)
