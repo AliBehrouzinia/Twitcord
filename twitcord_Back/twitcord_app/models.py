@@ -62,10 +62,10 @@ class Tweet(models.Model):
 class UserFollowing(models.Model):
 
     class FollowingType(models.TextChoices):
-        FAMILY = 'family', _('family')
-        FRIEND = 'friend', _('friend')
-        CLOSE_FRIEND = 'close_friend', _('close friend')
-        UNFAMILIAR_PERSON = 'unfamiliar_person', _('unfamiliar person')
+        FAMILY = 'Family', _('family')
+        FRIEND = 'Friend', _('friend')
+        CLOSE_FRIEND = 'Close_friend', _('close friend')
+        UNFAMILIAR_PERSON = 'Unfamiliar_person', _('unfamiliar person')
 
     type = models.CharField(max_length=30, choices=FollowingType.choices, default=FollowingType.UNFAMILIAR_PERSON)
     user = models.ForeignKey("TwitcordUser", related_name="following", on_delete=models.CASCADE)
