@@ -66,7 +66,6 @@ class UserFollowing(models.Model):
         FRIEND = 'friend', _('friend')
         CLOSE_FRIEND = 'close_friend', _('close friend')
         UNFAMILIAR_PERSON = 'unfamiliar_person', _('unfamiliar person')
-        UNFAMILIAR_PERSON = 'unfamiliar_person', _('unfamiliar person')
 
     type = models.CharField(max_length=30, choices=FollowingType.choices, default=FollowingType.UNFAMILIAR_PERSON)
     user = models.ForeignKey("TwitcordUser", related_name="following", on_delete=models.CASCADE)
