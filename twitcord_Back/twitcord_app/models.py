@@ -94,3 +94,8 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ("user", "tweet")
+
+
+class Room(models.Model):
+    title = models.TextField(max_length=20)
+    users = models.ManyToManyField("TwitcordUser", null=True, blank=True)
