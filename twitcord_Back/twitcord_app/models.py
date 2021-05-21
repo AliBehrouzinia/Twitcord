@@ -60,13 +60,6 @@ class Tweet(models.Model):
 
 
 class UserFollowing(models.Model):
-    following_TYPES = [
-        ('family', 'family'),
-        ('friend', 'friend'),
-        ('close friend', 'close friend'),
-        ('celebrity', 'celebrity'),
-        ('unfamiliar person', 'unfamiliar person'),
-    ]
 
     class FollowingType(models.TextChoices):
         FAMILY = 'FA', _('family')
