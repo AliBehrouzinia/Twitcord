@@ -1,6 +1,6 @@
 import React, {useState, useMemo} from 'react';
 import {useSelector} from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import {useHistory, Link} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {useStore} from 'react-redux';
 import SnackbarAlert from '../Snackbar/Snackbar';
@@ -25,9 +25,6 @@ const LogIn = () => {
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
-  const handleSignUpClick = () => {
-    history.push('/signup');
-  };
 
   useMemo(
     () => {
@@ -163,9 +160,9 @@ const LogIn = () => {
               >
                     Log In
               </Button>
-              <div onClick={handleSignUpClick} className='log-in-redirection'>
-                Do not have an account? Sign Up
-              </div>
+              <Link to="/signup" className='log-in-redirection'>
+                  Do not have an account? Sign Up
+              </Link>
             </Form>
           )}
         </Formik>
