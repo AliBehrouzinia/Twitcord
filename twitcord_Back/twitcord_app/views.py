@@ -296,13 +296,13 @@ class TimeLineView(generics.ListAPIView):
                 if user_id == tweet_user:
                     users = models.UserFollowing.objects.filter(Q(user_id=user_id) & Q(following_user_id=user))
                     type_status = users[0].type
-                    if (type_status, type_status) == models.UserFollowing.following_TYPES[0]:
+                    if type_status == models.UserFollowing.FollowingType.FAMILY:
                         result[tweet] *= 2
-                    elif (type_status, type_status) == models.UserFollowing.following_TYPES[2]:
+                    elif type_status == models.UserFollowing.FollowingType.CLOSE_FRIEND:
                         result[tweet] *= 1.5
-                    elif (type_status, type_status) == models.UserFollowing.following_TYPES[1]:
+                    elif type_status == models.UserFollowing.FollowingType.FRIEND:
                         result[tweet] *= 1
-                    elif (type_status, type_status) == models.UserFollowing.following_TYPES[4]:
+                    elif type_status == models.UserFollowing.FollowingType.UNFAMILIAR_PERSON:
                         result[tweet] *= 0.8
         list_of_mutual = {}
         for second_level_user in followings_of_own_followings:
