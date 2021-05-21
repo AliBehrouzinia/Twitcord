@@ -97,5 +97,6 @@ class Like(models.Model):
 
 
 class Room(models.Model):
-    title = models.TextField(max_length=20)
-    users = models.ManyToManyField("TwitcordUser", null=True, blank=True)
+    owner = models.ForeignKey(TwitcordUser, related_name="owner", on_delete=models.CASCADE, default=1)
+    title = models.CharField(max_length=20)
+    users = models.ManyToManyField("TwitcordUser", related_name="list_of_users", null=True, blank=True)
