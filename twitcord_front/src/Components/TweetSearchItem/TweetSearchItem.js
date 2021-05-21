@@ -10,6 +10,17 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import Button from '@material-ui/core/Button';
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide ref={ref} {...props} />;
+});
 
 const monthNumberToLabelMap = {
   [1]: 'January',
@@ -78,59 +89,98 @@ export const TweetSearchItem = (props) => {
     return showingDate;
   };
 
+  const [open, setOpen] = React.useState(false);
+
+  const openReplyModal = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   return (
-    <Grid container
-      direction="row"
-      spacing={6}
-      className="tsi-container"
-      justify="space-between">
-      <Grid item xs={12} sm={9} md={10}>
-        <div className="tsi-avatar-container">
-          <Avatar className="tsi-avatar" alt="avatar"/>
-          <div className="tsi-username-container">
-            <div className="tsi-name-container">
-              <Tooltip title={props.name} placement="top-start">
-                <Typography className="tsi-name" >{props.name}</Typography>
+    <div>
+      <Grid container
+        direction="row"
+        spacing={6}
+        className="tsi-container"
+        justify="space-between">
+        <Grid item xs={12} sm={9} md={10}>
+          <div className="tsi-avatar-container">
+            <Avatar className="tsi-avatar" alt="avatar"/>
+            <div className="tsi-username-container">
+              <div className="tsi-name-container">
+                <Tooltip title={props.name} placement="top-start">
+                  <Typography className="tsi-name" >{props.name}</Typography>
+                </Tooltip>
+                {!props.isPublic && <Icon className="tsi-lock-icon">lock</Icon>}
+                <Typography className="tsi-date">
+                  <div className="tsi-dot"/>
+                  {extractTime(props.createDate)}
+                </Typography>
+              </div>
+              <Tooltip title={'@'+props.username} placement="top-start">
+                <Typography className="tsi-username">@{props.username}
+                </Typography>
               </Tooltip>
-              {!props.isPublic && <Icon className="tsi-lock-icon">lock</Icon>}
-              <Typography className="tsi-date">
-                <div className="tsi-dot"/>
-                {extractTime(props.createDate)}
-              </Typography>
             </div>
-            <Tooltip title={'@'+props.username} placement="top-start">
-              <Typography className="tsi-username">@{props.username}
-              </Typography>
-            </Tooltip>
           </div>
-        </div>
-      </Grid>
-
-      <Grid xs={12} item className="tsi-item-desc">
-        <Typography className="tsi-desc">{props.content}</Typography>
-      </Grid>
-
-      <Grid xs={12} container item className="tsi-icon-bottom-bar">
-        <Grid item>
-          <IconButton>
-            <FavoriteBorderIcon/>
-          </IconButton>
         </Grid>
 
-        <Grid item>
-          <IconButton>
-            <ChatBubbleOutlineIcon/>
-          </IconButton>
+        <Grid xs={12} item className="tsi-item-desc">
+          <Typography className="tsi-desc">{props.content}</Typography>
         </Grid>
 
-        <Grid item>
-          <IconButton>
-            <CachedIcon/>
-          </IconButton>
+        <Grid xs={12} container item className="tsi-icon-bottom-bar">
+          <Grid item>
+            <IconButton>
+              <FavoriteBorderIcon/>
+            </IconButton>
+          </Grid>
+
+          <Grid item>
+            <IconButton onClick={openReplyModal}>
+              <ChatBubbleOutlineIcon/>
+            </IconButton>
+          </Grid>
+
+          <Grid item>
+            <IconButton>
+              <CachedIcon/>
+            </IconButton>
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+          {'Use Google location service?'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Let Google help apps determine location.
+             This means sending anonymous location data to
+            Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Disagree
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 };
 
