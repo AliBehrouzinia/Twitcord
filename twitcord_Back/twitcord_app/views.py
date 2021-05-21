@@ -247,3 +247,12 @@ class TweetsLikedListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['id']
         return models.Like.objects.filter(user=user_id)
+
+
+class RoomView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    serializer_class = serializers.RoomSerializer
+
+    def get_queryset(self):
+        user_id = self.request.user
+        return models.Room.objects.filter(users__in=user_id)
