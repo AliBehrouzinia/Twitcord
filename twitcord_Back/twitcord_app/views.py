@@ -255,4 +255,13 @@ class RoomView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user_id = self.request.user
-        return models.Room.objects.filter(users__in=user_id)
+        users_of_rooms = []
+        result = []
+        rooms = models.Room.objects.all()
+        for room in rooms:
+            for item in room.users.all():
+                users_of_rooms.append(item)
+        for room in rooms:
+            if user_id in users_of_rooms or room.owner.id == user_id:
+                result.append(room)
+        return result
