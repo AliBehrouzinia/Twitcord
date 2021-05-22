@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -10,17 +10,8 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-import Button from '@material-ui/core/Button';
+import {ReplyModal} from '../ReplyModal/ReplyModal';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide ref={ref} {...props} />;
-});
 
 const monthNumberToLabelMap = {
   [1]: 'January',
@@ -89,7 +80,7 @@ export const TweetSearchItem = (props) => {
     return showingDate;
   };
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const openReplyModal = () => {
     setOpen(true);
@@ -98,7 +89,6 @@ export const TweetSearchItem = (props) => {
   const handleClose = () => {
     setOpen(false);
   };
-
 
   return (
     <div>
@@ -153,33 +143,7 @@ export const TweetSearchItem = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          {'Use Google location service?'}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location.
-             This means sending anonymous location data to
-            Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Disagree
-          </Button>
-          <Button onClick={handleClose} color="primary">
-            Agree
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ReplyModal open={open} onClose={handleClose} />
     </div>
   );
 };
