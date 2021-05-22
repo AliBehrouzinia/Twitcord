@@ -17,3 +17,40 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+.d-flex {
+  display: flex;
+}
+
+.ml-2 {
+  margin-left:.5rem;
+}
+
+.mt-4{
+  margin-top: 1rem;
+}
+
+.br-33{
+  border-radius: 33px;
+}
+
+
+.mt-2 {
+  margin-top: .5rem;
+}
+
+.justify-cotent-center{
+  justify-content: center;
+}
+
+.align-items-center{
+  align-items: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.min-w-50 {
+  min-width: 500px;
+}
