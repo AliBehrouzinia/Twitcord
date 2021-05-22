@@ -1,0 +1,16 @@
+.custom-textarea {
+  padding: 10px;
+  width: 100%;
+  border: none;
+  resize: none;
+  line-height: 2;
+}
+
+.custom-textarea:focus {
+  outline: none;
+}
+
+.vl {
+  border-left: 2px solid rgb(185, 184, 184);
+  height: 100px;
+}
