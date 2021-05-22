@@ -143,7 +143,7 @@ export const TweetSearchItem = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <ReplyModal open={open} onClose={handleClose} />
+      <ReplyModal tweet={props} open={open} onClose={handleClose} />
     </div>
   );
 };
