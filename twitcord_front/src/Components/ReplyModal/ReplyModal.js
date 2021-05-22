@@ -31,27 +31,27 @@ export const ReplyModal = (props) => {
         <DialogContent dividers>
           <div className="min-w-50 d-flex">
             <div className="d-flex flex-column align-items-center">
-              <Avatar alt={props.username} title={props.username}
+              <Avatar alt={props.tweet?.username} title={props.tweet?.username}
                 src="/static/images/avatar/1.jpg" />
               <div className="vl mt-2 br-33"></div>
             </div>
             <div className="ml-2">
               <div className="d-flex">
-                <div>{props.name}</div>
-                <div className="ml-2">@{props.username}</div>
+                <div>{props.tweet?.name}</div>
+                <div className="ml-2">@{props.tweet?.username}</div>
                 {/* <div className="ml-2">
-                {extractTime(props.createDate)}</div> */}
+                {extractTime(props.tweet?.createDate)}</div> */}
               </div>
               <div>
-                {props.content}
+                {props.tweet?.content}
               </div>
               <div className="mt-4">
-              Replying to @{props.username}
+              Replying to @{props.tweet?.username}
               </div>
             </div>
           </div>
           <div className="mt-2 d-flex">
-            <Avatar alt={props.username} title={props.username}
+            <Avatar alt={props.tweet?.username} title={props.tweet?.username}
               src="/static/images/avatar/1.jpg" />
             <TextareaAutosize
               rowsMin={4}
@@ -72,9 +72,5 @@ export const ReplyModal = (props) => {
 ReplyModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  name: PropTypes.string,
-  username: PropTypes.string,
-  content: PropTypes.string,
-  isPublic: PropTypes.bool,
-  createDate: PropTypes.string,
+  tweet: PropTypes.object,
 };
