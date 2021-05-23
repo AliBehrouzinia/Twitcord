@@ -1,5 +1,5 @@
 import {Divider, TextField, Typography} from '@material-ui/core';
-import React from 'react';
+import React, {useState} from 'react';
 import RoomItem from '../RoomItem/RoomItem';
 import './RoomList.css';
 import Fab from '@material-ui/core/Fab';
@@ -9,9 +9,19 @@ import Fade from '@material-ui/core/Fade';
 import Backdrop from '@material-ui/core/Backdrop';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
+import Select from 'react-select';
+
+const options = [
+  {value: 'Ali Behroozi', label: 'Ali Behroozi'},
+  {value: 'SADEsGH Behroozi', label: 'SADEsdasdasdasGH Behroozi'},
+  {value: 'SAaDEGH sa', label: 'asdas Basdasehroozi'},
+  {value: 'SADEGsH Behroozi', label: 'SADEGH asd'},
+  {value: 'Behroozi Behroozi', label: 'Behroozi Behroozi'},
+];
 
 const RoomList = () => {
   const [open, setOpen] = React.useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const openCreateRoomModal = () => {
     setOpen(true);
@@ -57,6 +67,17 @@ const RoomList = () => {
             <TextField
               className="rl-room-name"
               label="room name"
+            />
+            <Select
+              className="rl-select"
+              placeholder="Select Members"
+              isMulti
+              value={selectedOption}
+              onChange={(s) => {
+                console.log(s);
+                setSelectedOption(s);
+              }}
+              options={options}
             />
           </div>
         </Fade>
