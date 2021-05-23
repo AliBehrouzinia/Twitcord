@@ -1,12 +1,11 @@
 #counter-container {
-  /*place the items in row and align them vertically*/
   text-align: left;
   width: 100%;
   position: relative;
   margin-top:  10px !important;
 }
 
-circle {
+.cc-circle {
   fill: none;
   stroke-width: 3;
 }
@@ -15,7 +14,7 @@ circle {
   stroke: lightgray;
 }
 
-svg {
+.cc-svg {
   width: 40px;
   height: 40px;
   top: 5px;
