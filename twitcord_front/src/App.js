@@ -12,8 +12,7 @@ import {useSelector} from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './Components/EditProfile/EditProfile.js';
 import SideDrawer from './Components/HomePage/SideDrawer/SideDrawer.js';
-/* eslint-disable */
-
+import RoomList from './Components/Room/RoomList/RoomList';
 
 function App() {
   const windowHeight = window['innerHeight'];
@@ -37,6 +36,7 @@ function App() {
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/profile" component={Profile} />
                 <Route exact path="/edit-profile" component={EditProfile} />
+                <Route exact path="/room" component={RoomList} />
               </div>
             </div>
           </Grid>
