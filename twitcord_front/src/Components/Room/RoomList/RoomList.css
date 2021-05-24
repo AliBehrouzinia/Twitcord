@@ -37,6 +37,7 @@
     border-radius: 7px;
     border: none !important;
     padding: 20px;
+    min-width: 320px !important;
     text-align: -webkit-center;
 }
 
@@ -47,7 +48,7 @@
 }
 
 .rl-select{
-    max-width: 300px;
+    max-width: 320px;
     margin-top: 20px;
 }
 
