@@ -70,6 +70,9 @@ const RoomList = () => {
 
   const closeCreateRoomModal = () => {
     setOpen(false);
+    setRoomTitle('');
+    setSelectedOptionIds([]);
+    setSelectedOption(null);
   };
 
   const handlePostClick = () => {
@@ -82,10 +85,9 @@ const RoomList = () => {
 
     API.createRoom(data)
         .then((response) => {
-          console.log(response);
+          closeCreateRoomModal();
         })
         .catch((error) => {
-          console.log(error);
         });
   };
 
@@ -101,7 +103,6 @@ const RoomList = () => {
 
   const handleSelectChange = (selectedOptions) => {
     setSelectedOptionIds(selectedOptions.map((so) => so.value));
-    console.log(selectedOptionIds);
     setSelectedOption(selectedOptions);
   };
 
