@@ -110,3 +110,12 @@ export const userGeneralInfo = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const createRoom = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_CREATE_ROOM,
+      Constants.POST_REQUEST_METHOD,
+  );
+};
