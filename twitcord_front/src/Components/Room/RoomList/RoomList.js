@@ -1,5 +1,5 @@
 import {Divider, TextField, Typography} from '@material-ui/core';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import RoomItem from '../RoomItem/RoomItem';
 import './RoomList.css';
 import Fab from '@material-ui/core/Fab';
@@ -14,23 +14,54 @@ import Button from '@material-ui/core/Button';
 import * as API from '../../../Utils/API/index';
 import * as Constants from '../../../Utils/Constants.js';
 
-const options = [
-  {value: 'Ali Behroozi', label: 'Ali Behroozi'},
-  {value: 'SADEsGH Behroozi', label: 'SADEsdasdasdasGH Behroozi'},
-  {value: 'SAaDEGH sa', label: 'asdas Basdasehroozi'},
-  {value: 'SADEGsH Behroozi', label: 'SADEGH asd'},
-  {value: 'Behroozi Behroozi', label: 'Behroozi Behroozi'},
-];
 
 const RoomList = () => {
   const [open, setOpen] = React.useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [options, setOptions] = useState([]);
   const [postButtonDisabled, setPostButtonDisabled] = useState(true);
   const [roomTitle, setRoomTitle] = useState('');
-
+  const [selectedOptionIds, setSelectedOptionIds] = useState('');
+  const optionIds = [];
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
   );
+
+  useEffect(() => {
+    API.getFollowersList({id: userGeneralInfo.pk})
+        .then((response) => {
+          const followers = response.data.results.map((item) => {
+            return {value: item.id, label: item.username};
+          });
+
+          followers
+              .filter((item) => {
+                return !optionIds.includes(item.value);
+              })
+              .map((item) => {
+                options.push(item);
+                optionIds.push(item.value);
+              });
+          setOptions(options);
+        });
+
+    API.getFollowingsList({id: userGeneralInfo.pk})
+        .then((response) => {
+          const followings = response.data.results.map((item) => {
+            return {value: item.id, label: item.username};
+          });
+
+          followings
+              .filter((item) => {
+                return !optionIds.includes(item.value);
+              })
+              .map((item) => {
+                options.push(item);
+                optionIds.push(item.value);
+              });
+          setOptions(options);
+        });
+  }, []);
 
   const openCreateRoomModal = () => {
     setOpen(true);
@@ -42,11 +73,13 @@ const RoomList = () => {
   };
 
   const handlePostClick = () => {
+    console.log(selectedOptionIds);
     const data = {
-      owner: userGeneralInfo.userID,
+      owner: userGeneralInfo.pk,
       title: roomTitle,
-      users: [1],
+      users: selectedOptionIds,
     };
+
     API.createRoom(data)
         .then((response) => {
           console.log(response);
@@ -64,6 +97,12 @@ const RoomList = () => {
     } else {
       setPostButtonDisabled(true);
     }
+  };
+
+  const handleSelectChange = (selectedOptions) => {
+    setSelectedOptionIds(selectedOptions.map((so) => so.value));
+    console.log(selectedOptionIds);
+    setSelectedOption(selectedOptions);
   };
 
   const rooms = [1, 2, 3].map((room) => <div key={room}>
@@ -111,10 +150,9 @@ const RoomList = () => {
               placeholder="Select Members"
               isMulti
               value={selectedOption}
-              onChange={(s) => {
-                console.log(s);
-                setSelectedOption(s);
-              }}
+              onChange={
+                (selectedOptions) => handleSelectChange(selectedOptions)
+              }
               options={options}
             />
             <Button
