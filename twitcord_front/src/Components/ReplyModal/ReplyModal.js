@@ -11,7 +11,9 @@ import PropTypes from 'prop-types';
 import './ReplyModal.css';
 import {makeStyles} from '@material-ui/core/styles';
 import * as API from '../../Utils/API/index';
-
+import {Link} from 'react-router-dom';
+import CharCounter from '../CharCounter/CharCounter';
+import * as Constants from '../../Utils/Constants';
 
 const useStyles = makeStyles({
   scrollPaper: {
@@ -23,12 +25,8 @@ export const ReplyModal = (props) => {
   const {onClose, open} = props;
   const [tweetInfo, setTweetInfo] = useState('');
 
-  const isSubmitDisable = () => {
-    if (tweetInfo.length==0) {
-      return true;
-    }
-    return false;
-  };
+  const isSubmitDisable = () =>
+    (tweetInfo.length==0 || tweetInfo.length >= Constants.TWEET_CHAR_LIMIT);
 
   const classes = useStyles();
 
@@ -52,54 +50,64 @@ export const ReplyModal = (props) => {
       <Dialog classes={{scrollPaper: classes.scrollPaper}}
         onClose={handleClose} aria-labelledby="customized-dialog-title"
         open={open}>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle className="px-12 py-4-px"
+          id="customized-dialog-title" onClose={handleClose}>
           <IconButton onClick={handleClose} aria-label="close">
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent className="px-12" dividers>
           <div className="min-w-50 d-flex">
             <div className="d-flex flex-column align-items-center">
               <Avatar alt={props.tweet?.username} title={props.tweet?.username}
+                className="w-48 h-48"
                 src="/static/images/avatar/1.jpg" />
-              <div className="vl mt-2 br-33"></div>
+              <div className="vl mt-1 br-33"></div>
             </div>
             <div className="ml-2">
               <div className="d-flex">
-                <div className="b-900 fs-18">{props.tweet?.name}</div>
-                <div className="ml-2">@{props.tweet?.username}</div>
+                <div className="b-900 fs-15 b-700 lh-20">
+                  {props.tweet?.name}</div>
+                <div className="ml-2 fs-15 b-400 lh-20 text-gray">
+                  @{props.tweet?.username}</div>
                 {/* <div className="ml-2">
                 {extractTime(props.tweet?.createDate)}</div> */}
               </div>
-              <div>
+              <div className="mt-2 fs-15 lh-20">
                 {props.tweet?.content}
               </div>
-              <div className="mt-4">
-              Replying to @{props.tweet?.username}
+              <div className="my-3">
+                <span className="text-gray">Replying to </span>
+                <Link to={'/profile/'+props.tweet.user} className="link-color">
+                  @{props.tweet?.username}
+                </Link>
               </div>
             </div>
           </div>
           <div className="mt-2 d-flex">
             <Avatar alt={props.tweet?.username} title={props.tweet?.username}
+              className="w-48 h-48"
               src="/static/images/avatar/1.jpg" />
             <TextareaAutosize
               rowsMin={6}
-              rowsMax={10}
               className="custom-textarea fs-20"
               placeholder="Tweet your reply"
               value={tweetInfo}
               onChange={(e) => setTweetInfo(e.target.value)}
             />
           </div>
-          <Button
-            variant="contained"
-            className="ml-auto d-block"
-            disabled={isSubmitDisable()}
-            color="primary"
-            onClick={replyTweet}
-          >
-            Submit
-          </Button>
+          <div className="d-flex justify-content-between">
+            <CharCounter numChar={tweetInfo.length} />
+            <Button
+              variant="contained"
+              className="d-block"
+              disabled={isSubmitDisable()}
+              color="primary"
+              onClick={replyTweet}
+            >
+              Submit
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
