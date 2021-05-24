@@ -110,3 +110,12 @@ export const userGeneralInfo = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const replyTweet = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_REPLY,
+      Constants.POST_REQUEST_METHOD,
+  );
+};

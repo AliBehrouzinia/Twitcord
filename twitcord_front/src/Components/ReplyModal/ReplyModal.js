@@ -1,27 +1,56 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-// import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import PropTypes from 'prop-types';
 import './ReplyModal.css';
+import {makeStyles} from '@material-ui/core/styles';
+import * as API from '../../Utils/API/index';
 
+
+const useStyles = makeStyles({
+  scrollPaper: {
+    alignItems: 'baseline',
+  },
+});
 
 export const ReplyModal = (props) => {
   const {onClose, open} = props;
+  const [tweetInfo, setTweetInfo] = useState('');
+
+  const isSubmitDisable = () => {
+    if (tweetInfo.length==0) {
+      return true;
+    }
+    return false;
+  };
+
+  const classes = useStyles();
 
   const handleClose = () => {
     onClose();
   };
 
+  const replyTweet = () => {
+    const reqData = {content: tweetInfo, parent: props.tweet.id};
+    API.replyTweet(reqData)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  };
+
   return (
     <div>
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title"
+      <Dialog classes={{scrollPaper: classes.scrollPaper}}
+        onClose={handleClose} aria-labelledby="customized-dialog-title"
         open={open}>
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           <IconButton onClick={handleClose} aria-label="close">
@@ -37,7 +66,7 @@ export const ReplyModal = (props) => {
             </div>
             <div className="ml-2">
               <div className="d-flex">
-                <div>{props.tweet?.name}</div>
+                <div className="b-900 fs-18">{props.tweet?.name}</div>
                 <div className="ml-2">@{props.tweet?.username}</div>
                 {/* <div className="ml-2">
                 {extractTime(props.tweet?.createDate)}</div> */}
@@ -54,15 +83,23 @@ export const ReplyModal = (props) => {
             <Avatar alt={props.tweet?.username} title={props.tweet?.username}
               src="/static/images/avatar/1.jpg" />
             <TextareaAutosize
-              rowsMin={4}
+              rowsMin={6}
               rowsMax={10}
-              className="custom-textarea"
+              className="custom-textarea fs-20"
               placeholder="Tweet your reply"
+              value={tweetInfo}
+              onChange={(e) => setTweetInfo(e.target.value)}
             />
           </div>
-          {/* <Typography gutterBottom>
-          this is reza
-          </Typography> */}
+          <Button
+            variant="contained"
+            className="ml-auto d-block"
+            disabled={isSubmitDisable()}
+            color="primary"
+            onClick={replyTweet}
+          >
+            Submit
+          </Button>
         </DialogContent>
       </Dialog>
     </div>

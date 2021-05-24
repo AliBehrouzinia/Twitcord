@@ -154,4 +154,5 @@ TweetSearchItem.propTypes = {
   content: PropTypes.string,
   isPublic: PropTypes.bool,
   createDate: PropTypes.string,
+  id: PropTypes.number,
 };
