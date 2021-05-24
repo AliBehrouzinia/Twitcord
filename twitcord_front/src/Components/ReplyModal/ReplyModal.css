@@ -3,7 +3,6 @@
   width: 100%;
   border: none;
   resize: none;
-  line-height: 2;
 }
 
 .custom-textarea:focus {
