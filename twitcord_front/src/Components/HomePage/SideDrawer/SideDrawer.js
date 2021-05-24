@@ -28,7 +28,7 @@ const SideDrawer = () => {
   const history = useHistory();
   const userId = JSON.parse(
     localStorage.getItem(Constants.GENERAL_USER_INFO),
-  ).pk;
+  )?.pk;
   const navItems = [
     { id: 0, title:'Home', route:'/homepage',icon:<HomeRoundedIcon className="sd-icon" />},
     { id: 1, title:'Profile', route:'/profile/' + userId,icon:<PersonRoundedIcon className="sd-icon" />},
