@@ -10,6 +10,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Avatar from '@material-ui/core/Avatar';
 import ImageIcon from '@material-ui/icons/Image';
 import Select from 'react-select';
+import Button from '@material-ui/core/Button';
 
 const options = [
   {value: 'Ali Behroozi', label: 'Ali Behroozi'},
@@ -22,13 +23,20 @@ const options = [
 const RoomList = () => {
   const [open, setOpen] = React.useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [postButtonDisabled, setPostButtonDisabled] = useState(true);
+
 
   const openCreateRoomModal = () => {
     setOpen(true);
+    setPostButtonDisabled(true);
   };
 
   const closeCreateRoomModal = () => {
     setOpen(false);
+  };
+
+  const handlePostClick = () => {
+
   };
 
   const rooms = [1, 2, 3].map((room) => <div key={room}>
@@ -59,7 +67,7 @@ const RoomList = () => {
         }}
       >
         <Fade in={open}>
-          <div className="rl-paper">
+          <form className="rl-paper">
             <Typography className="rl-title">Create Room</Typography>
             <Avatar className="rl-avatar" alt="room name">
               <ImageIcon className="rl-icon"/>
@@ -67,6 +75,7 @@ const RoomList = () => {
             <TextField
               className="rl-room-name"
               label="room name"
+              required
             />
             <Select
               className="rl-select"
@@ -79,7 +88,13 @@ const RoomList = () => {
               }}
               options={options}
             />
-          </div>
+            <Button
+              className="rl-create-room"
+              variant="contained"
+              color="primary"
+              onClick={handlePostClick}
+              disabled={postButtonDisabled}>create</Button>
+          </form>
         </Fade>
       </Modal>
     </div>
