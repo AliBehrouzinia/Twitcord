@@ -34,7 +34,7 @@ function App() {
                 <Route exact path="/homepage" component={HomePage} />
                 <Route exact path="/login" component={LogIn} />
                 <Route exact path="/signup" component={SignUp} />
-                <Route exact path="/profile" component={Profile} />
+                <Route exact path="/profile/:id" component={Profile} />
                 <Route exact path="/edit-profile" component={EditProfile} />
                 <Route exact path="/room" component={RoomList} />
               </div>

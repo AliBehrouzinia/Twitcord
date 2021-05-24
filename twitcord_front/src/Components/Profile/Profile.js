@@ -5,8 +5,13 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+// import {useParams} from 'react-router-dom';
 
 const Profile = () => {
+  // const params = useParams();
+  // params.id is the id of the user must be fetched
+  // (for using params uncomment line 8 and 11)
+
   const [tabSelected, setSelectedTab] = React.useState(0);
 
   const handleChange = (event, selectedTab) => {

@@ -60,14 +60,14 @@ class Tweet(models.Model):
 
 
 class UserFollowing(models.Model):
-    following_TYPES = [
-        ('family', 'family'),
-        ('friend', 'friend'),
-        ('close friend', 'close friend'),
-        ('celebrity', 'celebrity'),
-        ('unfamiliar person', 'unfamiliar person'),
-    ]
-    type = models.CharField(max_length=30, choices=following_TYPES, default='unfamiliar person')
+
+    class FollowingType(models.TextChoices):
+        FAMILY = 'Family', _('family')
+        FRIEND = 'Friend', _('friend')
+        CLOSE_FRIEND = 'Close_friend', _('close friend')
+        UNFAMILIAR_PERSON = 'Unfamiliar_person', _('unfamiliar person')
+
+    type = models.CharField(max_length=30, choices=FollowingType.choices, default=FollowingType.UNFAMILIAR_PERSON)
     user = models.ForeignKey("TwitcordUser", related_name="following", on_delete=models.CASCADE)
     following_user = models.ForeignKey("TwitcordUser", related_name="followers", on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -94,3 +94,9 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ("user", "tweet")
+
+
+class Room(models.Model):
+    owner = models.ForeignKey(TwitcordUser, related_name="owner", on_delete=models.CASCADE, default=1)
+    title = models.CharField(max_length=20)
+    users = models.ManyToManyField("TwitcordUser", related_name="list_of_users", null=True, blank=True)
