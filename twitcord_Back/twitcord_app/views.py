@@ -254,14 +254,26 @@ class RoomView(generics.ListCreateAPIView):
     serializer_class = serializers.RoomSerializer
 
     def get_queryset(self):
-        user_id = self.request.user
-        users_of_rooms = []
+        user_id = self.kwargs['id']
         result = []
         rooms = models.Room.objects.all()
         for room in rooms:
+            users_of_rooms = []
+            id_of_users = []
             for item in room.users.all():
                 users_of_rooms.append(item)
-        for room in rooms:
-            if user_id in users_of_rooms or room.owner.id == user_id:
+            for item in users_of_rooms:
+                id_of_users.append(item.id)
+            if user_id in id_of_users or room.owner.id == user_id:
                 result.append(room)
         return result
+
+
+class RoomDataView(generics.ListAPIView):
+    permission_class = IsAuthenticated
+    serializer_class = serializers.RoomSerializer
+
+    def get_queryset(self):
+        room_id = self.kwargs['id']
+        room = models.Room.objects.filter(pk=room_id)
+        return room
