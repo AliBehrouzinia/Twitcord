@@ -285,7 +285,10 @@ class TimeLineView(generics.ListAPIView):
             liked_tweets_id.append(like.tweet.id)
         liked_tweets = models.Tweet.objects.filter(pk__in=liked_tweets_id)
         for tweet in liked_tweets:
-            result[tweet] += 20
+            if tweet in result:
+                result[tweet] += 20
+            else:
+                result[tweet] = 20
         followers_of_own_user = models.UserFollowing.objects.filter(following_user_id=user)
         followers_of_own_user_id = []
         for item in followers_of_own_user:
@@ -311,7 +314,7 @@ class TimeLineView(generics.ListAPIView):
                 first_cond = models.UserFollowing.objects.filter(user_id=second_level_user.following_user.id,
                                                                  following_user_id=first_level_user.id).exists()
                 second_cond = models.UserFollowing.objects.filter(user_id=first_level_user.id, following_user_id=
-                                                                  second_level_user.following_user.id).exists()
+                second_level_user.following_user.id).exists()
                 if first_cond and second_cond:
                     mutual_followers += 1
             list_of_mutual[second_level_user.following_user] = mutual_followers
