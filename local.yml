@@ -48,6 +48,11 @@ services:
         condition: on-failure
     stdin_open: true
 
+  redis:
+    image: redis:5
+    container_name: twitcord_redis
+    command: --port 6380
+
 volumes:
   twitcord:
   local_postgres_data: { }
