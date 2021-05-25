@@ -17,6 +17,7 @@ import * as Constants from '../../../Utils/Constants.js';
 
 const RoomList = () => {
   const [open, setOpen] = React.useState(false);
+  const [rooms, setRooms] = React.useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [options, setOptions] = useState([]);
   const [postButtonDisabled, setPostButtonDisabled] = useState(true);
@@ -28,6 +29,15 @@ const RoomList = () => {
   );
 
   useEffect(() => {
+    API.getRoomsList({id: userGeneralInfo.pk})
+        .then((response) => {
+          const rooms = response.data.results;
+          setRooms(rooms);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
     API.getFollowersList({id: userGeneralInfo.pk})
         .then((response) => {
           const followers = response.data.results.map((item) => {
@@ -106,14 +116,15 @@ const RoomList = () => {
     setSelectedOption(selectedOptions);
   };
 
-  const rooms = [1, 2, 3].map((room) => <div key={room}>
-    <RoomItem/>
+
+  const roomsList = rooms.map((room) => <div key={room.id}>
+    <RoomItem title={room.title} membersCount={room.members.length}/>
     <Divider/>
   </div>);
 
   return (
     <div className="rl-root">
-      {rooms}
+      {roomsList}
       <Fab
         className="rl-fab"
         color="primary"

@@ -137,3 +137,12 @@ export const getFollowingsList = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const getRoomsList = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_ROOMS_LIST.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
