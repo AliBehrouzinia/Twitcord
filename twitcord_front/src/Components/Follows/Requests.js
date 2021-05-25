@@ -25,7 +25,7 @@ const Followings = () => {
   const [FollowList, setFollowList] = React.useState([{}]);
 
   useEffect(() => {
-    API.requests({id: profileId})
+    API.getFollowRequests({id: profileId})
         .then((response) => {
           setFollowList(response.data.results);
         })

@@ -9,39 +9,50 @@ import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import * as API from '../../Utils/API/index';
 import './UserSearchItem.css';
+import * as Constants from '../../Utils/Constants.js';
 
 export const UserSearchItem = (props) => {
-  const [Situation, setSituation] = React.useState('');
-  function handleunrequest(id) {
-    API.unrequest({id: id})
-        .then((response) => {
-          setSituation('unrequest');
-          console.log(Situation);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-  }
-  function handleunfollow(id) {
-    API.unfollowuser({id: id})
-        .then((response) => {
-          setSituation('unfollow');
-          console.log(Situation);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-  }
-  function handlefollow(id) {
-    API.follownewuser({'request_to': id})
-        .then((response) => {
-          setSituation('follow');
-          console.log(Situation);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-  }
+  const [followStatus, setFollowStatus] = React.useState(props.status);
+
+  const handleFollowResponse = (status) => {
+    if (status == Constants.STATUS_REQUESTED) {
+      setFollowStatus(Constants.STATUS_REQUESTED);
+    } else {
+      setFollowStatus(Constants.STATUS_FOLLOWING);
+    }
+  };
+
+  const handleFollowClicked = () =>{
+    switch (followStatus) {
+      case Constants.STATUS_FOLLOW:
+        API.follow({request_to: props.id})
+            .then((response) => {
+              handleFollowResponse(response.data.status);
+            }).catch((error) => {
+
+            });
+        break;
+
+      case Constants.STATUS_FOLLOWING:
+        API.unfollow({id: props.id})
+            .then((response) => {
+              setFollowStatus(Constants.STATUS_FOLLOW);
+            }).catch((error) => {
+
+            });
+        break;
+
+      case Constants.STATUS_REQUESTED:
+        API.deleteFollowRequest({id: props.id})
+            .then((response) => {
+              setFollowStatus(Constants.STATUS_FOLLOW);
+            }).catch((error) => {
+
+            });
+        break;
+    }
+  };
+
   return (
     <Grid container
       direction="row"
@@ -66,39 +77,21 @@ export const UserSearchItem = (props) => {
           </div>
         </div>
       </Grid>
-      { props.status === 'not following' ?(
+
       <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
         <Button
           className="usi-follow-button"
           color="primary"
-          onClick={() => handlefollow(props.id)}
+          onClick={handleFollowClicked}
           variant="outlined">
-             follow
+          {followStatus}
         </Button>
-      </Grid>) : props.status === 'following' ? (
-      <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
-        <Button
-          className="usi-follow-button"
-          color="primary"
-          onClick={() => handleunfollow(props.id)}
-          variant="outlined">
-             unfollow
-        </Button>
-      </Grid>) : props.status === 'pending' ?(
-          <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
-            <Button
-              className="usi-follow-button"
-              color="primary"
-              onClick={() => handleunrequest(props.id)}
-              variant="outlined">
-             pending
-            </Button>
-          </Grid>) : (<div/>)}
+      </Grid>
 
-
-      {props.bio != null && <Grid xs={12} item className="usi-item-desc">
-        <Typography className="usi-desc">{props.bio}</Typography>
-      </Grid>}
+      {(props.bio != null && props.bio != '') &&
+       <Grid xs={12} item className="usi-item-desc">
+         <Typography className="usi-desc">{props.bio}</Typography>
+       </Grid>}
     </Grid>
   );
 };
