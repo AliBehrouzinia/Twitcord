@@ -1,10 +1,6 @@
 
 version: '3.7'
 
-volumes:
-  local_postgres_data: {}
-  local_postgres_data_backups: {}
-
 services:
   django:
     build:
@@ -44,7 +40,7 @@ services:
     command: sh -c "/usr/src/app/entrypoint.sh"
     volumes:
       - './twitcord_front:/usr/src/app/twitcord_front'
-      - '/usr/src/app/twitcord_front/node_modules'
+      - 'twitcord_node_modules:/usr/src/app/twitcord_front/node_modules'
     ports:
       - "3000:3000"
     deploy:
@@ -52,5 +48,13 @@ services:
         condition: on-failure
     stdin_open: true
 
+  redis:
+    image: redis:5
+    container_name: twitcord_redis
+    command: --port 6380
 
-
+volumes:
+  twitcord:
+  local_postgres_data: { }
+  local_postgres_data_backups: { }
+  twitcord_node_modules:
