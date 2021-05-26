@@ -227,4 +227,6 @@ class RoomSerializer(serializers.ModelSerializer):
                 result['members'][counter]['last_name'] = main_user.last_name
                 result['members'][counter]['username'] = main_user.username
                 counter += 1
+        values = result['members'].values()
+        result['members'] = list(values)
         return result
