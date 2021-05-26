@@ -156,7 +156,7 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         following = self.kwargs.get('id')
         instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
         instance.delete()
-        return Response()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class FollowCountView(generics.ListAPIView):

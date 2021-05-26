@@ -32,7 +32,7 @@ class SearchUserTest(APITestCase):
             "next": None,
             "previous": None,
             "results": {
-                "id": 1,
+                "id": 31,
                 "username": "test",
                 "first_name": None,
                 "last_name": None,
@@ -71,7 +71,7 @@ class SeachTweetTest(APITestCase):
             "previous": None,
             "results":
                 {
-                    "id": 1,
+                    "id": 30,
                     "is_reply": False,
                     "content": "Hi from there",
                     "create_date": response.data['results'][0]['create_date'],
