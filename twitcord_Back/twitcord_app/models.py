@@ -49,11 +49,18 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Tweet(models.Model):
-    parent = models.ForeignKey("Tweet", on_delete=models.CASCADE, default=None, null=True, blank=True)
+    parent = models.ForeignKey("Tweet", related_name='parent', on_delete=models.CASCADE, default=None, null=True,
+                               blank=True)
+    retweet_from = models.ForeignKey("tweet", related_name='retweet_from', on_delete=models.CASCADE, null=True)
     is_reply = models.BooleanField(default=False)
     user = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
     content = models.TextField(max_length=280)
     create_date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(check=(Q(retweet_from__isnull=True) & Q(content__isnull=False)), name='content_null')
+        ]
 
     def __str__(self):
         return self.content
