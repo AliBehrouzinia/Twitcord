@@ -211,3 +211,29 @@ class ReplySerializer(serializers.ModelSerializer):
         data['user'] = self.context['request'].user.id
         data['is_reply'] = True
         return super().to_internal_value(data)
+
+
+class ShowReplySerializer(serializers.ModelSerializer):
+    is_reply = serializers.BooleanField()
+    parent = serializers.PrimaryKeyRelatedField(queryset=Tweet.objects.all())
+
+    class Meta:
+        model = Tweet
+        fields = ['id', 'user', 'is_reply', 'parent']
+
+    def to_internal_value(self, data):
+        data['user'] = self.context['request'].user.id
+        data['is_reply'] = True
+        return super().to_internal_value(data)
+
+    def to_representation(self, instance):
+        result = super(ShowReplySerializer, self).to_representation(instance)
+        result['parent_id'] = instance.parent
+        result['tweet_id'] = instance.id
+        tweets = Tweet.objects.filter(parent_id=instance.id)
+        result['childs'] = {}
+        counter = 1
+        for item in tweets:
+            result['childs'][counter] = item
+            counter += 1
+        return result

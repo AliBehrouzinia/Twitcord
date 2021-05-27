@@ -261,3 +261,12 @@ class ReplysListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs.get('id')
         return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
+
+
+class ShowReplyFamilyView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ShowReplySerializer
+
+    def get_queryset(self):
+        tweet_id = self.kwargs['id']
+        return models.Tweet.objects.filter(id=tweet_id)
