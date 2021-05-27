@@ -52,7 +52,8 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
 class Tweet(models.Model):
     parent = models.ForeignKey("Tweet", related_name='reply_to', on_delete=models.CASCADE, default=None, null=True,
                                blank=True)
-    retweet_from = models.ForeignKey("Tweet", related_name='retweet_of', on_delete=models.CASCADE, null=True)
+    retweet_from = models.ForeignKey("Tweet", related_name='retweet_of', on_delete=models.CASCADE, null=True,
+                                     blank=True)
     is_reply = models.BooleanField(default=False)
     user = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
     content = models.TextField(max_length=280)
