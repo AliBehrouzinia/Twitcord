@@ -152,38 +152,39 @@ export const followingslist = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
-export const requests = (data) => {
+
+export const getFollowRequests = (data) => {
   return request(
       data,
       {},
-      Constants.URL_REQUESTS,
+      Constants.URL_FOLLOW_REQUESTS,
       Constants.GET_REQUEST_METHOD,
   );
 };
 
-export const follownewuser = (data) => {
+export const follow = (data) => {
   return request(
       data,
       {},
-      Constants.URL_FOLLOW_NEW_USER,
+      Constants.URL_FOLLOW,
       Constants.POST_REQUEST_METHOD,
   );
 };
 
-export const unfollowuser = (data) => {
+export const unfollow = (data) => {
   return request(
-      data,
       {},
-      Constants.URL_UNFOLLOW_USER.replace('{id}', data.id),
+      {},
+      Constants.URL_UNFOLLOW.replace('{id}', data.id),
       Constants.DELETE_REQUEST_METHOD,
   );
 };
 
-export const unrequest = (data) => {
+export const deleteFollowRequest = (data) => {
   return request(
-      data,
       {},
-      Constants.URL_UNREQUEST.replace('{id}', data.id),
+      {},
+      Constants.URL_DELETE_FOLLOW_REQUEST.replace('{id}', data.id),
       Constants.DELETE_REQUEST_METHOD,
   );
 };

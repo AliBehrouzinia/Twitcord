@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+/* eslint-disable */
 
 const Profile = () => {
   const [tabSelected, setSelectedTab] = React.useState(0);
@@ -15,7 +16,7 @@ const Profile = () => {
 
   return (
 
-    <Grid xs={12} lg={8} >
+    <Grid xs={12} >
       <ProfileUserinfo/>
       <Tabs
         variant="fullWidth"

@@ -1,5 +1,5 @@
 /* eslint-disable require-jsdoc */
-import React from 'react';
+import React, {useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
@@ -11,20 +11,22 @@ import * as API from '../../Utils/API/index';
 import './UserSearchItem.css';
 
 export const UserSearchItem = (props) => {
-  const [Situation, setSituation] = React.useState('');
+  const [situation, setSituation] = useState('');
   function handleunrequest(id) {
-    API.unrequest({id: id})
+    API.deleteFollowRequest({id: id})
         .then((response) => {
+          console.log(situation);
           setSituation('unrequest');
-          console.log(Situation);
+          console.log(ituation);
         })
         .catch((error) => {
           console.log(error);
         });
   }
   function handleunfollow(id) {
-    API.unfollowuser({id: id})
+    API.unfollow({id: id})
         .then((response) => {
+          console.log(Situation);
           setSituation('unfollow');
           console.log(Situation);
         })
@@ -33,8 +35,9 @@ export const UserSearchItem = (props) => {
         });
   }
   function handlefollow(id) {
-    API.follownewuser({'request_to': id})
+    API.follow({'request_to': id})
         .then((response) => {
+          console.log(Situation);
           setSituation('follow');
           console.log(Situation);
         })
@@ -42,6 +45,7 @@ export const UserSearchItem = (props) => {
           console.log(error);
         });
   }
+  console.log(props.status);
   return (
     <Grid container
       direction="row"
@@ -66,7 +70,7 @@ export const UserSearchItem = (props) => {
           </div>
         </div>
       </Grid>
-      { props.status === 'not following' ?(
+      { props.status === 'Follow' ?(
       <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
         <Button
           className="usi-follow-button"
@@ -75,7 +79,7 @@ export const UserSearchItem = (props) => {
           variant="outlined">
              follow
         </Button>
-      </Grid>) : props.status === 'following' ? (
+      </Grid>) : props.status === 'Following' ? (
       <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
         <Button
           className="usi-follow-button"
@@ -84,7 +88,7 @@ export const UserSearchItem = (props) => {
           variant="outlined">
              unfollow
         </Button>
-      </Grid>) : props.status === 'pending' ?(
+      </Grid>) : props.status === 'Requested' ?(
           <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
             <Button
               className="usi-follow-button"
@@ -93,7 +97,7 @@ export const UserSearchItem = (props) => {
               variant="outlined">
              pending
             </Button>
-          </Grid>) : (<div/>)}
+          </Grid>) : (<button/>)}
 
 
       {props.bio != null && <Grid xs={12} item className="usi-item-desc">

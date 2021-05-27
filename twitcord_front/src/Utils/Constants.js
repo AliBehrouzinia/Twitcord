@@ -8,6 +8,11 @@ export const GET_REQUEST_METHOD = 'GET';
 export const PATCH_REQUEST_METHOD = 'PATCH';
 export const DELETE_REQUEST_METHOD = 'DELETE';
 
+// follow status
+export const STATUS_FOLLOW = 'Follow';
+export const STATUS_FOLLOWING = 'Following';
+export const STATUS_REQUESTED = 'Requested';
+
 // Urls
 export const URL_POST_TWEET = '/tweets/';
 export const URL_SIGN_UP = '/rest-auth/registration/';
@@ -18,11 +23,11 @@ export const URL_PROFILE_INFO = '/profile/{id}/header/';
 export const URL_USER_GENERAL_INFO= '/rest-auth/user/';
 export const URL_FOLLOWINGS= '/followings/list/{id}/';
 export const URL_FOLLOWERS= '/followers/list/{id}/';
-export const URL_REQUESTS= '/followers/requests/';
+export const URL_FOLLOW_REQUESTS= '/followers/requests/';
 export const URL_FOLLOW_COUNT= '/follow/count/{id}/';
-export const URL_FOLLOW_NEW_USER= '/followings/requests/';
-export const URL_UNFOLLOW_USER= '/followings/{id}/';
-export const URL_UNREQUEST= '/followings/requests/{id}/';
+export const URL_FOLLOW= '/followings/requests/';
+export const URL_UNFOLLOW= '/followings/{id}/';
+export const URL_DELETE_FOLLOW_REQUEST= '/followings/requests/{id}/';
 export const REJECT_FOLLOW_REQUEST= '/followers/requests/{id}/?action=reject';
 export const ACCEPT_FOLLOW_REQUEST= '/followers/requests/{id}/?action=accept';
 

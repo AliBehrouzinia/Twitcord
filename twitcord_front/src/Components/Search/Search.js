@@ -20,6 +20,17 @@ const Search = () => {
   }
   const [tabSelected, setSelectedTab] = React.useState(0);
 
+  const getFollowStatus = (status) => {
+    switch (status) {
+      case 'not following':
+        return Constants.STATUS_FOLLOW;
+      case 'following':
+        return Constants.STATUS_FOLLOWING;
+      case 'pending':
+        return Constants.STATUS_REQUESTED;
+    }
+  };
+
   const userResult = users.map(
       (user) => user.id !== profileId ? <div key={user.id}>
         <UserSearchItem
@@ -29,7 +40,7 @@ const Search = () => {
           followState={user.status}
           isPublic={user.is_public}
           id={user.id}
-          status= {user.status}/>
+          status= {getFollowStatus(user.status)}/>
         <Divider />
       </div> : <div></div>,
   );

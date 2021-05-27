@@ -47,7 +47,6 @@
 	padding-bottom: 1%;
 }
 .paper {
-
 	width: 360px;
 	background-Color: white;
 	border: '2px solid #000';
@@ -61,22 +60,23 @@
 .modal {
 	display: flex;
 	justify-Content: center;
+    overflow: auto !important;
 }
 .followings {
-	font-size: 14px;
+	font-size: medium;
 	background-color: transparent;
 	border: none;
 	color: rgb(43, 43, 44);
 }
 .followers {
-	font-size: 14px;
+	font-size: medium;
 	background-color: transparent;
 	border: none;
 	color: rgb(43, 43, 44);
 }
 
 .requests {
-	font-size: 14px;
+	font-size: medium;
 	background-color: transparent;
 	border: none;
 	color: rgb(43, 43, 44);
@@ -107,15 +107,21 @@
 }
 
 .grid-joined{
+    margin-top: 15px !important;
     font-size: medium !important;
     color: rgb(163, 162, 162);
 }
 
 .grid-bio{
+    margin-top: 15px !important;
     font-size: large !important;
+    color: rgb(116, 116, 116);
 }
 
 .grid-follow-container{
-    margin-top: 5px !important;
+    margin-top: -10px !important;
+    margin-left: 2px  !important;
 }
 
+
+ 
