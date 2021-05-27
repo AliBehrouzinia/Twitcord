@@ -38,3 +38,5 @@ oauth==1.0.1
 psycopg2-binary==2.8.6
 urllib3==1.22
 
+channels==3.0.3
+channels-redis==3.2.0

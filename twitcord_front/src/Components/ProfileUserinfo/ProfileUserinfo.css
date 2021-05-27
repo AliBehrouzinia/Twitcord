@@ -43,23 +43,64 @@
 .info1 {
     padding-left: 2%;
     color: grey;
+    margin-top: 25px !important;
 }
 .followings {
-    font-size: 14px;
+    font-size: large !important;
     background-color: transparent;
     border: none;
     color: rgb(115, 115, 122);
 }
 .followers {
-    font-size: 14px;
+    background-color: transparent;
+    border: none;
+    color: rgb(115, 115, 122);
+    font-size: large !important;
+}
+
+.requests {
+    font-size: large !important;
     background-color: transparent;
     border: none;
     color: rgb(115, 115, 122);
 }
-.requests {
-    font-size: 14px;
-    background-color: transparent;
-    border: none;
-    color: rgb(115, 115, 122);
+
+.followings:hover {
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.followers:hover {
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.requests:hover {
+    color: rgb(77, 77, 77);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.grid-username{
+    margin-top: 15px !important;
+    font-size: x-large !important;
+    color: rgb(75, 75, 75);
+}
+
+.grid-joined{
+    margin-top: 15px !important;
+    font-size: medium !important;
+    color: rgb(163, 162, 162);
+}
+
+.grid-bio{
+    margin-top: 15px !important;
+    font-size: large !important;
+}
+
+.grid-follow-container{
+    margin-top: 5px !important;
 }
 

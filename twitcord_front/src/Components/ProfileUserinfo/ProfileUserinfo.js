@@ -11,8 +11,12 @@ import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
 import {Button} from '@material-ui/core';
 import {Typography} from '@material-ui/core';
+import {useHistory} from 'react-router-dom';
+/* eslint-disable */
+
 const ProfileUserinfo = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   let profileId = -1;
   const userGeneralInfo = JSON.parse(
@@ -48,6 +52,11 @@ const ProfileUserinfo = () => {
   const year = date.getFullYear();
   const month = date.getMonth()+1;
   const dt = date.getDate();
+
+  const handleEditProfileClick = () => {
+    history.push('/edit-profile');
+  };
+
   return (
     <Grid className="user-info" >
       <Grid item container direction="column">
@@ -72,7 +81,7 @@ const ProfileUserinfo = () => {
               '    ' + year}
             </Typography>
           </Grid>
-          <Grid item>
+          <Grid item className="grid-follow-container">
             <button type="followers" className="followers" >
             followers
             </button>
@@ -89,6 +98,7 @@ const ProfileUserinfo = () => {
           {userGeneralInfo !== null &&
           userGeneralInfo.email === profileInfo.email ? (
           <Button
+            onClick={handleEditProfileClick}
             variant="outlined"
             color="primary">
             edit
