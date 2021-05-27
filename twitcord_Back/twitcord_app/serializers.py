@@ -197,3 +197,19 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
+
+
+class RetweetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tweet
+        fields = ['user', 'create_date', 'retweet_from']
+
+    def to_representation(self, instance):
+        result = super(RetweetSerializer, self).to_representation(instance)
+        result['tweet_id'] = result.pop('retweet_from')
+        source_tweet = Tweet.objects.filter(id=result['tweet_id'])
+        result['source_tweet_user'] = source_tweet.user
+        result['source_tweet_create_date'] = source_tweet.create_date
+        result['source_tweet_content'] = source_tweet.content
+        result['source_tweet_user'] = source_tweet.user
+        return result
