@@ -1,50 +1,58 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
 import './Profile.css';
 import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-// import {useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
+import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
+import {makeStyles} from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  root: {
+    minWidth: '0px',
+  },
+});
 
 const Profile = () => {
-  // const params = useParams();
-  // params.id is the id of the user must be fetched
-  // (for using params uncomment line 8 and 11)
-
-  const [tabSelected, setSelectedTab] = React.useState(0);
+  const params = useParams();
+  const classes = useStyles();
+  const [tabSelected, setSelectedTab] = useState(0);
 
   const handleChange = (event, selectedTab) => {
     setSelectedTab(selectedTab);
   };
 
   return (
-    <Grid container direction="column">
-      <Grid item className="grid-item" xs={12} sm={12} md={8}>
-        <ProfileUserinfo/>
-      </Grid>
-      <Grid item className="grid-item" xs={12} sm={10} md={8}>
+    <Box container direction="column" className="w-100 overflow-hidden">
+      <Box>
+        <ProfileUserinfo id={params.id}/>
+      </Box>
+      <Box>
         <Tabs
-          item
-          xs={12} sm={10} md={8}
           variant="fullWidth"
+          scrollButtons="auto"
           value={tabSelected}
           onChange={handleChange}
           indicatorColor="primary"
-          textColor="primary">
-          <Tab label="tweets" />
-          <Tab label="replys" />
-          <Tab label="likes" />
-          <Tab label="rooms" />
+          textColor="primary"
+          centered
+        >
+          <Tab classes={{root: classes.root}} label="tweets" />
+          <Tab classes={{root: classes.root}} label="replys" />
+          <Tab classes={{root: classes.root}} label="likes" />
+          <Tab classes={{root: classes.root}} label="rooms" />
         </Tabs>
-      </Grid>
-      <Grid item xs={12} sm={10} md={8} className="grid-item">
-        {tabSelected == 0 && <p className="profile-content">tweets</p> }
-        {tabSelected == 1 && <p className="profile-content">replys</p> }
-        {tabSelected == 2 && <p className="profile-content">likes</p> }
-        {tabSelected == 3 && <p className="profile-content">rooms</p> }
-      </Grid>
-    </Grid>
+      </Box>
+      <Divider />
+      <Box>
+        {tabSelected == 0 && <p>tweets</p> }
+        {tabSelected == 1 && <p>replys</p> }
+        {tabSelected == 2 && <p>likes</p> }
+        {tabSelected == 3 && <p>rooms</p> }
+      </Box>
+    </Box>
   );
 };
 Profile.propTypes = {
