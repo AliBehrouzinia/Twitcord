@@ -11,20 +11,17 @@ import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
 import {Button} from '@material-ui/core';
 import {Typography} from '@material-ui/core';
-import {useHistory} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 /* eslint-disable */
 
 const ProfileUserinfo = () => {
+  const params = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
-  let profileId = -1;
-  const userGeneralInfo = JSON.parse(
-      localStorage.getItem(Constants.GENERAL_USER_INFO),
-  );
-  if (userGeneralInfo != null) {
-    profileId = userGeneralInfo.pk;
-  }
+  const userId = JSON.parse(
+    localStorage.getItem(Constants.GENERAL_USER_INFO),
+  )?.pk;
   const monthNumberToLabelMap = {
     [1]: 'January',
     [2]: 'February',
@@ -40,7 +37,7 @@ const ProfileUserinfo = () => {
     [12]: 'December',
   };
   useEffect(() => {
-    API.getProfileInfo({id: profileId})
+    API.getProfileInfo({id: params.id})
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data));
         })
@@ -95,17 +92,14 @@ const ProfileUserinfo = () => {
           </Grid>
         </Grid>
         <Grid item xs={6} className="grid-info2">
-          {userGeneralInfo !== null &&
-          userGeneralInfo.email === profileInfo.email ? (
-          <Button
+          {userId == params.id ? <Button
             onClick={handleEditProfileClick}
             variant="outlined"
             color="primary">
             edit
-          </Button>
-        ) : (
-          <Button variant="primary" >follow</Button>
-        )}
+          </Button> :
+          <Button variant="primary" >follow</Button>}
+
         </Grid>
       </Grid>
     </Grid>
