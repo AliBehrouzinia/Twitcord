@@ -28,7 +28,8 @@ const initialState = {
     website: '',
     isPublic: false,
     email: '',
-
+    followers_count: 0,
+    followings_count: 0,
   },
   sideDrawerEnable: true,
   tweetText: '',
@@ -95,13 +96,15 @@ const tweetReducer = (state = initialState, action) => {
           ...state.profileInfo,
           bio: action.bio,
           birthday: action.birthday,
-          firstName: action.firstName,
-          lastName: action.lastName,
+          firstName: action.first_name,
+          lastName: action.last_name,
           website: action.website,
           username: action.username,
           isPublic: action.isPublic,
           email: action.email,
           date_joined: action.date_joined,
+          followers_count: action.followers_count,
+          followings_count: action.followings_count,
         },
       };
     }
