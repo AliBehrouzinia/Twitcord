@@ -60,7 +60,7 @@ const ProfileUserinfo = () => {
     <Box>
       <Box className="position-relative">
         <img src={image} alt="img" className="profile_cover" />
-        <Avatar className="avatar" />
+        <Avatar className="p-avatar" />
       </Box>
       <Box className="text-right p-3">
         {userId == params.id ? <Button
@@ -88,11 +88,11 @@ const ProfileUserinfo = () => {
         </Box>
         <Box display="flex" className="mt-2">
           <button type="followers" className="btn-underline">
-          <Box component="span" className="number">{profileInfo.followers_count} </Box>
+          <Box component="span" className="p-follower-number">{profileInfo.followers_count} </Box>
           Followers
           </button>
           <button type="followings" className="btn-underline" >
-          <Box component="span" className="number">{profileInfo.followings_count} </Box>
+          <Box component="span" className="p-follower-number">{profileInfo.followings_count} </Box>
           Followings
           </button>
         </Box>

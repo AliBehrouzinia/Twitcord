@@ -7,17 +7,9 @@ import Tab from '@material-ui/core/Tab';
 import {useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
-import {makeStyles} from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  root: {
-    minWidth: '0px',
-  },
-});
 
 const Profile = () => {
   const params = useParams();
-  const classes = useStyles();
   const [tabSelected, setSelectedTab] = useState(0);
 
   const handleChange = (event, selectedTab) => {
@@ -39,10 +31,10 @@ const Profile = () => {
           textColor="primary"
           centered
         >
-          <Tab classes={{root: classes.root}} label="tweets" />
-          <Tab classes={{root: classes.root}} label="replys" />
-          <Tab classes={{root: classes.root}} label="likes" />
-          <Tab classes={{root: classes.root}} label="rooms" />
+          <Tab className="min-w-0" label="tweets" />
+          <Tab className="min-w-0" label="replys" />
+          <Tab className="min-w-0" label="likes" />
+          <Tab className="min-w-0" label="rooms" />
         </Tabs>
       </Box>
       <Divider />

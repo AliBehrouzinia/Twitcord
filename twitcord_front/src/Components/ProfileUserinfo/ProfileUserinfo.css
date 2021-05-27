@@ -4,7 +4,7 @@
     background-color: white;
     padding-bottom: 1%;
 }
-.avatar {
+.p-avatar {
   width: 124px !important;
   height: 124px !important;
   position: absolute !important;
@@ -19,7 +19,7 @@
     object-fit: cover;
 }
 
-.number {
+.p-follower-number {
     color: black !important;
 }
 
@@ -41,9 +41,4 @@
     color: rgb(77, 77, 77);
     cursor: pointer;
     text-decoration: underline;
-}
-
-
-.text-right {
-    text-align: right !important;
 }
