@@ -60,12 +60,7 @@ export const postTweet = (data) => {
 };
 
 export const logIn = (data) => {
-  return request(
-    data,
-    {},
-    Constants.URL_LOG_IN,
-    Constants.POST_REQUEST_METHOD,
-  );
+  return request(data, {}, Constants.URL_LOG_IN, Constants.POST_REQUEST_METHOD);
 };
 
 export const searchUsers = (data, params) => {
