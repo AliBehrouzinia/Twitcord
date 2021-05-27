@@ -29,7 +29,7 @@ const Profile = () => {
       <Box>
         <ProfileUserinfo id={params.id}/>
       </Box>
-      <Box>
+      <Box className="mt-4">
         <Tabs
           variant="fullWidth"
           scrollButtons="auto"
