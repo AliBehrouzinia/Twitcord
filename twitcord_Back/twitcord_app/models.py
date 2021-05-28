@@ -106,6 +106,23 @@ class Like(models.Model):
 
 
 class Room(models.Model):
-    owner = models.ForeignKey(TwitcordUser, related_name="owner", on_delete=models.CASCADE, default=1)
+    owner = models.ForeignKey(TwitcordUser, related_name="created_rooms", on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
-    users = models.ManyToManyField("TwitcordUser", related_name="list_of_users", null=True, blank=True)
+    users = models.ManyToManyField("TwitcordUser", related_name="rooms", blank=True)
+
+    def __str__(self):
+        return f"{self.title}"
+
+
+class RoomMessage(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    sender = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    content = models.TextField()
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.content}"
