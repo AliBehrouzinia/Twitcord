@@ -59,3 +59,8 @@ class LikeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Like, LikeAdmin)
+
+
+@admin.register(RoomMessage)
+class RoomMessageAdmin(admin.ModelAdmin):
+    list_display = ('created_at', 'sender', 'room', 'content')

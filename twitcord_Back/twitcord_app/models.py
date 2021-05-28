@@ -110,6 +110,9 @@ class Room(models.Model):
     title = models.CharField(max_length=20)
     users = models.ManyToManyField("TwitcordUser", related_name="members", blank=True)
 
+    def __str__(self):
+        return f"{self.title}"
+
 
 class RoomMessage(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -117,3 +120,9 @@ class RoomMessage(models.Model):
     sender = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     content = models.TextField()
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.content}"
