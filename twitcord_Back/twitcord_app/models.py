@@ -106,9 +106,9 @@ class Like(models.Model):
 
 
 class Room(models.Model):
-    owner = models.ForeignKey(TwitcordUser, related_name="owner", on_delete=models.CASCADE)
+    owner = models.ForeignKey(TwitcordUser, related_name="created_rooms", on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
-    users = models.ManyToManyField("TwitcordUser", related_name="members", blank=True)
+    users = models.ManyToManyField("TwitcordUser", related_name="rooms", blank=True)
 
     def __str__(self):
         return f"{self.title}"
