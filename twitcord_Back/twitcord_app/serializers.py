@@ -214,31 +214,48 @@ class ReplySerializer(serializers.ModelSerializer):
 
 
 class ShowReplySerializer(serializers.ModelSerializer):
-    is_reply = serializers.BooleanField()
-    parent = serializers.PrimaryKeyRelatedField(queryset=Tweet.objects.all())
 
     class Meta:
         model = Tweet
-        fields = ['id', 'user', 'is_reply', 'parent']
-
-    def to_internal_value(self, data):
-        data['user'] = self.context['request'].user.id
-        data['is_reply'] = True
-        return super().to_internal_value(data)
+        fields = ['id', 'content', 'create_date']
 
     def to_representation(self, instance):
         result = super(ShowReplySerializer, self).to_representation(instance)
         result['parent_id'] = instance.parent
+        parent_set = Tweet.objects.filter(id=instance.parent)
+        if len(parent_set) != 0:
+            parent = parent_set[0]
+            result['parent_content'] = parent.content
+            result['parent_create_date'] = parent.create_date
+            result['parent_user_is_public'] = parent.user.is_public
+            result['parent_user_username'] = parent.user.username
+            result['parent_user_email'] = parent.user.email
+            result['parent_user_firstname'] = parent.user.first_name
+            result['parent_user_lastname'] = parent.user.last_name
+            result['parent_user_email'] = parent.user.email
         result['tweet_id'] = instance.id
+        result['tweet_content'] = instance.content
+        result['tweet_create_date'] = instance.create_date
+        result['tweet_user_is_public'] = instance.user.is_public
+        result['tweet_user_username'] = instance.user.username
+        result['tweet_user_email'] = instance.user.email
+        result['tweet_user_firstname'] = instance.user.first_name
+        result['tweet_user_lastname'] = instance.user.last_name
+        result['tweet_user_email'] = instance.user.email
         tweets = Tweet.objects.filter(parent_id=instance.id)
-        result['childs'] = {}
+        result['children'] = {}
         counter = 1
         if tweets is not None:
             for item in tweets:
-                result['childs'][counter] = {}
-                result['childs'][counter]['id'] = item.id
-            result['childs'][counter]['user'] = item.user
-            counter += 1
-        values = result['childs'].values()
-        result['members'] = list(values)
+                result['children'][counter] = {}
+                result['children'][counter]['id'] = item.id
+                result['children'][counter]['username'] = item.user.username
+                result['children'][counter]['email'] = item.user.email
+                result['children'][counter]['first_name'] = item.user.first_name
+                result['children'][counter]['last_name'] = item.user.last_name
+                result['children'][counter]['is_public'] = item.user.is_public
+                result['children'][counter]['content'] = item.content
+                counter += 1
+        values = result['children'].values()
+        result['children'] = list(values)
         return result
