@@ -233,7 +233,12 @@ class ShowReplySerializer(serializers.ModelSerializer):
         tweets = Tweet.objects.filter(parent_id=instance.id)
         result['childs'] = {}
         counter = 1
-        for item in tweets:
-            result['childs'][counter] = item
+        if tweets is not None:
+            for item in tweets:
+                result['childs'][counter] = {}
+                result['childs'][counter]['id'] = item.id
+            result['childs'][counter]['user'] = item.user
             counter += 1
+        values = result['childs'].values()
+        result['members'] = list(values)
         return result
