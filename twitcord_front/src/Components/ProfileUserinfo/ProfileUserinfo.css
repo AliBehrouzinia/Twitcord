@@ -4,104 +4,41 @@
     background-color: white;
     padding-bottom: 1%;
 }
-.avatar {
-    width: 124px !important;
-    height: 124px !important;
-    float: left;
-    margin: -60px 10px 0 5%;
-    position: relative;
-    background-color: white;
+.p-avatar {
+  width: 124px !important;
+  height: 124px !important;
+  position: absolute !important;
+  left: calc(1rem - 3px) !important;
+  bottom: -62px !important;
+  border: 3px solid white;
 }
+
 .profile_cover {
     width: 100%;
     height: 150px;
     object-fit: cover;
 }
-.edit-button {
-    border-radius: 4px;
-    border: 0.5px solid #757bad;
-    background-color: transparent;
-    padding: 4px 10px;
-    font-size: calc(10px + 0.2vw);
+
+.p-follower-number {
+    color: black !important;
 }
-.edit-button :hover {
-    background-color: rgb(187, 184, 184);
-    cursor: pointer;
+
+.color-gray {
+    color: rgb(77, 77, 77) !important;
 }
-.grid-info1 {
-    display: flex;
-    flex-direction: column;
-    padding-left: 9%;
-    padding-bottom: 4%;
-}
-.grid-info2 {
-    display: flex;
-    flex-direction: column;
-    padding-left: 25%;
-	padding-right: 5%;
-    padding-bottom: 4%;
-}
-.info1 {
-    padding-left: 2%;
-    color: grey;
-    margin-top: 25px !important;
-}
-.followings {
-    font-size: large !important;
-    background-color: transparent;
-    border: none;
-    color: rgb(115, 115, 122);
-}
-.followers {
+
+.btn-underline {
     background-color: transparent;
     border: none;
     color: rgb(115, 115, 122);
     font-size: large !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-right: 20px !important;
 }
 
-.requests {
-    font-size: large !important;
-    background-color: transparent;
-    border: none;
-    color: rgb(115, 115, 122);
-}
-
-.followings:hover {
+.btn-underline:hover {
     color: rgb(77, 77, 77);
     cursor: pointer;
     text-decoration: underline;
 }
-
-.followers:hover {
-    color: rgb(77, 77, 77);
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.requests:hover {
-    color: rgb(77, 77, 77);
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.grid-username{
-    margin-top: 15px !important;
-    font-size: x-large !important;
-    color: rgb(75, 75, 75);
-}
-
-.grid-joined{
-    margin-top: 15px !important;
-    font-size: medium !important;
-    color: rgb(163, 162, 162);
-}
-
-.grid-bio{
-    margin-top: 15px !important;
-    font-size: large !important;
-}
-
-.grid-follow-container{
-    margin-top: 5px !important;
-}
-
