@@ -217,7 +217,7 @@ class ShowReplySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ['id', 'content', 'create_date']
+        fields = ['id']
 
     def to_representation(self, instance):
         result = super(ShowReplySerializer, self).to_representation(instance)
@@ -255,7 +255,9 @@ class ShowReplySerializer(serializers.ModelSerializer):
                 result['children'][counter]['last_name'] = item.user.last_name
                 result['children'][counter]['is_public'] = item.user.is_public
                 result['children'][counter]['content'] = item.content
+                result['children'][counter]['create_date'] = item.create_date
                 counter += 1
+        result.pop('id')
         values = result['children'].values()
         result['children'] = list(values)
         return result
