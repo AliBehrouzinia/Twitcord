@@ -52,3 +52,13 @@ class PrivateAccountUserPermission(permissions.BasePermission):
         if following_user.is_public:
             return True
         return models.UserFollowing.objects.filter(user=user.id, following_user=following_user_id).exists()
+
+
+class IsMemberOfRoom(permissions.BasePermission):
+    message = "You can't access to messages of room that you aren't member of that"
+
+    def has_permission(self, request, view):
+        user = request.user
+        room_id = view.kwargs['room_id']
+        room = get_object_or_404(models.Room, id=room_id)
+        return user in room.users.all()
