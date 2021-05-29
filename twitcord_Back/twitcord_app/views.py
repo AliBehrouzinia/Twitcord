@@ -263,10 +263,8 @@ class ReplysListView(generics.ListAPIView):
         return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
 
 
-class ShowReplyFamilyView(generics.ListAPIView):
+class ShowReplyFamilyView(generics.RetrieveAPIView):
+    queryset = models.Tweet.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ShowReplySerializer
-
-    def get_queryset(self):
-        tweet_id = self.kwargs['id']
-        return models.Tweet.objects.filter(id=tweet_id)
+    lookup_url_kwarg = 'id'
