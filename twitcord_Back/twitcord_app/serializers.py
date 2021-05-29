@@ -221,8 +221,8 @@ class ShowReplySerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(ShowReplySerializer, self).to_representation(instance)
-        result['parent_id'] = instance.parent
-        parent_set = Tweet.objects.filter(id=instance.parent)
+        result['parent_id'] = instance.parent.id
+        parent_set = Tweet.objects.filter(id=instance.parent.id)
         if len(parent_set) != 0:
             parent = parent_set[0]
             result['parent_content'] = parent.content
