@@ -25,4 +25,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('', include('twitcord_app.urls')),
+    path('chat/', include('chat.urls')),
 ]

@@ -1,7 +1,6 @@
 /* eslint-disable no-tabs */
 /* eslint-disable max-len */
 import React, {useEffect} from 'react';
-import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import {useHistory} from 'react-router-dom';
 import {Modal, Typography} from '@material-ui/core';
@@ -12,17 +11,19 @@ import {useSelector} from 'react-redux';
 import image from '../../assets/image.png';
 import * as API from '../../Utils/API/index';
 import Backdrop from '@material-ui/core/Backdrop';
-import PropTypes from 'prop-types';
 import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
 import Followers from '../Follows/Followers';
 import Requests from '../Follows/Requests';
 import Followings from '../Follows/Followings';
 import Button from '@material-ui/core/Button';
+import {useParams} from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
 
 /* eslint-disable */
 
 const ProfileUserinfo = () => {
+  const params = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
@@ -73,7 +74,7 @@ const ProfileUserinfo = () => {
     </div>
   );
   useEffect(() => {
-    API.getProfileInfo({id: profileId})
+    API.getProfileInfo({id: params.id})
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data));
           console.log(profileInfo.is_public);
@@ -200,19 +201,4 @@ const ProfileUserinfo = () => {
     </Grid>
   );
 };
-// eslint-disable-next-line no-unused-vars
-const handleFormValidationResults = (values) => {
-  if (values.name == null && values.website == null) {
-    alert;
-  }
-};
-
-ProfileUserinfo.propTypes = {
-  username: PropTypes.string,
-  bio: PropTypes.string,
-  joinedat: PropTypes.string,
-  followers: PropTypes.number,
-  followings: PropTypes.number,
-};
-
 export default ProfileUserinfo;

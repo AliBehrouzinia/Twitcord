@@ -12,6 +12,7 @@
     position: relative;
     background-color: white;
 }
+
 .profile_cover {
     width: 100%;
     height: 200px;
@@ -82,19 +83,7 @@
 	color: rgb(43, 43, 44);
 }
 
-.followings:hover {
-    color: rgb(77, 77, 77);
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.followers:hover {
-    color: rgb(77, 77, 77);
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.requests:hover {
+.btn-underline:hover {
     color: rgb(77, 77, 77);
     cursor: pointer;
     text-decoration: underline;

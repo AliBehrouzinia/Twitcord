@@ -1,4 +1,5 @@
-import {ActionTypes} from './actionTypes';
+/* eslint-disable */
+import { ActionTypes } from './actionTypes';
 
 export const setSignUpInfo = (data) => ({
   type: ActionTypes.SET_SIGN_UP_INFO,
@@ -17,6 +18,11 @@ export const setTweetText = (data) => ({
 
 export const setSnackBarState = (data) => ({
   type: ActionTypes.SET_SNACKBAR_STATE,
+  ...data,
+});
+
+export const setTweetListInfo = (data) => ({
+  type: ActionTypes.SET_TWEET_LIST_INFO,
   ...data,
 });
 

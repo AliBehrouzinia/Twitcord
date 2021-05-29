@@ -9,6 +9,8 @@ import Divider from '@material-ui/core/Divider';
 import {UserSearchItem} from '../UserSearchItem/UserSearchItem';
 import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
 import * as Constants from '../../Utils/Constants.js';
+import {Link} from 'react-router-dom';
+
 
 const Search = () => {
   const users = useSelector((state) => state).tweet.userSearchResult;
@@ -33,14 +35,16 @@ const Search = () => {
 
   const userResult = users.map(
       (user) => user.id !== profileId ? <div key={user.id}>
-        <UserSearchItem
-          name={user.first_name + ' ' + user.last_name}
-          username={user.username}
-          bio={user.bio}
-          followState={user.status}
-          isPublic={user.is_public}
-          id={user.id}
-          status= {getFollowStatus(user.status)}/>
+        <Link to={'/profile/'+user.id}>
+          <UserSearchItem
+            name={user.first_name + ' ' + user.last_name}
+            username={user.username}
+            bio={user.bio}
+            followState={user.status}
+            isPublic={user.is_public}
+            id={user.id}
+            status= {getFollowStatus(user.status)}/>
+        </Link>
         <Divider />
       </div> : <div></div>,
   );
