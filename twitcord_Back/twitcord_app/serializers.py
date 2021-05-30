@@ -230,3 +230,77 @@ class ReplySerializer(serializers.ModelSerializer):
         data['user'] = self.context['request'].user.id
         data['is_reply'] = True
         return super().to_internal_value(data)
+
+
+class ShowReplySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tweet
+        fields = ['id']
+
+    def to_representation(self, instance):
+        result = super(ShowReplySerializer, self).to_representation(instance)
+        result['parent_id'] = instance.parent.id
+        parent_set = Tweet.objects.filter(id=instance.parent.id)
+        request_user = self.context['request'].user.id
+        likes = Like.objects.filter(user=request_user)
+        liked_tweets = []
+        for item in likes:
+            temp = Tweet.objects.filter(id=item.tweet.id)
+            liked_tweets.append(temp)
+        if len(parent_set) != 0:
+            parent = parent_set[0]
+            result['parent_content'] = parent.content
+            result['parent_create_date'] = parent.create_date
+            result['parent_user_is_public'] = parent.user.is_public
+            result['parent_user_username'] = parent.user.username
+            result['parent_user_email'] = parent.user.email
+            result['parent_user_firstname'] = parent.user.first_name
+            result['parent_user_lastname'] = parent.user.last_name
+            result['parent_user_email'] = parent.user.email
+            for item in liked_tweets:
+                if parent == item[0]:
+                    result['parent_is_liked'] = True
+                    break
+            else:
+                result['parent_is_liked'] = False
+        result['tweet_id'] = instance.id
+        result['tweet_content'] = instance.content
+        result['tweet_create_date'] = instance.create_date
+        result['tweet_user_is_public'] = instance.user.is_public
+        result['tweet_user_username'] = instance.user.username
+        result['tweet_user_email'] = instance.user.email
+        result['tweet_user_firstname'] = instance.user.first_name
+        result['tweet_user_lastname'] = instance.user.last_name
+        result['tweet_user_email'] = instance.user.email
+        for item in liked_tweets:
+            if instance == item[0]:
+                result['tweet_is_liked'] = True
+                break
+        else:
+            result['tweet_is_liked'] = False
+        tweets = Tweet.objects.filter(parent_id=instance.id)
+        result['children'] = {}
+        counter = 1
+        if tweets is not None:
+            for item in tweets:
+                result['children'][counter] = {}
+                result['children'][counter]['id'] = item.id
+                result['children'][counter]['username'] = item.user.username
+                result['children'][counter]['email'] = item.user.email
+                result['children'][counter]['first_name'] = item.user.first_name
+                result['children'][counter]['last_name'] = item.user.last_name
+                result['children'][counter]['is_public'] = item.user.is_public
+                result['children'][counter]['content'] = item.content
+                result['children'][counter]['create_date'] = item.create_date
+                for i in liked_tweets:
+                    if item == i[0]:
+                        result['children'][counter]['child_is_liked'] = True
+                        break
+                else:
+                    result['children'][counter]['child_is_liked'] = False
+                counter += 1
+        result.pop('id')
+        values = result['children'].values()
+        result['children'] = list(values)
+        return result
