@@ -216,15 +216,17 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
 
 
 class TimeLineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tweet
+        fields = '__all__'
+
     def to_representation(self, instance):
         result = super(TimeLineSerializer, self).to_representation(instance)
         user = instance.user
+        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
+        result['is_liked'] = is_liked
         result['id'] = instance.id
         result['user_id'] = result.pop('user')
         result['username'] = user.username
         result['first_name'] = user.first_name
         return result
-
-    class Meta:
-        model = Tweet
-        fields = '__all__'
