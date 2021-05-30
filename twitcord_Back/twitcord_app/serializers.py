@@ -176,6 +176,18 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(GlobalTweetSearchSerializer, self).to_representation(instance)
         user = instance.user
+        request_user = self.context['request'].user.id
+        likes = Like.objects.filter(user=request_user)
+        liked_tweets = []
+        for item in likes:
+            temp = Tweet.objects.filter(id=item.tweet.id)
+            liked_tweets.append(temp)
+        for item in liked_tweets:
+            if instance == item[0]:
+                result['is_liked'] = True
+                break
+        else:
+            result['is_liked'] = False
         result['id'] = result.pop('user')
         result['profile_img'] = user.profile_img.url
         result['username'] = user.username
