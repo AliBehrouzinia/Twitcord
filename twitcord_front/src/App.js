@@ -6,16 +6,13 @@ import store from './redux/store.js';
 import LogIn from './Components/LogIn/LogIn.js';
 import SignUp from './Components/SignUp/SignUp.js';
 import HomePage from './Components/HomePage/HomePage.js';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import Search from './Components/Search/Search.js';
 import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './Components/EditProfile/EditProfile.js';
-import SideDrawer from './Components/HomePage/SideDrawer/SideDrawer.js';
-import Profile from './Components/profile/Profile.js';
-/* eslint-disable */
-
-
+import SideDrawer from './Components/SideDrawer/SideDrawer.js';
+import Profile from './Components/Profile/Profile.js';
 
 function App() {
   const windowHeight = window['innerHeight'];

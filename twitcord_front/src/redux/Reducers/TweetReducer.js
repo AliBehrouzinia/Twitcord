@@ -2,11 +2,6 @@
 import { ActionTypes } from '../Actions/actionTypes.js';
 
 const initialState = {
-  userGeneralInfo: {
-    userID: null,
-    userEmail: '',
-    userProfile: '',
-  },
   signUpInfo: {
     username: '',
     email: '',
@@ -117,19 +112,7 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
-
-    case ActionTypes.SET_USER_GENERAL_INFO: {
-      return {
-        ...state,
-        userGeneralInfo: {
-          ...state.userGeneralInfo,
-          userID: action.pk,
-          userEmail: action.email,
-          userProfile: action.profile_img,
-        },
-      };
-    }
-
+    
     case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
       return {
         ...state,
