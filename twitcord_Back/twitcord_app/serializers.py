@@ -35,11 +35,8 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
 class TweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
-        fields = '__all__'
-
-    def to_internal_value(self, data):
-        data['user'] = self.context['request'].user.id
-        return super().to_internal_value(data)
+        fields = ['id', 'content', 'create_date']
+        read_only_fields = ['id', 'create_date']
 
 
 class FollowingRequestSerializer(serializers.ModelSerializer):
