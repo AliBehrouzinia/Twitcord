@@ -216,3 +216,20 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
+
+
+class RoomMessageSerializer(serializers.ModelSerializer):
+    class UserRoomMessageDetailsSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = TwitcordUser
+            fields = ['id', 'username', 'email', 'first_name', 'last_name']
+
+    sender = UserRoomMessageDetailsSerializer(read_only=True)
+    is_sent_by_me = serializers.SerializerMethodField()
+
+    class Meta:
+        model = RoomMessage
+        fields = ['created_at', 'sender', 'content', 'is_sent_by_me']
+
+    def get_is_sent_by_me(self, obj):
+        return self.context['request'].user.id == obj.sender.id

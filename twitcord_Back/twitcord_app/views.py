@@ -247,3 +247,13 @@ class TweetsLikedListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['id']
         return models.Like.objects.filter(user=user_id)
+
+
+class RoomMessagesListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated & IsMemberOfRoom]
+    serializer_class = serializers.RoomMessageSerializer
+    pagination_class = paginations.RoomMessagesPagination
+
+    def get_queryset(self):
+        qs = models.RoomMessage.objects.filter(room_id=self.kwargs.get('room_id'))
+        return qs
