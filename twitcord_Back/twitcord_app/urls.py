@@ -6,8 +6,7 @@ from allauth.account.views import confirm_email
 
 urlpatterns = [
     path('profile/<int:id>/header/', views.ProfileDetailsView.as_view()),
-    path('tweets/', views.TweetsListCreateView.as_view()),
-    path('tweets/<int:id>/', views.TweetsListCreateView.as_view()),
+    path('users/<int:id>/tweets/', views.TweetsListCreateView.as_view()),
     re_path('accounts-rest/registration/account-confirm-email/(?P<key>.+)/', confirm_email,
             name='account_confirm_email'),
     path('followings/list/<int:id>/', views.ListOfFollowingsView.as_view()),
