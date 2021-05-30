@@ -1,4 +1,5 @@
-import {ActionTypes} from '../Actions/actionTypes.js';
+/* eslint-disable */
+import { ActionTypes } from '../Actions/actionTypes.js';
 
 const initialState = {
   userGeneralInfo: {
@@ -16,6 +17,9 @@ const initialState = {
     email: '',
     password: '',
   },
+  tweetInfo: [],
+  tweetText: '',
+  tweetCharCount: 0,
   userSearchResult: [],
   tweetSearchResult: [],
   profileInfo: {
@@ -28,12 +32,12 @@ const initialState = {
     website: '',
     isPublic: false,
     email: '',
-
+    followers_count: 0,
+    followings_count: 0,
   },
   sideDrawerEnable: true,
   tweetText: '',
   tweetCharCount: 0,
-  searchInput: '',
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -66,7 +70,13 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
+    case ActionTypes.SET_TWEET_LIST_INFO: {
+      return {
+        ...state,
+        tweetInfo: action.tweetInfo,
 
+      };
+    }
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
@@ -95,13 +105,15 @@ const tweetReducer = (state = initialState, action) => {
           ...state.profileInfo,
           bio: action.bio,
           birthday: action.birthday,
-          firstName: action.firstName,
-          lastName: action.lastName,
+          firstName: action.first_name,
+          lastName: action.last_name,
           website: action.website,
           username: action.username,
           isPublic: action.isPublic,
           email: action.email,
           date_joined: action.date_joined,
+          followers_count: action.followers_count,
+          followings_count: action.followings_count,
         },
       };
     }
@@ -122,13 +134,6 @@ const tweetReducer = (state = initialState, action) => {
       return {
         ...state,
         sideDrawerEnable: action.enable,
-      };
-    }
-
-    case ActionTypes.SET_SEARCH_INPUT: {
-      return {
-        ...state,
-        searchInput: action.input,
       };
     }
 

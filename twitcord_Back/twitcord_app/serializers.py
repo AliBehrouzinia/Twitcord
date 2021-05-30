@@ -24,22 +24,38 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
         result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
         result['followings_count'] = UserFollowing.objects.filter(user_id=instance.id).count()
         result['followers_count'] = UserFollowing.objects.filter(following_user_id=instance.id).count()
+        instance_user = instance.pk
+        request_user = self.context['request'].user
+        followings = UserFollowing.objects.filter(user_id=request_user.id)
+        requests = FollowRequest.objects.filter(request_from=request_user.id)
+        queryset1 = []
+        for item in followings:
+            queryset1.append(item.following_user.id)
+        queryset2 = []
+        for item in requests:
+            queryset2.append(item.request_to.id)
+        if instance_user == request_user.id:
+            result['status'] = "self"
+        elif instance_user in queryset2:
+            result['status'] = "pending"
+        elif instance_user in queryset1:
+            result['status'] = "following"
+        else:
+            result['status'] = "not following"
         return result
 
     class Meta:
         model = TwitcordUser
-        fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio', 'website', 'is_public')
+        fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined', 'first_name', 'last_name',
+                  'birth_date', 'bio', 'website', 'is_public')
         read_only_fields = ('email', )
 
 
 class TweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
-        fields = '__all__'
-
-    def to_internal_value(self, data):
-        data['user'] = self.context['request'].user.id
-        return super().to_internal_value(data)
+        fields = ['id', 'content', 'create_date']
+        read_only_fields = ['id', 'create_date']
 
 
 class FollowingRequestSerializer(serializers.ModelSerializer):
