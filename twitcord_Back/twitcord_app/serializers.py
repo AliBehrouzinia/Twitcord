@@ -62,18 +62,8 @@ class TweetSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(TweetSerializer, self).to_representation(instance)
-        request_user = self.context['request'].user.id
-        likes = Like.objects.filter(user=request_user)
-        liked_tweets = []
-        for item in likes:
-            temp = Tweet.objects.filter(id=item.tweet.id)
-            liked_tweets.append(temp)
-        for item in liked_tweets:
-            if instance == item[0]:
-                result['is_liked'] = True
-                break
-        else:
-            result['is_liked'] = False
+        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
+        result['is_liked'] = is_liked
         return result
 
 
