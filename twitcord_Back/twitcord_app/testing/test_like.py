@@ -5,6 +5,7 @@ from rest_framework.test import APITestCase
 from .. import models
 
 from ..models import Tweet, Like
+from rest_framework import serializers
 
 
 class LikeTest(APITestCase):
@@ -37,3 +38,33 @@ class LikeTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         self.assertEqual(len(response.data['results']), 1)
+
+        url = '/tweets/like/user/{}/'.format(self.user.id)
+        response = self.client.get(url, content_type='application/json')
+        self.maxDiff = None
+        data = {
+            "count": 1,
+            "next": None,
+            "previous": None,
+            "results":
+                {
+                    "id": 1,
+                    "tweet": {
+                        "id": 1,
+                        "is_reply": False,
+                        "content": "salam",
+                        "create_date": serializers.DateTimeField().to_representation(self.tweet.create_date),
+                        "parent": None,
+                        "retweet_from": None,
+                        "user": 28
+                    },
+                    "date": response.data['results'][0]['date'],
+                    "user": 28
+                }
+        }
+        result = response.data
+        result = dict(result)
+        result['results'] = dict(result['results'][0])
+        result['results']['tweet'] = dict(result['results']['tweet'])
+        self.assertEqual(result, data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
