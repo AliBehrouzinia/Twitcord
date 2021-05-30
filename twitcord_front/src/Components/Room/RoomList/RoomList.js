@@ -22,7 +22,7 @@ const RoomList = () => {
   const [options, setOptions] = useState([]);
   const [postButtonDisabled, setPostButtonDisabled] = useState(true);
   const [roomTitle, setRoomTitle] = useState('');
-  const [selectedOptionIds, setSelectedOptionIds] = useState('');
+  const [selectedOptionIds, setSelectedOptionIds] = useState([]);
   const optionIds = [];
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -35,7 +35,6 @@ const RoomList = () => {
           setRooms(rooms);
         })
         .catch((error) => {
-          console.log(error);
         });
 
     API.getFollowersList({id: userGeneralInfo.pk})
@@ -86,7 +85,6 @@ const RoomList = () => {
   };
 
   const handlePostClick = () => {
-    console.log(selectedOptionIds);
     const data = {
       owner: userGeneralInfo.pk,
       title: roomTitle,
@@ -96,6 +94,11 @@ const RoomList = () => {
     API.createRoom(data)
         .then((response) => {
           closeCreateRoomModal();
+          setRooms([...rooms, {
+            id: response.data.id,
+            title: response.data.title,
+            members: response.data.members,
+          }]);
         })
         .catch((error) => {
         });
@@ -115,7 +118,6 @@ const RoomList = () => {
     setSelectedOptionIds(selectedOptions.map((so) => so.value));
     setSelectedOption(selectedOptions);
   };
-
 
   const roomsList = rooms.map((room) => <div key={room.id}>
     <RoomItem title={room.title} membersCount={room.members.length}/>
