@@ -32,7 +32,7 @@ class SearchUserTest(APITestCase):
             "next": None,
             "previous": None,
             "results": {
-                "id": 31,
+                "id": 32,
                 "username": "test",
                 "first_name": None,
                 "last_name": None,
@@ -71,11 +71,12 @@ class SeachTweetTest(APITestCase):
             "previous": None,
             "results":
                 {
-                    "id": 30,
+                    "id": 31,
                     "is_reply": False,
                     "content": "Hi from there",
                     "create_date": response.data['results'][0]['create_date'],
                     "parent": None,
+                    "retweet_from": None,
                     "profile_img": "/profiles/defaults/user-profile-image.jpg",
                     "username": "test",
                     "first_name": None,
