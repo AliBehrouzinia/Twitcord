@@ -28,10 +28,7 @@ const SideDrawer = () => {
       localStorage.getItem(Constants.GENERAL_USER_INFO),
   );
 
-  let userId = null;
-  if (userGeneralInfo != null && userGeneralInfo.pk != null) {
-    userId = userGeneralInfo.pk;
-  }
+  const userId = userGeneralInfo?.pk;
 
   const navItems = [
     {id: 0, title: 'Home', route: '/homepage',
