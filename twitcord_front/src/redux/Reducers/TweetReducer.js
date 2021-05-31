@@ -1,4 +1,5 @@
-import {ActionTypes} from '../Actions/actionTypes.js';
+/* eslint-disable */
+import { ActionTypes } from '../Actions/actionTypes.js';
 
 const initialState = {
   userGeneralInfo: {
@@ -16,17 +17,27 @@ const initialState = {
     email: '',
     password: '',
   },
+  tweetInfo: [],
   tweetText: '',
   tweetCharCount: 0,
+  userSearchResult: [],
+  tweetSearchResult: [],
   profileInfo: {
+    username: '',
     bio: '',
+    date_joined: '',
     birthday: '',
     firstName: '',
     lastName: '',
     website: '',
-    username: '',
     isPublic: false,
+    email: '',
+    followers_count: 0,
+    followings_count: 0,
   },
+  sideDrawerEnable: true,
+  tweetText: '',
+  tweetCharCount: 0,
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -59,11 +70,31 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
+    case ActionTypes.SET_TWEET_LIST_INFO: {
+      return {
+        ...state,
+        tweetInfo: action.tweetInfo,
 
+      };
+    }
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
         isSnackbarOpen: action.isSnackbarOpen,
+      };
+    }
+
+    case ActionTypes.SET_USER_SEARCH_RESULT: {
+      return {
+        ...state,
+        userSearchResult: action.users,
+      };
+    }
+
+    case ActionTypes.SET_TWEET_SEARCH_RESULT: {
+      return {
+        ...state,
+        tweetSearchResult: action.tweets,
       };
     }
 
@@ -74,11 +105,15 @@ const tweetReducer = (state = initialState, action) => {
           ...state.profileInfo,
           bio: action.bio,
           birthday: action.birthday,
-          firstName: action.firstName,
-          lastName: action.lastName,
+          firstName: action.first_name,
+          lastName: action.last_name,
           website: action.website,
           username: action.username,
           isPublic: action.isPublic,
+          email: action.email,
+          date_joined: action.date_joined,
+          followers_count: action.followers_count,
+          followings_count: action.followings_count,
         },
       };
     }
@@ -94,7 +129,14 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
-    
+
+    case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
+      return {
+        ...state,
+        sideDrawerEnable: action.enable,
+      };
+    }
+
     default:
       return state;
   }

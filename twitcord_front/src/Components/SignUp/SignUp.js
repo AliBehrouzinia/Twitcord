@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo} from 'react';
 import {useSelector} from 'react-redux';
+import {Link, useHistory} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {useStore} from 'react-redux';
 import * as Actions from '../../redux/Actions/index.js';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {TextField} from 'formik-material-ui';
-import Link from '@material-ui/core/Link';
 import Container from '@material-ui/core/Container';
 import {Formik, Form, Field} from 'formik';
 import PropTypes from 'prop-types';
@@ -14,13 +14,29 @@ import * as API from '../../Utils/API/index';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import * as Constants from '../../Utils/Constants.js';
 import './SignUp.css';
+import logo from '../../assets/twitcord.png';
+/* eslint-disable */
+
 /* eslint-disable require-jsdoc */
 const SignUp = () => {
   const store = useStore();
+  const history = useHistory();
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const dispatch = useDispatch();
+
+  useMemo(
+    () => {
+        dispatch(
+          Actions.setSideDrawerEnable({
+            enable: false,
+          }),
+      );
+    },
+    []
+  );
+
   const handleSubmit = (values) => {
     dispatch(Actions.setSignUpInfo(values));
     API.signUp(store.getState().tweet.signUpInfo)
@@ -34,6 +50,7 @@ const SignUp = () => {
                 isSnackbarOpen: true,
               }),
           );
+          history.push('/login');
         })
         .catch((error) => {
           setSnackbarAlertMessage(
@@ -49,12 +66,13 @@ const SignUp = () => {
   };
   return (
     <div>
-      <Container component="main" maxWidth="xs">
+      <Container className="su-root" component="main" maxWidth="xs">
         {isSnackbarOpen && (<SnackbarAlert
           alertMessage={snackbarAlertMessage}
           severity={snackbarAlertSeverity}/>)}
         <CssBaseline />
-        <div>
+        <div className="su-content-container">
+          <img className="su-logo" src={logo} />
           <Formik
             initialValues={{
               username: '',
@@ -139,11 +157,9 @@ const SignUp = () => {
                 >
                     Sign Up
                 </Button>
-                <div className='log-in-redirection'>
-                  <Link href='login' variant="body2">
+                <Link to="/login" className='log-in-redirection'>
                 Already have an account? Sign in
-                  </Link>
-                </div>
+                </Link>
               </Form>
             )}
           </Formik>
