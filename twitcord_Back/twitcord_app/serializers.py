@@ -22,6 +22,7 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 class ProfileDetailsViewSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
+        result['id'] = instance.id
         result['followings_count'] = UserFollowing.objects.filter(user_id=instance.id).count()
         result['followers_count'] = UserFollowing.objects.filter(following_user_id=instance.id).count()
         instance_user = instance.pk
@@ -54,11 +55,14 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
 class TweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
-        fields = '__all__'
+        fields = ['id', 'content', 'create_date']
+        read_only_fields = ['id', 'create_date']
 
-    def to_internal_value(self, data):
-        data['user'] = self.context['request'].user.id
-        return super().to_internal_value(data)
+    def to_representation(self, instance):
+        result = super(TweetSerializer, self).to_representation(instance)
+        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
+        result['is_liked'] = is_liked
+        return result
 
 
 class FollowingRequestSerializer(serializers.ModelSerializer):
@@ -176,6 +180,8 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(GlobalTweetSearchSerializer, self).to_representation(instance)
         user = instance.user
+        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
+        result['is_liked'] = is_liked
         result['id'] = result.pop('user')
         result['profile_img'] = user.profile_img.url
         result['username'] = user.username
