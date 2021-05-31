@@ -11,14 +11,19 @@ export const PATCH_REQUEST_METHOD = 'PATCH';
 export const URL_POST_TWEET = '/tweets/';
 export const URL_SIGN_UP = '/rest-auth/registration/';
 export const URL_LOG_IN = '/rest-auth/login/';
+export const URL_TWEET_LIST = '/tweets/{id}/';
 export const URL_SEARCH_USER = '/search/user/';
 export const URL_SEARCH_TWEET = '/search/tweet/';
 export const URL_PROFILE_INFO = '/profile/{id}/header/';
+<<<<<<< HEAD
 export const URL_USER_GENERAL_INFO= '/rest-auth/user/';
 export const URL_CREATE_ROOM= '/create/rooms/';
 export const URL_FOLLOWINGS_LIST= '/followings/list/{id}/';
 export const URL_FOLLOWERS_LIST= '/followers/list/{id}/';
 export const URL_ROOMS_LIST= '/user/{id}/rooms/';
+=======
+export const URL_USER_GENERAL_INFO = '/rest-auth/user/';
+>>>>>>> 483103fd1c246e093839262d67bd38a1ad7fb592
 
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;
@@ -27,7 +32,7 @@ export const LOG_IN_VERIFICATION_ERROR_MESSAGE = 'Verify your email or checkout 
 export const LOG_IN_SUCCESS_MESSAGE = 'You are logged in';
 export const TWEET_SUCCESS_MESSAGE = 'posted successfuly!';
 export const TWEET_FAILURE_MESSAGE = 'post failed!';
-export const GET_USER_INFO_FAILURE= 'Could not get your info, try again later.';
+export const GET_USER_INFO_FAILURE = 'Could not get your info, try again later.';
 export const SIGN_UP_EMAIL_ERROR_MESSAGE = 'A user is already registered with this e-mail or username';
 export const SIGN_UP_VERIFICATION_SUCCESS_MESSAGE = 'Verification email is sent';
 export const EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE = 'Profile updated successfuly';
