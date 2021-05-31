@@ -245,8 +245,12 @@ class ShowReplySerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(ShowReplySerializer, self).to_representation(instance)
-        result['parent_id'] = instance.parent.id
-        parent_set = Tweet.objects.filter(id=instance.parent.id)
+        parent_set = []
+        if instance.parent is None:
+            result['parent_id'] = None
+        else:
+            result['parent_id'] = instance.parent.id
+            parent_set = Tweet.objects.filter(id=instance.parent.id)
         request_user = self.context['request'].user.id
         likes = Like.objects.filter(user=request_user)
         liked_tweets = []
