@@ -31,12 +31,15 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class TweetsListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [IsAuthenticated, UsersTweetsPermission]
     serializer_class = serializers.TweetSerializer
+    pagination_class = None
 
     def get_queryset(self):
-        user_id = self.kwargs.get('id')
-        return models.Tweet.objects.filter(user_id=user_id)
+        return models.Tweet.objects.filter(user_id=self.kwargs.get('id'))
+
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.kwargs.get('id'))
 
 
 class ActionOnFollowRequestType(enum.Enum):

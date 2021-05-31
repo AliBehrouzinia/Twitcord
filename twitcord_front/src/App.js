@@ -1,22 +1,18 @@
-/* eslint-disable */
 import React from 'react';
-import ProfileTweetlist from './Components/ProfileTweetlist/ProfileTweetlist.js';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 import store from './redux/store.js';
+import {BrowserRouter, Route, Redirect} from 'react-router-dom';
 import LogIn from './Components/LogIn/LogIn.js';
 import SignUp from './Components/SignUp/SignUp.js';
 import HomePage from './Components/HomePage/HomePage.js';
-import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Search from './Components/Search/Search.js';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './Components/EditProfile/EditProfile.js';
 import SideDrawer from './Components/HomePage/SideDrawer/SideDrawer.js';
-import Profile from './Components/profile/Profile.js';
-/* eslint-disable */
+import Profile from './Components/Profile/Profile.js';
 
-
-
+// eslint-disable-next-line require-jsdoc
 function App() {
   const windowHeight = window['innerHeight'];
   const sideDrawerEnable = useSelector((state) => state).tweet.sideDrawerEnable;
@@ -33,7 +29,6 @@ function App() {
               <div>
                 <Route exact path="/" render={() =>
                   (<Redirect to="/homepage" />)} />
-                <Route exact path="/tweets" component={ProfileTweetlist} />
                 <Route exact path="/search" component={Search} />
                 <Route exact path="/homepage" component={HomePage} />
                 <Route exact path="/login" component={LogIn} />
@@ -47,7 +42,7 @@ function App() {
             item
             xs={12}
             lg={3}
-            style={{ height: windowHeight }}
+            style={{height: windowHeight}}
             className="hp-side-right">
           </Grid>}
         </Grid>
