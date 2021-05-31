@@ -12,13 +12,7 @@ import { useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './Components/EditProfile/EditProfile.js';
 import SideDrawer from './Components/HomePage/SideDrawer/SideDrawer.js';
-<<<<<<< HEAD
 import RoomList from './Components/Room/RoomList/RoomList';
-=======
-import Profile from './Components/profile/Profile.js';
-/* eslint-disable */
-
->>>>>>> 483103fd1c246e093839262d67bd38a1ad7fb592
 
 
 function App() {
