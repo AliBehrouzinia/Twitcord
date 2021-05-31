@@ -1,5 +1,4 @@
-/* eslint-disable */
-import { ActionTypes } from '../Actions/actionTypes.js';
+import {ActionTypes} from '../Actions/actionTypes.js';
 
 const initialState = {
   signUpInfo: {
@@ -12,9 +11,6 @@ const initialState = {
     email: '',
     password: '',
   },
-  tweetInfo: [],
-  tweetText: '',
-  tweetCharCount: 0,
   userSearchResult: [],
   tweetSearchResult: [],
   profileInfo: {
@@ -33,6 +29,7 @@ const initialState = {
   sideDrawerEnable: true,
   tweetText: '',
   tweetCharCount: 0,
+  searchInput: '',
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -65,13 +62,14 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
-    case ActionTypes.SET_TWEET_LIST_INFO: {
+
+    case ActionTypes.SET_SEARCH_INPUT: {
       return {
         ...state,
-        tweetInfo: action.tweetInfo,
-
+        searchInput: action.input,
       };
     }
+
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
