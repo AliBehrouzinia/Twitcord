@@ -11,7 +11,6 @@ export const PATCH_REQUEST_METHOD = 'PATCH';
 export const URL_POST_TWEET = '/tweets/';
 export const URL_SIGN_UP = '/rest-auth/registration/';
 export const URL_LOG_IN = '/rest-auth/login/';
-export const URL_TWEET_LIST = '/tweets/{id}/';
 export const URL_SEARCH_USER = '/search/user/';
 export const URL_SEARCH_TWEET = '/search/tweet/';
 export const URL_PROFILE_INFO = '/profile/{id}/header/';
