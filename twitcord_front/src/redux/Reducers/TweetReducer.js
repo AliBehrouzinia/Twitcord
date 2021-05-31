@@ -34,6 +34,7 @@ const initialState = {
     email: '',
     followers_count: 0,
     followings_count: 0,
+    status: '',
   },
   followcount: {
     pk: 0,
@@ -129,6 +130,7 @@ const tweetReducer = (state = initialState, action) => {
           date_joined: action.date_joined,
           followers_count: action.followers_count,
           followings_count: action.followings_count,
+          status: action.status,
         },
       };
     }
@@ -144,7 +146,12 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
-
+    case ActionTypes.SET_SEARCH_INPUT: {
+      return {
+        ...state,
+        searchInput: action.input,
+      };
+    }
     case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
       return {
         ...state,

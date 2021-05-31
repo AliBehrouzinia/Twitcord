@@ -73,6 +73,39 @@ const ProfileUserinfo = () => {
       {Value === 1 ?( <Followers /> ): Value === 2 ?( <Followings />): ( <Requests/>)}
     </div>
   );
+  function handleunrequest(id) {
+    API.deleteFollowRequest({id: id})
+        .then((response) => {
+          console.log(situation);
+          setSituation('unrequest');
+          console.log(ituation);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }
+  function handleunfollow(id) {
+    API.unfollow({id: id})
+        .then((response) => {
+          console.log(Situation);
+          setSituation('unfollow');
+          console.log(Situation);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }
+  function handlefollow(id) {
+    API.follow({'request_to': id})
+        .then((response) => {
+          console.log(Situation);
+          setSituation('follow');
+          console.log(Situation);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }
   useEffect(() => {
     API.getProfileInfo({id: params.id})
         .then((response) => {
@@ -164,7 +197,7 @@ const ProfileUserinfo = () => {
             </Modal>
             </Grid>
 
-            {profileInfo.is_public === false ?(
+            {profileInfo.is_public === false && userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email?(
             <Grid item>
 
                 <Typography type="requests" className="requests" onClick={handlerequests}>
@@ -193,7 +226,34 @@ const ProfileUserinfo = () => {
             {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
 						<Button variant="outlined" color="primary" className="edit-button" onClick={handleEditProfileClick}>edit</Button>
 					) : (
-						<Button variant="outlined" color="primary" className="edit-button">follow</Button>
+            profileInfo.status === 'Follow' ?(
+              <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
+                <Button
+                  className="usi-follow-button"
+                  color="primary"
+                  onClick={() => handlefollow(props.id)}
+                  variant="outlined">
+                     follow
+                </Button>
+              </Grid>) : profileInfo.status === 'following' ? (
+              <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
+                <Button
+                  className="usi-follow-button"
+                  color="primary"
+                  onClick={() => handleunfollow(props.id)}
+                  variant="outlined">
+                     unfollow
+                </Button>
+              </Grid>) : profileInfo.status === 'pending' ?(
+                  <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
+                    <Button
+                      className="usi-follow-button"
+                      color="primary"
+                      onClick={() => handleunrequest(props.id)}
+                      variant="outlined">
+                     pending
+                    </Button>
+                  </Grid>) : (<button/>)
 					)}
           </Grid>
         </Grid>
