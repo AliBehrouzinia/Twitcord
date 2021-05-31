@@ -55,7 +55,9 @@ const SideDrawer = () => {
   useMemo(
       () => {
         if (userGeneralInfo == null || userGeneralInfo.pk == null) {
-          history.push('/login');
+          setTimeout(() => {
+            history.push('/login');
+          }, 0);
         }
       },
       [],

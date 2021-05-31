@@ -110,7 +110,7 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
-    
+
     case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
       return {
         ...state,
