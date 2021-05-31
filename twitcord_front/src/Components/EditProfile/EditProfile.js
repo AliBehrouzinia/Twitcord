@@ -28,6 +28,8 @@ const EditProfile = () => {
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   let photoInput;
   let coverInput;
+  let coverPath = null;
+  let photoPath = null;
 
   let profileId = -1;
   const userGeneralInfo = JSON.parse(
@@ -89,10 +91,12 @@ const EditProfile = () => {
       website: data.website,
       username: data.username,
       isPublic: data.is_public,
-      has_profile: data.has_profile,
-      has_cover: data.has_cover,
+      has_header_img: false,
+      has_profile_img: false,
       profile_img: data.profile_img,
+      header_img: data.header_img,
       profile_img_upload_details: data.profile_img_upload_details,
+      header_img_upload_details: data.header_img_upload_details,
     }));
   };
 
@@ -107,7 +111,22 @@ const EditProfile = () => {
       data.birthday = profileInfo.birthday;
     }
 
+    let hasCover = profileInfo.has_header_img;
+    let hasPhoto = profileInfo.has_profile_img;
+
     const isDataChanged = checkDataChanged(profileInfo, data);
+
+    if (coverPath !== null) {
+      uploadPhoto(true);
+      hasCover = true;
+    }
+
+    if (photoPath !== null) {
+      uploadPhoto(false);
+      hasPhoto = true;
+    }
+
+    console.log(hasCover + ' ' + hasPhoto);
 
     if (isDataChanged) {
       const dataToSend = {
@@ -118,11 +137,11 @@ const EditProfile = () => {
         website: data.website,
         username: data.username,
         is_public: data.isPublic,
-        has_profile: data.has_profile,
-        has_cover: data.has_cover,
-        profile_img: data.profile_img,
-        profile_img_upload_details: data.profile_img_upload_details,
+        has_header_img: hasCover,
+        has_profile_img: hasPhoto,
       };
+
+      console.log(dataToSend);
 
       API.updateProfileInfo(profileId, dataToSend)
           .then((response) => {
@@ -183,6 +202,14 @@ const EditProfile = () => {
       return true;
     }
 
+    if (coverPath !== null) {
+      return true;
+    }
+
+    if (photoPath !== null) {
+      return true;
+    }
+
     return false;
   };
 
@@ -195,17 +222,68 @@ const EditProfile = () => {
     coverInput.click();
   };
 
-  const uploadPhoto = (file, path) => {
-    console.log( profileInfo.profile_img_upload_details.object_name+
-      ' ' + profileInfo.profile_img_upload_details.bucket_name);
-    minioClient.putObject(profileInfo.profile_img_upload_details.bucket_name,
-        profileInfo.profile_img_upload_details.object_name,
-        path,
-        {},
-        function(err, etag) {
-          if (err) return console.log(err);
-          console.log('File uploaded successfully.');
+  const setProfilePhotoDetails = (path)=>{
+    photoPath = path;
+  };
+
+  const setCoverDetails = (path)=>{
+    coverPath = path;
+  };
+
+  const uploadPhoto = (isCover) => {
+    let path;
+    let bucketName;
+    let objectName;
+
+    if (isCover) {
+      path = coverPath;
+      bucketName = profileInfo.header_img_upload_details.bucket_name;
+      objectName = profileInfo.header_img_upload_details.object_name;
+    } else {
+      path = photoPath;
+      bucketName = profileInfo.profile_img_upload_details.bucket_name;
+      objectName = profileInfo.profile_img_upload_details.object_name;
+    }
+
+    console.log(path);
+    console.log(typeof(path));
+
+    getBase64(path)
+        .then((result) => {
+          const fileBuffer = Buffer.from(result, 'base64');
+          console.log(fileBuffer);
+          minioClient.putObject(
+              bucketName,
+              objectName,
+              fileBuffer,
+              function(err, etag) {
+                if (err) return console.log(err);
+                console.log(etag);
+              });
+        })
+        .catch((err) => {
+          console.log(err);
         });
+  };
+
+  const getBase64 = (file) => {
+    return new Promise((resolve) => {
+      let fileInfo;
+      let baseURL = '';
+      // Make new FileReader
+      const reader = new FileReader();
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(file);
+
+      // on reader load somthing...
+      reader.onload = () => {
+        // Make a fileInfo Object
+        baseURL = reader.result;
+        resolve(baseURL);
+      };
+      console.log(fileInfo);
+    });
   };
 
   useEffect(() => {
@@ -219,34 +297,36 @@ const EditProfile = () => {
   return (
     <Grid container direction="column">
       <Grid item className="ep-grid-item" xs>
-        <img src={profileInfo.profile_img} className="ep-profile_cover" />
+        <img src={profileInfo.header_img} className="ep-profile_cover" />
         <Avatar src={profileInfo.profile_img} className="ep-avatar" />
         <Avatar
           onClick={handleUploadProfilePhotoClick}
           className="ep-edit-photo-icon">
           <AddAPhotoOutlinedIcon />
         </Avatar>
-        <AddAPhotoIcon className="ep-edit-cover-icon"/>
-        { profileInfo.has_cover &&
+        <AddAPhotoIcon
+          onClick={handleUploadProfileCoverClick}
+          className="ep-edit-cover-icon"/>
+        { profileInfo.has_header_img &&
         <HighlightOffIcon className="ep-clear-cover-icon"/>
         }
-        { profileInfo.has_profile && <Avatar
-          onClick={handleUploadProfileCoverClick}
+        { profileInfo.has_profile_img && <Avatar
           className="ep-clear-photo-icon">
           <HighlightOffIcon />
         </Avatar> }
         <input
           type="file"
           id="file"
-          accept="image/*"
-          onChange={(e) => uploadPhoto(e.target.files[0], e.target.value)}
+          accept=".jpg"
+          onChange={(e) =>
+            setProfilePhotoDetails(e.target.files[0])}
           ref={(ref) => photoInput = ref}
           style={{display: 'none'}}/>
         <input
           type="file"
           id="file"
           accept="image/*"
-          onChange={(e) => uploadPhoto(e.target.files[0], e.target.value)}
+          onChange={(e) => setCoverDetails(e.target.files[0])}
           ref={(ref) => coverInput = ref}
           style={{display: 'none'}}/>
       </Grid>

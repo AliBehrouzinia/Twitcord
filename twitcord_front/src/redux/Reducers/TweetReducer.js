@@ -28,6 +28,11 @@ const initialState = {
     website: '',
     isPublic: false,
     email: '',
+    has_header_img: false,
+    has_profile_img: false,
+    header_img: '',
+    profile_img_upload_details: '',
+    header_img_upload_details: '',
 
   },
   sideDrawerEnable: true,
@@ -101,11 +106,13 @@ const tweetReducer = (state = initialState, action) => {
           username: action.username,
           isPublic: action.isPublic,
           email: action.email,
-          has_profile: data.has_profile,
-          has_cover: data.has_cover,
+          has_header_img: false,
+          has_profile_img: false,
           date_joined: action.date_joined,
           profile_img: action.profile_img,
+          header_img: action.header_img,
           profile_img_upload_details: action.profile_img_upload_details,
+          header_img_upload_details: action.header_img_upload_details,
         },
       };
     }
