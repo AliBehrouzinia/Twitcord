@@ -16,10 +16,13 @@ import FormGroup from '@material-ui/core/FormGroup';
 import * as Constants from '../../Utils/Constants.js';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
+<<<<<<< HEAD
 import AddAPhotoOutlinedIcon from '@material-ui/icons/AddAPhotoOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import minioClient from '../../Utils/Minio';
+=======
+>>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
 
 const EditProfile = () => {
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
@@ -67,10 +70,8 @@ const EditProfile = () => {
       setSnackbarAlertMessage,
       setSnackbarAlertSeverity,
   ) => {
-    setSnackbarAlertMessage(
-        message);
-    setSnackbarAlertSeverity(
-        severity);
+    setSnackbarAlertMessage(message);
+    setSnackbarAlertSeverity(severity);
     dispatch(
         Actions.setSnackBarState({
           isSnackbarOpen: true,
@@ -83,6 +84,7 @@ const EditProfile = () => {
   };
 
   const saveProfileInfo = (dispatch, data) => {
+<<<<<<< HEAD
     dispatch(Actions.setProfileInfo({
       bio: data.bio,
       birthday: data.birth_date,
@@ -98,6 +100,19 @@ const EditProfile = () => {
       profile_img_upload_details: data.profile_img_upload_details,
       header_img_upload_details: data.header_img_upload_details,
     }));
+=======
+    dispatch(
+        Actions.setProfileInfo({
+          bio: data.bio,
+          birthday: data.birth_date,
+          firstName: data.first_name,
+          lastName: data.last_name,
+          website: data.website,
+          username: data.username,
+          isPublic: data.is_public,
+        }),
+    );
+>>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
   };
 
   const onSubmitClicked = (
@@ -107,7 +122,7 @@ const EditProfile = () => {
       setSnackbarAlertMessage,
       setSnackbarAlertSeverity,
   ) => {
-    if (typeof(data.birthday) === 'number') {
+    if (typeof data.birthday === 'number') {
       data.birthday = profileInfo.birthday;
     }
 
@@ -153,7 +168,8 @@ const EditProfile = () => {
                 setSnackbarAlertMessage,
                 setSnackbarAlertSeverity,
             );
-          }).catch((error) => {
+          })
+          .catch((error) => {
             showSnackbar(
                 Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
                 Constants.SNACKBAR_ERROR_SEVERITY,
@@ -334,9 +350,12 @@ const EditProfile = () => {
       <Grid container>
         <Grid item xs>
           <div>
-            {isSnackbarOpen && (<SnackbarAlert
-              alertMessage={snackbarAlertMessage}
-              severity={snackbarAlertSeverity}/>)}
+            {isSnackbarOpen && (
+              <SnackbarAlert
+                alertMessage={snackbarAlertMessage}
+                severity={snackbarAlertSeverity}
+              />
+            )}
             <CssBaseline />
             <Formik
               enableReinitialize
@@ -361,11 +380,11 @@ const EditProfile = () => {
 
                 if (
                   values.website &&
-                !values.website.match(
-                    '^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9]'+
-                    '[-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#'+
-                    '\\?&/=%]*)?$',
-                )
+                  !values.website.match(
+                      '^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9]' +
+                      '[-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#' +
+                      '\\?&/=%]*)?$',
+                  )
                 ) {
                   errors.website = 'Invalid Url';
                 }
@@ -453,7 +472,7 @@ const EditProfile = () => {
                       disabled={isSubmitting}
                       onClick={submitForm}
                     >
-                    Submit
+                      Submit
                     </Button>
                   </Form>
                 </MuiPickersUtilsProvider>

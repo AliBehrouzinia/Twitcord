@@ -1,20 +1,24 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import ProfileUserinfo from './ProfileUserinfo';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import {mount, configure} from 'enzyme';
-import {Provider} from 'react-redux';
+import { mount, configure } from 'enzyme';
+import { Provider } from 'react-redux';
 import store from '../../redux/store';
-import Button from '@material-ui/core/Button';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import tweetReducer from '../../redux/Reducers/TweetReducer';
 import * as Actions from '../../redux/Actions/index';
+import Grid from '@material-ui/core/Grid';
 
-
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe('ProfileUserinfo', () => {
   it('should renders without crashing', () => {
+<<<<<<< HEAD
     const wrapper = mount( <Provider store={store}><ProfileUserinfo /></Provider>);
+=======
+    const wrapper = mount( <Provider store={store}>
+      <ProfileUserinfo /></Provider>);
+>>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
   });
 
 

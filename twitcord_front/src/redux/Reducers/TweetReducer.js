@@ -1,11 +1,6 @@
 import {ActionTypes} from '../Actions/actionTypes.js';
 
 const initialState = {
-  userGeneralInfo: {
-    userID: null,
-    userEmail: '',
-    userProfile: '',
-  },
   signUpInfo: {
     username: '',
     email: '',
@@ -28,12 +23,17 @@ const initialState = {
     website: '',
     isPublic: false,
     email: '',
+<<<<<<< HEAD
     has_header_img: false,
     has_profile_img: false,
     header_img: '',
     profile_img_upload_details: '',
     header_img_upload_details: '',
 
+=======
+    followers_count: 0,
+    followings_count: 0,
+>>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
   },
   sideDrawerEnable: true,
   tweetText: '',
@@ -72,6 +72,13 @@ const tweetReducer = (state = initialState, action) => {
         tweetCharCount: action.tweetText.length,
       };
 
+    case ActionTypes.SET_SEARCH_INPUT: {
+      return {
+        ...state,
+        searchInput: action.input,
+      };
+    }
+
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
@@ -100,8 +107,8 @@ const tweetReducer = (state = initialState, action) => {
           ...state.profileInfo,
           bio: action.bio,
           birthday: action.birthday,
-          firstName: action.firstName,
-          lastName: action.lastName,
+          firstName: action.first_name,
+          lastName: action.last_name,
           website: action.website,
           username: action.username,
           isPublic: action.isPublic,
@@ -109,6 +116,7 @@ const tweetReducer = (state = initialState, action) => {
           has_header_img: false,
           has_profile_img: false,
           date_joined: action.date_joined,
+<<<<<<< HEAD
           profile_img: action.profile_img,
           header_img: action.header_img,
           profile_img_upload_details: action.profile_img_upload_details,
@@ -125,6 +133,10 @@ const tweetReducer = (state = initialState, action) => {
           userID: action.pk,
           userEmail: action.email,
           userProfile: action.profile_img,
+=======
+          followers_count: action.followers_count,
+          followings_count: action.followings_count,
+>>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
         },
       };
     }
@@ -133,13 +145,6 @@ const tweetReducer = (state = initialState, action) => {
       return {
         ...state,
         sideDrawerEnable: action.enable,
-      };
-    }
-
-    case ActionTypes.SET_SEARCH_INPUT: {
-      return {
-        ...state,
-        searchInput: action.input,
       };
     }
 

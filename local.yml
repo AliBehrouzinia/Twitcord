@@ -54,6 +54,7 @@ services:
         condition: on-failure
     stdin_open: true
 
+<<<<<<< HEAD
   minio:
     image: "minio/minio"
     command: server /storage
@@ -65,6 +66,12 @@ services:
       MINIO_ROOT_PASSWORD: minio_pass
     volumes:
       - local_storage_minio:/storage
+=======
+  redis:
+    image: redis:5
+    container_name: twitcord_redis
+    command: --port 6380
+>>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
 
 volumes:
   twitcord:

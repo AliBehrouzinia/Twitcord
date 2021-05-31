@@ -25,5 +25,10 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('', include('twitcord_app.urls')),
+<<<<<<< HEAD
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+=======
+    path('chat/', include('chat.urls')),
+]
+>>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd

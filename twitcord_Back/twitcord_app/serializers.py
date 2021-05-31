@@ -27,10 +27,29 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
         result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
         result['followings_count'] = UserFollowing.objects.filter(user_id=instance.id).count()
         result['followers_count'] = UserFollowing.objects.filter(following_user_id=instance.id).count()
+        instance_user = instance.pk
+        request_user = self.context['request'].user
+        followings = UserFollowing.objects.filter(user_id=request_user.id)
+        requests = FollowRequest.objects.filter(request_from=request_user.id)
+        queryset1 = []
+        for item in followings:
+            queryset1.append(item.following_user.id)
+        queryset2 = []
+        for item in requests:
+            queryset2.append(item.request_to.id)
+        if instance_user == request_user.id:
+            result['status'] = "self"
+        elif instance_user in queryset2:
+            result['status'] = "pending"
+        elif instance_user in queryset1:
+            result['status'] = "following"
+        else:
+            result['status'] = "not following"
         return result
 
     class Meta:
         model = TwitcordUser
+<<<<<<< HEAD
         fields = ('email', 'username', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio',
                   'website', 'is_public', 'has_profile_img', 'profile_img', 'profile_img_upload_details',
                   'has_header_img', 'header_img', 'header_img_upload_details')
@@ -48,16 +67,24 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
             return obj.header_img_upload_details
         else:
             return None
+=======
+        fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined', 'first_name', 'last_name',
+                  'birth_date', 'bio', 'website', 'is_public')
+        read_only_fields = ('email', )
+>>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
 
 
 class TweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
-        fields = '__all__'
+        fields = ['id', 'content', 'create_date']
+        read_only_fields = ['id', 'create_date']
 
-    def to_internal_value(self, data):
-        data['user'] = self.context['request'].user.id
-        return super().to_internal_value(data)
+    def to_representation(self, instance):
+        result = super(TweetSerializer, self).to_representation(instance)
+        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
+        result['is_liked'] = is_liked
+        return result
 
 
 class FollowingRequestSerializer(serializers.ModelSerializer):
@@ -172,6 +199,8 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(GlobalTweetSearchSerializer, self).to_representation(instance)
         user = instance.user
+        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
+        result['is_liked'] = is_liked
         result['id'] = result.pop('user')
         result['username'] = user.username
         result['first_name'] = user.first_name
