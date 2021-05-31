@@ -5,19 +5,11 @@ import {BrowserRouter, Route, Redirect} from 'react-router-dom';
 import LogIn from './Components/LogIn/LogIn.js';
 import SignUp from './Components/SignUp/SignUp.js';
 import HomePage from './Components/HomePage/HomePage.js';
-<<<<<<< HEAD
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
-=======
->>>>>>> f24981b663afbbef1566f3763bf4eed352b96a71
 import Search from './Components/Search/Search.js';
 import {useSelector} from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './Components/EditProfile/EditProfile.js';
-<<<<<<< HEAD
 import SideDrawer from './Components/SideDrawer/SideDrawer.js';
-=======
-import SideDrawer from './Components/HomePage/SideDrawer/SideDrawer.js';
->>>>>>> f24981b663afbbef1566f3763bf4eed352b96a71
 import Profile from './Components/Profile/Profile.js';
 
 // eslint-disable-next-line require-jsdoc
