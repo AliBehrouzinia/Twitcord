@@ -22,6 +22,7 @@ class CustomUserDetailsSerializer(serializers.ModelSerializer):
 class ProfileDetailsViewSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
+        result['id'] = instance.id
         result['followings_count'] = UserFollowing.objects.filter(user_id=instance.id).count()
         result['followers_count'] = UserFollowing.objects.filter(following_user_id=instance.id).count()
         instance_user = instance.pk
