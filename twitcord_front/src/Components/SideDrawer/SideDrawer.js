@@ -28,7 +28,6 @@ const SideDrawer = () => {
       localStorage.getItem(Constants.GENERAL_USER_INFO),
   );
 
-  console.log(userGeneralInfo);
   let userId = null;
   if (userGeneralInfo != null && userGeneralInfo.pk != null) {
     userId = userGeneralInfo.pk;
