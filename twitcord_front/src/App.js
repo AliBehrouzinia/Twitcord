@@ -9,7 +9,7 @@ import Search from './Components/Search/Search.js';
 import {useSelector} from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import EditProfile from './Components/EditProfile/EditProfile.js';
-import SideDrawer from './Components/HomePage/SideDrawer/SideDrawer.js';
+import SideDrawer from './Components/SideDrawer/SideDrawer.js';
 import Profile from './Components/Profile/Profile.js';
 
 // eslint-disable-next-line require-jsdoc
