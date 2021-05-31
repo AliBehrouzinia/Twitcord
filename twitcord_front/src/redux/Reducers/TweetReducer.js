@@ -1,11 +1,6 @@
 import {ActionTypes} from '../Actions/actionTypes.js';
 
 const initialState = {
-  userGeneralInfo: {
-    userID: null,
-    userEmail: '',
-    userProfile: '',
-  },
   signUpInfo: {
     username: '',
     email: '',
@@ -112,18 +107,6 @@ const tweetReducer = (state = initialState, action) => {
           date_joined: action.date_joined,
           followers_count: action.followers_count,
           followings_count: action.followings_count,
-        },
-      };
-    }
-
-    case ActionTypes.SET_USER_GENERAL_INFO: {
-      return {
-        ...state,
-        userGeneralInfo: {
-          ...state.userGeneralInfo,
-          userID: action.pk,
-          userEmail: action.email,
-          userProfile: action.profile_img,
         },
       };
     }
