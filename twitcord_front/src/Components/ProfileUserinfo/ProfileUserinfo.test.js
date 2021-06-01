@@ -2,19 +2,19 @@
 import React from 'react';
 import ProfileUserinfo from './ProfileUserinfo';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
-import { mount, configure } from 'enzyme';
-import { Provider } from 'react-redux';
+import {mount, configure} from 'enzyme';
+import {Provider} from 'react-redux';
 import store from '../../redux/store';
 import tweetReducer from '../../redux/Reducers/TweetReducer';
 import * as Actions from '../../redux/Actions/index';
-import Grid from '@material-ui/core/Grid';
 
-configure({ adapter: new Adapter() });
+configure({adapter: new Adapter()});
 
 describe('ProfileUserinfo', () => {
   it('should renders without crashing', () => {
     const wrapper = mount( <Provider store={store}>
-      <ProfileUserinfo /></Provider>);
+      <ProfileUserinfo />
+    </Provider>);
   });
 
 

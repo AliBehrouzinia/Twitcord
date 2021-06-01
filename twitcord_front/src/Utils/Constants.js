@@ -6,6 +6,7 @@ export const BASE_URL = 'http://127.0.0.1:8000';
 export const POST_REQUEST_METHOD = 'POST';
 export const GET_REQUEST_METHOD = 'GET';
 export const PATCH_REQUEST_METHOD = 'PATCH';
+export const PUT_REQUEST_METHOD = 'PUT';
 
 // Urls
 export const URL_TWEET = '/tweets/';
@@ -31,6 +32,8 @@ export const EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE = 'Profile updated succ
 export const EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE = 'Please change at least one field to update!';
 export const EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE = 'Profile update failed!';
 export const EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE = 'Profile info fetch failed!';
+export const COVER_CLEARED = 'Cover cleared. Press submit to update profile';
+export const PHOTO_CLEARED = 'Photo cleared. Press submit to update profile';
 
 export const SNACKBAR_ERROR_SEVERITY = 'error';
 export const SNACKBAR_SUCCESS_SEVERITY = 'success';
