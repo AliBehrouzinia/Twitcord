@@ -244,15 +244,15 @@ class RetweetSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         data['user'] = self.context['request'].user.id
-        data['retweet_from_id'] = self.context['retweet_from']
+        data['retweet_from'] = self.context['retweet_from']
         return super().to_internal_value(data)
 
     def to_representation(self, instance):
         result = super(RetweetSerializer, self).to_representation(instance)
-        result['tweet_id'] = result.pop('retweet_from')
-        source_tweet = get_object_or_404(Tweet, id=result['tweet_id'])
+        result['source_tweet_id'] = result.pop('retweet_from')
+        source_tweet = get_object_or_404(Tweet, id=result['source_tweet_id'])
         result['source_tweet_user'] = source_tweet.user.id
-        result['source_tweet_create_date'] = source_tweet.create_date
+        result['source_tweet_create_date'] = serializers.DateTimeField().to_representation(source_tweet.create_date)
         result['source_tweet_content'] = source_tweet.content
         return result
 
