@@ -27,19 +27,14 @@
   outline: none;
 }
 
-.bottom-bar {
-  justify-content: space-between;
-}
-
-.bottom-bar .clear {
-  float: left;
-  font-size: x-large;
-}
-
 .tweet-box-button {
   width: 100%;
   margin-top: 10px !important;
   box-shadow: none !important;
   float: right;
+}
+
+.p-10 {
+  padding: 10px !important; 
 }
 

@@ -37,6 +37,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
+    # chat app
+    'channels',
+    'chat',
+
     # default
     'django.contrib.admin',
     'django.contrib.auth',
@@ -58,7 +62,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'rest_auth',
-    
+
     # my apps
     'twitcord_app',
 ]
@@ -187,6 +191,7 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://localhost:3000/login'
 
+<<<<<<< HEAD
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -216,3 +221,17 @@ minio_client = Minio(
     secret_key=AWS_SECRET_ACCESS_KEY,
     secure=AWS_S3_USE_SSL
 )
+=======
+# Django Channels
+# https://channels.readthedocs.io/en/stable/installation.html
+
+ASGI_APPLICATION = "twitcord_Back.asgi.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('twitcord_redis', 6380)],
+        },
+    },
+}
+>>>>>>> 1a5d643ba6b9856222ba511f102fc7a673137778
