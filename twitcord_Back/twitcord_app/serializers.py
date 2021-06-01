@@ -49,7 +49,6 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TwitcordUser
-<<<<<<< HEAD
         fields = ('email', 'username', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio',
                   'website', 'is_public', 'has_profile_img', 'profile_img', 'profile_img_upload_details',
                   'has_header_img', 'header_img', 'header_img_upload_details')
@@ -67,11 +66,6 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
             return obj.header_img_upload_details
         else:
             return None
-=======
-        fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined', 'first_name', 'last_name',
-                  'birth_date', 'bio', 'website', 'is_public')
-        read_only_fields = ('email', )
->>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
 
 
 class TweetSerializer(serializers.ModelSerializer):
