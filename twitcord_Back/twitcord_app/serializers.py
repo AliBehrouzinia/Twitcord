@@ -15,11 +15,14 @@ class UserSerializer(serializers.ModelSerializer):
 class CustomUserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
-        fields = ('email', 'pk', 'profile_img')
+        fields = ('email', 'pk')
         read_only_fields = ('email',)
 
 
 class ProfileDetailsViewSerializer(serializers.ModelSerializer):
+    profile_img_upload_details = serializers.SerializerMethodField()
+    header_img_upload_details = serializers.SerializerMethodField()
+
     def to_representation(self, instance):
         result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
         result['followings_count'] = UserFollowing.objects.filter(user_id=instance.id).count()
@@ -46,9 +49,23 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TwitcordUser
-        fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined', 'first_name', 'last_name',
-                  'birth_date', 'bio', 'website', 'is_public')
-        read_only_fields = ('email', )
+        fields = ('email', 'username', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio',
+                  'website', 'is_public', 'has_profile_img', 'profile_img', 'profile_img_upload_details',
+                  'has_header_img', 'header_img', 'header_img_upload_details')
+        read_only_fields = ('email', 'profile_img', 'profile_img_upload_details',
+                            'header_img', 'header_img_upload_details')
+
+    def get_profile_img_upload_details(self, obj):
+        if self.context['request'].user.id == obj.id:
+            return obj.profile_img_upload_details
+        else:
+            return None
+
+    def get_header_img_upload_details(self, obj):
+        if self.context['request'].user.id == obj.id:
+            return obj.header_img_upload_details
+        else:
+            return None
 
 
 class TweetSerializer(serializers.ModelSerializer):
@@ -74,7 +91,6 @@ class FollowersRequestsSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(FollowersRequestsSerializer, self).to_representation(instance)
         from_user = instance.request_from
-        result['profile_img'] = from_user.profile_img.url
         result['username'] = from_user.username
         result['email'] = from_user.email
         result['first_name'] = from_user.first_name
@@ -103,7 +119,6 @@ class ListOfFollowingsSerializer(serializers.ModelSerializer):
         result = super(ListOfFollowingsSerializer, self).to_representation(instance)
         user = instance.following_user
         result['id'] = result.pop('following_user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['email'] = user.email
         result['first_name'] = user.first_name
@@ -121,7 +136,6 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
         result = super(ListOfFollowersSerializer, self).to_representation(instance)
         user = instance.user
         result['id'] = result.pop('user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['email'] = user.email
         result['first_name'] = user.first_name
@@ -148,7 +162,7 @@ class FollowCountSerializer(serializers.ModelSerializer):
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'profile_img', 'email', 'bio']
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'email', 'bio']
 
     def to_representation(self, instance):
         result = super(GlobalUserSearchSerializer, self).to_representation(instance)
@@ -182,7 +196,6 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         result['is_liked'] = is_liked
         result['id'] = result.pop('user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['first_name'] = user.first_name
         result['last_name'] = user.last_name
