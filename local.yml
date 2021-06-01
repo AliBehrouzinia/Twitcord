@@ -10,6 +10,7 @@ services:
     container_name: twitcord_django
     depends_on:
       - postgres
+      - redis
     volumes:
       - ./twitcord_Back:/app:z
     env_file:
@@ -54,7 +55,6 @@ services:
     command: --port 6380
 
 volumes:
-  twitcord:
   local_postgres_data: { }
   local_postgres_data_backups: { }
   twitcord_node_modules:
