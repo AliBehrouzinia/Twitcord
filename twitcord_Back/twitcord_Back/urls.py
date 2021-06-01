@@ -28,3 +28,7 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+<<<<<<< HEAD
+=======
+
+>>>>>>> e9324ecb86380a6edd1599fa8a3b1d80fccdd4ef

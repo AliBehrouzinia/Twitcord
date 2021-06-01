@@ -220,8 +220,11 @@ minio_client = Minio(
     secret_key=AWS_SECRET_ACCESS_KEY,
     secure=AWS_S3_USE_SSL
 )
+<<<<<<< HEAD
 if not minio_client.bucket_exists(MEDIA_BUCKET_NAME):
     minio_client.make_bucket(MEDIA_BUCKET_NAME)
+=======
+>>>>>>> e9324ecb86380a6edd1599fa8a3b1d80fccdd4ef
 # Django Channels
 # https://channels.readthedocs.io/en/stable/installation.html
 
