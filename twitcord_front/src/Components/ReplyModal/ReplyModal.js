@@ -50,6 +50,10 @@ export const ReplyModal = (props) => {
 
   const handleClose = () => {
     onClose();
+    setTimeout(() => {
+      setSubmitting(false);
+      setTweetInfo('');
+    }, 500);
   };
 
   const replyTweet = () => {
@@ -95,7 +99,7 @@ export const ReplyModal = (props) => {
               <Button
                 variant="contained"
                 className="fs-12"
-                disabled={isSubmitDisable()}
+                disabled={isSubmitDisable() || isSubmitting}
                 color="primary"
                 onClick={replyTweet}
               >
