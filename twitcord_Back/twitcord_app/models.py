@@ -28,6 +28,11 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     PROFILE_IMG_DIRECTORY = f"profile_images"
     PROFILE_IMG_DEFAULT_NAME = "profile_img_default.jpg"
 
+    # Header Image
+    has_header_img = models.BooleanField(default=False)
+    HEADER_IMG_DIRECTORY = "profile_header_images"
+    HEADER_IMG_DEFAULT_NAME = "profile_header_img_default.jpg"
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -62,6 +67,27 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
         object_name = f"{directory}/{name}"
 
         url = minio_client.get_presigned_url("GET", bucket_name, object_name)
+        return url
+
+    @property
+    def get_header_img_name(self):
+        header_img_name = f"profile_header_img_{self.id}.jpg"
+        return header_img_name
+
+    @property
+    def header_img_upload_details(self):
+        image = {
+            'bucket_name': settings.MEDIA_BUCKET_NAME,
+            'object_name': f"{self.HEADER_IMG_DIRECTORY}/{self.get_header_img_name}"
+        }
+        return image
+
+    @property
+    def header_img(self):
+        default_name = self.HEADER_IMG_DEFAULT_NAME
+        name = self.get_header_img_name if self.has_header_img else default_name
+        object_name = f"{self.HEADER_IMG_DIRECTORY}/{name}"
+        url = minio_client.get_presigned_url("GET", settings.MEDIA_BUCKET_NAME, object_name)
         return url
 
     @property
