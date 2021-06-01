@@ -11,11 +11,11 @@ export const PATCH_REQUEST_METHOD = 'PATCH';
 export const URL_POST_TWEET = '/tweets/';
 export const URL_SIGN_UP = '/rest-auth/registration/';
 export const URL_LOG_IN = '/rest-auth/login/';
-export const URL_TWEET_LIST = '/tweets/{id}/';
 export const URL_SEARCH_USER = '/search/user/';
 export const URL_SEARCH_TWEET = '/search/tweet/';
 export const URL_PROFILE_INFO = '/profile/{id}/header/';
-export const URL_USER_GENERAL_INFO = '/rest-auth/user/';
+export const URL_USER_GENERAL_INFO= '/rest-auth/user/';
+export const URL_REPLY = '/reply/';
 
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;

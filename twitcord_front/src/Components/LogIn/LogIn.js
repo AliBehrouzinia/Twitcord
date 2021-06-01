@@ -15,7 +15,6 @@ import * as Constants from '../../Utils/Constants.js';
 import * as Actions from '../../redux/Actions/index.js';
 import './LogIn.css';
 import logo from '../../assets/twitcord.png';
-/* eslint-disable */
 
 /* eslint-disable require-jsdoc */
 const LogIn = () => {
@@ -27,14 +26,14 @@ const LogIn = () => {
   const dispatch = useDispatch();
 
   useMemo(
-    () => {
+      () => {
         dispatch(
-          Actions.setSideDrawerEnable({
-            enable: false,
-          }),
-      );
-    },
-    []
+            Actions.setSideDrawerEnable({
+              enable: false,
+            }),
+        );
+      },
+      [],
   );
 
   function logInRequest(values) {
@@ -53,7 +52,6 @@ const LogIn = () => {
                 }),
             );
             resolve(response);
-            history.push('/');
           })
           .catch((error) => {
             setSnackbarAlertMessage(
@@ -75,15 +73,15 @@ const LogIn = () => {
     if (localStorage.getItem('token')) {
       API.userGeneralInfo({})
           .then((response) => {
-            dispatch(Actions.setUserGeneralInfo(response.data));
             localStorage.setItem(
                 Constants.GENERAL_USER_INFO, JSON.stringify(response.data),
             );
             dispatch(
-              Actions.setSideDrawerEnable({
-                enable: true,
-              }),
-          );
+                Actions.setSideDrawerEnable({
+                  enable: true,
+                }),
+            );
+            history.push('/');
           }).catch((error) => {
             setSnackbarAlertMessage(
                 Constants.GET_USER_INFO_FAILURE);
