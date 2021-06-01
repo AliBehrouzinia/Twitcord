@@ -5,11 +5,8 @@ from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from .managers import TwitcordUserManager
-<<<<<<< HEAD
 from twitcord_Back.settings import minio_client
-=======
 from django.db.models import Q
->>>>>>> 1a5d643ba6b9856222ba511f102fc7a673137778
 
 
 class TwitcordUser(AbstractBaseUser, PermissionsMixin):

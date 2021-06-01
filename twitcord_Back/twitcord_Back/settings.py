@@ -191,7 +191,6 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://localhost:3000/login'
 
-<<<<<<< HEAD
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -221,7 +220,6 @@ minio_client = Minio(
     secret_key=AWS_SECRET_ACCESS_KEY,
     secure=AWS_S3_USE_SSL
 )
-=======
 # Django Channels
 # https://channels.readthedocs.io/en/stable/installation.html
 
@@ -234,4 +232,3 @@ CHANNEL_LAYERS = {
         },
     },
 }
->>>>>>> 1a5d643ba6b9856222ba511f102fc7a673137778
