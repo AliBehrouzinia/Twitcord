@@ -21,6 +21,11 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import minioClient from '../../Utils/Minio';
 
+let coverFile = null;
+let photoFile = null;
+let clearCover = false;
+let clearPhoto = false;
+
 const EditProfile = () => {
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
@@ -28,8 +33,6 @@ const EditProfile = () => {
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   let photoInput;
   let coverInput;
-  let coverPath = null;
-  let photoPath = null;
 
   let profileId = -1;
   const userGeneralInfo = JSON.parse(
@@ -40,11 +43,7 @@ const EditProfile = () => {
   }
   const dispatch = useDispatch();
 
-  const requestProfileInfo = (
-      dispatch,
-      setSnackbarAlertMessage,
-      setSnackbarAlertSeverity,
-  ) => {
+  const requestProfileInfo = () => {
     API.getProfileInfo({id: profileId})
         .then((response) => {
           handleProfileInfoResponse(dispatch, response.data);
@@ -53,9 +52,6 @@ const EditProfile = () => {
           showSnackbar(
               Constants.EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE,
               Constants.SNACKBAR_ERROR_SEVERITY,
-              dispatch,
-              setSnackbarAlertMessage,
-              setSnackbarAlertSeverity,
           );
         });
   };
@@ -63,9 +59,6 @@ const EditProfile = () => {
   const showSnackbar = (
       message,
       severity,
-      dispatch,
-      setSnackbarAlertMessage,
-      setSnackbarAlertSeverity,
   ) => {
     setSnackbarAlertMessage(
         message);
@@ -86,13 +79,13 @@ const EditProfile = () => {
     dispatch(Actions.setProfileInfo({
       bio: data.bio,
       birthday: data.birth_date,
-      firstName: data.first_name,
-      lastName: data.last_name,
+      first_name: data.first_name,
+      last_name: data.last_name,
       website: data.website,
       username: data.username,
       isPublic: data.is_public,
-      has_header_img: false,
-      has_profile_img: false,
+      has_header_img: data.has_header_img,
+      has_profile_img: data.has_profile_img,
       profile_img: data.profile_img,
       header_img: data.header_img,
       profile_img_upload_details: data.profile_img_upload_details,
@@ -101,32 +94,26 @@ const EditProfile = () => {
   };
 
   const onSubmitClicked = (
-      dispatch,
-      profileInfo,
       data,
-      setSnackbarAlertMessage,
-      setSnackbarAlertSeverity,
   ) => {
     if (typeof(data.birthday) === 'number') {
       data.birthday = profileInfo.birthday;
     }
 
-    let hasCover = profileInfo.has_header_img;
-    let hasPhoto = profileInfo.has_profile_img;
+    let hasCover = profileInfo.has_header_img && !clearCover;
+    let hasPhoto = profileInfo.has_profile_img && !clearPhoto;
 
     const isDataChanged = checkDataChanged(profileInfo, data);
 
-    if (coverPath !== null) {
+    if (coverFile !== null) {
       uploadPhoto(true);
       hasCover = true;
     }
 
-    if (photoPath !== null) {
+    if (photoFile !== null) {
       uploadPhoto(false);
       hasPhoto = true;
     }
-
-    console.log(hasCover + ' ' + hasPhoto);
 
     if (isDataChanged) {
       const dataToSend = {
@@ -141,34 +128,23 @@ const EditProfile = () => {
         has_profile_img: hasPhoto,
       };
 
-      console.log(dataToSend);
-
       API.updateProfileInfo(profileId, dataToSend)
           .then((response) => {
             saveProfileInfo(dispatch, response.data);
             showSnackbar(
                 Constants.EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE,
                 Constants.SNACKBAR_SUCCESS_SEVERITY,
-                dispatch,
-                setSnackbarAlertMessage,
-                setSnackbarAlertSeverity,
             );
           }).catch((error) => {
             showSnackbar(
                 Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
                 Constants.SNACKBAR_ERROR_SEVERITY,
-                dispatch,
-                setSnackbarAlertMessage,
-                setSnackbarAlertSeverity,
             );
           });
     } else {
       showSnackbar(
           Constants.EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE,
           Constants.SNACKBAR_ERROR_SEVERITY,
-          dispatch,
-          setSnackbarAlertMessage,
-          setSnackbarAlertSeverity,
       );
     }
   };
@@ -202,17 +178,36 @@ const EditProfile = () => {
       return true;
     }
 
-    if (coverPath !== null) {
+    if (coverFile !== null) {
       return true;
     }
 
-    if (photoPath !== null) {
+    if (photoFile !== null) {
+      return true;
+    }
+
+    if (clearPhoto || clearCover) {
       return true;
     }
 
     return false;
   };
 
+  const clearCoverImage = () => {
+    clearCover = true;
+    showSnackbar(
+        Constants.COVER_CLEARED,
+        Constants.SNACKBAR_SUCCESS_SEVERITY,
+    );
+  };
+
+  const clearPhotoImage = () => {
+    clearPhoto = true;
+    showSnackbar(
+        Constants.PHOTO_CLEARED,
+        Constants.SNACKBAR_SUCCESS_SEVERITY,
+    );
+  };
 
   const handleUploadProfilePhotoClick = () => {
     photoInput.click();
@@ -222,75 +217,40 @@ const EditProfile = () => {
     coverInput.click();
   };
 
-  const setProfilePhotoDetails = (path)=>{
-    photoPath = path;
+  const setProfilePhotoDetails = (file)=>{
+    photoFile = file;
   };
 
-  const setCoverDetails = (path)=>{
-    coverPath = path;
+  const setCoverDetails = (file)=>{
+    coverFile = file;
   };
 
   const uploadPhoto = (isCover) => {
-    let path;
+    let file;
     let bucketName;
     let objectName;
 
     if (isCover) {
-      path = coverPath;
+      file = coverFile;
       bucketName = profileInfo.header_img_upload_details.bucket_name;
       objectName = profileInfo.header_img_upload_details.object_name;
     } else {
-      path = photoPath;
+      file = photoFile;
       bucketName = profileInfo.profile_img_upload_details.bucket_name;
       objectName = profileInfo.profile_img_upload_details.object_name;
     }
 
-    console.log(path);
-    console.log(typeof(path));
-
-    getBase64(path)
-        .then((result) => {
-          console.log(result);
-          minioClient.putObject(
-              bucketName,
-              objectName,
-              result,
-              function(err, etag) {
-                if (err) return console.log(err);
-                console.log(etag);
-              });
-        })
-        .catch((err) => {
-          console.log(err);
+    minioClient.presignedPutObject(
+        bucketName,
+        objectName,
+        function(err, presignedUrl) {
+          if (err) return console.log(err);
+          API.uploadPhoto({file: file, url: presignedUrl});
         });
   };
 
-  const getBase64 = (file) => {
-    return new Promise((resolve) => {
-      let fileInfo;
-      let baseURL = '';
-      // Make new FileReader
-      const reader = new FileReader();
-
-      // Convert the file to base64 text
-      reader.readAsArrayBuffer(file);
-
-      // on reader load somthing...
-      reader.onload = () => {
-        // Make a fileInfo Object
-        baseURL = reader.result;
-        resolve(baseURL);
-      };
-      console.log(fileInfo);
-    });
-  };
-
   useEffect(() => {
-    requestProfileInfo(
-        dispatch,
-        setSnackbarAlertMessage,
-        setSnackbarAlertSeverity,
-    );
+    requestProfileInfo();
   }, []);
 
   return (
@@ -307,9 +267,12 @@ const EditProfile = () => {
           onClick={handleUploadProfileCoverClick}
           className="ep-edit-cover-icon"/>
         { profileInfo.has_header_img &&
-        <HighlightOffIcon className="ep-clear-cover-icon"/>
+        <HighlightOffIcon
+          onClick={clearCoverImage}
+          className="ep-clear-cover-icon"/>
         }
         { profileInfo.has_profile_img && <Avatar
+          onClick={clearPhotoImage}
           className="ep-clear-photo-icon">
           <HighlightOffIcon />
         </Avatar> }
@@ -374,11 +337,7 @@ const EditProfile = () => {
               onSubmit={(values, {setSubmitting}) => {
                 setSubmitting(false);
                 onSubmitClicked(
-                    dispatch,
-                    profileInfo,
                     {...values, isPublic: !values.isPublic},
-                    setSnackbarAlertMessage,
-                    setSnackbarAlertSeverity,
                 );
               }}
             >
