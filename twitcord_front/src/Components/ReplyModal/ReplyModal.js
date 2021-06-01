@@ -109,7 +109,7 @@ export const ReplyModal = (props) => {
           </Box>
         </DialogTitle>
         <DialogContent className="px-12" dividers>
-          <Box display="flex" className="min-w-50">
+          <Box display="flex" className="min-w-50 min-w-auto-sm">
             <Box display="flex" alignItems="center" flexDirection="column">
               <Avatar alt={props.tweet?.username} title={props.tweet?.username}
                 className="w-48 h-48"

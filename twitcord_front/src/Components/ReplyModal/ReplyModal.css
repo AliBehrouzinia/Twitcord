@@ -40,3 +40,9 @@
 .br-16 {
   border-radius: 16px !important;
 }
+
+@media (max-width:600px) {
+  .min-w-auto-sm {
+    min-width: auto !important; 
+  }
+}
