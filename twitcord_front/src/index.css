@@ -279,6 +279,18 @@ a {
   padding: .25rem !important;
 }
 
+.pl-3 {
+  padding-left: 1rem !important;
+}
+
+.pr-2 {
+  padding-right: .5rem !important;
+}
+
+.pr-3 {
+  padding-right: 1rem !important;
+}
+
 .pt-3 {
   padding-top: 1rem !important;
 }

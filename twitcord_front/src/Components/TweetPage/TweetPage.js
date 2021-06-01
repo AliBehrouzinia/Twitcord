@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -9,14 +9,25 @@ import Avatar from '@material-ui/core/Avatar';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import CachedIcon from '@material-ui/icons/Cached';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import * as API from '../../Utils/API/index';
+import * as helper from '../../Utils/helper';
+import './TweetPage.css';
 
 const TweetPage = () => {
   const params = useParams();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [tweet, setTweet] = useState([]);
+
+  useEffect(()=>{
+    API.getTweet(params.id).then((res)=> {
+      setTweet(res.data);
+    }).catch((error)=>{
+      console.log(error);
+    });
+  }, []);
 
   const handleClickMoreBtn = (event) => {
     setAnchorEl(event.currentTarget);
@@ -30,7 +41,6 @@ const TweetPage = () => {
 
   };
 
-  console.log(params['id']);
   return (
     <div>
       <Box>
@@ -42,19 +52,26 @@ const TweetPage = () => {
         <Box component="span" className="b-900 ml-2">Tweet</Box>
         <Divider />
         <Box className="px-3 pt-3">
-          <Box display="flex" justifyContent="space-between">
+          <Box display="flex" justifyContent="space-between"
+            alignItems="center">
             <Box display="flex">
-              <Avatar alt={'username'} title={'username'}
+              <Avatar alt={tweet.tweet_user_username}
+                title={tweet.tweet_user_username}
                 className="w-48 h-48"
                 src="/static/images/avatar/1.jpg" />
               <Box display="flex" flexDirection="column" justifyContent="center"
                 className="ml-2">
-                <Box className="b-600">{'firsname lastname'}</Box>
-                <Box className="text-gray mt-1">{'@username'}</Box>
+                <Box className="b-600">
+                  {tweet.tweet_user_firstname + ' ' + tweet.tweet_user_lastname}
+                </Box>
+                <Box className="text-gray mt-1">
+                  {'@' + tweet.tweet_user_username}</Box>
               </Box>
             </Box>
-            <IconButton onClick={handleClickMoreBtn}>
-              <MoreVertIcon /></IconButton>
+            <Box className="mr--6">
+              <IconButton size="small" onClick={handleClickMoreBtn}>
+                <MoreHorizIcon /></IconButton>
+            </Box>
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
@@ -68,18 +85,15 @@ const TweetPage = () => {
             </Menu>
           </Box>
           <Box className="mt-3">
-            {<>this is the content of the tweet
-            this is content of the tweet
-             this content of the tweet this content of the tweet
-             this content of the tweet
-             this content of the tweetthis content of the tweet </>}
+            {tweet.tweet_content}
           </Box>
-          <Box className="mt-4 text-gray fs-14">{'2021 May 24 '}</Box>
+          <Box className="mt-4 text-gray fs-14">
+            {helper.extractTime(tweet.tweet_create_date)}</Box>
           <Divider className="mt-3"/>
           <Box display="flex" className="py-3">
-            <Box>{2} <Box component="span"
+            <Box>{0} <Box component="span"
               className="text-gray">Retweets</Box></Box>
-            <Box className="ml-5">{21} <Box component="span"
+            <Box className="ml-5">{0} <Box component="span"
               className="text-gray">likes</Box></Box>
           </Box>
         </Box>
