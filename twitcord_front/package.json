@@ -23,7 +23,7 @@
     "formik-material-ui": "^3.0.1",
     "formik-material-ui-pickers": "0.0.12",
     "immer": "^9.0.1",
-    "minio": "^7.0.18",
+    "minio": "7.0.18",
     "react": "^17.0.1",
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",

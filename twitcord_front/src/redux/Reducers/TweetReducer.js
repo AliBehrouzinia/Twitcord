@@ -23,17 +23,13 @@ const initialState = {
     website: '',
     isPublic: false,
     email: '',
-<<<<<<< HEAD
     has_header_img: false,
     has_profile_img: false,
     header_img: '',
     profile_img_upload_details: '',
     header_img_upload_details: '',
-
-=======
     followers_count: 0,
     followings_count: 0,
->>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
   },
   sideDrawerEnable: true,
   tweetText: '',
@@ -116,11 +112,12 @@ const tweetReducer = (state = initialState, action) => {
           has_header_img: false,
           has_profile_img: false,
           date_joined: action.date_joined,
-<<<<<<< HEAD
           profile_img: action.profile_img,
           header_img: action.header_img,
           profile_img_upload_details: action.profile_img_upload_details,
           header_img_upload_details: action.header_img_upload_details,
+          followers_count: action.followers_count,
+          followings_count: action.followings_count,
         },
       };
     }
@@ -133,10 +130,6 @@ const tweetReducer = (state = initialState, action) => {
           userID: action.pk,
           userEmail: action.email,
           userProfile: action.profile_img,
-=======
-          followers_count: action.followers_count,
-          followings_count: action.followings_count,
->>>>>>> 767f6cf7cbb2929e7d0d93ac97df6116c1a06bdd
         },
       };
     }
