@@ -23,4 +23,7 @@ urlpatterns = [
     path('users/like/tweet/<int:id>/', views.UsersLikedTweetListView.as_view()),
     path('tweets/like/user/<int:id>/', views.TweetsLikedListView.as_view()),
     path('timeline/', views.TimeLineView.as_view()),
+    path('reply/', views.ReplyTweetCreateView.as_view()),
+    path('replys/<int:id>/', views.ReplysListView.as_view()),
+    path('tweets/<int:id>/family/', views.ShowReplyFamilyView.as_view()),
 ]

@@ -334,3 +334,24 @@ class TimeLineView(generics.ListAPIView):
                 for tweet in level_two_tweets:
                     result[tweet] = 80
         return result
+
+
+class ReplyTweetCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ReplySerializer
+
+
+class ReplysListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountUserPermission]
+    serializer_class = serializers.ReplySerializer
+    
+    def get_queryset(self):
+        user_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
+
+
+class ShowReplyFamilyView(generics.RetrieveAPIView):
+    queryset = models.Tweet.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ShowReplySerializer
+    lookup_url_kwarg = 'id'
