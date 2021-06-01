@@ -18,6 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Hidden from '@material-ui/core/Hidden';
 import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles((theme) => ({
   scrollPaper: {
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const ReplyModal = (props) => {
+  const [isSubmitting, setSubmitting] = useState(false);
   const {onClose, open} = props;
   const [tweetInfo, setTweetInfo] = useState('');
 
@@ -52,13 +54,16 @@ export const ReplyModal = (props) => {
 
   const replyTweet = () => {
     const reqData = {content: tweetInfo, parent: props.tweet.id};
-    API.replyTweet(reqData)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (!isSubmitting) {
+      setSubmitting(true);
+      API.replyTweet(reqData)
+          .then((res) => {
+            handleClose();
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
   };
 
   return (
@@ -66,6 +71,7 @@ export const ReplyModal = (props) => {
       <Dialog classes={{scrollPaper: classes.scrollPaper, paper: classes.paper}}
         onClose={handleClose} aria-labelledby="customized-dialog-title"
         open={open}>
+        {isSubmitting && <LinearProgress />}
         <DialogTitle className="px-12 py-4-px"
           id="customized-dialog-title" onClose={handleClose}
         >
@@ -131,6 +137,7 @@ export const ReplyModal = (props) => {
               className="w-48 h-48"
               src="/static/images/avatar/1.jpg" />
             <TextareaAutosize
+              disabled={isSubmitting}
               rowsMin={4}
               className="custom-textarea fs-20"
               placeholder="Tweet your reply"
@@ -138,7 +145,7 @@ export const ReplyModal = (props) => {
               onChange={(e) => setTweetInfo(e.target.value)}
             />
           </Box>
-          <Box display="flex" className="mt-2"
+          {!isSubmitting && <Box display="flex" className="mt-2"
             justifyContent={{xs: 'flex-end', sm: 'space-between'}}>
             <CharCounter numChar={tweetInfo.length} />
             <Hidden xsDown>
@@ -152,7 +159,7 @@ export const ReplyModal = (props) => {
                 Reply
               </Button>
             </Hidden>
-          </Box>
+          </Box>}
         </DialogContent>
       </Dialog>
     </div>
