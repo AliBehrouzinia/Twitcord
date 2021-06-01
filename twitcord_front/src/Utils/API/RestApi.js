@@ -111,20 +111,20 @@ export const userGeneralInfo = (data) => {
   );
 };
 
-<<<<<<< HEAD
 export const uploadPhoto = (data) => {
   return request(
       data.file,
       {},
       data.url,
       'PUT',
-=======
+  );
+};
+
 export const replyTweet = (data) => {
   return request(
       data,
       {},
       Constants.URL_REPLY,
       Constants.POST_REQUEST_METHOD,
->>>>>>> e9324ecb86380a6edd1599fa8a3b1d80fccdd4ef
   );
 };
