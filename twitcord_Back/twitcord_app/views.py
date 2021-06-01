@@ -253,14 +253,14 @@ class RetweetView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, ]
     serializer_class = serializers.RetweetSerializer
 
-    def post(self, request, *args, **kwargs):
-        request.data['user'] = request.user.id
-        source_tweet_id = self.kwargs.get('id')
-        request.data['retweet_from'] = source_tweet_id
-        print(request.data)
-        retweet_serializer = serializers.RetweetSerializer(data=request.data)
-        retweet = None
-        if retweet_serializer.is_valid(True):
-            retweet = retweet_serializer.save()
-        retweet_data = serializers.RetweetSerializer(instance=retweet).data
-        return Response(data=retweet_data, status=status.HTTP_201_CREATED)
+    def get_queryset(self):
+        tweet_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(id=tweet_id)
+
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self,
+            "retweet_from": self.kwargs['id']
+        }

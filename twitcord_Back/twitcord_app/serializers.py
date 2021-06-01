@@ -221,7 +221,12 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
 class RetweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
-        fields = ['user', 'create_date', 'retweet_from']
+        fields = ['user', 'create_date', 'retweet_from', 'content']
+
+    def to_internal_value(self, data):
+        data['user'] = self.context['request'].user.id
+        data['retweet_from'] = self.context['retweet_from']
+        return super().to_internal_value(data)
 
     def to_representation(self, instance):
         result = super(RetweetSerializer, self).to_representation(instance)
