@@ -207,9 +207,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 MEDIA_BUCKET_NAME = 'media'
 # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-AWS_ACCESS_KEY_ID = 'twitcord'
-AWS_SECRET_ACCESS_KEY = 'twitcord'
-AWS_STORAGE_BUCKET_NAME = 'twitcord'
+AWS_ACCESS_KEY_ID = 'minio_user'
+AWS_SECRET_ACCESS_KEY = 'minio_pass'
+# AWS_STORAGE_BUCKET_NAME = 'twitcord'
 AWS_S3_USE_SSL = False
 # AWS_S3_VERIFY = True
 AWS_S3_ENDPOINT_URL = 'localhost:9000'
@@ -220,6 +220,9 @@ minio_client = Minio(
     secret_key=AWS_SECRET_ACCESS_KEY,
     secure=AWS_S3_USE_SSL
 )
+if not minio_client.bucket_exists(MEDIA_BUCKET_NAME):
+    minio_client.make_bucket(MEDIA_BUCKET_NAME)
+    
 # Django Channels
 # https://channels.readthedocs.io/en/stable/installation.html
 
