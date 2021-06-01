@@ -273,7 +273,7 @@ class ShowReplySerializer(serializers.ModelSerializer):
         if len(parent_set) != 0:
             parent = parent_set[0]
             result['parent_content'] = parent.content
-            result['parent_create_date'] = parent.create_date
+            result['parent_create_date'] = serializers.DateTimeField().to_representation(parent.create_date)
             result['parent_user_is_public'] = parent.user.is_public
             result['parent_user_username'] = parent.user.username
             result['parent_user_email'] = parent.user.email
@@ -288,7 +288,7 @@ class ShowReplySerializer(serializers.ModelSerializer):
                 result['parent_is_liked'] = False
         result['tweet_id'] = instance.id
         result['tweet_content'] = instance.content
-        result['tweet_create_date'] = instance.create_date
+        result['tweet_create_date'] = serializers.DateTimeField().to_representation(instance.create_date)
         result['tweet_user_is_public'] = instance.user.is_public
         result['tweet_user_username'] = instance.user.username
         result['tweet_user_email'] = instance.user.email
@@ -314,7 +314,8 @@ class ShowReplySerializer(serializers.ModelSerializer):
                 result['children'][counter]['last_name'] = item.user.last_name
                 result['children'][counter]['is_public'] = item.user.is_public
                 result['children'][counter]['content'] = item.content
-                result['children'][counter]['create_date'] = item.create_date
+                result['children'][counter]['create_date'] = serializers.DateTimeField().to_representation(item.
+                                                                                                           create_date)
                 for i in liked_tweets:
                     if item == i[0]:
                         result['children'][counter]['child_is_liked'] = True
