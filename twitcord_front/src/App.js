@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import EditProfile from './Components/EditProfile/EditProfile.js';
 import SideDrawer from './Components/SideDrawer/SideDrawer.js';
 import Profile from './Components/Profile/Profile.js';
+import TweetPage from './Components/TweetPage/TweetPage.js';
 
 // eslint-disable-next-line require-jsdoc
 function App() {
@@ -35,6 +36,7 @@ function App() {
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/profile/:id" component={Profile} />
                 <Route exact path="/edit-profile" component={EditProfile} />
+                <Route exact path="/tweet/:id" component={TweetPage}></Route>
               </div>
             </div>
           </Grid>
