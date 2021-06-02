@@ -252,6 +252,23 @@ class TweetsLikedListView(generics.ListAPIView):
         return models.Like.objects.filter(user=user_id)
 
 
+class RetweetView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = serializers.RetweetSerializer
+
+    def get_queryset(self):
+        tweet_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(id=tweet_id)
+
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self,
+            "retweet_from": self.kwargs['id']
+        }
+
+
 class ReplyTweetCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ReplySerializer
