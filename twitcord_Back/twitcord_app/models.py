@@ -116,17 +116,17 @@ class Tweet(models.Model):
                                      blank=True)
     is_reply = models.BooleanField(default=False)
     user = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
-    content = models.TextField(max_length=280)
+    content = models.TextField(max_length=280, null=True)
     create_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
         constraints = [
             models.CheckConstraint(check=((Q(retweet_from__isnull=True) & Q(content__isnull=False)) |
-                                          Q(retweet_from__isnull=False)), name='content_null')
+                                          Q(retweet_from__isnull=False)), name='content_null',)
         ]
 
     def __str__(self):
-        return self.content
+        return f"{self.id}|{self.content}"
 
 
 class UserFollowing(models.Model):

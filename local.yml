@@ -71,7 +71,6 @@ services:
     command: --port 6380
 
 volumes:
-  twitcord:
   local_postgres_data: { }
   local_postgres_data_backups: { }
   twitcord_node_modules:
