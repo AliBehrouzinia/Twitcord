@@ -63,7 +63,10 @@ class LikeTest(APITestCase):
         result = dict(result)
         result['results'] = dict(result['results'][0])
         result['results']['tweet'] = dict(result['results']['tweet'])
-        print(result)
-        print(data)
         self.assertEqual(result, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        url = '/like/tweet/{}/'.format(self.tweet.id)
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(models.Like.objects.filter(id=self.tweet.id).exists())

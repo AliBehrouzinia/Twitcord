@@ -32,7 +32,7 @@ class SearchUserTest(APITestCase):
             "next": None,
             "previous": None,
             "results": {
-                "id": 32,
+                "id": 31,
                 "username": "test",
                 "first_name": None,
                 "last_name": None,
@@ -71,7 +71,7 @@ class SeachTweetTest(APITestCase):
             "previous": None,
             "results":
                 {
-                    "id": 31,
+                    "id": 30,
                     "is_reply": False,
                     "content": "Hi from there",
                     "create_date": response.data['results'][0]['create_date'],
@@ -88,7 +88,5 @@ class SeachTweetTest(APITestCase):
         result = response.data
         result = dict(result)
         result['results'] = dict(result['results'][0])
-        print(result)
-        print(data)
         self.assertEqual(result, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
