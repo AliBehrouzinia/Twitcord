@@ -11,13 +11,13 @@ import * as API from '../../Utils/API/index';
 import './UserSearchItem.css';
 
 export const UserSearchItem = (props) => {
-  const [situation, setSituation] = useState('');
+  const [Situation, setSituation] = useState(props.status);
   function handleunrequest(id) {
     API.deleteFollowRequest({id: id})
         .then((response) => {
-          console.log(situation);
-          setSituation('unrequest');
-          console.log(ituation);
+          console.log(Situation);
+          setSituation(response.status);
+          console.log(Situation);
         })
         .catch((error) => {
           console.log(error);
@@ -27,7 +27,7 @@ export const UserSearchItem = (props) => {
     API.unfollow({id: id})
         .then((response) => {
           console.log(Situation);
-          setSituation('unfollow');
+          setSituation(response.status);
           console.log(Situation);
         })
         .catch((error) => {
@@ -37,8 +37,8 @@ export const UserSearchItem = (props) => {
   function handlefollow(id) {
     API.follow({'request_to': id})
         .then((response) => {
-          console.log(Situation);
-          setSituation('follow');
+          console.log(response.status);
+          setSituation(response.status);
           console.log(Situation);
         })
         .catch((error) => {
@@ -70,7 +70,7 @@ export const UserSearchItem = (props) => {
           </div>
         </div>
       </Grid>
-      { props.status === 'Follow' ?(
+      { Situation == 'Follow' ?(
       <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
         <Button
           className="usi-follow-button"
@@ -79,7 +79,7 @@ export const UserSearchItem = (props) => {
           variant="outlined">
              follow
         </Button>
-      </Grid>) : props.status === 'Following' ? (
+      </Grid>) : Situation == 'Followed' ? (
       <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
         <Button
           className="usi-follow-button"
@@ -88,7 +88,7 @@ export const UserSearchItem = (props) => {
           variant="outlined">
              unfollow
         </Button>
-      </Grid>) : props.status === 'Requested' ?(
+      </Grid>) : Situation == 'Requested' ?(
           <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
             <Button
               className="usi-follow-button"

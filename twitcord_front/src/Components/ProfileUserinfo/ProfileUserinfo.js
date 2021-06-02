@@ -1,6 +1,6 @@
 /* eslint-disable no-tabs */
 /* eslint-disable max-len */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import {useHistory} from 'react-router-dom';
 import {Modal, Typography} from '@material-ui/core';
@@ -28,6 +28,8 @@ const ProfileUserinfo = () => {
   const history = useHistory();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const followcount = useSelector((state) => state).tweet.followcount;
+  const [Situation, setSituation] = useState(profileInfo.status);
+  console.log(profileInfo.status);
   let profileId = -1;
   const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
   if (userGeneralInfo != null) {
@@ -76,9 +78,7 @@ const ProfileUserinfo = () => {
   function handleunrequest(id) {
     API.deleteFollowRequest({id: id})
         .then((response) => {
-          console.log(situation);
-          setSituation('unrequest');
-          console.log(ituation);
+          setSituation(response.status);
         })
         .catch((error) => {
           console.log(error);
@@ -87,9 +87,7 @@ const ProfileUserinfo = () => {
   function handleunfollow(id) {
     API.unfollow({id: id})
         .then((response) => {
-          console.log(Situation);
-          setSituation('unfollow');
-          console.log(Situation);
+          setSituation(response.status);
         })
         .catch((error) => {
           console.log(error);
@@ -98,9 +96,7 @@ const ProfileUserinfo = () => {
   function handlefollow(id) {
     API.follow({'request_to': id})
         .then((response) => {
-          console.log(Situation);
-          setSituation('follow');
-          console.log(Situation);
+          setSituation(response.status);
         })
         .catch((error) => {
           console.log(error);
@@ -117,7 +113,7 @@ const ProfileUserinfo = () => {
         });
   }, []);
   useEffect(() => {
-    API.followcount({id: profileId})
+    API.followcount({id: profileInfo.id})
         .then((response) => {
           dispatch(Actions.setfollowcount(response.data.results[0]));
         })
@@ -226,30 +222,30 @@ const ProfileUserinfo = () => {
             {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
 						<Button variant="outlined" color="primary" className="edit-button" onClick={handleEditProfileClick}>edit</Button>
 					) : (
-            profileInfo.status === 'Follow' ?(
+             Situation == 'not following' ?(
               <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
                 <Button
                   className="usi-follow-button"
                   color="primary"
-                  onClick={() => handlefollow(props.id)}
+                  onClick={() => handlefollow(profileInfo.id)}
                   variant="outlined">
                      follow
                 </Button>
-              </Grid>) : profileInfo.status === 'following' ? (
+              </Grid>) : Situation == 'following' ? (
               <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
                 <Button
                   className="usi-follow-button"
                   color="primary"
-                  onClick={() => handleunfollow(props.id)}
+                  onClick={() => handleunfollow(profileInfo.id)}
                   variant="outlined">
                      unfollow
                 </Button>
-              </Grid>) : profileInfo.status === 'pending' ?(
+              </Grid>) : Situation == 'Requested' ?(
                   <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
                     <Button
                       className="usi-follow-button"
                       color="primary"
-                      onClick={() => handleunrequest(props.id)}
+                      onClick={() => handleunrequest(profileInfo.id)}
                       variant="outlined">
                      pending
                     </Button>

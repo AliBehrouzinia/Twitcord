@@ -35,6 +35,7 @@ const initialState = {
     followers_count: 0,
     followings_count: 0,
     status: '',
+    id: '',
   },
   followcount: {
     pk: 0,
@@ -131,6 +132,7 @@ const tweetReducer = (state = initialState, action) => {
           followers_count: action.followers_count,
           followings_count: action.followings_count,
           status: action.status,
+          id: action.id,
         },
       };
     }

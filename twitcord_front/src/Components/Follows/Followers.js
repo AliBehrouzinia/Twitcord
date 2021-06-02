@@ -9,19 +9,21 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import * as API from '../../Utils/API/index';
-import * as Constants from '../../Utils/Constants.js';
+// import * as Constants from '../../Utils/Constants.js';
+import {useSelector} from 'react-redux';
 
 /* eslint-disable require-jsdoc */
 const Followers = () => {
-  let profileId = -1;
-  const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
-  if (userGeneralInfo != null) {
-    profileId = userGeneralInfo.pk;
-  }
+  // let profileId = -1;
+  const profileInfo = useSelector((state) => state).tweet.profileInfo;
+  // const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
+  // if (userGeneralInfo != null) {
+  //   profileId = userGeneralInfo.pk;
+  // }
   const [FollowList, setFollowList] = React.useState([{}]);
 
   useEffect(() => {
-    API.followerslist({id: profileId})
+    API.followerslist({id: profileInfo.id})
         .then((response) => {
           setFollowList(response.data.results);
         })
