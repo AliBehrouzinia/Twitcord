@@ -77,6 +77,7 @@ class SeachTweetTest(APITestCase):
                     "create_date": response.data['results'][0]['create_date'],
                     "parent": None,
                     "retweet_from": None,
+                    "is_liked": False,
                     "profile_img": "/profiles/defaults/user-profile-image.jpg",
                     "username": "test",
                     "first_name": None,
@@ -87,5 +88,7 @@ class SeachTweetTest(APITestCase):
         result = response.data
         result = dict(result)
         result['results'] = dict(result['results'][0])
+        print(result)
+        print(data)
         self.assertEqual(result, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

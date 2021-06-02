@@ -51,12 +51,9 @@ class LikeTest(APITestCase):
                     "id": 1,
                     "tweet": {
                         "id": 1,
-                        "is_reply": False,
                         "content": "salam",
                         "create_date": serializers.DateTimeField().to_representation(self.tweet.create_date),
-                        "parent": None,
-                        "retweet_from": None,
-                        "user": 28
+                        "is_liked": True
                     },
                     "date": response.data['results'][0]['date'],
                     "user": 28
@@ -66,5 +63,7 @@ class LikeTest(APITestCase):
         result = dict(result)
         result['results'] = dict(result['results'][0])
         result['results']['tweet'] = dict(result['results']['tweet'])
+        print(result)
+        print(data)
         self.assertEqual(result, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
