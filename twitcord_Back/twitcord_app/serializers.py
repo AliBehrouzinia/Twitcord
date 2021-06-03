@@ -248,6 +248,8 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
         result['tweet']['last_name'] = tweet.user.last_name
         result['tweet']['is_public'] = tweet.user.is_public
         result['tweet']['like_count'] = len(Like.objects.filter(tweet_id=tweet.id))
+        result['tweet']['reply_count'] = len(Tweet.objects.filter(parent_id=tweet.id))
+        result['tweet']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=tweet.id))
         return result
 
 
