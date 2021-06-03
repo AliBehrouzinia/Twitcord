@@ -4,6 +4,7 @@ from rest_framework.exceptions import NotFound
 
 from .models import *
 from .models import TwitcordUser
+from django.shortcuts import get_object_or_404
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -237,6 +238,17 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super(TweetsLikedListSerializer, self).to_representation(instance)
+        print(result['tweet'])
+        tweet = instance.tweet
+        result['tweet']['username'] = tweet.user.username
+        result['tweet']['first_name'] = tweet.user.first_name
+        result['tweet']['last_name'] = tweet.user.last_name
+        result['tweet']['is_public'] = tweet.user.is_public
+        result['tweet']['like_count'] = len(Like.objects.filter(tweet_id=tweet.id))
+        return result
 
 
 class ReplySerializer(serializers.ModelSerializer):
