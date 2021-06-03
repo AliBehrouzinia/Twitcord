@@ -253,6 +253,9 @@ class TimeLineSerializer(serializers.ModelSerializer):
         result['user_id'] = result.pop('user')
         result['username'] = user.username
         result['first_name'] = user.first_name
+        result['last_name'] = user.last_name
+        result['is_public'] = user.is_public
+        result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
         return result
 
 
