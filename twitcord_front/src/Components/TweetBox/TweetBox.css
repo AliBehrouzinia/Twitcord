@@ -1,12 +1,10 @@
 .tweet-box {
   display: block;
-  width: 60% !important;
+  width: 100% !important;
   margin: auto;
   overflow: auto;
   padding: 10px;
   border-radius: 4px;
-  margin-top: 50px;
-  box-shadow: 0px 4px 100px 0px rgb(0 0 0 / 20%);
 }
 
 .tweet-box textarea {
@@ -29,15 +27,6 @@
   outline: none;
 }
 
-.bottom-bar {
-  justify-content: space-between;
-}
-
-.bottom-bar .clear {
-  float: left;
-  font-size: x-large;
-}
-
 .tweet-box-button {
   width: 100%;
   margin-top: 10px !important;
@@ -45,14 +34,7 @@
   float: right;
 }
 
-@media screen and (max-width: 600px) and (min-width: 0px) {
-  .tweet-box {
-    width: 90% !important;
-  }
+.p-10 {
+  padding: 10px !important; 
 }
 
-@media screen and (max-width: 900px) and (min-width: 600px) {
-  .tweet-box {
-    width: 80% !important;
-  }
-}

@@ -20,12 +20,27 @@ export const setSnackBarState = (data) => ({
   ...data,
 });
 
+export const setUserSearchResults = (data) => ({
+  type: ActionTypes.SET_USER_SEARCH_RESULT,
+  ...data,
+});
+
+export const setTweetSearchResults = (data) => ({
+  type: ActionTypes.SET_TWEET_SEARCH_RESULT,
+  ...data,
+});
+
 export const setProfileInfo = (data) => ({
   type: ActionTypes.SET_PROFILE_INFO,
   ...data,
 });
 
-export const setUserGeneralInfo = (data) => ({
-  type: ActionTypes.SET_USER_GENERAL_INFO,
+export const setSideDrawerEnable = (data) => ({
+  type: ActionTypes.SET_SIDE_DRAWER_ENABLE,
+  ...data,
+});
+
+export const setSearchInput = (data) => ({
+  type: ActionTypes.SET_SEARCH_INPUT,
   ...data,
 });

@@ -6,18 +6,23 @@ from allauth.account.views import confirm_email
 
 urlpatterns = [
     path('profile/<int:id>/header/', views.ProfileDetailsView.as_view()),
-    path('tweets/', views.TweetsListCreateView.as_view()),
-    path('tweets/<int:id>/', views.TweetsListCreateView.as_view()),
+    path('users/<int:id>/tweets/', views.TweetsListCreateView.as_view()),
     re_path('accounts-rest/registration/account-confirm-email/(?P<key>.+)/', confirm_email,
             name='account_confirm_email'),
-    path('followings/', views.ListOfFollowingsView.as_view()),
-    path('followers/', views.ListOfFollowersView.as_view()),
+    path('followings/list/<int:id>/', views.ListOfFollowingsView.as_view()),
+    path('followers/list/<int:id>/', views.ListOfFollowersView.as_view()),
     path('followings/<int:id>/', views.EditFollowingsView.as_view()),
     path('followings/requests/', views.FollowingRequestView.as_view()),
     path('followings/requests/<int:id>/', views.DeleteFollowRequestView.as_view()),
     path('followers/requests/', views.FollowersRequestsView.as_view()),
     path('followers/requests/<int:id>/', views.AnswerFollowRequestView.as_view()),
+    path('follow/count/<int:id>/', views.FollowCountView.as_view()),
+    path('search/user/', views.GlobalUserSearchList.as_view()),
+    path('search/tweet/', views.GlobalTweetSearchList.as_view()),
     path('like/tweet/<int:id>/', views.LikeCreateView.as_view()),
     path('users/like/tweet/<int:id>/', views.UsersLikedTweetListView.as_view()),
-    path('tweets/like/user/<int:id>/', views.TweetsLikedListView.as_view())
+    path('tweets/like/user/<int:id>/', views.TweetsLikedListView.as_view()),
+    path('reply/', views.ReplyTweetCreateView.as_view()),
+    path('replys/<int:id>/', views.ReplysListView.as_view()),
+    path('tweets/<int:id>/family/', views.ShowReplyFamilyView.as_view()),
 ]
