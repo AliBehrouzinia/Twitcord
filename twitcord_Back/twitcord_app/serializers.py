@@ -73,6 +73,9 @@ class TweetSerializer(serializers.ModelSerializer):
         model = Tweet
         fields = ['id', 'content', 'create_date']
         read_only_fields = ['id', 'create_date']
+        extra_kwargs = {
+            'content': {'required': True}
+        }
 
     def to_representation(self, instance):
         result = super(TweetSerializer, self).to_representation(instance)
