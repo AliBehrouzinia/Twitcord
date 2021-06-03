@@ -77,7 +77,7 @@ class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
         following_user_id = self.kwargs.get('id')
         instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
         instance.delete()
-        return Response()
+        return Response(data={"status": "not following"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class FollowingRequestView(generics.CreateAPIView):
@@ -101,13 +101,13 @@ class FollowingRequestView(generics.CreateAPIView):
             serializer = serializers.FollowingsSerializer(data=follow_user_data)
             if serializer.is_valid(True):
                 serializer.save()
-                return Response(data={"status": "Followed", "follow_request_id": None},
+                return Response(data={"status": "following", "follow_request_id": None},
                                 status=status.HTTP_201_CREATED)
         else:
             serializer = serializers.FollowingRequestSerializer(data=data)
             if serializer.is_valid(True):
                 follow_request = serializer.save()
-                return Response(data={"status": "Requested", "follow_request_id": follow_request.id},
+                return Response(data={"status": "pending", "follow_request_id": follow_request.id},
                                 status=status.HTTP_201_CREATED)
 
         return Response(status.HTTP_406_NOT_ACCEPTABLE)
