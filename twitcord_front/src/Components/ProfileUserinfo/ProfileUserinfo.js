@@ -1,5 +1,4 @@
-/* eslint-disable no-tabs */
-/* eslint-disable max-len */
+/* eslint-disable */
 import React, {useEffect, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import {useHistory} from 'react-router-dom';
@@ -22,8 +21,6 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
-/* eslint-disable */
-
 const ProfileUserinfo = () => {
   const params = useParams();
   const dispatch = useDispatch();
@@ -37,6 +34,9 @@ const ProfileUserinfo = () => {
   if (userGeneralInfo != null) {
     profileId = userGeneralInfo.pk;
   }
+  const userId = JSON.parse(
+      localStorage.getItem(Constants.GENERAL_USER_INFO),
+  )?.pk;
   const monthNumberToLabelMap = {
     [1]: 'January',
     [2]: 'February',
@@ -139,13 +139,13 @@ const ProfileUserinfo = () => {
         <Avatar className="p-avatar" />
       </Box>
       <Box className="text-right p-3">
-            {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
+        {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
 						<Button
-            onClick={handleEditProfileClick}
-            variant="contained"
-            color="primary">
+						  onClick={handleEditProfileClick}
+						  variant="contained"
+						  color="primary">
                 edit profile
-          </Button>  
+						</Button>
 					) : (
              Situation == 'not following' ?(
                 <Button
@@ -170,7 +170,7 @@ const ProfileUserinfo = () => {
                      pending
                     </Button>) : (<button/>)
 					)}
-          </Box>
+      </Box>
 
       <Box className="px-3">
         <Typography className="fs-25 b-900 lh-1">
@@ -189,68 +189,68 @@ const ProfileUserinfo = () => {
         </Box>
 
         <Box display="flex" className="mt-2">
-            <Box type="followers" className="followers" onClick={handleOpenfollowers}>
-              {'followers' +'   '+ followcount.followers_count}
-            </Box>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="transition-modal-title"
-              aria-describedby="transition-modal-description"
-              className="modal"
-              id="1"
-              BackdropComponent={Backdrop}
-              BackdropProps={{
-                timeout: 500,
-              }}
-            >
-              <Fade in={open}>{body}</Fade>
-            </Modal>
-            <Box type="followings" className="followings" onClick={handleOpenfollowing}>
-              {'followings' +'   '+ followcount.followings_count}
-            </Box>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="simple-modal-title"
-              aria-describedby="sim"
-              value="followings"
-              id="2"
-              BackdropComponent={Backdrop}
-              className="modal"
-              BackdropProps={{
-                timeout: 500,
-              }}
-            >
-              <Fade in={open}>{body}</Fade>
-            </Modal>
-            </Box>
+          <Box type="followers" className="followers" onClick={handleOpenfollowers}>
+            {'followers' +'   '+ followcount.followers_count}
+          </Box>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className="modal"
+            id="1"
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>{body}</Fade>
+          </Modal>
+          <Box type="followings" className="followings" onClick={handleOpenfollowing}>
+            {'followings' +'   '+ followcount.followings_count}
+          </Box>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="sim"
+            value="followings"
+            id="2"
+            BackdropComponent={Backdrop}
+            className="modal"
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>{body}</Fade>
+          </Modal>
+        </Box>
 
-            {profileInfo.is_public === false && userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email?(
+        {profileInfo.is_public === false && userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email?(
             <Grid item>
 
-                <Box type="requests" className="requests" onClick={handlerequests}>
+              <Box type="requests" className="requests" onClick={handlerequests}>
               requests
-                </Box>
-                <Modal
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby="simple-modal-title"
-                  aria-describedby="sim"
-                  value="requests"
-                  id="2"
-                  BackdropComponent={Backdrop}
-                  className="modal"
-                  BackdropProps={{
-                    timeout: 500,
-                  }}
-                >
-                  <Fade in={open}>{body}</Fade>
-                </Modal>
-                </Grid>):null}
-          </Box>
-         
+              </Box>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="sim"
+                value="requests"
+                id="2"
+                BackdropComponent={Backdrop}
+                className="modal"
+                BackdropProps={{
+                  timeout: 500,
+                }}
+              >
+                <Fade in={open}>{body}</Fade>
+              </Modal>
+            </Grid>):null}
       </Box>
+
+    </Box>
   );
 };
 export default ProfileUserinfo;

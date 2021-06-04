@@ -77,7 +77,7 @@ class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
         following_user_id = self.kwargs.get('id')
         instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
         instance.delete()
-        return Response()
+        return Response(data={"status": "not following"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class FollowingRequestView(generics.CreateAPIView):
@@ -101,13 +101,13 @@ class FollowingRequestView(generics.CreateAPIView):
             serializer = serializers.FollowingsSerializer(data=follow_user_data)
             if serializer.is_valid(True):
                 serializer.save()
-                return Response(data={"status": "Followed", "follow_request_id": None},
+                return Response(data={"status": "following", "follow_request_id": None},
                                 status=status.HTTP_201_CREATED)
         else:
             serializer = serializers.FollowingRequestSerializer(data=data)
             if serializer.is_valid(True):
                 follow_request = serializer.save()
-                return Response(data={"status": "Requested", "follow_request_id": follow_request.id},
+                return Response(data={"status": "pending", "follow_request_id": follow_request.id},
                                 status=status.HTTP_201_CREATED)
 
         return Response(status.HTTP_406_NOT_ACCEPTABLE)
@@ -159,7 +159,7 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         following = self.kwargs.get('id')
         instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
         instance.delete()
-        return Response()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class FollowCountView(generics.ListAPIView):
@@ -250,3 +250,54 @@ class TweetsLikedListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['id']
         return models.Like.objects.filter(user=user_id)
+
+
+class RoomView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    serializer_class = serializers.RoomSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['id']
+        result = []
+        rooms = models.Room.objects.all()
+        for room in rooms:
+            users_of_rooms = []
+            id_of_users = []
+            for item in room.users.all():
+                users_of_rooms.append(item)
+            for item in users_of_rooms:
+                id_of_users.append(item.id)
+            if user_id in id_of_users or room.owner.id == user_id:
+                result.append(room)
+        return result
+
+
+class RoomDataView(generics.ListAPIView):
+    permission_class = IsAuthenticated
+    serializer_class = serializers.RoomSerializer
+
+    def get_queryset(self):
+        room_id = self.kwargs['id']
+        room = models.Room.objects.filter(pk=room_id)
+        return room
+
+
+class ReplyTweetCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ReplySerializer
+
+
+class ReplysListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountUserPermission]
+    serializer_class = serializers.ReplySerializer
+    
+    def get_queryset(self):
+        user_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
+
+
+class ShowReplyFamilyView(generics.RetrieveAPIView):
+    queryset = models.Tweet.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ShowReplySerializer
+    lookup_url_kwarg = 'id'

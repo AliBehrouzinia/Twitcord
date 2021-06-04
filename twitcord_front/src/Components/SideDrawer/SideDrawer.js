@@ -15,35 +15,40 @@ import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
 import {useDispatch} from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
-import * as Constants from '../../../Utils/Constants.js';
-import * as Actions from '../../../redux/Actions/index';
-import logo from '../../../assets/twitcord.png';
-import {useSelector} from 'react-redux';
+import * as Constants from '../../Utils/Constants';
+import * as Actions from '../../redux/Actions/index';
+import logo from '../../assets/twitcord.png';
 import Tooltip from '@material-ui/core/Tooltip';
 
-/* eslint-disable */
 
 const SideDrawer = () => {
-  const userGeneralInfo = useSelector((state) => state).tweet.userGeneralInfo;
   const history = useHistory();
-  const userId = JSON.parse(
-    localStorage.getItem(Constants.GENERAL_USER_INFO),
-  )?.pk;
+
+  const userGeneralInfo = JSON.parse(
+      localStorage.getItem(Constants.GENERAL_USER_INFO),
+  );
+
+  const userId = userGeneralInfo?.pk;
+
   const navItems = [
-    { id: 0, title:'Home', route:'/homepage',icon:<HomeRoundedIcon className="sd-icon" />},
-    { id: 1, title:'Profile', route:'/profile/' + userId,icon:<PersonRoundedIcon className="sd-icon" />},
-    { id: 2, title:'Notification', route:'/notification',icon:<NotificationsRoundedIcon className="sd-icon" />},
-    { id: 3, title:'Search', route:'/search',icon:<SearchRoundedIcon className="sd-icon" />},
-    { id: 4, title:'Room', route:'/room',icon:<RecordVoiceOverRoundedIcon className="sd-icon" />},
-    { id: 5, title:'Message', route:'/message',icon:<MailOutlineIcon className="sd-icon" />}
-  ]
+    {id: 0, title: 'Home', route: '/homepage',
+      icon: <HomeRoundedIcon className="sd-icon" />},
+    {id: 1, title: 'Profile', route: '/profile/' + userId,
+      icon: <PersonRoundedIcon className="sd-icon" />},
+    {id: 2, title: 'Notification', route: '/notification',
+      icon: <NotificationsRoundedIcon className="sd-icon" />},
+    {id: 3, title: 'Search', route: '/search',
+      icon: <SearchRoundedIcon className="sd-icon" />},
+    {id: 4, title: 'Room', route: '/room',
+      icon: <RecordVoiceOverRoundedIcon className="sd-icon" />},
+    {id: 5, title: 'Message', route: '/message',
+      icon: <MailOutlineIcon className="sd-icon" />},
+  ];
   const dispatch = useDispatch();
   const windowHeight = window['innerHeight'];
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
-  let email;
-  let profileImg;
 
+<<<<<<< HEAD:twitcord_front/src/Components/HomePage/SideDrawer/SideDrawer.js
   // useMemo(
   //   () => {
   //       if (userGeneralInfo == null || userGeneralInfo.userID == null){
@@ -52,12 +57,18 @@ const SideDrawer = () => {
   //   },
   //   []
   // );
-
-  if (userGeneralInfo != null) {
-    email = userGeneralInfo.userEmail;
-    profileImg = userGeneralInfo.userProfile;
-  }
-
+=======
+  useMemo(
+      () => {
+        if (userGeneralInfo == null || userGeneralInfo.pk == null) {
+          setTimeout(() => {
+            history.push('/login');
+          }, 0);
+        }
+      },
+      [],
+  );
+>>>>>>> feature/v0.1/follow:twitcord_front/src/Components/SideDrawer/SideDrawer.js
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -88,18 +99,28 @@ const SideDrawer = () => {
         <img className="sd-logo" src={logo} />
 
         {navItems.map((item) => (
-            <NavLink key={item.id} to={item.route} activeClassName='sd-item-selected' className='sd-item'>
-              {item.icon}
-              <Typography className="sd-title">{item.title}</Typography>
-            </NavLink>
+          <NavLink
+            key={item.id}
+            to={item.route}
+            activeClassName='sd-item-selected'
+            className='sd-item'>
+            {item.icon}
+            <Typography className="sd-title">{item.title}</Typography>
+          </NavLink>
         ))}
-        
+
       </div>
 
       <div className="sd-account" onClick={handleMenuClick}>
-        <Avatar className="sd-avatar" src={profileImg}/>
-        <Tooltip title={email} placement="top-start">
-          <Typography className="sd-user-email sd-title">{email}</Typography>
+        <Avatar
+          className="sd-avatar"
+        />
+        <Tooltip
+          title={userGeneralInfo !== null ? userGeneralInfo.email : ''}
+          placement="top-start">
+          <Typography className="sd-user-email sd-title">
+            {userGeneralInfo !== null ? userGeneralInfo.email : ''}
+          </Typography>
         </Tooltip>
       </div>
       <Menu
