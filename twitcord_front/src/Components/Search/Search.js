@@ -7,6 +7,7 @@ import {SearchBar} from '../SearchBar/SearchBar';
 import Divider from '@material-ui/core/Divider';
 import {UserSearchItem} from '../UserSearchItem/UserSearchItem';
 import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
+import {Link} from 'react-router-dom';
 
 
 const Search = () => {
@@ -17,12 +18,14 @@ const Search = () => {
 
   const userResult = users.map(
       (user) => <div key={user.id}>
-        <UserSearchItem
-          name={user.first_name + ' ' + user.last_name}
-          username={user.username}
-          bio={user.bio}
-          followState={user.status}
-          isPublic={user.is_public}/>
+        <Link to={'/profile/'+user.id}>
+          <UserSearchItem
+            name={user.first_name + ' ' + user.last_name}
+            username={user.username}
+            bio={user.bio}
+            followState={user.status}
+            isPublic={user.is_public}/>
+        </Link>
         <Divider />
       </div>,
   );
