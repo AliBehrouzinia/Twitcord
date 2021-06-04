@@ -129,6 +129,42 @@ export const replyTweet = (data) => {
   );
 };
 
+export const createRoom = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_CREATE_ROOM,
+      Constants.POST_REQUEST_METHOD,
+  );
+};
+
+export const getFollowersList = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_FOLLOWERS_LIST.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const getFollowingsList = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_FOLLOWINGS_LIST.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const getRoomsList = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_ROOMS_LIST.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
 export const getTweet = (id) => {
   return request(
       {},
