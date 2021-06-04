@@ -31,12 +31,15 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class TweetsListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [IsAuthenticated, UsersTweetsPermission]
     serializer_class = serializers.TweetSerializer
+    pagination_class = None
 
     def get_queryset(self):
-        user_id = self.kwargs.get('id')
-        return models.Tweet.objects.filter(user_id=user_id)
+        return models.Tweet.objects.filter(user_id=self.kwargs.get('id'))
+
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.kwargs.get('id'))
 
 
 class ActionOnFollowRequestType(enum.Enum):
@@ -247,6 +250,27 @@ class TweetsLikedListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['id']
         return models.Like.objects.filter(user=user_id)
+
+
+class ReplyTweetCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ReplySerializer
+
+
+class ReplysListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountUserPermission]
+    serializer_class = serializers.ReplySerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
+
+
+class ShowReplyFamilyView(generics.RetrieveAPIView):
+    queryset = models.Tweet.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ShowReplySerializer
+    lookup_url_kwarg = 'id'
 
 
 class RoomMessagesListView(generics.ListAPIView):
