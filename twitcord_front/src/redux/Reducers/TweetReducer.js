@@ -1,12 +1,6 @@
-/* eslint-disable */
-import { ActionTypes } from '../Actions/actionTypes.js';
+import {ActionTypes} from '../Actions/actionTypes.js';
 
 const initialState = {
-  userGeneralInfo: {
-    userID: null,
-    userEmail: '',
-    userProfile: '',
-  },
   signUpInfo: {
     username: '',
     email: '',
@@ -17,9 +11,6 @@ const initialState = {
     email: '',
     password: '',
   },
-  tweetInfo: [],
-  tweetText: '',
-  tweetCharCount: 0,
   userSearchResult: [],
   tweetSearchResult: [],
   profileInfo: {
@@ -32,12 +23,18 @@ const initialState = {
     website: '',
     isPublic: false,
     email: '',
+    has_header_img: false,
+    has_profile_img: false,
+    header_img: '',
+    profile_img_upload_details: '',
+    header_img_upload_details: '',
     followers_count: 0,
     followings_count: 0,
   },
   sideDrawerEnable: true,
   tweetText: '',
   tweetCharCount: 0,
+  searchInput: '',
 };
 
 const tweetReducer = (state = initialState, action) => {
@@ -70,13 +67,14 @@ const tweetReducer = (state = initialState, action) => {
         tweetText: action.tweetText,
         tweetCharCount: action.tweetText.length,
       };
-    case ActionTypes.SET_TWEET_LIST_INFO: {
+
+    case ActionTypes.SET_SEARCH_INPUT: {
       return {
         ...state,
-        tweetInfo: action.tweetInfo,
-
+        searchInput: action.input,
       };
     }
+
     case ActionTypes.SET_SNACKBAR_STATE: {
       return {
         ...state,
@@ -111,7 +109,13 @@ const tweetReducer = (state = initialState, action) => {
           username: action.username,
           isPublic: action.isPublic,
           email: action.email,
+          has_header_img: action.has_header_img,
+          has_profile_img: action.has_profile_img,
           date_joined: action.date_joined,
+          profile_img: action.profile_img,
+          header_img: action.header_img,
+          profile_img_upload_details: action.profile_img_upload_details,
+          header_img_upload_details: action.header_img_upload_details,
           followers_count: action.followers_count,
           followings_count: action.followings_count,
         },

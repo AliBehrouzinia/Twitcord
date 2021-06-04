@@ -25,4 +25,7 @@ urlpatterns = [
     path('create/rooms/', views.RoomView.as_view()),
     path('user/<int:id>/rooms/', views.RoomView.as_view()),
     path('room/<int:id>/', views.RoomDataView.as_view()),
+    path('reply/', views.ReplyTweetCreateView.as_view()),
+    path('replys/<int:id>/', views.ReplysListView.as_view()),
+    path('tweets/<int:id>/family/', views.ShowReplyFamilyView.as_view()),
 ]
