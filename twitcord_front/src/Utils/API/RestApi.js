@@ -125,26 +125,6 @@ export const like = (data) => {
   );
 };
 
-
-export const unlike = (data) => {
-  return request(
-      data,
-      {},
-      {},
-      Constants.URL_UNLIKE,
-      Constants.DELETE_REQUEST_METHOD,
-  );
-};
-<<<<<<< HEAD
-export const like = (data) => {
-  return request(
-      data,
-      {},
-      Constants.URL_LIKE,
-      Constants.POST_REQUEST_METHOD,
-  );
-};
-
 export const unlike = (data) => {
   return request(
       data,
@@ -163,14 +143,3 @@ export const likeList = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
-=======
-
-export const likeList = (data) => {
-  return request(
-    data,
-    {},
-    Constants.URL_LIKE_LIST.replace('{id}', data.id),
-    Constants.GET_REQUEST_METHOD,
-  );
-};
->>>>>>> feature/v0.1/like
