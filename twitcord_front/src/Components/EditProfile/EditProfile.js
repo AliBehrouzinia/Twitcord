@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import './EditProfile.css';
-import image from '../../assets/image.png';
 import {Formik, Form, Field} from 'formik';
 import {Button} from '@material-ui/core';
 import {TextField, CheckboxWithLabel} from 'formik-material-ui';
@@ -17,13 +16,24 @@ import FormGroup from '@material-ui/core/FormGroup';
 import * as Constants from '../../Utils/Constants.js';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import AddAPhotoOutlinedIcon from '@material-ui/icons/AddAPhotoOutlined';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import minioClient from '../../Utils/Minio';
 
+let coverFile = null;
+let photoFile = null;
+let clearCover = false;
+let clearPhoto = false;
 
 const EditProfile = () => {
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
+  let photoInput;
+  let coverInput;
+
   let profileId = -1;
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -33,11 +43,7 @@ const EditProfile = () => {
   }
   const dispatch = useDispatch();
 
-  const requestProfileInfo = (
-      dispatch,
-      setSnackbarAlertMessage,
-      setSnackbarAlertSeverity,
-  ) => {
+  const requestProfileInfo = () => {
     API.getProfileInfo({id: profileId})
         .then((response) => {
           handleProfileInfoResponse(dispatch, response.data);
@@ -46,9 +52,6 @@ const EditProfile = () => {
           showSnackbar(
               Constants.EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE,
               Constants.SNACKBAR_ERROR_SEVERITY,
-              dispatch,
-              setSnackbarAlertMessage,
-              setSnackbarAlertSeverity,
           );
         });
   };
@@ -56,9 +59,6 @@ const EditProfile = () => {
   const showSnackbar = (
       message,
       severity,
-      dispatch,
-      setSnackbarAlertMessage,
-      setSnackbarAlertSeverity,
   ) => {
     setSnackbarAlertMessage(
         message);
@@ -79,26 +79,41 @@ const EditProfile = () => {
     dispatch(Actions.setProfileInfo({
       bio: data.bio,
       birthday: data.birth_date,
-      firstName: data.first_name,
-      lastName: data.last_name,
+      first_name: data.first_name,
+      last_name: data.last_name,
       website: data.website,
       username: data.username,
       isPublic: data.is_public,
+      has_header_img: data.has_header_img,
+      has_profile_img: data.has_profile_img,
+      profile_img: data.profile_img,
+      header_img: data.header_img,
+      profile_img_upload_details: data.profile_img_upload_details,
+      header_img_upload_details: data.header_img_upload_details,
     }));
   };
 
   const onSubmitClicked = (
-      dispatch,
-      profileInfo,
       data,
-      setSnackbarAlertMessage,
-      setSnackbarAlertSeverity,
   ) => {
     if (typeof(data.birthday) === 'number') {
       data.birthday = profileInfo.birthday;
     }
 
+    let hasCover = profileInfo.has_header_img && !clearCover;
+    let hasPhoto = profileInfo.has_profile_img && !clearPhoto;
+
     const isDataChanged = checkDataChanged(profileInfo, data);
+
+    if (coverFile !== null) {
+      uploadPhoto(true);
+      hasCover = true;
+    }
+
+    if (photoFile !== null) {
+      uploadPhoto(false);
+      hasPhoto = true;
+    }
 
     if (isDataChanged) {
       const dataToSend = {
@@ -109,6 +124,8 @@ const EditProfile = () => {
         website: data.website,
         username: data.username,
         is_public: data.isPublic,
+        has_header_img: hasCover,
+        has_profile_img: hasPhoto,
       };
 
       API.updateProfileInfo(profileId, dataToSend)
@@ -117,26 +134,17 @@ const EditProfile = () => {
             showSnackbar(
                 Constants.EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE,
                 Constants.SNACKBAR_SUCCESS_SEVERITY,
-                dispatch,
-                setSnackbarAlertMessage,
-                setSnackbarAlertSeverity,
             );
           }).catch((error) => {
             showSnackbar(
                 Constants.EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE,
                 Constants.SNACKBAR_ERROR_SEVERITY,
-                dispatch,
-                setSnackbarAlertMessage,
-                setSnackbarAlertSeverity,
             );
           });
     } else {
       showSnackbar(
           Constants.EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE,
           Constants.SNACKBAR_ERROR_SEVERITY,
-          dispatch,
-          setSnackbarAlertMessage,
-          setSnackbarAlertSeverity,
       );
     }
   };
@@ -170,22 +178,119 @@ const EditProfile = () => {
       return true;
     }
 
+    if (coverFile !== null) {
+      return true;
+    }
+
+    if (photoFile !== null) {
+      return true;
+    }
+
+    if (clearPhoto || clearCover) {
+      return true;
+    }
+
     return false;
   };
 
-  useEffect(() => {
-    requestProfileInfo(
-        dispatch,
-        setSnackbarAlertMessage,
-        setSnackbarAlertSeverity,
+  const clearCoverImage = () => {
+    clearCover = true;
+    showSnackbar(
+        Constants.COVER_CLEARED,
+        Constants.SNACKBAR_SUCCESS_SEVERITY,
     );
+  };
+
+  const clearPhotoImage = () => {
+    clearPhoto = true;
+    showSnackbar(
+        Constants.PHOTO_CLEARED,
+        Constants.SNACKBAR_SUCCESS_SEVERITY,
+    );
+  };
+
+  const handleUploadProfilePhotoClick = () => {
+    photoInput.click();
+  };
+
+  const handleUploadProfileCoverClick = () => {
+    coverInput.click();
+  };
+
+  const setProfilePhotoDetails = (file)=>{
+    photoFile = file;
+  };
+
+  const setCoverDetails = (file)=>{
+    coverFile = file;
+  };
+
+  const uploadPhoto = (isCover) => {
+    let file;
+    let bucketName;
+    let objectName;
+
+    if (isCover) {
+      file = coverFile;
+      bucketName = profileInfo.header_img_upload_details.bucket_name;
+      objectName = profileInfo.header_img_upload_details.object_name;
+    } else {
+      file = photoFile;
+      bucketName = profileInfo.profile_img_upload_details.bucket_name;
+      objectName = profileInfo.profile_img_upload_details.object_name;
+    }
+
+    minioClient.presignedPutObject(
+        bucketName,
+        objectName,
+        function(err, presignedUrl) {
+          if (err) return console.log(err);
+          API.uploadPhoto({file: file, url: presignedUrl});
+        });
+  };
+
+  useEffect(() => {
+    requestProfileInfo();
   }, []);
 
   return (
     <Grid container direction="column">
       <Grid item className="ep-grid-item" xs>
-        <img src={image} alt="img" className="ep-profile_cover" />
-        <Avatar className="ep-avatar" />
+        <img src={profileInfo.header_img} className="ep-profile_cover" />
+        <Avatar src={profileInfo.profile_img} className="ep-avatar" />
+        <Avatar
+          onClick={handleUploadProfilePhotoClick}
+          className="ep-edit-photo-icon">
+          <AddAPhotoOutlinedIcon />
+        </Avatar>
+        <AddAPhotoIcon
+          onClick={handleUploadProfileCoverClick}
+          className="ep-edit-cover-icon"/>
+        { profileInfo.has_header_img &&
+        <HighlightOffIcon
+          onClick={clearCoverImage}
+          className="ep-clear-cover-icon"/>
+        }
+        { profileInfo.has_profile_img && <Avatar
+          onClick={clearPhotoImage}
+          className="ep-clear-photo-icon">
+          <HighlightOffIcon />
+        </Avatar> }
+        <input
+          type="file"
+          id="file"
+          accept=".jpg"
+          onChange={(e) =>
+            setProfilePhotoDetails(e.target.files[0])}
+          ref={(ref) => photoInput = ref}
+          style={{display: 'none'}}/>
+        <input
+          type="file"
+          id="file"
+          accept="image/*"
+          onChange={(e) => setCoverDetails(e.target.files[0])}
+          ref={(ref) => coverInput = ref}
+          style={{display: 'none'}}/>
       </Grid>
 
       <Grid container>
@@ -232,11 +337,7 @@ const EditProfile = () => {
               onSubmit={(values, {setSubmitting}) => {
                 setSubmitting(false);
                 onSubmitClicked(
-                    dispatch,
-                    profileInfo,
                     {...values, isPublic: !values.isPublic},
-                    setSnackbarAlertMessage,
-                    setSnackbarAlertSeverity,
                 );
               }}
             >

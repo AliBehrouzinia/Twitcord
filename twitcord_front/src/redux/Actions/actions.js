@@ -35,12 +35,12 @@ export const setProfileInfo = (data) => ({
   ...data,
 });
 
-export const setUserGeneralInfo = (data) => ({
-  type: ActionTypes.SET_USER_GENERAL_INFO,
+export const setSideDrawerEnable = (data) => ({
+  type: ActionTypes.SET_SIDE_DRAWER_ENABLE,
   ...data,
 });
 
-export const setSideDrawerEnable = (data) => ({
-  type: ActionTypes.SET_SIDE_DRAWER_ENABLE,
+export const setSearchInput = (data) => ({
+  type: ActionTypes.SET_SEARCH_INPUT,
   ...data,
 });

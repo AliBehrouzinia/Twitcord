@@ -1,9 +1,12 @@
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from .managers import TwitcordUserManager
+from twitcord_Back.settings import minio_client
+from django.db.models import Q
 
 
 class TwitcordUser(AbstractBaseUser, PermissionsMixin):
@@ -12,7 +15,6 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     is_public = models.BooleanField(default=True)
-    profile_img = models.ImageField(default='profiles/defaults/user-profile-image.jpg', upload_to='profiles', null=True)
     username = models.TextField(max_length=15)
     is_admin = True
     first_name = models.CharField(null=True, max_length=50, blank=True)
@@ -21,6 +23,16 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     birth_date = models.DateTimeField(null=True, blank=True)
     website = models.URLField(null=True, blank=True)
 
+    # Profile Image
+    has_profile_img = models.BooleanField(default=False)
+    PROFILE_IMG_DIRECTORY = f"profile_images"
+    PROFILE_IMG_DEFAULT_NAME = "profile_img_default.jpg"
+
+    # Header Image
+    has_header_img = models.BooleanField(default=False)
+    HEADER_IMG_DIRECTORY = "profile_header_images"
+    HEADER_IMG_DEFAULT_NAME = "profile_header_img_default.jpg"
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -28,6 +40,55 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    @property
+    def get_profile_img_name(self):
+        PROFILE_IMG_NAME = f"profile_img_{self.id}.jpg"
+        return PROFILE_IMG_NAME
+
+    @property
+    def profile_img_upload_details(self):
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.PROFILE_IMG_DIRECTORY
+        name = self.get_profile_img_name
+
+        image = {
+            'bucket_name': bucket_name,
+            'object_name': f"{directory}/{name}"
+        }
+        return image
+
+    @property
+    def profile_img(self):
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.PROFILE_IMG_DIRECTORY
+        default_name = self.PROFILE_IMG_DEFAULT_NAME
+        name = self.get_profile_img_name if self.has_profile_img else default_name
+        object_name = f"{directory}/{name}"
+
+        url = minio_client.get_presigned_url("GET", bucket_name, object_name)
+        return url
+
+    @property
+    def get_header_img_name(self):
+        header_img_name = f"profile_header_img_{self.id}.jpg"
+        return header_img_name
+
+    @property
+    def header_img_upload_details(self):
+        image = {
+            'bucket_name': settings.MEDIA_BUCKET_NAME,
+            'object_name': f"{self.HEADER_IMG_DIRECTORY}/{self.get_header_img_name}"
+        }
+        return image
+
+    @property
+    def header_img(self):
+        default_name = self.HEADER_IMG_DEFAULT_NAME
+        name = self.get_header_img_name if self.has_header_img else default_name
+        object_name = f"{self.HEADER_IMG_DIRECTORY}/{name}"
+        url = minio_client.get_presigned_url("GET", settings.MEDIA_BUCKET_NAME, object_name)
+        return url
 
     @property
     def is_superuser(self):
@@ -49,25 +110,34 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Tweet(models.Model):
-    parent = models.ForeignKey("Tweet", on_delete=models.CASCADE, default=None, null=True, blank=True)
+    parent = models.ForeignKey("Tweet", related_name='reply_to', on_delete=models.CASCADE, default=None, null=True,
+                               blank=True)
+    retweet_from = models.ForeignKey("Tweet", related_name='retweet_of', on_delete=models.CASCADE, null=True,
+                                     blank=True)
     is_reply = models.BooleanField(default=False)
     user = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
-    content = models.TextField(max_length=280)
+    content = models.TextField(max_length=280, null=True)
     create_date = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        constraints = [
+            models.CheckConstraint(check=((Q(retweet_from__isnull=True) & Q(content__isnull=False)) |
+                                          Q(retweet_from__isnull=False)), name='content_null',)
+        ]
+
     def __str__(self):
-        return self.content
+        return f"{self.id}|{self.content}"
 
 
 class UserFollowing(models.Model):
-    following_TYPES = [
-        ('family', 'family'),
-        ('friend', 'friend'),
-        ('close friend', 'close friend'),
-        ('celebrity', 'celebrity'),
-        ('unfamiliar person', 'unfamiliar person'),
-    ]
-    type = models.CharField(max_length=30, choices=following_TYPES, default='unfamiliar person')
+
+    class FollowingType(models.TextChoices):
+        FAMILY = 'Family', _('family')
+        FRIEND = 'Friend', _('friend')
+        CLOSE_FRIEND = 'Close_friend', _('close friend')
+        UNFAMILIAR_PERSON = 'Unfamiliar_person', _('unfamiliar person')
+
+    type = models.CharField(max_length=30, choices=FollowingType.choices, default=FollowingType.UNFAMILIAR_PERSON)
     user = models.ForeignKey("TwitcordUser", related_name="following", on_delete=models.CASCADE)
     following_user = models.ForeignKey("TwitcordUser", related_name="followers", on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -94,3 +164,26 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ("user", "tweet")
+
+
+class Room(models.Model):
+    owner = models.ForeignKey(TwitcordUser, related_name="created_rooms", on_delete=models.CASCADE)
+    title = models.CharField(max_length=20)
+    users = models.ManyToManyField("TwitcordUser", related_name="rooms", blank=True)
+
+    def __str__(self):
+        return f"{self.title}"
+
+
+class RoomMessage(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    sender = models.ForeignKey(TwitcordUser, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    content = models.TextField()
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.content}"

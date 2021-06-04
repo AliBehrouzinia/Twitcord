@@ -31,12 +31,15 @@ class ProfileDetailsView(generics.RetrieveUpdateAPIView):
 
 
 class TweetsListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    permission_classes = [IsAuthenticated, UsersTweetsPermission]
     serializer_class = serializers.TweetSerializer
+    pagination_class = None
 
     def get_queryset(self):
-        user_id = self.kwargs.get('id')
-        return models.Tweet.objects.filter(user_id=user_id)
+        return models.Tweet.objects.filter(user_id=self.kwargs.get('id'))
+
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.kwargs.get('id'))
 
 
 class ActionOnFollowRequestType(enum.Enum):
@@ -94,7 +97,7 @@ class FollowingRequestView(generics.CreateAPIView):
         request_to_user = get_object_or_404(models.TwitcordUser, id=data['request_to'])
 
         if request_to_user.is_public:
-            follow_user_data = {"user_id": data['request_from'], "following_user_id": data['request_to']}
+            follow_user_data = {"user": data['request_from'], "following_user": data['request_to']}
             serializer = serializers.FollowingsSerializer(data=follow_user_data)
             if serializer.is_valid(True):
                 serializer.save()
@@ -138,7 +141,7 @@ class AnswerFollowRequestView(generics.UpdateAPIView):
             return HttpResponseBadRequest("error: problem in query params.")
 
         if action == ActionOnFollowRequestType.accept.name:
-            data = {'user_id': follow_request.request_from_id, 'following_user_id': follow_request.request_to_id}
+            data = {'user': follow_request.request_from.id, 'following_user': follow_request.request_to.id}
             serializer = serializers.FollowingsSerializer(data=data)
             if serializer.is_valid(True):
                 serializer.save()
@@ -151,10 +154,12 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
     """Delete a follow request"""
     permission_classes = [IsAuthenticated, DeleteFollowRequestPermission]
 
-    def get_object(self):
-        follow_request = get_object_or_404(models.FollowRequest, id=self.kwargs.get('id'))
-        self.check_object_permissions(request=self.request, obj=follow_request)
-        return follow_request
+    def delete(self, request, *args, **kwargs):
+        user = self.request.user.id
+        following = self.kwargs.get('id')
+        instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
+        instance.delete()
+        return Response()
 
 
 class FollowCountView(generics.ListAPIView):
@@ -191,12 +196,17 @@ class GlobalUserSearchList(generics.ListAPIView):
 
 class GlobalTweetSearchList(generics.ListAPIView):
     serializer_class = serializers.GlobalTweetSearchSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     pagination_class = paginations.MyPagination
 
     def get_queryset(self):
         query = self.request.query_params.get('query', None)
-        tweets = models.Tweet.objects.filter(Q(content__icontains=query)).order_by('-create_date')
+        user = self.request.user.id
+        followings = models.UserFollowing.objects.filter(user_id=user)
+        followings_id = models.TwitcordUser.objects.filter(pk__in=followings)
+        tweets = models.Tweet.objects.filter(Q(content__icontains=query, user__is_public=True) |
+                                             Q(content__icontains=query, user_id__in=followings_id, user__is_public
+                                             =False)).order_by('-create_date')
         return tweets
 
 
@@ -240,3 +250,24 @@ class TweetsLikedListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['id']
         return models.Like.objects.filter(user=user_id)
+
+
+class ReplyTweetCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ReplySerializer
+
+
+class ReplysListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountUserPermission]
+    serializer_class = serializers.ReplySerializer
+    
+    def get_queryset(self):
+        user_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
+
+
+class ShowReplyFamilyView(generics.RetrieveAPIView):
+    queryset = models.Tweet.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ShowReplySerializer
+    lookup_url_kwarg = 'id'

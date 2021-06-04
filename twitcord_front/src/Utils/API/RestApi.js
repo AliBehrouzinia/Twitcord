@@ -5,7 +5,6 @@ const instance = axios.create({
   baseURL: Constants.BASE_URL,
   responseType: 'json',
   headers: {
-    'Authorization': 'token ' + localStorage.getItem('token'),
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
@@ -27,6 +26,9 @@ const request = (data, params, url, method) => {
       url: url,
       params: params,
       data,
+      headers: {
+        'Authorization': 'token ' + localStorage.getItem('token'),
+      },
     });
   } else {
     return withoutAuthInstance({
@@ -106,5 +108,23 @@ export const userGeneralInfo = (data) => {
       {},
       Constants.URL_USER_GENERAL_INFO,
       Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const uploadPhoto = (data) => {
+  return request(
+      data.file,
+      {},
+      data.url,
+      'PUT',
+  );
+};
+
+export const replyTweet = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_REPLY,
+      Constants.POST_REQUEST_METHOD,
   );
 };
