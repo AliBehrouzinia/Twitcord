@@ -48,16 +48,6 @@ const SideDrawer = () => {
   const windowHeight = window['innerHeight'];
   const [anchorEl, setAnchorEl] = useState(null);
 
-<<<<<<< HEAD:twitcord_front/src/Components/HomePage/SideDrawer/SideDrawer.js
-  // useMemo(
-  //   () => {
-  //       if (userGeneralInfo == null || userGeneralInfo.userID == null){
-  //         history.push('/login')
-  //       }
-  //   },
-  //   []
-  // );
-=======
   useMemo(
       () => {
         if (userGeneralInfo == null || userGeneralInfo.pk == null) {
@@ -68,7 +58,6 @@ const SideDrawer = () => {
       },
       [],
   );
->>>>>>> feature/v0.1/follow:twitcord_front/src/Components/SideDrawer/SideDrawer.js
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);

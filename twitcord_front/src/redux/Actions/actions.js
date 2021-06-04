@@ -35,7 +35,6 @@ export const setProfileInfo = (data) => ({
   ...data,
 });
 
-<<<<<<< HEAD
 export const setUserGeneralInfo = (data) => ({
   type: ActionTypes.SET_USER_GENERAL_INFO,
   ...data,
@@ -46,8 +45,6 @@ export const setfollowcount = (data) => ({
   ...data,
 });
 
-=======
->>>>>>> feature/v0.1/follow
 export const setSideDrawerEnable = (data) => ({
   type: ActionTypes.SET_SIDE_DRAWER_ENABLE,
   ...data,
