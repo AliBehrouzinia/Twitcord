@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState} from 'react';
 import {useHistory, NavLink} from 'react-router-dom';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import NotificationsRoundedIcon from
@@ -44,14 +44,14 @@ const SideDrawer = () => {
   let email;
   let profileImg;
 
-  useMemo(
-    () => {
-        if (userGeneralInfo == null || userGeneralInfo.userID == null){
-          history.push('/login')
-        }
-    },
-    []
-  );
+  // useMemo(
+  //   () => {
+  //       if (userGeneralInfo == null || userGeneralInfo.userID == null){
+  //         history.push('/login')
+  //       }
+  //   },
+  //   []
+  // );
 
   if (userGeneralInfo != null) {
     email = userGeneralInfo.userEmail;

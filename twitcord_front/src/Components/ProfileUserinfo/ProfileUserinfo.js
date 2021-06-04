@@ -19,6 +19,8 @@ import Followings from '../Follows/Followings';
 import Button from '@material-ui/core/Button';
 import {useParams} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 
 /* eslint-disable */
 
@@ -131,31 +133,65 @@ const ProfileUserinfo = () => {
   };
 
   return (
-    <Grid className="user-info" >
-      <Grid container direction="column">
-        <Grid item className="grid-item">
-          <img src={image} alt="img" className="profile_cover" />
-          <Avatar className="avatar" />
-        </Grid>
-      </Grid>
-      <Grid container xs={12}>
-        <Grid item className="grid-info1" xs={8}>
-          <Grid item className="info1">
-            <Typography variant="h5" className="grid-username">
-              {profileInfo.username}
-            </Typography>
-            <Typography className="grid-bio">{profileInfo.bio}</Typography>
-            <Typography className="grid-joined">
-							joined
-              {'    ' + dt + '    ' + monthNumberToLabelMap[month] + '    ' + year}
-            </Typography>
-          </Grid>
-          <Grid container item spacing={2} className="grid-follow-container">
+    <Box >
+      <Box className="position-relative">
+        <img src={image} alt="img" className="profile_cover" />
+        <Avatar className="p-avatar" />
+      </Box>
+      <Box className="text-right p-3">
+            {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
+						<Button
+            onClick={handleEditProfileClick}
+            variant="contained"
+            color="primary">
+                edit profile
+          </Button>  
+					) : (
+             Situation == 'not following' ?(
+                <Button
+                  className="usi-follow-button"
+                  color="primary"
+                  onClick={() => handlefollow(profileInfo.id)}
+                  variant="contained">
+                     follow
+                </Button>) : Situation == 'following' ? (
+                <Button
+                  className="usi-follow-button"
+                  color="primary"
+                  onClick={() => handleunfollow(profileInfo.id)}
+                  variant="contained">
+                     unfollow
+                </Button>) : Situation == 'Requested' ?(
+                    <Button
+                      className="usi-follow-button"
+                      color="primary"
+                      onClick={() => handleunrequest(profileInfo.id)}
+                      variant="contained">
+                     pending
+                    </Button>) : (<button/>)
+					)}
+          </Box>
 
-          <Grid item>
-            <Typography type="followers" className="followers" onClick={handleOpenfollowers}>
+      <Box className="px-3">
+        <Typography className="fs-25 b-900 lh-1">
+          {profileInfo.firstName + ' ' + profileInfo.lastName}
+        </Typography>
+        <Typography className="color-gray">
+          @{profileInfo.username}
+        </Typography>
+        <Typography className="mt-3">{profileInfo.bio}</Typography>
+        <Box display="flex" alignItems="center" className="color-gray">
+          <DateRangeIcon fontSize="small" className="mr-1"/>
+           Joined
+          { ' ' + dt + ' ' +
+          monthNumberToLabelMap[month] +
+          ' ' + year}
+        </Box>
+
+        <Box display="flex" className="mt-2">
+            <Box type="followers" className="followers" onClick={handleOpenfollowers}>
               {'followers' +'   '+ followcount.followers_count}
-            </Typography>
+            </Box>
             <Modal
               open={open}
               onClose={handleClose}
@@ -170,12 +206,9 @@ const ProfileUserinfo = () => {
             >
               <Fade in={open}>{body}</Fade>
             </Modal>
-            </Grid>
-
-            <Grid item>
-            <Typography type="followings" className="followings" onClick={handleOpenfollowing}>
+            <Box type="followings" className="followings" onClick={handleOpenfollowing}>
               {'followings' +'   '+ followcount.followings_count}
-            </Typography>
+            </Box>
             <Modal
               open={open}
               onClose={handleClose}
@@ -191,14 +224,14 @@ const ProfileUserinfo = () => {
             >
               <Fade in={open}>{body}</Fade>
             </Modal>
-            </Grid>
+            </Box>
 
             {profileInfo.is_public === false && userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email?(
             <Grid item>
 
-                <Typography type="requests" className="requests" onClick={handlerequests}>
+                <Box type="requests" className="requests" onClick={handlerequests}>
               requests
-                </Typography>
+                </Box>
                 <Modal
                   open={open}
                   onClose={handleClose}
@@ -215,46 +248,9 @@ const ProfileUserinfo = () => {
                   <Fade in={open}>{body}</Fade>
                 </Modal>
                 </Grid>):null}
-          </Grid>
-        </Grid>
-        <Grid item xs={4}className="grid-info2">
-          <Grid className="button-edit">
-            {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
-						<Button variant="outlined" color="primary" className="edit-button" onClick={handleEditProfileClick}>edit</Button>
-					) : (
-             Situation == 'not following' ?(
-              <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
-                <Button
-                  className="usi-follow-button"
-                  color="primary"
-                  onClick={() => handlefollow(profileInfo.id)}
-                  variant="outlined">
-                     follow
-                </Button>
-              </Grid>) : Situation == 'following' ? (
-              <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
-                <Button
-                  className="usi-follow-button"
-                  color="primary"
-                  onClick={() => handleunfollow(profileInfo.id)}
-                  variant="outlined">
-                     unfollow
-                </Button>
-              </Grid>) : Situation == 'Requested' ?(
-                  <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
-                    <Button
-                      className="usi-follow-button"
-                      color="primary"
-                      onClick={() => handleunrequest(profileInfo.id)}
-                      variant="outlined">
-                     pending
-                    </Button>
-                  </Grid>) : (<button/>)
-					)}
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+          </Box>
+         
+      </Box>
   );
 };
 export default ProfileUserinfo;
