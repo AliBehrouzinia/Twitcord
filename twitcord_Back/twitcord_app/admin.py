@@ -62,6 +62,11 @@ class LikeAdmin(admin.ModelAdmin):
 admin.site.register(Like, LikeAdmin)
 
 
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ('title', 'owner')
+
+
 @admin.register(RoomMessage)
 class RoomMessageAdmin(admin.ModelAdmin):
     list_display = ('created_at', 'sender', 'room', 'content')
