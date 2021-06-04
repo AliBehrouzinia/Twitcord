@@ -1,3 +1,9 @@
+#counter-container {
+  text-align: left;
+  width: 100%;
+  position: relative;
+  margin-top:  10px !important;
+}
 
 .cc-circle {
   fill: none;
@@ -6,6 +12,12 @@
 
 #gray {
   stroke: lightgray;
+}
+
+.cc-svg {
+  width: 40px;
+  height: 40px;
+  top: 5px;
 }
 
 .w-40 {
