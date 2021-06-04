@@ -164,3 +164,12 @@ export const getRoomsList = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const getmessages = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_MESSAGES.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
