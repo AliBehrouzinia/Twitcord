@@ -7,12 +7,12 @@ export const POST_REQUEST_METHOD = 'POST';
 export const GET_REQUEST_METHOD = 'GET';
 export const PATCH_REQUEST_METHOD = 'PATCH';
 export const DELETE_REQUEST_METHOD = 'DELETE';
+export const PUT_REQUEST_METHOD = 'PUT';
 
 // Urls
 export const URL_POST_TWEET = '/tweets/';
 export const URL_SIGN_UP = '/rest-auth/registration/';
 export const URL_LOG_IN = '/rest-auth/login/';
-export const URL_TWEET_LIST = '/tweets/{id}/';
 export const URL_SEARCH_USER = '/search/user/';
 export const URL_SEARCH_TWEET = '/search/tweet/';
 export const URL_PROFILE_INFO = '/profile/{id}/header/';
@@ -20,6 +20,11 @@ export const URL_USER_GENERAL_INFO = '/rest-auth/user/';
 export const URL_LIKE= '/like/tweet/{id}/';
 export const URL_UNLIKE= '/like/tweet/{id}/';
 export const URL_LIKE_LIST= '/tweets/like/user/{id}/';
+export const URL_CREATE_ROOM= '/create/rooms/';
+export const URL_FOLLOWINGS_LIST= '/followings/list/{id}/';
+export const URL_FOLLOWERS_LIST= '/followers/list/{id}/';
+export const URL_ROOMS_LIST= '/user/{id}/rooms/';
+export const URL_REPLY = '/reply/';
 
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;
@@ -35,6 +40,8 @@ export const EDIT_PROFILE_UPDATE_PROFILE_SUCCESS_MESSAGE = 'Profile updated succ
 export const EDIT_PROFILE_UPDATE_PROFILE_NO_CHANGE_MESSAGE = 'Please change at least one field to update!';
 export const EDIT_PROFILE_UPDATE_PROFILE_ERROR_MESSAGE = 'Profile update failed!';
 export const EDIT_PROFILE_FETCH_PROFILE_ERROR_MESSAGE = 'Profile info fetch failed!';
+export const COVER_CLEARED = 'Cover cleared. Press submit to update profile';
+export const PHOTO_CLEARED = 'Photo cleared. Press submit to update profile';
 
 export const SNACKBAR_ERROR_SEVERITY = 'error';
 export const SNACKBAR_SUCCESS_SEVERITY = 'success';
