@@ -115,3 +115,32 @@ export const userGeneralInfo = (data) => {
     Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const like = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_LIKE,
+      Constants.POST_REQUEST_METHOD,
+  );
+};
+
+
+export const unlike = (data) => {
+  return request(
+      data,
+      {},
+      {},
+      Constants.URL_UNLIKE,
+      Constants.DELETE_REQUEST_METHOD,
+  );
+};
+
+export const likeList = (data) => {
+  return request(
+    data,
+    {},
+    Constants.URL_LIKE_LIST.replace('{id}', data.id),
+    Constants.GET_REQUEST_METHOD,
+  );
+};

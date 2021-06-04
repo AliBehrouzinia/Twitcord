@@ -7,6 +7,8 @@ import Tab from '@material-ui/core/Tab';
 import {useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
+import ProfileTweetlist from '../ProfileTweetlist/ProfileTweetlist';
+import LikeList from '../LikeList/LikeList';
 
 const Profile = () => {
   const params = useParams();
@@ -53,9 +55,9 @@ const Profile = () => {
       </Box>
       <Divider />
       <Box>
-        {tabSelected == 0 && <p>tweets</p> }
+        {tabSelected == 0 && <ProfileTweetlist></ProfileTweetlist> }
         {tabSelected == 1 && <p>replys</p> }
-        {tabSelected == 2 && <p>likes</p> }
+        {tabSelected == 2 && <LikeList></LikeList>}
         {tabSelected == 3 && <p>rooms</p> }
       </Box>
     </Box>
