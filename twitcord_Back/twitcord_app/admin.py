@@ -70,3 +70,4 @@ class RoomAdmin(admin.ModelAdmin):
 @admin.register(RoomMessage)
 class RoomMessageAdmin(admin.ModelAdmin):
     list_display = ('created_at', 'sender', 'room', 'content')
+
