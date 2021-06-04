@@ -250,3 +250,54 @@ class TweetsLikedListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['id']
         return models.Like.objects.filter(user=user_id)
+
+
+class RoomView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    serializer_class = serializers.RoomSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['id']
+        result = []
+        rooms = models.Room.objects.all()
+        for room in rooms:
+            users_of_rooms = []
+            id_of_users = []
+            for item in room.users.all():
+                users_of_rooms.append(item)
+            for item in users_of_rooms:
+                id_of_users.append(item.id)
+            if user_id in id_of_users or room.owner.id == user_id:
+                result.append(room)
+        return result
+
+
+class RoomDataView(generics.ListAPIView):
+    permission_class = IsAuthenticated
+    serializer_class = serializers.RoomSerializer
+
+    def get_queryset(self):
+        room_id = self.kwargs['id']
+        room = models.Room.objects.filter(pk=room_id)
+        return room
+
+
+class ReplyTweetCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ReplySerializer
+
+
+class ReplysListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountUserPermission]
+    serializer_class = serializers.ReplySerializer
+    
+    def get_queryset(self):
+        user_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
+
+
+class ShowReplyFamilyView(generics.RetrieveAPIView):
+    queryset = models.Tweet.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ShowReplySerializer
+    lookup_url_kwarg = 'id'

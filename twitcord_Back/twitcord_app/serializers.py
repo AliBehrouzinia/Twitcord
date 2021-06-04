@@ -15,11 +15,14 @@ class UserSerializer(serializers.ModelSerializer):
 class CustomUserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
-        fields = ('email', 'pk', 'profile_img')
+        fields = ('email', 'pk')
         read_only_fields = ('email',)
 
 
 class ProfileDetailsViewSerializer(serializers.ModelSerializer):
+    profile_img_upload_details = serializers.SerializerMethodField()
+    header_img_upload_details = serializers.SerializerMethodField()
+
     def to_representation(self, instance):
         result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
         result['followings_count'] = UserFollowing.objects.filter(user_id=instance.id).count()
@@ -46,9 +49,23 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TwitcordUser
-        fields = ('email', 'username', 'profile_img', 'is_active', 'date_joined', 'first_name', 'last_name',
-                  'birth_date', 'bio', 'website', 'is_public')
-        read_only_fields = ('email', )
+        fields = ('email', 'username', 'is_active', 'date_joined','first_name', 'last_name', 'birth_date', 'bio',
+                  'website', 'is_public', 'has_profile_img', 'profile_img', 'profile_img_upload_details',
+                  'has_header_img', 'header_img', 'header_img_upload_details')
+        read_only_fields = ('email', 'profile_img', 'profile_img_upload_details',
+                            'header_img', 'header_img_upload_details')
+
+    def get_profile_img_upload_details(self, obj):
+        if self.context['request'].user.id == obj.id:
+            return obj.profile_img_upload_details
+        else:
+            return None
+
+    def get_header_img_upload_details(self, obj):
+        if self.context['request'].user.id == obj.id:
+            return obj.header_img_upload_details
+        else:
+            return None
 
 
 class TweetSerializer(serializers.ModelSerializer):
@@ -56,6 +73,9 @@ class TweetSerializer(serializers.ModelSerializer):
         model = Tweet
         fields = ['id', 'content', 'create_date']
         read_only_fields = ['id', 'create_date']
+        extra_kwargs = {
+            'content': {'required': True}
+        }
 
     def to_representation(self, instance):
         result = super(TweetSerializer, self).to_representation(instance)
@@ -74,7 +94,6 @@ class FollowersRequestsSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(FollowersRequestsSerializer, self).to_representation(instance)
         from_user = instance.request_from
-        result['profile_img'] = from_user.profile_img.url
         result['username'] = from_user.username
         result['email'] = from_user.email
         result['first_name'] = from_user.first_name
@@ -103,7 +122,6 @@ class ListOfFollowingsSerializer(serializers.ModelSerializer):
         result = super(ListOfFollowingsSerializer, self).to_representation(instance)
         user = instance.following_user
         result['id'] = result.pop('following_user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['email'] = user.email
         result['first_name'] = user.first_name
@@ -121,7 +139,6 @@ class ListOfFollowersSerializer(serializers.ModelSerializer):
         result = super(ListOfFollowersSerializer, self).to_representation(instance)
         user = instance.user
         result['id'] = result.pop('user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['email'] = user.email
         result['first_name'] = user.first_name
@@ -148,7 +165,7 @@ class FollowCountSerializer(serializers.ModelSerializer):
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'profile_img', 'email', 'bio']
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'email', 'bio']
 
     def to_representation(self, instance):
         result = super(GlobalUserSearchSerializer, self).to_representation(instance)
@@ -182,7 +199,6 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         result['is_liked'] = is_liked
         result['id'] = result.pop('user')
-        result['profile_img'] = user.profile_img.url
         result['username'] = user.username
         result['first_name'] = user.first_name
         result['last_name'] = user.last_name
@@ -221,3 +237,129 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
+
+
+class RoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super(RoomSerializer, self).to_representation(instance)
+        users = result.pop('users')
+        owner = result.pop('owner')
+        result['owner'] = {}
+        admin = TwitcordUser.objects.filter(id=owner)
+        admin_object = admin[0]
+        result['owner']['id'] = admin_object.id
+        result['owner']['first_name'] = admin_object.first_name
+        result['owner']['last_name'] = admin_object.last_name
+        result['owner']['username'] = admin_object.username
+        result['members'] = {}
+        if users is not None:
+            counter = 1
+            for item in users:
+                user = TwitcordUser.objects.filter(id=item)
+                main_user = user[0]
+                result['members'][counter] = {}
+                result['members'][counter]['id'] = main_user.id
+                result['members'][counter]['first_name'] = main_user.first_name
+                result['members'][counter]['last_name'] = main_user.last_name
+                result['members'][counter]['username'] = main_user.username
+                counter += 1
+        values = result['members'].values()
+        result['members'] = list(values)
+        return result
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    is_reply = serializers.BooleanField()
+    parent = serializers.PrimaryKeyRelatedField(queryset=Tweet.objects.all())
+
+    class Meta:
+        model = Tweet
+        fields = '__all__'
+
+    def to_internal_value(self, data):
+        data['user'] = self.context['request'].user.id
+        data['is_reply'] = True
+        return super().to_internal_value(data)
+
+
+class ShowReplySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tweet
+        fields = ['id']
+
+    def to_representation(self, instance):
+        result = super(ShowReplySerializer, self).to_representation(instance)
+        parent_set = []
+        if instance.parent is None:
+            result['parent_id'] = None
+        else:
+            result['parent_id'] = instance.parent.id
+            parent_set = Tweet.objects.filter(id=instance.parent.id)
+        request_user = self.context['request'].user.id
+        likes = Like.objects.filter(user=request_user)
+        liked_tweets = []
+        for item in likes:
+            temp = Tweet.objects.filter(id=item.tweet.id)
+            liked_tweets.append(temp)
+        if len(parent_set) != 0:
+            parent = parent_set[0]
+            result['parent_content'] = parent.content
+            result['parent_create_date'] = serializers.DateTimeField().to_representation(parent.create_date)
+            result['parent_user_is_public'] = parent.user.is_public
+            result['parent_user_username'] = parent.user.username
+            result['parent_user_email'] = parent.user.email
+            result['parent_user_firstname'] = parent.user.first_name
+            result['parent_user_lastname'] = parent.user.last_name
+            result['parent_user_email'] = parent.user.email
+            for item in liked_tweets:
+                if parent == item[0]:
+                    result['parent_is_liked'] = True
+                    break
+            else:
+                result['parent_is_liked'] = False
+        result['tweet_id'] = instance.id
+        result['tweet_content'] = instance.content
+        result['tweet_create_date'] = serializers.DateTimeField().to_representation(instance.create_date)
+        result['tweet_user_is_public'] = instance.user.is_public
+        result['tweet_user_username'] = instance.user.username
+        result['tweet_user_email'] = instance.user.email
+        result['tweet_user_firstname'] = instance.user.first_name
+        result['tweet_user_lastname'] = instance.user.last_name
+        result['tweet_user_email'] = instance.user.email
+        for item in liked_tweets:
+            if instance == item[0]:
+                result['tweet_is_liked'] = True
+                break
+        else:
+            result['tweet_is_liked'] = False
+        tweets = Tweet.objects.filter(parent_id=instance.id)
+        result['children'] = {}
+        counter = 1
+        if tweets is not None:
+            for item in tweets:
+                result['children'][counter] = {}
+                result['children'][counter]['id'] = item.id
+                result['children'][counter]['username'] = item.user.username
+                result['children'][counter]['email'] = item.user.email
+                result['children'][counter]['first_name'] = item.user.first_name
+                result['children'][counter]['last_name'] = item.user.last_name
+                result['children'][counter]['is_public'] = item.user.is_public
+                result['children'][counter]['content'] = item.content
+                result['children'][counter]['create_date'] = serializers.DateTimeField().to_representation(item.
+                                                                                                           create_date)
+                for i in liked_tweets:
+                    if item == i[0]:
+                        result['children'][counter]['child_is_liked'] = True
+                        break
+                else:
+                    result['children'][counter]['child_is_liked'] = False
+                counter += 1
+        result.pop('id')
+        values = result['children'].values()
+        result['children'] = list(values)
+        return result

@@ -10,11 +10,12 @@ class TwitcordUserAdmin(UserAdmin):
     add_form = TwitcordUserCreationForm
     form = TwitcordUserChangeForm
     model = TwitcordUser
-    list_display = ('email', 'date_joined', 'profile_img')
+    list_display = ('email', 'date_joined', 'profile_img', 'header_img')
     list_filter = ('email', 'date_joined')
     fieldsets = (
-        (None, {'fields': ('email', 'password','first_name','last_name','bio','website','birth_date')}),
-        ('Permissions', {'fields': ('date_joined', 'is_public', 'profile_img')}),
+        (None, {'fields': ('email', 'password','first_name','last_name','bio','website','birth_date',
+                           'has_profile_img', 'has_header_img')}),
+        ('Permissions', {'fields': ('date_joined', 'is_public')}),
     )
     add_fieldsets = (
         (None, {
@@ -61,6 +62,12 @@ class LikeAdmin(admin.ModelAdmin):
 admin.site.register(Like, LikeAdmin)
 
 
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ('title', 'owner')
+
+
 @admin.register(RoomMessage)
 class RoomMessageAdmin(admin.ModelAdmin):
     list_display = ('created_at', 'sender', 'room', 'content')
+
