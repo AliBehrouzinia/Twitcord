@@ -269,6 +269,7 @@ class RoomSerializer(serializers.ModelSerializer):
                 counter += 1
         values = result['members'].values()
         result['members'] = list(values)
+        return result
 
 
 class ReplySerializer(serializers.ModelSerializer):
