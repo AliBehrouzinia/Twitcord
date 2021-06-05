@@ -17,12 +17,15 @@ import * as helper from '../../Utils/helper';
 import './TweetPage.css';
 import {ReplyModal} from '../ReplyModal/ReplyModal';
 import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const TweetPage = () => {
   const params = useParams();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [tweet, setTweet] = useState([]);
+  const [tweet, setTweet] = useState({});
   const [open, setOpen] = useState(false);
+  const [snackOpen, setSnackOpen] = useState(false);
 
   const openReplyModal = () => {
     setOpen(true);
@@ -34,12 +37,10 @@ const TweetPage = () => {
 
   useEffect(()=>{
     API.getTweet(params.id).then((res)=> {
-      setTweet(res.data);
-      setTimeout(() => {
-        console.log(tweet);
-      }, 0);
+      setTweet({...res.data, name: res.data.first_name +
+         ' ' + res.data.last_name});
     }).catch((error)=>{
-      console.log(error);
+      setSnackOpen(true);
     });
   }, []);
 
@@ -57,6 +58,16 @@ const TweetPage = () => {
 
   return (
     <div>
+      <Snackbar
+        open={snackOpen}
+        onClose={()=>setSnackOpen(false)}
+        autoHideDuration={3000}
+      >
+        <MuiAlert elevation={6} variant="filled"
+          onClose={()=> setSnackOpen(false)} severity="error">
+        Problem loading the tweet page
+        </MuiAlert>
+      </Snackbar>
       <Box>
         <Tooltip title="back" className="m-2">
           <IconButton onClick={handleBack} aria-label="close">
@@ -69,17 +80,17 @@ const TweetPage = () => {
           <Box display="flex" justifyContent="space-between"
             alignItems="center">
             <Box display="flex">
-              <Avatar alt={tweet.tweet_user_username}
-                title={tweet.tweet_user_username}
+              <Avatar alt={tweet.username}
+                title={tweet.username}
                 className="w-48 h-48"
                 src="/static/images/avatar/1.jpg" />
               <Box display="flex" flexDirection="column" justifyContent="center"
                 className="ml-2">
                 <Box className="b-600">
-                  {tweet.tweet_user_firstname + ' ' + tweet.tweet_user_lastname}
+                  {tweet.name}
                 </Box>
                 <Box className="text-gray mt-1">
-                  {'@' + tweet.tweet_user_username}</Box>
+                  {'@' + tweet.username}</Box>
               </Box>
             </Box>
             <Box className="mr--6">
@@ -99,10 +110,10 @@ const TweetPage = () => {
             </Menu>
           </Box>
           <Box className="mt-3">
-            {tweet.tweet_content}
+            {tweet.content}
           </Box>
           <Box className="mt-4 text-gray fs-14">
-            {helper.extractTime(tweet.tweet_create_date)}</Box>
+            {helper.extractTime(tweet.create_date)}</Box>
           <Divider className="mt-3"/>
           <Box display="flex" className="py-3">
             <Box>{0} <Box component="span"
@@ -127,7 +138,15 @@ const TweetPage = () => {
       </Box>
       {tweet.children?.map((child) => (
         <Box key={child.id}>
-          <TweetSearchItem tweet={child}></TweetSearchItem>
+          <TweetSearchItem
+            id={child.id}
+            name={child.first_name + ' ' + child.last_name}
+            username={child.username}
+            createDate={child.create_date}
+            content={child.content}
+            userId={child.user}
+            profileImg={child.profile_img}
+            isPublic={child.is_public}/>
           <Divider />
         </Box>
       ))}

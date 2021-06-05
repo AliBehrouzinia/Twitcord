@@ -19,6 +19,9 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Hidden from '@material-ui/core/Hidden';
 import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
 
 const useStyles = makeStyles((theme) => ({
   scrollPaper: {
@@ -42,6 +45,7 @@ export const ReplyModal = (props) => {
   const [isSubmitting, setSubmitting] = useState(false);
   const {onClose, open} = props;
   const [tweetInfo, setTweetInfo] = useState('');
+  const [snackOpen, setSnackOpen] = useState(false);
 
   const isSubmitDisable = () =>
     (tweetInfo.length==0 || tweetInfo.length >= Constants.TWEET_CHAR_LIMIT);
@@ -58,6 +62,7 @@ export const ReplyModal = (props) => {
 
   const replyTweet = () => {
     const reqData = {content: tweetInfo, parent: props.tweet.id};
+    console.log(props.tweet);
     if (!isSubmitting) {
       setSubmitting(true);
       API.replyTweet(reqData)
@@ -65,13 +70,24 @@ export const ReplyModal = (props) => {
             handleClose();
           })
           .catch((error) => {
-            console.log(error);
+            setSnackOpen(true);
+            setSubmitting(false);
           });
     }
   };
 
   return (
     <div>
+      <Snackbar
+        open={snackOpen}
+        onClose={()=>setSnackOpen(false)}
+        autoHideDuration={3000}
+      >
+        <MuiAlert elevation={6} variant="filled"
+          onClose={()=> setSnackOpen(false)} severity="error">
+        Problem occured during the replying
+        </MuiAlert>
+      </Snackbar>
       <Dialog classes={{scrollPaper: classes.scrollPaper, paper: classes.paper}}
         onClose={handleClose} aria-labelledby="customized-dialog-title"
         open={open}>
