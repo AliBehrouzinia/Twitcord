@@ -64,7 +64,7 @@ admin.site.register(Like, LikeAdmin)
 
 @admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ('title', 'owner')
+    list_display = ('title', 'owner', 'id')
 
 
 @admin.register(RoomMessage)
