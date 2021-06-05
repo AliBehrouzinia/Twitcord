@@ -2,11 +2,12 @@
 /* eslint-disable max-len */
 import {Send} from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './Chat.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {Grid, Typography} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
 import * as API from '../../Utils/API/index';
 const Chat = () => {
   const [Chatmessages, setChatmessages] = useState([{}]);
@@ -50,7 +51,7 @@ const Chat = () => {
       <div className="msg_history">
         <div>
           <InfiniteScroll
-            dataLength={Chatmessages.length()}
+            dataLength={Chatmessages.length}
             next={() => fetchMoreData(counter + 1)}
             loader={<h4>Loading...</h4>}
             endMessage={
@@ -78,7 +79,9 @@ const Chat = () => {
                 ) : (
                   <div className="outgoing_msg">
                     <div className="sent_msg">
-                      <p>{Chatmessages.content}</p>
+                      {Chatmessages.content !== null ?
+                      (<p>{Chatmessages.content}</p>):
+                      (<div/>)}
                       {/* <span class="time_date"> 11:01 AM | Today</span>{" "} */}
                     </div>
                   </div>
