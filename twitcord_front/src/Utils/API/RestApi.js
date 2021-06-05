@@ -173,3 +173,11 @@ export const getmessages = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+export const getroominfo = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_ROOM_INFO.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
