@@ -15,7 +15,7 @@ export const STATUS_REQUESTED = 'Requested';
 export const PUT_REQUEST_METHOD = 'PUT';
 
 // Urls
-export const URL_POST_TWEET = '/tweets/';
+export const URL_TWEET = '/tweets/';
 export const URL_SIGN_UP = '/rest-auth/registration/';
 export const URL_LOG_IN = '/rest-auth/login/';
 export const URL_SEARCH_USER = '/search/user/';
@@ -36,6 +36,7 @@ export const URL_FOLLOWINGS_LIST= '/followings/list/{id}/';
 export const URL_FOLLOWERS_LIST= '/followers/list/{id}/';
 export const URL_ROOMS_LIST= '/user/{id}/rooms/';
 export const URL_REPLY = '/reply/';
+export const URL_USER = '/users/';
 
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;

@@ -48,11 +48,11 @@ export const signUp = (data) => {
   );
 };
 
-export const postTweet = (data) => {
+export const postTweet = (data, userId) => {
   return request(
       data,
       {},
-      Constants.URL_POST_TWEET,
+      Constants.URL_USER + userId + Constants.URL_TWEET,
       Constants.POST_REQUEST_METHOD,
   );
 };
@@ -236,5 +236,13 @@ export const deleteFollowRequest = (data) => {
       {},
       Constants.URL_DELETE_FOLLOW_REQUEST.replace('{id}', data.id),
       Constants.DELETE_REQUEST_METHOD,
+  );
+};
+export const getTweet = (id) => {
+  return request(
+      {},
+      {},
+      Constants.URL_TWEET+id+'/family/',
+      Constants.GET_REQUEST_METHOD,
   );
 };
