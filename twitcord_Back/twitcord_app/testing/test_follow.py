@@ -28,18 +28,18 @@ class FollowingsTest(APITestCase):
         self.following_user_4 = twitcord_user.objects.create(username='test4', email='following4@gmail.com',
                                                              password='following4pass')
         models.UserFollowing.objects.bulk_create([
-            models.UserFollowing(user_id=self.user, following_user=self.following_user_1),
-            models.UserFollowing(user_id=self.user, following_user=self.following_user_2),
-            models.UserFollowing(user_id=self.user, following_user=self.following_user_3),
-            models.UserFollowing(user_id=self.user, following_user=self.following_user_4)
+            models.UserFollowing(user_id=self.user.id, following_user=self.following_user_1),
+            models.UserFollowing(user_id=self.user.id, following_user=self.following_user_2),
+            models.UserFollowing(user_id=self.user.id, following_user=self.following_user_3),
+            models.UserFollowing(user_id=self.user.id, following_user=self.following_user_4)
         ])
 
     def test_list_of_followings(self):
-        url = "/followings/"
+        url = "/followings/list/{}/".format(self.user.id)
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 4)
+        self.assertEqual(len(response.data['results']), 4)
 
     def test_delete_followings_user(self):
         url = "/followings/{}/".format(self.following_user_1.id)
@@ -47,7 +47,7 @@ class FollowingsTest(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertFalse(
-            models.UserFollowing.objects.filter(user_id=self.user, following_user=self.following_user_1))
+            models.UserFollowing.objects.filter(user_id=self.user.id, following_user=self.following_user_1))
 
 
 class FollowRequestTest(APITestCase):
@@ -82,7 +82,7 @@ class FollowRequestTest(APITestCase):
         self.assertEqual(response.data['status'], "Requested")
 
     def test_delete_follow_request(self):
-        url = "/followings/requests/{}/".format(self.following_request_1.id)
+        url = "/followings/requests/{}/".format(self.private_user_2.id)
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(models.FollowRequest.objects.filter(id=self.following_request_1.id).exists())
@@ -104,15 +104,15 @@ class FollowersTest(APITestCase):
         self.follower_user_2 = twitcord_user.objects.create(username='test2', email='follower2@gmail.com',
                                                             password='follower2pass')
         models.UserFollowing.objects.bulk_create([
-            models.UserFollowing(user_id=self.follower_user_1, following_user=self.user),
-            models.UserFollowing(user_id=self.follower_user_2, following_user=self.user)
+            models.UserFollowing(user_id=self.follower_user_1.id, following_user=self.user),
+            models.UserFollowing(user_id=self.follower_user_2.id, following_user=self.user)
         ])
 
     def test_list_of_followers(self):
-        url = "/followers/"
+        url = "/followers/list/{}/".format(self.user.id)
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)
 
 
 class FollowersRequestTest(APITestCase):
@@ -141,7 +141,7 @@ class FollowersRequestTest(APITestCase):
         url = "/followers/requests/"
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)
 
     def test_answer_followers_request(self):
         accept_url = "/followers/requests/{}/?action=accept".format(self.follow_requests[0].id)
