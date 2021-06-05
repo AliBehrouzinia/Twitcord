@@ -115,7 +115,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'twitcord_Back.wsgi.application'
 
-APPEND_SLASH=False
+# APPEND_SLASH=False
 
 
 # Database
@@ -127,8 +127,8 @@ DATABASES = {
         'NAME': 'twitcord',
         'USER': 'twitcord',
         'PASSWORD': 'twitcord',
-        'HOST': 'localhost',
-        'PORT': '5435',
+        'HOST': os.environ['POSTGRES_HOST'],
+        'PORT': os.environ['POSTGRES_PORT'],
     }
 }
 
@@ -212,7 +212,7 @@ AWS_SECRET_ACCESS_KEY = 'minio_pass'
 # AWS_STORAGE_BUCKET_NAME = 'twitcord'
 AWS_S3_USE_SSL = False
 # AWS_S3_VERIFY = True
-AWS_S3_ENDPOINT_URL = 'localhost:9000'
+AWS_S3_ENDPOINT_URL = os.environ['AWS_S3_ENDPOINT_URL']
 
 minio_client = Minio(
     endpoint=AWS_S3_ENDPOINT_URL,
