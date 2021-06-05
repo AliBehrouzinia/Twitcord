@@ -70,7 +70,7 @@ export const UserSearchItem = (props) => {
           </div>
         </div>
       </Grid>
-      { Situation == 'Follow' ?(
+      { Situation == 'not following' ?(
       <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
         <Button
           className="usi-follow-button"
@@ -79,7 +79,7 @@ export const UserSearchItem = (props) => {
           variant="outlined">
              follow
         </Button>
-      </Grid>) : Situation == 'Followed' ? (
+      </Grid>) : Situation == 'following' ? (
       <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
         <Button
           className="usi-follow-button"
@@ -97,7 +97,7 @@ export const UserSearchItem = (props) => {
               variant="outlined">
              pending
             </Button>
-          </Grid>) : (<button/>)}
+          </Grid>) : (<div/>)}
 
 
       {props.bio != null && <Grid xs={12} item className="usi-item-desc">
