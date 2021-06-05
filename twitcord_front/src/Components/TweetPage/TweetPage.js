@@ -15,15 +15,29 @@ import MenuItem from '@material-ui/core/MenuItem';
 import * as API from '../../Utils/API/index';
 import * as helper from '../../Utils/helper';
 import './TweetPage.css';
+import {ReplyModal} from '../ReplyModal/ReplyModal';
+import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
 
 const TweetPage = () => {
   const params = useParams();
   const [anchorEl, setAnchorEl] = useState(null);
   const [tweet, setTweet] = useState([]);
+  const [open, setOpen] = useState(false);
+
+  const openReplyModal = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(()=>{
     API.getTweet(params.id).then((res)=> {
       setTweet(res.data);
+      setTimeout(() => {
+        console.log(tweet);
+      }, 0);
     }).catch((error)=>{
       console.log(error);
     });
@@ -38,7 +52,7 @@ const TweetPage = () => {
   };
 
   const handleBack = () => {
-
+    window.history.back();
   };
 
   return (
@@ -102,7 +116,7 @@ const TweetPage = () => {
           <IconButton>
             <FavoriteBorderIcon />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={openReplyModal}>
             <ChatBubbleOutlineIcon />
           </IconButton>
           <IconButton>
@@ -111,7 +125,13 @@ const TweetPage = () => {
         </Box>
         <Divider />
       </Box>
-
+      {tweet.children?.map((child) => (
+        <Box key={child.id}>
+          <TweetSearchItem tweet={child}></TweetSearchItem>
+          <Divider />
+        </Box>
+      ))}
+      <ReplyModal tweet={tweet} open={open} onClose={handleClose} />
     </div>
   );
 };
