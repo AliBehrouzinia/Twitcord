@@ -138,8 +138,10 @@
   }
   
   .msg_history {
-    height: 80vh;
+    height: 77vh;
     overflow-y: hidden;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
   }
  
