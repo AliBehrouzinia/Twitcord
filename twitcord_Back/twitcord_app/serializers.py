@@ -329,15 +329,14 @@ class ShowReplySerializer(serializers.ModelSerializer):
                     break
             else:
                 result['parent_is_liked'] = False
-        result['tweet_id'] = instance.id
-        result['tweet_content'] = instance.content
-        result['tweet_create_date'] = serializers.DateTimeField().to_representation(instance.create_date)
-        result['tweet_user_is_public'] = instance.user.is_public
-        result['tweet_user_username'] = instance.user.username
-        result['tweet_user_email'] = instance.user.email
-        result['tweet_user_firstname'] = instance.user.first_name
-        result['tweet_user_lastname'] = instance.user.last_name
-        result['tweet_user_email'] = instance.user.email
+        result['id'] = instance.id
+        result['content'] = instance.content
+        result['create_date'] = serializers.DateTimeField().to_representation(instance.create_date)
+        result['is_public'] = instance.user.is_public
+        result['username'] = instance.user.username
+        result['email'] = instance.user.email
+        result['first_name'] = instance.user.first_name
+        result['last_name'] = instance.user.last_name
         for item in liked_tweets:
             if instance == item[0]:
                 result['tweet_is_liked'] = True
