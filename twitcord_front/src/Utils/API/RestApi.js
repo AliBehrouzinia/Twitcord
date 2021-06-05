@@ -48,11 +48,11 @@ export const signUp = (data) => {
   );
 };
 
-export const postTweet = (data) => {
+export const postTweet = (data, userId) => {
   return request(
       data,
       {},
-      Constants.URL_TWEET,
+      Constants.URL_USER + userId + Constants.URL_TWEET,
       Constants.POST_REQUEST_METHOD,
   );
 };
