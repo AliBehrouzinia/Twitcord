@@ -48,11 +48,11 @@ export const signUp = (data) => {
   );
 };
 
-export const postTweet = (data) => {
+export const postTweet = (data, userId) => {
   return request(
       data,
       {},
-      Constants.URL_POST_TWEET,
+      Constants.URL_USER + userId + Constants.URL_TWEET,
       Constants.POST_REQUEST_METHOD,
   );
 };
@@ -189,6 +189,14 @@ export const likeList = (data) => {
       data,
       {},
       Constants.URL_LIKE_LIST.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+export const getTweet = (id) => {
+  return request(
+      {},
+      {},
+      Constants.URL_TWEET+id+'/family/',
       Constants.GET_REQUEST_METHOD,
   );
 };
