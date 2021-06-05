@@ -329,7 +329,7 @@ class ShowReplySerializer(serializers.ModelSerializer):
                     break
             else:
                 result['parent_is_liked'] = False
-        result['id'] = instance.id
+        result['id'] = result.pop('id')
         result['content'] = instance.content
         result['create_date'] = serializers.DateTimeField().to_representation(instance.create_date)
         result['is_public'] = instance.user.is_public
@@ -365,7 +365,6 @@ class ShowReplySerializer(serializers.ModelSerializer):
                 else:
                     result['children'][counter]['child_is_liked'] = False
                 counter += 1
-        result.pop('id')
         values = result['children'].values()
         result['children'] = list(values)
         return result
