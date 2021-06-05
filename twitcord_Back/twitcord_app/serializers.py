@@ -198,7 +198,8 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
         user = instance.user
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         result['is_liked'] = is_liked
-        result['id'] = result.pop('user')
+        result['user_id'] = result.pop('user')
+        result['id'] = instance.id
         result['username'] = user.username
         result['first_name'] = user.first_name
         result['last_name'] = user.last_name
