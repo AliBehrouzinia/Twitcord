@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable require-jsdoc */
 /* eslint-disable max-len */
 import {Send} from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import './Chat.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {Grid, Typography} from '@material-ui/core';
@@ -10,13 +11,15 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import * as API from '../../Utils/API/index';
 const Chat = () => {
-  const [Chatmessages, setChatmessages] = useState([{}]);
+  const [Chatmessages, setChatmessages] = React.useState([{}]);
   const counter = 1;
 
   useEffect(() => {
     API.getmessages({id: 1})
         .then((response) => {
-          setChatmessages(response.results);
+          setChatmessages(response.data.results);
+          console.log(response.data.results);
+          console.log(Chatmessages);
         })
         .catch((error) => {
           console.log(error);
@@ -26,7 +29,7 @@ const Chat = () => {
   function fetchMoreData(c) {
     API.getmessages({id: c})
         .then((response) => {
-          Chatmessages.push(response.results);
+          Chatmessages.push(response.data.results);
         })
         .catch((error) => {
           console.log(error);
@@ -50,20 +53,9 @@ const Chat = () => {
       </Grid>
       <div className="msg_history">
         <div>
-          <InfiniteScroll
-            dataLength={Chatmessages.length}
-            next={() => fetchMoreData(counter + 1)}
-            loader={<h4>Loading...</h4>}
-            endMessage={
-              <p style={{textAlign: 'center'}}>
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
-          >
-            {Chatmessages.map((postdetail, index) => {
-              return (
-                <div key={index}>
-                  {Chatmessages.is_sent_by_me === false ? (
+          {Chatmessages.map((postdetail, index) => {
+            <div key={index}>
+              {postdetail.is_sent_by_me == false ? (
                   <div className="incoming_msg">
                     <div className="incoming_msg_img">
                       <Avatar src={Avatar}alt="sunil" />
@@ -71,7 +63,7 @@ const Chat = () => {
                     </div>
                     <div className="received_msg">
                       <div className="received_withd_msg">
-                        <p>{Chatmessages.content}</p>
+                        <p>{postdetail.content}</p>
                         {/* <span class="time_date"> ساعت | تاریخ</span> */}
                       </div>
                     </div>
@@ -79,17 +71,15 @@ const Chat = () => {
                 ) : (
                   <div className="outgoing_msg">
                     <div className="sent_msg">
-                      {Chatmessages.content !== null ?
-                      (<p>{Chatmessages.content}</p>):
+                      {postdetail.content !== null ?
+                      (<p>{postdetail.content}</p>):
                       (<div/>)}
                       {/* <span class="time_date"> 11:01 AM | Today</span>{" "} */}
                     </div>
                   </div>
                 )}
-                </div>
-              );
-            })}
-          </InfiniteScroll>
+            </div>;
+          })}
         </div>
       </div>
 
