@@ -14,7 +14,7 @@ import Box from '@material-ui/core/Box';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 
 const ProfileUserinfo = () => {
-  const params = useParams();
+  const {id} = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
@@ -36,14 +36,14 @@ const ProfileUserinfo = () => {
     [12]: 'December',
   };
   useEffect(() => {
-    API.getProfileInfo({id: params.id})
+    API.getProfileInfo({id: id})
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data));
         })
         .catch((error) => {
           console.log('failed to load data');
         });
-  }, []);
+  }, [id]);
   const date = new Date(profileInfo.date_joined);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -60,7 +60,7 @@ const ProfileUserinfo = () => {
         <Avatar className="p-avatar" />
       </Box>
       <Box className="text-right p-3">
-        {userId == params.id ? <Button
+        {userId == id ? <Button
           onClick={handleEditProfileClick}
           variant="contained"
           color="primary">

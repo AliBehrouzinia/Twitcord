@@ -42,7 +42,7 @@ const TweetPage = () => {
     }).catch((error)=>{
       setSnackOpen(true);
     });
-  }, []);
+  }, [open, params.id]);
 
   const handleClickMoreBtn = (event) => {
     setAnchorEl(event.currentTarget);
