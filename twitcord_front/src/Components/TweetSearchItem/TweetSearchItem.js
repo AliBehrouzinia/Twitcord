@@ -12,11 +12,15 @@ import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 import {ReplyModal} from '../ReplyModal/ReplyModal';
 import * as helper from '../../Utils/helper';
+import {useHistory} from 'react-router-dom';
 
 export const TweetSearchItem = (props) => {
+  const history = useHistory();
   const [open, setOpen] = useState(false);
+  let isTweetRoute = true;
 
   const openReplyModal = () => {
+    isTweetRoute = false;
     setOpen(true);
   };
 
@@ -24,9 +28,17 @@ export const TweetSearchItem = (props) => {
     setOpen(false);
   };
 
+  const tweetClicked = (event) => {
+    if (isTweetRoute) {
+      history.push('/tweet/'+props.id);
+    } else {
+      isTweetRoute = true;
+    }
+  };
+
   return (
     <div>
-      <Grid container
+      <Grid container onClick={tweetClicked}
         direction="row"
         spacing={6}
         className="tsi-container"
