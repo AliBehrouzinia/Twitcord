@@ -51,7 +51,28 @@ class PrivateAccountUserPermission(permissions.BasePermission):
         following_user = get_object_or_404(models.TwitcordUser, id=following_user_id)
         if following_user.is_public:
             return True
+        if user == following_user:
+            return True
         return models.UserFollowing.objects.filter(user=user.id, following_user=following_user_id).exists()
+
+
+class UsersTweetsPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            user_request_from = request.user
+            user_request_to = get_object_or_404(models.TwitcordUser, id=view.kwargs.get('id'))
+            # public users
+            if user_request_to.is_public:
+                return True
+            # following users
+            elif models.UserFollowing.objects.filter(user_id=user_request_from.id, following_user_id=user_request_to)\
+                                             .exists():
+                return True
+            # other private users
+            else:
+                return False
+        elif request.method == 'POST':
+            return request.user.id == view.kwargs['id']
 
 
 class IsMemberOfRoom(permissions.BasePermission):

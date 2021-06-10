@@ -11,16 +11,15 @@ services:
     container_name: twitcord_django
     depends_on:
       - postgres
-      - redis
       - minio
     volumes:
       - ./twitcord_Back:/app:z
     env_file:
-      - ./twitcord_Back/.envs/.local/.django
-      - ./twitcord_Back/.envs/.local/.postgres
-#    ports:
-#      - "8000:8000"
-    network_mode: "host"
+      - ./twitcord_Back/.envs/.local/.django.mac
+      - ./twitcord_Back/.envs/.local/.postgres.mac
+    ports:
+      - "8000:8000"
+#    network_mode: "host"
     command: /start
 
   postgres:
@@ -33,7 +32,7 @@ services:
       - local_postgres_data:/var/lib/postgresql/data:Z
       - local_postgres_data_backups:/backups:z
     env_file:
-      - ./twitcord_Back/.envs/.local/.postgres
+      - ./twitcord_Back/.envs/.local/.postgres.mac
     ports:
       - "5435:5432"
   
@@ -47,9 +46,9 @@ services:
     volumes:
       - './twitcord_front:/usr/src/app/twitcord_front'
       - 'twitcord_node_modules:/usr/src/app/twitcord_front/node_modules'
-#    ports:
-#      - "3000:3000"
-    network_mode: "host"
+    ports:
+      - "3000:3000"
+#    network_mode: "host"
     deploy:
       restart_policy:
         condition: on-failure
@@ -58,15 +57,15 @@ services:
   minio:
     image: "minio/minio"
     command: server /storage
-#    ports:
-#      - "9000:9000"
-    network_mode: "host"
+    ports:
+      - "9000:9000"
+#    network_mode: "host"
     environment:
       MINIO_ROOT_USER: minio_user
       MINIO_ROOT_PASSWORD: minio_pass
     volumes:
       - local_storage_minio:/storage
-  
+ 
   redis:
     image: redis:5
     container_name: twitcord_redis

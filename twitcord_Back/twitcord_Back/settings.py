@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
+from minio import Minio
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -114,7 +115,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'twitcord_Back.wsgi.application'
 
-APPEND_SLASH=False
+# APPEND_SLASH=False
 
 
 # Database
@@ -126,8 +127,8 @@ DATABASES = {
         'NAME': 'twitcord',
         'USER': 'twitcord',
         'PASSWORD': 'twitcord',
-        'HOST': 'twitcord_postgres',
-        'PORT': '5432',
+        'HOST': os.environ['POSTGRES_HOST'],
+        'PORT': os.environ['POSTGRES_PORT'],
     }
 }
 
@@ -165,12 +166,6 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = '/static/'
-
-
 # Email
 # https://docs.djangoproject.com/en/3.1/topics/email/#smtp-backend
 
@@ -196,6 +191,38 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://localhost:3000/login'
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.1/howto/static-files/
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = 'static/'
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
+# Storage
+
+MEDIA_BUCKET_NAME = 'media'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+AWS_ACCESS_KEY_ID = 'minio_user'
+AWS_SECRET_ACCESS_KEY = 'minio_pass'
+# AWS_STORAGE_BUCKET_NAME = 'twitcord'
+AWS_S3_USE_SSL = False
+# AWS_S3_VERIFY = True
+AWS_S3_ENDPOINT_URL = os.environ['AWS_S3_ENDPOINT_URL']
+
+minio_client = Minio(
+    endpoint=AWS_S3_ENDPOINT_URL,
+    access_key=AWS_ACCESS_KEY_ID,
+    secret_key=AWS_SECRET_ACCESS_KEY,
+    secure=AWS_S3_USE_SSL
+)
+if not minio_client.bucket_exists(MEDIA_BUCKET_NAME):
+    minio_client.make_bucket(MEDIA_BUCKET_NAME)
+    
 # Django Channels
 # https://channels.readthedocs.io/en/stable/installation.html
 
