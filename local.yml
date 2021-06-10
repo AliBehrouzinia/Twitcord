@@ -71,6 +71,7 @@ services:
     image: redis:5
     container_name: twitcord_redis
     command: --port 6380
+    network_mode: "host"
 
 volumes:
   local_postgres_data: { }
