@@ -159,7 +159,7 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         following = self.kwargs.get('id')
         instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
         instance.delete()
-        return Response()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class FollowCountView(generics.ListAPIView):
@@ -280,3 +280,24 @@ class RoomDataView(generics.ListAPIView):
         room_id = self.kwargs['id']
         room = models.Room.objects.filter(pk=room_id)
         return room
+
+
+class ReplyTweetCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ReplySerializer
+
+
+class ReplysListView(generics.ListAPIView):
+    permission_classes = [PrivateAccountUserPermission]
+    serializer_class = serializers.ReplySerializer
+    
+    def get_queryset(self):
+        user_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
+
+
+class ShowReplyFamilyView(generics.RetrieveAPIView):
+    queryset = models.Tweet.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ShowReplySerializer
+    lookup_url_kwarg = 'id'

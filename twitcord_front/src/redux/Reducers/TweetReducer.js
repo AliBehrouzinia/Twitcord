@@ -1,11 +1,6 @@
 import {ActionTypes} from '../Actions/actionTypes.js';
 
 const initialState = {
-  userGeneralInfo: {
-    userID: null,
-    userEmail: '',
-    userProfile: '',
-  },
   signUpInfo: {
     username: '',
     email: '',
@@ -28,6 +23,11 @@ const initialState = {
     website: '',
     isPublic: false,
     email: '',
+    has_header_img: false,
+    has_profile_img: false,
+    header_img: '',
+    profile_img_upload_details: '',
+    header_img_upload_details: '',
     followers_count: 0,
     followings_count: 0,
   },
@@ -109,7 +109,13 @@ const tweetReducer = (state = initialState, action) => {
           username: action.username,
           isPublic: action.isPublic,
           email: action.email,
+          has_header_img: action.has_header_img,
+          has_profile_img: action.has_profile_img,
           date_joined: action.date_joined,
+          profile_img: action.profile_img,
+          header_img: action.header_img,
+          profile_img_upload_details: action.profile_img_upload_details,
+          header_img_upload_details: action.header_img_upload_details,
           followers_count: action.followers_count,
           followings_count: action.followings_count,
         },

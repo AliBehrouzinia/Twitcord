@@ -33,8 +33,10 @@ const TweetBox = () => {
   
   const handlePostClick = () => {
     const tweetData = {content: tweetInfo.tweetText};
-  
-    API.postTweet(tweetData)
+    const userId = JSON.parse(
+      localStorage.getItem(Constants.GENERAL_USER_INFO),
+    )?.pk;
+      API.postTweet(tweetData,userId)
         .then((response) => {
           clearTweet();
           setSnackbarAlertMessage(
@@ -61,7 +63,8 @@ const TweetBox = () => {
   };
 
   return (
-    <Grid container className="tweet-box">
+    <div>
+      <Grid container className="tweet-box">
       {isSnackbarOpen && (<SnackbarAlert
         alertMessage={snackbarAlertMessage}
         severity={snackbarAlertSeverity}/>)}
@@ -80,25 +83,19 @@ const TweetBox = () => {
           value={tweetInfo.tweetText}
         />
       </Grid>
-      <Grid item xs={12}>
-        <Grid container className="bottom-bar">
-          <Grid item xs={1} sm={1}>
-            <CharCounter numChar={tweetInfo.tweetCharCount} />
-          </Grid>
-          <Grid item xs={2} sm={2}>
-            <Button
-              className="tweet-box-button"
-              variant="contained"
-              color="primary"
-              onClick={handlePostClick}
-              disabled={postButtonDisable}
-            >
-              post
-            </Button>
-          </Grid>
-        </Grid>
-      </Grid>
     </Grid>
+    <div className="d-flex align-items-center justify-content-between p-10">
+      <CharCounter numChar={tweetInfo.tweetCharCount} />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handlePostClick}
+        disabled={postButtonDisable}
+      >
+        post
+      </Button>      
+    </div>
+    </div>
   );
 };
 
