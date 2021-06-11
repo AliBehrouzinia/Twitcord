@@ -44,26 +44,6 @@ const RoomList = () => {
           });
 
           followers
-              .filter((item) => {
-                return !optionIds.includes(item.value);
-              })
-              .map((item) => {
-                options.push(item);
-                optionIds.push(item.value);
-              });
-          setOptions(options);
-        });
-
-    API.getFollowingsList({id: userGeneralInfo.pk})
-        .then((response) => {
-          const followings = response.data.results.map((item) => {
-            return {value: item.id, label: item.username};
-          });
-
-          followings
-              .filter((item) => {
-                return !optionIds.includes(item.value);
-              })
               .map((item) => {
                 options.push(item);
                 optionIds.push(item.value);
