@@ -298,6 +298,7 @@ class RoomSerializer(serializers.ModelSerializer):
 class ReplySerializer(serializers.ModelSerializer):
     is_reply = serializers.BooleanField()
     parent = serializers.PrimaryKeyRelatedField(queryset=Tweet.objects.all())
+    parent = TweetSerializer(read_only=True)
     retweet_from = TweetSerializer(read_only=True)
 
     class Meta:
