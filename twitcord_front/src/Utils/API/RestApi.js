@@ -246,3 +246,12 @@ export const getTweet = (id) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+export const editfollowstatus = (data, id) => {
+  return request(
+      data,
+      {},
+      Constants.URL_EDIT_FOLLOW_STATUS.replace('{id}', id),
+      Constants.PATCH_REQUEST_METHOD,
+  );
+};
+

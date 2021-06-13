@@ -12,12 +12,11 @@ import './UserSearchItem.css';
 
 export const UserSearchItem = (props) => {
   const [Situation, setSituation] = useState(props.status);
+  console.log(props.status);
   function handleunrequest(id) {
     API.deleteFollowRequest({id: id})
         .then((response) => {
-          console.log(Situation);
-          setSituation(response.status);
-          console.log(Situation);
+          setSituation(response.data.status);
         })
         .catch((error) => {
           console.log(error);
@@ -26,9 +25,7 @@ export const UserSearchItem = (props) => {
   function handleunfollow(id) {
     API.unfollow({id: id})
         .then((response) => {
-          console.log(Situation);
-          setSituation(response.status);
-          console.log(Situation);
+          setSituation(response.data.status);
         })
         .catch((error) => {
           console.log(error);
@@ -37,15 +34,12 @@ export const UserSearchItem = (props) => {
   function handlefollow(id) {
     API.follow({'request_to': id})
         .then((response) => {
-          console.log(response.status);
-          setSituation(response.status);
-          console.log(Situation);
+          setSituation(response.data.status);
         })
         .catch((error) => {
           console.log(error);
         });
   }
-  console.log(props.status);
   return (
     <Grid container
       direction="row"
@@ -70,36 +64,28 @@ export const UserSearchItem = (props) => {
           </div>
         </div>
       </Grid>
-      { Situation == 'not following' ?(
-      <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
-        <Button
-          className="usi-follow-button"
-          color="primary"
-          onClick={() => handlefollow(props.id)}
-          variant="outlined">
-             follow
-        </Button>
-      </Grid>) : Situation == 'following' ? (
-      <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
-        <Button
-          className="usi-follow-button"
-          color="primary"
-          onClick={() => handleunfollow(props.id)}
-          variant="outlined">
-             unfollow
-        </Button>
-      </Grid>) : Situation == 'Requested' ?(
-          <Grid item xs={12} sm={3} md={2} className="usi-item-follow">
-            <Button
-              className="usi-follow-button"
-              color="primary"
-              onClick={() => handleunrequest(props.id)}
-              variant="outlined">
-             pending
-            </Button>
-          </Grid>) : (<div/>)}
+      <Grid className="text-right p-3">
+        { Situation == 'not following' ? (
+              <Button
+                color="primary"
+                onClick={() => handlefollow(props.id)}
+                variant="contained">
+                follow
+              </Button>) : Situation == 'following' ? (
+                <Button
+                  color="primary"
+                  onClick={() => handleunfollow(props.id)}
+                  variant="contained">
+                  unfollow
+                </Button>) : Situation == 'pending' ? (
+                <Button
+                  color="primary"
+                  onClick={() => handleunrequest(props.id)}
+                  variant="contained">
+                  pending
+                </Button>) : (<button />)}
 
-
+      </Grid>
       {props.bio != null && <Grid xs={12} item className="usi-item-desc">
         <Typography className="usi-desc">{props.bio}</Typography>
       </Grid>}

@@ -33,7 +33,7 @@ const ProfileUserinfo = () => {
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const followcount = useSelector((state) => state).tweet.followcount;
   const [Situation, setSituation] = useState('');
-  const [Relation, setRelation] = useState('friend');
+  const [Relation, setRelation] = useState('family');
   let profileId = -1;
   const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
   if (userGeneralInfo != null) {
@@ -110,8 +110,16 @@ const ProfileUserinfo = () => {
         });
   }
   function onchange(event){
-    setRelation(event.target.value);
-    console.log(event.target.value);
+    console.log({"type": event.target.value });
+    API.editfollowstatus( {"type": event.target.value } , params.id)
+    .then((response) => {
+      setRelation(event.target.value);
+      console.log(event.target.value);
+      
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
   useEffect(() => {
     API.getProfileInfo({id: params.id})
@@ -190,7 +198,7 @@ const ProfileUserinfo = () => {
           <select className="relation" onChange = {onchange} value= {Relation}>
             <option value="unknown" className = "option">unknown</option>
             <option value="family" className = "option">family</option>
-            <option value="friend" className = "option">friend</option>
+            <option value="Friend" className = "option">friend</option>
             <option selected value="closefriend" className = "option">
               close friend
             </option>
