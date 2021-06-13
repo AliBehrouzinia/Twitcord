@@ -146,7 +146,8 @@ export const ReplyModal = (props) => {
               </div>
               <div className="my-3">
                 <span className="text-gray">Replying to </span>
-                <Link to={'/profile/'+props.tweet.user} className="link-color">
+                <Link to={'/profile/'+props.tweet.user_id}
+                  className="link-color">
                   @{props.tweet?.username}
                 </Link>
               </div>

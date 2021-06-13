@@ -344,6 +344,9 @@ a {
 .mr-1 {
   margin-right: .25rem !important;
 }
+.mr-2 {
+  margin-right: .5rem !important;
+}
 
 .mt-1 {
   margin-top: .25rem !important;
