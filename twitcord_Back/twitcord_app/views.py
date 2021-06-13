@@ -68,14 +68,26 @@ class ListOfFollowersView(generics.ListAPIView):
 
 class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, UserIsOwnerOrReadonly)
-    queryset = models.UserFollowing.objects.all()
     serializer_class = serializers.FollowingsSerializer
-    lookup_url_kwarg = 'id'
+
+    def patch(self, request, *args, **kwargs):
+        following_id = self.kwargs.get('id')
+        following_obj = get_object_or_404(models.UserFollowing, user_id=following_id,
+                                          following_user_id=self.request.user.id)
+        data = {'user': following_id,
+                'following_user': self.request.user.id,
+                'created': following_obj.created,
+                'type': self.request.data['type']
+                }
+        serializer = serializers.FollowingsSerializer(following_obj, data=data, partial=True)
+        if serializer.is_valid(True):
+            serializer.save()
+        return Response(status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
         following_user_id = self.kwargs.get('id')
-        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
+        instance = get_object_or_404(models.UserFollowing, user_id=following_user_id, following_user=user_id)
         instance.delete()
         return Response(data={"status": "not following", "following": "unfollowed"})
 
@@ -291,7 +303,7 @@ class ReplyTweetCreateView(generics.CreateAPIView):
 class ReplysListView(generics.ListAPIView):
     permission_classes = [PrivateAccountUserPermission]
     serializer_class = serializers.ReplySerializer
-    
+
     def get_queryset(self):
         user_id = self.kwargs.get('id')
         return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
