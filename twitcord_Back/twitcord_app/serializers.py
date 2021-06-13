@@ -195,14 +195,24 @@ class GlobalUserSearchSerializer(serializers.ModelSerializer):
 class GlobalTweetSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
-        fields = '__all__'
+        fields = [
+            "id",
+            "user",
+            "is_reply",
+            "content",
+            "create_date",
+            "parent",
+            "retweet_from",
+            "has_media",
+            "tweet_media"
+        ]
 
     def to_representation(self, instance):
         result = super(GlobalTweetSearchSerializer, self).to_representation(instance)
         user = instance.user
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         result['is_liked'] = is_liked
-        result['id'] = result.pop('user')
+        result['user_id'] = result.pop('user')
         result['username'] = user.username
         result['first_name'] = user.first_name
         result['last_name'] = user.last_name
