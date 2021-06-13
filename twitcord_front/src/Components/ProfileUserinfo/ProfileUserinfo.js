@@ -27,7 +27,7 @@ const ProfileUserinfo = () => {
   const history = useHistory();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const followcount = useSelector((state) => state).tweet.followcount;
-  const [Situation, setSituation] = useState(profileInfo.status);
+  const [Situation, setSituation] = useState('');
   console.log(profileInfo.status);
   let profileId = -1;
   const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
@@ -80,7 +80,7 @@ const ProfileUserinfo = () => {
   function handleunrequest(id) {
     API.deleteFollowRequest({id: id})
         .then((response) => {
-          setSituation(response.status);
+          setSituation(response.data.status);
         })
         .catch((error) => {
           console.log(error);
@@ -89,7 +89,7 @@ const ProfileUserinfo = () => {
   function handleunfollow(id) {
     API.unfollow({id: id})
         .then((response) => {
-          setSituation(response.status);
+          setSituation(response.data.status);
         })
         .catch((error) => {
           console.log(error);
@@ -98,7 +98,7 @@ const ProfileUserinfo = () => {
   function handlefollow(id) {
     API.follow({'request_to': id})
         .then((response) => {
-          setSituation(response.status);
+          setSituation(response.data.status);
         })
         .catch((error) => {
           console.log(error);
@@ -108,6 +108,7 @@ const ProfileUserinfo = () => {
     API.getProfileInfo({id: params.id})
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data));
+          setSituation(response.data.status);
           console.log(profileInfo.is_public);
         })
         .catch((error) => {
@@ -115,7 +116,7 @@ const ProfileUserinfo = () => {
         });
   }, []);
   useEffect(() => {
-    API.followcount({id: profileInfo.id})
+    API.followcount({id: params.id})
         .then((response) => {
           dispatch(Actions.setfollowcount(response.data.results[0]));
         })
@@ -149,21 +150,18 @@ const ProfileUserinfo = () => {
 					) : (
              Situation == 'not following' ?(
                 <Button
-                  className="usi-follow-button"
                   color="primary"
                   onClick={() => handlefollow(profileInfo.id)}
                   variant="contained">
                      follow
                 </Button>) : Situation == 'following' ? (
                 <Button
-                  className="usi-follow-button"
                   color="primary"
                   onClick={() => handleunfollow(profileInfo.id)}
                   variant="contained">
                      unfollow
-                </Button>) : Situation == 'Requested' ?(
+                </Button>) : Situation == 'pending' ?(
                     <Button
-                      className="usi-follow-button"
                       color="primary"
                       onClick={() => handleunrequest(profileInfo.id)}
                       variant="contained">
@@ -190,7 +188,7 @@ const ProfileUserinfo = () => {
 
         <Box display="flex" className="mt-2">
           <Box type="followers" className="followers" onClick={handleOpenfollowers}>
-            {'followers' +'   '+ followcount.followers_count}
+            {'followers' +'   '+ followcount.followers_count }
           </Box>
           <Modal
             open={open}
