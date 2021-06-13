@@ -158,13 +158,8 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
         user = self.request.user.id
         print(user)
         following = self.kwargs.get('id')
-        print(following)
-        # instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
         instance = get_object_or_404(models.FollowRequest, request_from_id=user, request_to_id=following)
-        print(1)
-        print(instance)
         instance.delete()
-        print(2)
         return Response(data={"status": "not following", "follow_request": "Deleted"})
 
 
