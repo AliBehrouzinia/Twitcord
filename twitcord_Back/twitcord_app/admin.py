@@ -30,12 +30,10 @@ class TwitcordUserAdmin(UserAdmin):
 admin.site.register(TwitcordUser, TwitcordUserAdmin)
 
 
+@admin.register(Tweet)
 class TweetAdmin(admin.ModelAdmin):
     model = Tweet
-    list_display = ('user', 'create_date')
-
-
-admin.site.register(Tweet)
+    list_display = ('id', 'content', 'create_date', 'tweet_media')
 
 
 class UserFollowingAdmin(admin.ModelAdmin):
@@ -62,12 +60,9 @@ class LikeAdmin(admin.ModelAdmin):
 admin.site.register(Like, LikeAdmin)
 
 
+@admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
-    model = Room
-    list_display = ('title',)
-
-
-admin.site.register(Room, RoomAdmin)
+    list_display = ('title', 'owner')
 
 
 @admin.register(RoomMessage)
