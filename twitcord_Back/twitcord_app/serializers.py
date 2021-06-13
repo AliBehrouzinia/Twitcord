@@ -71,7 +71,7 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
 class TweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
-        fields = ['id', 'content', 'create_date']
+        fields = ['id', 'content', 'create_date', 'tweet_media', 'has_media']
         read_only_fields = ['id', 'create_date']
         extra_kwargs = {
             'content': {'required': True}
@@ -79,6 +79,10 @@ class TweetSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(TweetSerializer, self).to_representation(instance)
+        request = self.context['request']
+        if request.method == 'POST':
+            result['tweet_media_upload_details'] = instance.tweet_media_upload_details
+
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         result['is_liked'] = is_liked
         return result
