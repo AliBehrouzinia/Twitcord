@@ -30,12 +30,10 @@ class TwitcordUserAdmin(UserAdmin):
 admin.site.register(TwitcordUser, TwitcordUserAdmin)
 
 
+@admin.register(Tweet)
 class TweetAdmin(admin.ModelAdmin):
     model = Tweet
-    list_display = ('user', 'create_date')
-
-
-admin.site.register(Tweet)
+    list_display = ('id', 'content', 'create_date', 'tweet_media')
 
 
 class UserFollowingAdmin(admin.ModelAdmin):
