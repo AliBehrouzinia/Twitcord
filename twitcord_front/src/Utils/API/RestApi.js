@@ -173,3 +173,12 @@ export const getTweet = (id) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const timeLine = (data, params) => {
+  return request(
+      data,
+      params,
+      Constants.URL_TIMELINE,
+      Constants.GET_REQUEST_METHOD,
+  );
+};
