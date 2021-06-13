@@ -129,7 +129,7 @@ const tweetReducer = (state = initialState, action) => {
           first_name: action.first_name,
           followers_count: action.followers_count,
           followings_count: action.followings_count,
-          has_header_img: faction.has_header_img,
+          has_header_img: action.has_header_img,
           has_profile_img: action.has_profile_img,
           header_img: action.header_img,
           header_img_upload_details: action.header_img_upload_details,

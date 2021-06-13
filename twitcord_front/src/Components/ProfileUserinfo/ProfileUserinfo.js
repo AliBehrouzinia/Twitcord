@@ -116,7 +116,7 @@ const ProfileUserinfo = () => {
   useEffect(() => {
     API.getProfileInfo({id: params.id})
         .then((response) => {
-          dispatch(Actions.setProfileInfo({...response.data , type : 'SET_PROFILE_INFO'}));
+          dispatch(Actions.setProfileInfo(response.data ));
           setSituation(response.data.status);
        
         })
