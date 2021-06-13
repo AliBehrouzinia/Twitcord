@@ -7,16 +7,34 @@ import Tab from '@material-ui/core/Tab';
 import {useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
+import * as API from '../../Utils/API/index';
 
 const Profile = () => {
   const params = useParams();
   const [tabSelected, setSelectedTab] = useState(0);
+  const [replys, setReplys] = useState({});
+
 
   const handleChange = (event, selectedTab) => {
     setSelectedTab(selectedTab);
   };
   // const tweets = useSelector((state) => state).tweet.tweetInfo;
 
+
+  useEffect(()=>{
+    API.getReplyList(params.id).then((res)=> {
+      setTweet({...res.data, name: res.data.first_name +
+         ' ' + res.data.last_name});
+    }).catch((error)=>{
+      setSnackOpen(true);
+    });
+  }, []);
+
+  const replylist = replys.map(
+    (tweet)=> (<div>
+
+    </div>)
+  );
 
   // const tweetlists = tweets.map(
   //   (user) => <div key={user.id}>
