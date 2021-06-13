@@ -48,11 +48,11 @@ export const signUp = (data) => {
   );
 };
 
-export const postTweet = (data) => {
+export const postTweet = (data, userId) => {
   return request(
       data,
       {},
-      Constants.URL_POST_TWEET,
+      Constants.URL_USER + userId + Constants.URL_TWEET,
       Constants.POST_REQUEST_METHOD,
   );
 };
@@ -165,6 +165,7 @@ export const getRoomsList = (data) => {
   );
 };
 
+<<<<<<< HEAD
 export const getmessages = (data) => {
   return request(
       {},
@@ -178,6 +179,13 @@ export const getroominfo = (data) => {
       {},
       {},
       Constants.URL_ROOM_INFO.replace('{id}', data.id),
+=======
+export const getTweet = (id) => {
+  return request(
+      {},
+      {},
+      Constants.URL_TWEET+id+'/family/',
+>>>>>>> ae149bd19bc16e8c116ddf8a703213068cf961be
       Constants.GET_REQUEST_METHOD,
   );
 };
