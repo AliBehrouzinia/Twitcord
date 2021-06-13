@@ -40,7 +40,7 @@
 
 .usi-follow-button {
   float: right;
-  width: 100%;
+  width: fit-content;
 }
 
 .usi-item-follow{
@@ -98,5 +98,6 @@
 
   .usi-follow-button{
     margin-top: -30px !important;
+    width: 100%;
   }
 }
