@@ -20,6 +20,11 @@ import {useParams} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const ProfileUserinfo = () => {
   const params = useParams();
@@ -28,7 +33,7 @@ const ProfileUserinfo = () => {
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const followcount = useSelector((state) => state).tweet.followcount;
   const [Situation, setSituation] = useState('');
-  console.log(profileInfo.status);
+  const [Relation, setRelation] = useState('friend');
   let profileId = -1;
   const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
   if (userGeneralInfo != null) {
@@ -104,12 +109,15 @@ const ProfileUserinfo = () => {
           console.log(error);
         });
   }
+  function onchange(event){
+    setRelation(event.target.value);
+    console.log(event.target.value);
+  }
   useEffect(() => {
     API.getProfileInfo({id: params.id})
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data));
           setSituation(response.data.status);
-          console.log(profileInfo.is_public);
         })
         .catch((error) => {
           console.log(error);
@@ -139,56 +147,75 @@ const ProfileUserinfo = () => {
         <img src={image} alt="img" className="profile_cover" />
         <Avatar className="p-avatar" />
       </Box>
+      
       <Box className="text-right p-3">
+     
         {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
-						<Button
-						  onClick={handleEditProfileClick}
-						  variant="contained"
-						  color="primary">
-                edit profile
-						</Button>
-					) : (
-             Situation == 'not following' ?(
-                <Button
-                  color="primary"
-                  onClick={() => handlefollow(profileInfo.id)}
-                  variant="contained">
-                     follow
-                </Button>) : Situation == 'following' ? (
+          <Button
+            onClick={handleEditProfileClick}
+            variant="contained"
+            color="primary">
+            edit profile
+          </Button>
+        ) : (
+          Situation == 'not following' ? (
+              <Button
+                color="primary"
+                onClick={() => handlefollow(profileInfo.id)}
+                variant="contained">
+                follow
+              </Button>) : Situation == 'following' ? (
                 <Button
                   color="primary"
                   onClick={() => handleunfollow(profileInfo.id)}
                   variant="contained">
-                     unfollow
-                </Button>) : Situation == 'pending' ?(
-                    <Button
-                      color="primary"
-                      onClick={() => handleunrequest(profileInfo.id)}
-                      variant="contained">
-                     pending
-                    </Button>) : (<button/>)
-					)}
+                  unfollow
+                </Button>) : Situation == 'pending' ? (
+                <Button
+                  color="primary"
+                  onClick={() => handleunrequest(profileInfo.id)}
+                  variant="contained">
+                  pending
+                </Button>) : (<button />)
+        )}
+         
       </Box>
 
       <Box className="px-3">
         <Typography className="fs-25 b-900 lh-1">
-          {profileInfo.firstName + ' ' + profileInfo.lastName}
+          {profileInfo.firstName + ' ' + profileInfo.lastName + '-'}
+          {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
+					       <div/> 
+					) : (
+          <select className="relation" onChange = {onchange} value= {Relation}>
+            <option value="unknown" className = "option">unknown</option>
+            <option value="family" className = "option">family</option>
+            <option value="friend" className = "option">friend</option>
+            <option selected value="closefriend" className = "option">
+              close friend
+            </option>
+            <option value="unfamiliarperson " className = "option">unfamiliar person </option>
+          </select>
+
+					)}
+      
         </Typography>
+       
         <Typography className="color-gray">
           @{profileInfo.username}
         </Typography>
         <Typography className="mt-3">{profileInfo.bio}</Typography>
         <Box display="flex" alignItems="center" className="color-gray">
-          <DateRangeIcon fontSize="small" className="mr-1"/>
+          <DateRangeIcon fontSize="small" className="mr-1" />
            Joined
-          { ' ' + dt + ' ' +
-          monthNumberToLabelMap[month] +
-          ' ' + year}
+          {' ' + dt + ' ' +
+            monthNumberToLabelMap[month] +
+            ' ' + year}
         </Box>
 
         <Box display="flex" className="mt-2">
           <Box type="followers" className="followers" onClick={handleOpenfollowers}>
-            {'followers' +'   '+ followcount.followers_count }
+            {'followers' + '   ' + followcount.followers_count}
           </Box>
           <Modal
             open={open}
@@ -205,7 +232,7 @@ const ProfileUserinfo = () => {
             <Fade in={open}>{body}</Fade>
           </Modal>
           <Box type="followings" className="followings" onClick={handleOpenfollowing}>
-            {'followings' +'   '+ followcount.followings_count}
+            {'followings' + '   ' + followcount.followings_count}
           </Box>
           <Modal
             open={open}
@@ -224,28 +251,28 @@ const ProfileUserinfo = () => {
           </Modal>
         </Box>
 
-        {profileInfo.is_public === false && userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email?(
-            <Grid item>
+        {profileInfo.is_public === false && userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
+          <Grid item>
 
-              <Box type="requests" className="requests" onClick={handlerequests}>
+            <Box type="requests" className="requests" onClick={handlerequests}>
               requests
               </Box>
-              <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="sim"
-                value="requests"
-                id="2"
-                BackdropComponent={Backdrop}
-                className="modal"
-                BackdropProps={{
-                  timeout: 500,
-                }}
-              >
-                <Fade in={open}>{body}</Fade>
-              </Modal>
-            </Grid>):null}
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="simple-modal-title"
+              aria-describedby="sim"
+              value="requests"
+              id="2"
+              BackdropComponent={Backdrop}
+              className="modal"
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={open}>{body}</Fade>
+            </Modal>
+          </Grid>) : null}
       </Box>
 
     </Box>

@@ -28,7 +28,15 @@
 	border: none;
 	color: rgb(43, 43, 44);
 }
-
+.relation {
+	border: none;
+	outline: none;
+}
+.option{
+	align-items: center;
+	width: 100%;
+	
+}
 .requests {
 	font-size: medium;
 	background-color: transparent;
