@@ -33,8 +33,10 @@ const TweetBox = () => {
   
   const handlePostClick = () => {
     const tweetData = {content: tweetInfo.tweetText};
-  
-    API.postTweet(tweetData)
+    const userId = JSON.parse(
+      localStorage.getItem(Constants.GENERAL_USER_INFO),
+    )?.pk;
+      API.postTweet(tweetData,userId)
         .then((response) => {
           clearTweet();
           setSnackbarAlertMessage(
