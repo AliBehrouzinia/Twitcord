@@ -21,12 +21,9 @@ export const URL_FOLLOWINGS_LIST= '/followings/list/{id}/';
 export const URL_FOLLOWERS_LIST= '/followers/list/{id}/';
 export const URL_ROOMS_LIST= '/user/{id}/rooms/';
 export const URL_REPLY = '/reply/';
-<<<<<<< HEAD
 export const URL_MESSAGES = '/rooms/3/messages/?page={id}';
 export const URL_ROOM_INFO = '/room/{id}/';
-=======
 export const URL_USER = '/users/';
->>>>>>> ae149bd19bc16e8c116ddf8a703213068cf961be
 
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;

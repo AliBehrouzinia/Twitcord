@@ -165,7 +165,6 @@ export const getRoomsList = (data) => {
   );
 };
 
-<<<<<<< HEAD
 export const getmessages = (data) => {
   return request(
       {},
@@ -174,18 +173,20 @@ export const getmessages = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
 export const getroominfo = (data) => {
   return request(
       {},
       {},
       Constants.URL_ROOM_INFO.replace('{id}', data.id),
-=======
+  );
+};
+
 export const getTweet = (id) => {
   return request(
       {},
       {},
       Constants.URL_TWEET+id+'/family/',
->>>>>>> ae149bd19bc16e8c116ddf8a703213068cf961be
       Constants.GET_REQUEST_METHOD,
   );
 };
