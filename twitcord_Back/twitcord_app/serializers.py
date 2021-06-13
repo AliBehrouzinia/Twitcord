@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import NotFound
+from django.shortcuts import get_object_or_404
 
 from .models import *
 from .models import TwitcordUser
@@ -40,12 +41,17 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
             queryset2.append(item.request_to.id)
         if instance_user == request_user.id:
             result['status'] = "self"
+            result['type'] = "self"
         elif instance_user in queryset2:
             result['status'] = "pending"
+            result['type'] = None
         elif instance_user in queryset1:
+            following_obj = get_object_or_404(UserFollowing, user_id=instance_user, following_user_id=request_user.id)
             result['status'] = "following"
+            result['type'] = following_obj.type
         else:
             result['status'] = "not following"
+            result['type'] = None
         return result
 
     class Meta:
