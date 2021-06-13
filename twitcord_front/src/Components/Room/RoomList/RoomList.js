@@ -77,7 +77,9 @@ const RoomList = () => {
           setRooms([...rooms, {
             id: response.data.id,
             title: response.data.title,
-            members: response.data.members,
+            owner: response.data.owner,
+            users: response.data.users,
+            number_of_members: response.data.number_of_members,
           }]);
         })
         .catch((error) => {
@@ -100,7 +102,7 @@ const RoomList = () => {
   };
 
   const roomsList = rooms.map((room) => <div key={room.id}>
-    <RoomItem title={room.title} membersCount={room.members.length}/>
+    <RoomItem title={room.title} membersCount={room.number_of_members}/>
     <Divider/>
   </div>);
 
