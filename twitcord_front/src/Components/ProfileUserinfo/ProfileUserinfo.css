@@ -1,8 +1,39 @@
-.user-info {
-    border-left: 0.3px solid rgb(236, 236, 236);
-    border-right: 0.3px solid rgb(236, 236, 236);
-    background-color: white;
-    padding-bottom: 1%;
+
+.paper {
+	width: 360px;
+	background-Color: white;
+	border: '2px solid #000';
+	display: flex;
+	flex-direction: column;
+	margin-top: 5%;
+	margin-bottom: 5%;
+	overflow: scroll;
+	border-radius: 5px;
+}
+.modal {
+	display: flex;
+	justify-Content: center;
+    overflow: auto !important;
+}
+.followings {
+	font-size: medium;
+	background-color: transparent;
+	border: none;
+	color: rgb(43, 43, 44);
+	margin-left: 2%;
+}
+.followers {
+	font-size: medium;
+	background-color: transparent;
+	border: none;
+	color: rgb(43, 43, 44);
+}
+
+.requests {
+	font-size: medium;
+	background-color: transparent;
+	border: none;
+	color: rgb(43, 43, 44);
 }
 .p-avatar {
   width: 124px !important;
@@ -42,3 +73,7 @@
     cursor: pointer;
     text-decoration: underline;
 }
+
+
+
+ 

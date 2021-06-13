@@ -21,13 +21,20 @@ const initialState = {
     firstName: '',
     lastName: '',
     website: '',
-    isPublic: false,
+    is_public: false,
     email: '',
     has_header_img: false,
     has_profile_img: false,
     header_img: '',
     profile_img_upload_details: '',
     header_img_upload_details: '',
+    followers_count: 0,
+    followings_count: 0,
+    status: '',
+    id: '',
+  },
+  followcount: {
+    pk: 0,
     followers_count: 0,
     followings_count: 0,
   },
@@ -88,7 +95,17 @@ const tweetReducer = (state = initialState, action) => {
         userSearchResult: action.users,
       };
     }
-
+    case ActionTypes.SET_FOLLOW_COUNT: {
+      return {
+        ...state,
+        followcount: {
+          ...state.followcount,
+          pk: action.pk,
+          followers_count: action.followers_count,
+          followings_count: action.followings_count,
+        },
+      };
+    }
     case ActionTypes.SET_TWEET_SEARCH_RESULT: {
       return {
         ...state,
@@ -107,7 +124,7 @@ const tweetReducer = (state = initialState, action) => {
           lastName: action.last_name,
           website: action.website,
           username: action.username,
-          isPublic: action.isPublic,
+          is_public: action.is_public,
           email: action.email,
           has_header_img: action.has_header_img,
           has_profile_img: action.has_profile_img,
@@ -118,6 +135,8 @@ const tweetReducer = (state = initialState, action) => {
           header_img_upload_details: action.header_img_upload_details,
           followers_count: action.followers_count,
           followings_count: action.followings_count,
+          status: action.status,
+          id: action.id,
         },
       };
     }
@@ -133,7 +152,12 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
-
+    case ActionTypes.SET_SEARCH_INPUT: {
+      return {
+        ...state,
+        searchInput: action.input,
+      };
+    }
     case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
       return {
         ...state,
