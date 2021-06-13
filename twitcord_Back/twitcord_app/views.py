@@ -77,7 +77,7 @@ class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
         following_user_id = self.kwargs.get('id')
         instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
         instance.delete()
-        return Response(data={"status": "not following"}, status=status.HTTP_204_NO_CONTENT)
+        return Response(data={"status": "not following", "following": "unfollowed"})
 
 
 class FollowingRequestView(generics.CreateAPIView):
@@ -156,11 +156,16 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         user = self.request.user.id
+        print(user)
         following = self.kwargs.get('id')
-        instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
+        print(following)
+        # instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
+        instance = get_object_or_404(models.FollowRequest, request_from_id=user, request_to_id=following)
+        print(1)
+        print(instance)
         instance.delete()
-        return Response(data={"status": "not following", "follow_request": "Deleted"},
-                        status=status.HTTP_204_NO_CONTENT)
+        print(2)
+        return Response(data={"status": "not following", "follow_request": "Deleted"})
 
 
 class FollowCountView(generics.ListAPIView):
