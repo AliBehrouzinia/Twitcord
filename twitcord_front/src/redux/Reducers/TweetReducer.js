@@ -14,24 +14,26 @@ const initialState = {
   userSearchResult: [],
   tweetSearchResult: [],
   profileInfo: {
-    username: '',
     bio: '',
+    birth_date: '',
     date_joined: '',
-    birthday: '',
-    firstName: '',
-    lastName: '',
-    website: '',
-    is_public: false,
     email: '',
+    first_name: '',
+    followers_count: 0,
+    followings_count: 0,
     has_header_img: false,
     has_profile_img: false,
     header_img: '',
-    profile_img_upload_details: '',
     header_img_upload_details: '',
-    followers_count: 0,
-    followings_count: 0,
+    id: 0,
+    is_active: false,
+    is_public: false,
+    last_name: '',
+    profile_img: '',
     status: '',
-    id: '',
+    type: '',
+    username: '',
+    website: '',
   },
   followcount: {
     pk: 0,
@@ -45,6 +47,7 @@ const initialState = {
 };
 
 const tweetReducer = (state = initialState, action) => {
+  console.log(action);
   switch (action.type) {
     case ActionTypes.SET_SIGN_UP_INFO:
       return {
@@ -114,29 +117,31 @@ const tweetReducer = (state = initialState, action) => {
     }
 
     case ActionTypes.SET_PROFILE_INFO: {
+      console.log('reducer'+ action);
       return {
         ...state,
         profileInfo: {
           ...state.profileInfo,
           bio: action.bio,
-          birthday: action.birthday,
-          firstName: action.first_name,
-          lastName: action.last_name,
-          website: action.website,
-          username: action.username,
-          is_public: action.is_public,
-          email: action.email,
-          has_header_img: action.has_header_img,
-          has_profile_img: action.has_profile_img,
+          birth_date: action.birth_date,
           date_joined: action.date_joined,
-          profile_img: action.profile_img,
-          header_img: action.header_img,
-          profile_img_upload_details: action.profile_img_upload_details,
-          header_img_upload_details: action.header_img_upload_details,
+          email: action.email,
+          first_name: action.first_name,
           followers_count: action.followers_count,
           followings_count: action.followings_count,
-          status: action.status,
+          has_header_img: faction.has_header_img,
+          has_profile_img: action.has_profile_img,
+          header_img: action.header_img,
+          header_img_upload_details: action.header_img_upload_details,
           id: action.id,
+          is_active: action.is_active,
+          is_public: action.is_public,
+          last_name: action.last_name,
+          profile_img: action.profile_img,
+          status: action.status,
+          type: action.type,
+          username: action.username,
+          website: action.website,
         },
       };
     }

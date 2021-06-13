@@ -20,11 +20,7 @@ import {useParams} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import DateRangeIcon from '@material-ui/icons/DateRange';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+
 
 const ProfileUserinfo = () => {
   const params = useParams();
@@ -34,11 +30,7 @@ const ProfileUserinfo = () => {
   const followcount = useSelector((state) => state).tweet.followcount;
   const [Situation, setSituation] = useState('');
   const [Relation, setRelation] = useState('family');
-  let profileId = -1;
   const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
-  if (userGeneralInfo != null) {
-    profileId = userGeneralInfo.pk;
-  }
   const userId = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
   )?.pk;
@@ -124,22 +116,22 @@ const ProfileUserinfo = () => {
   useEffect(() => {
     API.getProfileInfo({id: params.id})
         .then((response) => {
-          dispatch(Actions.setProfileInfo(response.data));
+          dispatch(Actions.setProfileInfo({...response.data , type : 'SET_PROFILE_INFO'}));
           setSituation(response.data.status);
+       
         })
         .catch((error) => {
           console.log(error);
         });
-  }, []);
-  useEffect(() => {
     API.followcount({id: params.id})
         .then((response) => {
           dispatch(Actions.setfollowcount(response.data.results[0]));
         })
         .catch((error) => {
           console.log(error);
-        });
+        });    
   }, []);
+ 
   const date = new Date(profileInfo.date_joined);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -191,7 +183,7 @@ const ProfileUserinfo = () => {
 
       <Box className="px-3">
         <Typography className="fs-25 b-900 lh-1">
-          {profileInfo.firstName + ' ' + profileInfo.lastName + '-'}
+          {profileInfo.first_name + ' ' + profileInfo.last_name + '-'}
           {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
 					       <div/> 
 					) : (
