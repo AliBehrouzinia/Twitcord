@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import NotFound
+from django.shortcuts import get_object_or_404
 
 from .models import *
 from .models import TwitcordUser
@@ -298,7 +299,6 @@ class RoomSerializer(serializers.ModelSerializer):
 class ReplySerializer(serializers.ModelSerializer):
     is_reply = serializers.BooleanField()
     parent = serializers.PrimaryKeyRelatedField(queryset=Tweet.objects.all())
-    parent = TweetSerializer(read_only=True)
     retweet_from = TweetSerializer(read_only=True)
 
     class Meta:
@@ -315,6 +315,35 @@ class ReplySerializer(serializers.ModelSerializer):
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         is_retweeted = Tweet.objects.filter(id=instance.id, user_id=self.context['request'].user.id,
                                             retweet_from__isnull=False).exists()
+        parent = result.pop('parent')
+        query = TwitcordUser.objects.filter(pk=parent)
+        if query is None:
+            result['parent'] = None
+        else:
+            result['parent'] = {}
+            for obj in query:
+                result['parent']['username'] = obj.username
+                result['parent']['date_joined'] = obj.date_joined
+                result['parent']['first_name'] = obj.first_name
+                result['parent']['last_name'] = obj.last_name
+                result['parent']['birth_date'] = obj.birth_date
+                result['parent']['is_public'] = obj.is_public
+                result['parent']['profile_img'] = obj.profile_img
+                result['parent']['header_img'] = obj.header_img
+                result['parent']['id'] = obj.id
+
+        user_id = result.pop('user')
+        user = get_object_or_404(TwitcordUser, pk=user_id)
+        result['user'] = {}
+        result['user']['username'] = user.username
+        result['user']['date_joined'] = user.date_joined
+        result['user']['first_name'] = user.first_name
+        result['user']['last_name'] = user.last_name
+        result['user']['birth_date'] = user.birth_date
+        result['user']['is_public'] = user.is_public
+        result['user']['profile_img'] = user.profile_img
+        result['user']['header_img'] = user.header_img
+        result['user']['id'] = user.id
         result['is_retweeted'] = is_retweeted
         result['is_liked'] = is_liked
         result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
