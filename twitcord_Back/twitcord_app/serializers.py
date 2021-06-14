@@ -316,22 +316,28 @@ class ReplySerializer(serializers.ModelSerializer):
         is_retweeted = Tweet.objects.filter(id=instance.id, user_id=self.context['request'].user.id,
                                             retweet_from__isnull=False).exists()
         parent = result.pop('parent')
-        query = TwitcordUser.objects.filter(pk=parent)
+        query = Tweet.objects.filter(pk=parent)
         if query is None:
             result['parent'] = None
         else:
             result['parent'] = {}
             for obj in query:
-                result['parent']['username'] = obj.username
-                result['parent']['date_joined'] = obj.date_joined
-                result['parent']['first_name'] = obj.first_name
-                result['parent']['last_name'] = obj.last_name
-                result['parent']['birth_date'] = obj.birth_date
-                result['parent']['is_public'] = obj.is_public
-                result['parent']['profile_img'] = obj.profile_img
-                result['parent']['header_img'] = obj.header_img
                 result['parent']['id'] = obj.id
-
+                result['parent']['content'] = obj.content
+                result['parent']['create_date'] = obj.create_date
+                is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=obj.id).exists()
+                is_retweeted = Tweet.objects.filter(id=obj.id, user_id=self.context['request'].user.id,
+                                                    retweet_from__isnull=False).exists()
+                result['parent']['is_retweeted'] = is_retweeted
+                result['parent']['is_liked'] = is_liked
+                result['parent']['user_id'] = obj.user.id
+                result['parent']['username'] = obj.user.username
+                result['parent']['first_name'] = obj.user.first_name
+                result['parent']['last_name'] = obj.user.last_name
+                result['parent']['is_public'] = obj.user.is_public
+                result['parent']['like_count'] = len(Like.objects.filter(tweet_id=obj.id))
+                result['parent']['reply_count'] = len(Tweet.objects.filter(parent_id=obj.id))
+                result['parent']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=obj.id))
         user_id = result.pop('user')
         user = get_object_or_404(TwitcordUser, pk=user_id)
         result['user'] = {}
