@@ -13,6 +13,11 @@ import * as Actions from '../../redux/Actions/index';
 import SnackbarAlert from '../Snackbar/Snackbar';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import minioClient from '../../Utils/Minio';
+
+/* eslint-disable */
+let hasMedia = false;
+let photoUploadDetails = null;
 
 const TweetBox = () => {
   const tweetInfo = useSelector((state) => state).tweet;
@@ -27,28 +32,23 @@ const TweetBox = () => {
   tweetInfo.tweetText.length == 0;
 
   const clearTweet = () => {
+    onClearMedia();
     dispatch(Actions.setTweetText({
       tweetText: '',
     }));
   };
 
   const handlePostClick = () => {
-    const tweetData = {content: tweetInfo.tweetText};
+    const tweetData = {content: tweetInfo.tweetText, has_media: hasMedia};
     const userId = JSON.parse(
         localStorage.getItem(Constants.GENERAL_USER_INFO),
     )?.pk;
+
     API.postTweet(tweetData, userId)
         .then((response) => {
+          photoUploadDetails = response.data.tweet_media_upload_details;
           clearTweet();
-          setSnackbarAlertMessage(
-              Constants.TWEET_SUCCESS_MESSAGE);
-          setSnackbarAlertSeverity(
-              Constants.SNACKBAR_SUCCESS_SEVERITY);
-          dispatch(
-              Actions.setSnackBarState({
-                isSnackbarOpen: true,
-              }),
-          );
+          uploadPhoto()
         })
         .catch((error) => {
           setSnackbarAlertMessage(
@@ -64,8 +64,45 @@ const TweetBox = () => {
         });
   };
 
+  const uploadPhoto = () => {
+    minioClient.presignedPutObject(
+      photoUploadDetails.bucket_name,
+      photoUploadDetails.object_name,
+      function(err, presignedUrl) {
+        console.log(presignedUrl)
+        API.uploadPhoto({file: media, url: presignedUrl})
+        .then(
+          res => {
+            setSnackbarAlertMessage(
+              Constants.TWEET_SUCCESS_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_SUCCESS_SEVERITY);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+          }
+        ).catch(
+          err => {
+            setSnackbarAlertMessage(
+              Constants.TWEET_FAILURE_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_ERROR_SEVERITY);
+          setMedia(null);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+          }
+          );
+      });
+  }
+
   const onPhotoChange = (file) => {
     setMedia(file);
+    hasMedia = true;
   };
 
   const onAddPhotoClick = () => {
@@ -74,6 +111,7 @@ const TweetBox = () => {
 
   const onClearMedia = () => {
     setMedia(null);
+    hasMedia = false;
   };
 
   const getMediaUrl = () => {
