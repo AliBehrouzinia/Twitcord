@@ -11,7 +11,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 import {ReplyModal} from '../ReplyModal/ReplyModal';
-
+/* eslint-disable */
 
 const monthNumberToLabelMap = {
   [1]: 'January',
@@ -119,6 +119,12 @@ export const TweetSearchItem = (props) => {
           </div>
         </Grid>
 
+        {props.hasMedia &&
+          <Grid xs={12} item className="tsi-item-media">
+            <img className="tsi-media" src={props.profileImg} />
+          </Grid>
+        }
+
         <Grid xs={12} item className="tsi-item-desc">
           <Typography className="tsi-desc">{props.content}</Typography>
         </Grid>
@@ -156,4 +162,6 @@ TweetSearchItem.propTypes = {
   createDate: PropTypes.string,
   id: PropTypes.number,
   userId: PropTypes.number,
+  hasMedia: PropTypes.bool,
+  profileImg: PropTypes.string,
 };

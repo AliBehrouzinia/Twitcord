@@ -39,7 +39,8 @@ const Search = () => {
           createDate={tweet.create_date}
           content={tweet.content}
           userId={tweet.user}
-          profileImg={tweet.profile_img}
+          profileImg={tweet.tweet_media}
+          hasMedia={tweet.has_media}
           isPublic={tweet.is_public}/>
         <Divider />
       </div>,
