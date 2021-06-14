@@ -25,7 +25,7 @@ from django.db.models import Q
 class ProfileDetailsView(generics.RetrieveUpdateAPIView):
     """Get profile details of a user"""
     queryset = models.TwitcordUser.objects.all()
-    permission_classes = [UserIsOwnerOrReadonly]
+    permission_classes = [UsersTweetsPermission]
     serializer_class = serializers.ProfileDetailsViewSerializer
     lookup_url_kwarg = 'id'
 
