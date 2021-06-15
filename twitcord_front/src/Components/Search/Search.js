@@ -45,7 +45,7 @@ const Search = () => {
           retweet_count={tweet.retweet_count}
           reply_count={tweet.reply_count}
           is_liked={tweet.is_liked}
-          is_retweet={tweet.is_retweet}/>
+          is_retweeted={tweet.is_retweeted}/>
         <Divider />
       </div>,
   );

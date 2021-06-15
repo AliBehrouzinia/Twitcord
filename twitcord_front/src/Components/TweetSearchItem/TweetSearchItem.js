@@ -101,8 +101,8 @@ export const TweetSearchItem = (props) => {
         </div>
         <div>
           <IconButton className="mr-1">
-            {props?.is_retweet && <CachedIcon color="primary"/>}
-            {!props?.is_retweet && <CachedIcon/>}
+            {props?.is_retweeted && <CachedIcon color="primary"/>}
+            {!props?.is_retweeted && <CachedIcon/>}
           </IconButton>
           {props?.retweet_count}
         </div>
@@ -124,5 +124,5 @@ TweetSearchItem.propTypes = {
   like_count: PropTypes.number,
   retweet_count: PropTypes.number,
   is_liked: PropTypes.bool,
-  is_retweet: PropTypes.bool,
+  is_retweeted: PropTypes.bool,
 };
