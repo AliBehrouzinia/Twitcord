@@ -12,7 +12,7 @@ import * as API from '../../Utils/API/index';
 const Profile = () => {
   const params = useParams();
   const [tabSelected, setSelectedTab] = useState(0);
-  const [replys, setReplys] = useState({});
+  // const [replys, setReplys] = useState({});
 
 
   const handleChange = (event, selectedTab) => {
@@ -30,11 +30,11 @@ const Profile = () => {
     });
   }, []);
 
-  const replylist = replys.map(
-    (tweet)=> (<div>
+  // const replylist = replys.map(
+  //   (tweet)=> (<div>
 
-    </div>)
-  );
+  //   </div>)
+  // );
 
   // const tweetlists = tweets.map(
   //   (user) => <div key={user.id}>

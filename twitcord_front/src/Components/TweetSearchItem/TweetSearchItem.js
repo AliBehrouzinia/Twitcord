@@ -13,35 +13,48 @@ import IconButton from '@material-ui/core/IconButton';
 import {ReplyModal} from '../ReplyModal/ReplyModal';
 import * as helper from '../../Utils/helper';
 import {useHistory} from 'react-router-dom';
+import Box from '@material-ui/core/Box';
 
 export const TweetSearchItem = (props) => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
-  let isTweetRoute = true;
+  const [isClosing, setIsClosing] = useState(false);
 
   const openReplyModal = () => {
-    isTweetRoute = false;
     setOpen(true);
   };
 
   const handleClose = () => {
+    setIsClosing(true);
     setOpen(false);
   };
 
   const tweetClicked = (event) => {
-    if (isTweetRoute) {
-      history.push('/tweet/'+props.id);
-    } else {
-      isTweetRoute = true;
+    const links = document.getElementsByTagName('a');
+    const buttons = document.getElementsByTagName('button');
+    for (let i=0; i<links.length; i++) {
+      if (links[i].contains(event.target)) {
+        return;
+      }
     }
+    for (let i=0; i<buttons.length; i++) {
+      if (buttons[i].contains(event.target)) {
+        return;
+      }
+    }
+    if (isClosing) {
+      setIsClosing(false);
+      return;
+    }
+    history.push('/tweet/'+props.id);
   };
 
   return (
-    <div>
-      <Grid container onClick={tweetClicked}
+    <div className="tsi-hover pointer" onClick={tweetClicked}>
+      <Grid container
         direction="row"
         spacing={6}
-        className="tsi-container"
+        className="m-0 w-100"
         justify="space-between">
         <Grid item xs={12} sm={9} md={10}>
           <div className="tsi-avatar-container">
@@ -69,26 +82,28 @@ export const TweetSearchItem = (props) => {
           <Typography className="tsi-desc">{props.content}</Typography>
         </Grid>
 
-        <Grid xs={12} container item className="tsi-icon-bottom-bar">
-          <Grid item>
-            <IconButton>
-              <FavoriteBorderIcon/>
-            </IconButton>
-          </Grid>
-
-          <Grid item>
-            <IconButton onClick={openReplyModal}>
-              <ChatBubbleOutlineIcon/>
-            </IconButton>
-          </Grid>
-
-          <Grid item>
-            <IconButton>
-              <CachedIcon/>
-            </IconButton>
-          </Grid>
-        </Grid>
       </Grid>
+      <Box display="flex"
+        justifyContent="space-around" className="px-3 py-1 mt-2 fs-12">
+        <div>
+          <IconButton className="mr-1">
+            <FavoriteBorderIcon />
+          </IconButton>
+          {props?.like_count}
+        </div>
+        <div>
+          <IconButton className="mr-1" onClick={openReplyModal}>
+            <ChatBubbleOutlineIcon />
+          </IconButton>
+          {props?.reply_count}
+        </div>
+        <div>
+          <IconButton className="mr-1">
+            <CachedIcon />
+          </IconButton>
+          {props?.retweet_count}
+        </div>
+      </Box>
       <ReplyModal tweet={props} open={open} onClose={handleClose} />
     </div>
   );
@@ -102,4 +117,7 @@ TweetSearchItem.propTypes = {
   createDate: PropTypes.string,
   id: PropTypes.number,
   userId: PropTypes.number,
+  reply_count: PropTypes.number,
+  like_count: PropTypes.number,
+  retweet_count: PropTypes.number,
 };

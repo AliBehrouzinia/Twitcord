@@ -40,7 +40,10 @@ const Search = () => {
           content={tweet.content}
           userId={tweet.user}
           profileImg={tweet.profile_img}
-          isPublic={tweet.is_public}/>
+          isPublic={tweet.is_public}
+          like_count={tweet.like_count}
+          retweet_count={tweet.retweet_count}
+          reply_count={tweet.reply_count}/>
         <Divider />
       </div>,
   );
