@@ -87,7 +87,7 @@ class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
         following_user_id = self.kwargs.get('id')
-        instance = get_object_or_404(models.UserFollowing, user_id=following_user_id, following_user=user_id)
+        instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
         instance.delete()
         return Response(data={"status": "not following", "following": "unfollowed"})
 
