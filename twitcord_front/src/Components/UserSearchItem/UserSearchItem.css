@@ -15,6 +15,10 @@
 .usi-avatar-container {
   display: flex;
 }
+.usi-info-container{
+  display: flex;
+  flex-direction: row-reverse;
+}
 
 .usi-name-container {
   display: flex;

@@ -59,37 +59,14 @@ export const UserSearchItem = (props) => {
   };
 
   return (
-    <Grid onClick={clickTest} container
-      direction="row"
+    <Grid onClick={clickTest}
+      container
       spacing={6}
       className="usi-container usi-item-hover m-0 w-100 pointer"
       justify="space-between">
-      <Grid item xs={12} sm={9} md={10}>
-        <div className="usi-avatar-container">
-          <Link to={'/profile/'+ props.id}>
-            <Avatar className="usi-avatar" alt="avatar"/>
-          </Link>
-          <div className="usi-username-container">
-            <div className="usi-name-container">
-              <Link to={'/profile/'+props.id}>
-                <Tooltip title={props.name} placement="top-start">
-                  <Typography className="usi-name" >{props.name}</Typography>
-                </Tooltip>
-              </Link>
-              {!props.isPublic && <Icon className="usi-lock-icon">lock</Icon>}
-            </div>
-            <Tooltip title={'@'+props.username} placement="top-start">
-              <Link to={'/profile/'+props.id}>
-                <Typography className="usi-username">
-                  @{props.username}
-                </Typography>
-              </Link>
-            </Tooltip>
-          </div>
-        </div>
-      </Grid>
-      <Grid className="text-right p-3">
-        { Situation == 'not following' ? (
+      <Grid item container xs={12} className="usi-info-container">
+        <Grid item className="text-right p-3" xs={6} >
+          { Situation == 'not following' ? (
               <Button
                 color="primary"
                 onClick={() => handlefollow(props.id)}
@@ -109,6 +86,31 @@ export const UserSearchItem = (props) => {
                   pending
                 </Button>) : (<button />)}
 
+        </Grid>
+        <Grid item xs={6} >
+          <div className="usi-avatar-container">
+            <Link to={'/profile/'+ props.id}>
+              <Avatar className="usi-avatar" alt="avatar"/>
+            </Link>
+            <div className="usi-username-container">
+              <div className="usi-name-container">
+                <Link to={'/profile/'+ props.id}>
+                  <Tooltip title={props.name} placement="top-start">
+                    <Typography className="usi-name" >{props.name}</Typography>
+                  </Tooltip>
+                </Link>
+                {!props.isPublic && <Icon className="usi-lock-icon">lock</Icon>}
+              </div>
+              <Link to={'/profile/'+ props.id}>
+                <Tooltip title={'@'+props.username} placement="top-start">
+                  <Typography className="usi-username">
+                  @{props.username}
+                  </Typography>
+                </Tooltip>
+              </Link>
+            </div>
+          </div>
+        </Grid>
       </Grid>
       {props.bio != null && <Grid xs={12} item className="usi-item-desc">
         <Typography className="usi-desc">{props.bio}</Typography>
