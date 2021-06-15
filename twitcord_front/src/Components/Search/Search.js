@@ -43,7 +43,9 @@ const Search = () => {
           isPublic={tweet.is_public}
           like_count={tweet.like_count}
           retweet_count={tweet.retweet_count}
-          reply_count={tweet.reply_count}/>
+          reply_count={tweet.reply_count}
+          is_liked={tweet.is_liked}
+          is_retweet={tweet.is_retweet}/>
         <Divider />
       </div>,
   );

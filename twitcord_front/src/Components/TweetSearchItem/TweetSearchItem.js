@@ -8,6 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import './TweetSearchItem.css';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
 import {ReplyModal} from '../ReplyModal/ReplyModal';
@@ -87,7 +88,8 @@ export const TweetSearchItem = (props) => {
         justifyContent="space-around" className="px-3 py-1 mt-2 fs-12">
         <div>
           <IconButton className="mr-1">
-            <FavoriteBorderIcon />
+            {props.is_liked && <FavoriteIcon color="secondary"/>}
+            {!props.is_liked && <FavoriteBorderIcon />}
           </IconButton>
           {props?.like_count}
         </div>
@@ -99,7 +101,8 @@ export const TweetSearchItem = (props) => {
         </div>
         <div>
           <IconButton className="mr-1">
-            <CachedIcon />
+            {props?.is_retweet && <CachedIcon color="primary"/>}
+            {!props?.is_retweet && <CachedIcon/>}
           </IconButton>
           {props?.retweet_count}
         </div>
@@ -120,4 +123,6 @@ TweetSearchItem.propTypes = {
   reply_count: PropTypes.number,
   like_count: PropTypes.number,
   retweet_count: PropTypes.number,
+  is_liked: PropTypes.bool,
+  is_retweet: PropTypes.bool,
 };
