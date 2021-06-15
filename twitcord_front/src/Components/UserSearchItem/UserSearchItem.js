@@ -9,10 +9,11 @@ import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import * as API from '../../Utils/API/index';
 import './UserSearchItem.css';
+import {Link, useHistory} from 'react-router-dom';
 
 export const UserSearchItem = (props) => {
   const [Situation, setSituation] = useState(props.status);
-  console.log(props.status);
+  const history = useHistory();
   function handleunrequest(id) {
     API.deleteFollowRequest({id: id})
         .then((response) => {
@@ -40,26 +41,49 @@ export const UserSearchItem = (props) => {
           console.log(error);
         });
   }
+
+  const clickTest = (event) => {
+    const links = document.getElementsByTagName('a');
+    const buttons = document.getElementsByTagName('button');
+    for (let i=0; i<links.length; i++) {
+      if (links[i].contains(event.target)) {
+        return;
+      }
+    }
+    for (let i=0; i<buttons.length; i++) {
+      if (buttons[i].contains(event.target)) {
+        return;
+      }
+    }
+    history.push('/profile/' + props.id);
+  };
+
   return (
-    <Grid container
+    <Grid onClick={clickTest} container
       direction="row"
       spacing={6}
-      className="usi-container"
+      className="usi-container usi-item-hover m-0 w-100 pointer"
       justify="space-between">
       <Grid item xs={12} sm={9} md={10}>
         <div className="usi-avatar-container">
-          <Avatar className="usi-avatar" alt="avatar"/>
+          <Link to={'/profile/'+ props.id}>
+            <Avatar className="usi-avatar" alt="avatar"/>
+          </Link>
           <div className="usi-username-container">
             <div className="usi-name-container">
-              <Tooltip title={props.name} placement="top-start">
-                <Typography className="usi-name" >{props.name}</Typography>
-              </Tooltip>
+              <Link to={'/profile/'+props.id}>
+                <Tooltip title={props.name} placement="top-start">
+                  <Typography className="usi-name" >{props.name}</Typography>
+                </Tooltip>
+              </Link>
               {!props.isPublic && <Icon className="usi-lock-icon">lock</Icon>}
             </div>
             <Tooltip title={'@'+props.username} placement="top-start">
-              <Typography className="usi-username">
-                @{props.username}
-              </Typography>
+              <Link to={'/profile/'+props.id}>
+                <Typography className="usi-username">
+                  @{props.username}
+                </Typography>
+              </Link>
             </Tooltip>
           </div>
         </div>

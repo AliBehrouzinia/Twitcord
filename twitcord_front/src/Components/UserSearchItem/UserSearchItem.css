@@ -1,6 +1,3 @@
-.usi-container {
-  padding: 15px !important;
-}
 
 .usi-avatar {
   width: 60px !important;
@@ -9,6 +6,10 @@
 
 .usi-avatar-container:hover{
   cursor: pointer;
+}
+
+.usi-item-hover:hover {
+  background-color: rgb(245, 245, 245);
 }
 
 .usi-avatar-container {
