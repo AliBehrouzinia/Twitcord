@@ -169,7 +169,7 @@ class FollowCountSerializer(serializers.ModelSerializer):
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'email', 'bio']
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'email', 'bio', 'profile_img']
 
     def to_representation(self, instance):
         result = super(GlobalUserSearchSerializer, self).to_representation(instance)
