@@ -41,31 +41,14 @@ export const UserSearchItem = (props) => {
         });
   }
   return (
-    <Grid container
-      direction="row"
+    <Grid
+      container
       spacing={6}
       className="usi-container"
       justify="space-between">
-      <Grid item xs={12} sm={9} md={10}>
-        <div className="usi-avatar-container">
-          <Avatar className="usi-avatar" alt="avatar"/>
-          <div className="usi-username-container">
-            <div className="usi-name-container">
-              <Tooltip title={props.name} placement="top-start">
-                <Typography className="usi-name" >{props.name}</Typography>
-              </Tooltip>
-              {!props.isPublic && <Icon className="usi-lock-icon">lock</Icon>}
-            </div>
-            <Tooltip title={'@'+props.username} placement="top-start">
-              <Typography className="usi-username">
-                @{props.username}
-              </Typography>
-            </Tooltip>
-          </div>
-        </div>
-      </Grid>
-      <Grid className="text-right p-3">
-        { Situation == 'not following' ? (
+      <Grid item container xs={12} className="usi-info-container">
+        <Grid item className="text-right p-3" xs={6} >
+          { Situation == 'not following' ? (
               <Button
                 color="primary"
                 onClick={() => handlefollow(props.id)}
@@ -85,6 +68,25 @@ export const UserSearchItem = (props) => {
                   pending
                 </Button>) : (<button />)}
 
+        </Grid>
+        <Grid item xs={6} >
+          <div className="usi-avatar-container">
+            <Avatar className="usi-avatar" alt="avatar"/>
+            <div className="usi-username-container">
+              <div className="usi-name-container">
+                <Tooltip title={props.name} placement="top-start">
+                  <Typography className="usi-name" >{props.name}</Typography>
+                </Tooltip>
+                {!props.isPublic && <Icon className="usi-lock-icon">lock</Icon>}
+              </div>
+              <Tooltip title={'@'+props.username} placement="top-start">
+                <Typography className="usi-username">
+                @{props.username}
+                </Typography>
+              </Tooltip>
+            </div>
+          </div>
+        </Grid>
       </Grid>
       {props.bio != null && <Grid xs={12} item className="usi-item-desc">
         <Typography className="usi-desc">{props.bio}</Typography>
