@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
 import './Profile.css';
 import PropTypes from 'prop-types';
@@ -26,7 +26,7 @@ const Profile = () => {
       setTweet({...res.data, name: res.data.first_name +
          ' ' + res.data.last_name});
     }).catch((error)=>{
-      setSnackOpen(true);
+      // setSnackOpen(true);
     });
   }, []);
 

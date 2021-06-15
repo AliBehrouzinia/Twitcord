@@ -15,6 +15,8 @@ import {ReplyModal} from '../ReplyModal/ReplyModal';
 import * as helper from '../../Utils/helper';
 import {useHistory} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
+import {Link} from 'react-router-dom';
+
 
 export const TweetSearchItem = (props) => {
   const history = useHistory();
@@ -59,22 +61,28 @@ export const TweetSearchItem = (props) => {
         justify="space-between">
         <Grid item xs={12} sm={9} md={10}>
           <div className="tsi-avatar-container">
-            <Avatar className="tsi-avatar" alt="avatar"/>
+            <Link to={'/profile/' + props.userId}>
+              <Avatar className="tsi-avatar" alt="avatar"/>
+            </Link>
             <div className="tsi-username-container">
               <div className="tsi-name-container">
-                <Tooltip title={props.name} placement="top-start">
-                  <Typography className="tsi-name" >{props.name}</Typography>
-                </Tooltip>
+                <Link to={'/profile/' + props.userId}>
+                  <Tooltip title={props.name} placement="top-start">
+                    <Typography className="tsi-name" >{props.name}</Typography>
+                  </Tooltip>
+                </Link>
                 {!props.isPublic && <Icon className="tsi-lock-icon">lock</Icon>}
                 <Typography className="tsi-date">
                   <div className="tsi-dot"/>
                   {helper.extractTime(props.createDate)}
                 </Typography>
               </div>
-              <Tooltip title={'@'+props.username} placement="top-start">
-                <Typography className="tsi-username">@{props.username}
-                </Typography>
-              </Tooltip>
+              <Link to={'/profile/' + props.userId}>
+                <Tooltip title={'@'+props.username} placement="top-start">
+                  <Typography className="tsi-username">@{props.username}
+                  </Typography>
+                </Tooltip>
+              </Link>
             </div>
           </div>
         </Grid>

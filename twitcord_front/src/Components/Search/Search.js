@@ -38,7 +38,7 @@ const Search = () => {
           username={tweet.username}
           createDate={tweet.create_date}
           content={tweet.content}
-          userId={tweet.user}
+          userId={tweet.user_id}
           profileImg={tweet.profile_img}
           isPublic={tweet.is_public}
           like_count={tweet.like_count}
