@@ -39,14 +39,15 @@ const ProfileTweetlist = () => {
       {tweetInfo.map((tweet) => {
         return (
           <div key={tweet.id}>
-            <Tweets
+            {/* <Tweets
               id={tweet.id}
               name={tweet.first_name + ' ' + tweet.last_name}
               username={tweet.username}
               createDate={tweet.create_date}
               content={tweet.content}
               isPublic={tweet.is_public}
-            />
+            /> */}
+            to do
             <Divider />
           </div>
         );
