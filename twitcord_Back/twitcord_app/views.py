@@ -72,17 +72,17 @@ class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
 
     def patch(self, request, *args, **kwargs):
         following_id = self.kwargs.get('id')
-        following_obj = get_object_or_404(models.UserFollowing, user_id=following_id,
-                                          following_user_id=self.request.user.id)
-        data = {'user': following_id,
-                'following_user': self.request.user.id,
+        following_obj = get_object_or_404(models.UserFollowing, user_id=self.request.user.id,
+                                          following_user_id=following_id)
+        data = {'user': self.request.user.id,
+                'following_user': following_id,
                 'created': following_obj.created,
                 'type': self.request.data['type']
                 }
         serializer = serializers.FollowingsSerializer(following_obj, data=data, partial=True)
         if serializer.is_valid(True):
             serializer.save()
-        return Response(status=status.HTTP_200_OK)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
