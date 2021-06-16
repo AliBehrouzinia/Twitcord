@@ -64,12 +64,12 @@ export const TweetItem = (props) => {
         justify="space-between">
         <Grid item xs={12} sm={9} md={10}>
           <div className="tsi-avatar-container">
-            <Link to={'/profile/' + props.tweet?.user_id}>
+            <Link to={'/profile/' + props.tweet?.uesr?.id}>
               <Avatar className="tsi-avatar" alt="avatar"/>
             </Link>
             <div className="tsi-username-container">
               <div className="tsi-name-container">
-                <Link className="lh-0" to={'/profile/' + props.tweet?.user_id}>
+                <Link className="lh-0" to={'/profile/' + props.tweet?.user?.id}>
                   <Tooltip
                     title={props.tweet?.user?.first_name +
                        ' ' + props.tweet?.user?.last_name}
@@ -79,14 +79,14 @@ export const TweetItem = (props) => {
                        ' ' + props.tweet?.user?.last_name}</Typography>
                   </Tooltip>
                 </Link>
-                {!props.tweet?.is_public &&
+                {!props.tweet?.user?.is_public &&
                  <Icon className="tsi-lock-icon">lock</Icon>}
                 <Typography className="tsi-date">
                   <div className="tsi-dot"/>
                   {helper.extractTime(props.tweet?.create_date)}
                 </Typography>
               </div>
-              <Link to={'/profile/' + props.tweet?.user_id}>
+              <Link to={'/profile/' + props.tweet?.user?.id}>
                 <Tooltip title={'@'+props.tweet?.user?.username}
                   placement="top-start">
                   <Typography

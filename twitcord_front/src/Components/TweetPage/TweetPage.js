@@ -86,19 +86,21 @@ const TweetPage = () => {
         <Box onClick={goParent} display="flex"
           className="px-3 pt-3 parent-hover pointer">
           <Box display="flex" alignItems="center" flexDirection="column">
-            <Avatar alt={tweet.parent?.username} title={tweet.parent?.username}
+            <Avatar alt={tweet.parent?.user?.username}
+              title={tweet.parent?.user?.username}
               className="w-48 h-48"
               src="/static/images/avatar/1.jpg" />
             <div className="vl mt-1 br-33"></div>
           </Box>
           <div className="ml-2 w-100">
             <Box display="flex" className="lh-20 fs-15">
-              {(tweet.parent?.first_name || tweet.parent?.last_name)&&
+              {(tweet.parent?.user?.first_name ||
+               tweet.parent?.user?.last_name)&&
               (<div className="b-900 mr-2">
-                {(tweet.parent?.first_name +
-                   ' ' + tweet.parent?.last_name)}</div>)}
+                {(tweet.parent?.user?.first_name +
+                   ' ' + tweet.parent?.user?.last_name)}</div>)}
               <div className="b-400 text-gray">
-                @{tweet.parent?.username} .</div>
+                @{tweet.parent?.user?.username} .</div>
               <div className="ml-2 text-gray">
                 {helper.extractTime(tweet.parent?.create_date)}</div>
             </Box>
@@ -132,17 +134,17 @@ const TweetPage = () => {
           <Box display="flex" justifyContent="space-between"
             alignItems="center">
             <Box display="flex">
-              <Avatar alt={tweet.user.username}
-                title={tweet.user.username}
+              <Avatar alt={tweet.user?.username}
+                title={tweet.user?.username}
                 className="w-48 h-48"
                 src="/static/images/avatar/1.jpg" />
               <Box display="flex" flexDirection="column" justifyContent="center"
                 className="ml-2">
                 <Box className="b-600">
-                  {tweet.user.first_name}
+                  {tweet.user?.first_name}
                 </Box>
                 <Box className="text-gray mt-1">
-                  {'@' + tweet.user.username}</Box>
+                  {'@' + tweet.user?.username}</Box>
               </Box>
             </Box>
             <Box className="mr--6">
@@ -163,9 +165,9 @@ const TweetPage = () => {
           </Box>
           {tweet.is_reply && <div className="my-3">
             <span className="text-gray">Replying to </span>
-            <Link to={'/profile/'+tweet.parent?.user_id}
+            <Link to={'/profile/'+tweet.parent?.user?.id}
               className="link-color">
-              @{tweet.parent?.username}
+              @{tweet.parent?.user?.username}
             </Link>
           </div>}
           <Box className="mt-3">
