@@ -99,7 +99,11 @@ export const TweetSearchItem = (props) => {
         justify="space-between">
         <Grid item xs={12} sm={9} md={10}>
           <div className="tsi-avatar-container">
-            <Avatar className="tsi-avatar" alt="avatar"/>
+            <Avatar 
+            src={props.profileImg}
+            className="tsi-avatar" 
+            alt="avatar"
+            />
             <div className="tsi-username-container">
               <div className="tsi-name-container">
                 <Tooltip title={props.name} placement="top-start">
@@ -121,7 +125,7 @@ export const TweetSearchItem = (props) => {
 
         {props.hasMedia &&
           <Grid xs={12} item className="tsi-item-media">
-            <img className="tsi-media" src={props.profileImg} />
+            <img className="tsi-media" src={props.tweetMedia} />
           </Grid>
         }
 

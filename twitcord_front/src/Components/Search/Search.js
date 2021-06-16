@@ -23,6 +23,7 @@ const Search = () => {
             name={user.first_name + ' ' + user.last_name}
             username={user.username}
             bio={user.bio}
+            profileImg={user.profile_img}
             followState={user.status}
             isPublic={user.is_public}/>
         </Link>
@@ -39,7 +40,8 @@ const Search = () => {
           createDate={tweet.create_date}
           content={tweet.content}
           userId={tweet.user}
-          profileImg={tweet.tweet_media}
+          tweetMedia={tweet.tweet_media}
+          profileImg={tweet.user_profile_img}
           hasMedia={tweet.has_media}
           isPublic={tweet.is_public}/>
         <Divider />
