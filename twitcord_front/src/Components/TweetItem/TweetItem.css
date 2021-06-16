@@ -17,6 +17,7 @@
 
 .tsi-name-container {
   display: flex;
+  align-items: center;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -40,6 +41,10 @@
 
 .tsi-item-desc{
   order: 2;
+}
+
+.lh-0 {
+  line-height: 0 !important;
 }
 
 .tsi-name {
@@ -88,8 +93,7 @@
 }
 
 .tsi-date{
-  color: rgb(190, 190, 190);
-  align-self: flex-end;
+  color: rgb(148, 120, 120);
   padding: 3px;
 }
 

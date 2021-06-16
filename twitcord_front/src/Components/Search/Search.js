@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import {SearchBar} from '../SearchBar/SearchBar';
 import Divider from '@material-ui/core/Divider';
 import {UserSearchItem} from '../UserSearchItem/UserSearchItem';
-import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
+import {TweetItem} from '../TweetItem/TweetItem';
 import {Link} from 'react-router-dom';
 
 
@@ -32,20 +32,8 @@ const Search = () => {
 
   const tweetResult = tweets.map(
       (tweet) => <div key={tweet.id}>
-        <TweetSearchItem
-          id={tweet.id}
-          name={tweet.first_name + ' ' + tweet.last_name}
-          username={tweet.username}
-          createDate={tweet.create_date}
-          content={tweet.content}
-          userId={tweet.user_id}
-          profileImg={tweet.profile_img}
-          isPublic={tweet.is_public}
-          like_count={tweet.like_count}
-          retweet_count={tweet.retweet_count}
-          reply_count={tweet.reply_count}
-          is_liked={tweet.is_liked}
-          is_retweeted={tweet.is_retweeted}/>
+        <TweetItem
+          tweet={tweet}/>
         <Divider />
       </div>,
   );

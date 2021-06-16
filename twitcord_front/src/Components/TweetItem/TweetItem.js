@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import {Icon} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
-import './TweetSearchItem.css';
+import './TweetItem.css';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -18,7 +18,7 @@ import Box from '@material-ui/core/Box';
 import {Link} from 'react-router-dom';
 
 
-export const TweetSearchItem = (props) => {
+export const TweetItem = (props) => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -45,11 +45,14 @@ export const TweetSearchItem = (props) => {
         return;
       }
     }
+    if (open) {
+      return;
+    }
     if (isClosing) {
       setIsClosing(false);
       return;
     }
-    history.push('/tweet/'+props.id);
+    history.push('/tweet/'+props.tweet?.id);
   };
 
   return (
@@ -61,25 +64,32 @@ export const TweetSearchItem = (props) => {
         justify="space-between">
         <Grid item xs={12} sm={9} md={10}>
           <div className="tsi-avatar-container">
-            <Link to={'/profile/' + props.userId}>
+            <Link to={'/profile/' + props.tweet?.user_id}>
               <Avatar className="tsi-avatar" alt="avatar"/>
             </Link>
             <div className="tsi-username-container">
               <div className="tsi-name-container">
-                <Link to={'/profile/' + props.userId}>
-                  <Tooltip title={props.name} placement="top-start">
-                    <Typography className="tsi-name" >{props.name}</Typography>
+                <Link className="lh-0" to={'/profile/' + props.tweet?.user_id}>
+                  <Tooltip
+                    title={props.tweet?.first_name +
+                       ' ' + props.tweet?.last_name}
+                    placement="top-start">
+                    <Typography className="tsi-name" >
+                      {props.tweet?.first_name +
+                       ' ' + props.tweet?.last_name}</Typography>
                   </Tooltip>
                 </Link>
-                {!props.isPublic && <Icon className="tsi-lock-icon">lock</Icon>}
+                {!props.tweet?.is_public &&
+                 <Icon className="tsi-lock-icon">lock</Icon>}
                 <Typography className="tsi-date">
                   <div className="tsi-dot"/>
-                  {helper.extractTime(props.createDate)}
+                  {helper.extractTime(props.tweet?.create_date)}
                 </Typography>
               </div>
-              <Link to={'/profile/' + props.userId}>
-                <Tooltip title={'@'+props.username} placement="top-start">
-                  <Typography className="tsi-username">@{props.username}
+              <Link to={'/profile/' + props.tweet?.user_id}>
+                <Tooltip title={'@'+props.tweet?.username}
+                  placement="top-start">
+                  <Typography className="tsi-username">@{props.tweet?.username}
                   </Typography>
                 </Tooltip>
               </Link>
@@ -88,7 +98,7 @@ export const TweetSearchItem = (props) => {
         </Grid>
 
         <Grid xs={12} item className="tsi-item-desc">
-          <Typography className="tsi-desc">{props.content}</Typography>
+          <Typography className="tsi-desc">{props.tweet?.content}</Typography>
         </Grid>
 
       </Grid>
@@ -96,41 +106,30 @@ export const TweetSearchItem = (props) => {
         justifyContent="space-around" className="px-3 py-1 mt-2 fs-12">
         <div>
           <IconButton className="mr-1">
-            {props.is_liked && <FavoriteIcon color="secondary"/>}
-            {!props.is_liked && <FavoriteBorderIcon />}
+            {props.tweet?.is_liked && <FavoriteIcon color="secondary"/>}
+            {!props.tweet?.is_liked && <FavoriteBorderIcon />}
           </IconButton>
-          {props?.like_count}
+          {props.tweet?.like_count}
         </div>
         <div>
           <IconButton className="mr-1" onClick={openReplyModal}>
             <ChatBubbleOutlineIcon />
           </IconButton>
-          {props?.reply_count}
+          {props.tweet?.reply_count}
         </div>
         <div>
           <IconButton className="mr-1">
-            {props?.is_retweeted && <CachedIcon color="primary"/>}
-            {!props?.is_retweeted && <CachedIcon/>}
+            {props.tweet?.is_retweeted && <CachedIcon color="primary"/>}
+            {!props.tweet?.is_retweeted && <CachedIcon/>}
           </IconButton>
-          {props?.retweet_count}
+          {props.tweet?.retweet_count}
         </div>
       </Box>
-      <ReplyModal tweet={props} open={open} onClose={handleClose} />
+      <ReplyModal tweet={props.tweet} open={open} onClose={handleClose} />
     </div>
   );
 };
 
-TweetSearchItem.propTypes = {
-  name: PropTypes.string,
-  username: PropTypes.string,
-  content: PropTypes.string,
-  isPublic: PropTypes.bool,
-  createDate: PropTypes.string,
-  id: PropTypes.number,
-  userId: PropTypes.number,
-  reply_count: PropTypes.number,
-  like_count: PropTypes.number,
-  retweet_count: PropTypes.number,
-  is_liked: PropTypes.bool,
-  is_retweeted: PropTypes.bool,
+TweetItem.propTypes = {
+  tweet: PropTypes.object,
 };

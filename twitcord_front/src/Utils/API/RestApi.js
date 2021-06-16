@@ -178,7 +178,16 @@ export const getReplyList = (id) => {
   return request(
       {},
       {},
-      Constants.URL_TWEET+id+'/family/',
+      Constants.URL_REPLYS+id + '/',
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const getTweetList = (id) => {
+  return request(
+      {},
+      {},
+      Constants.URL_USER+id+'/tweets/',
       Constants.GET_REQUEST_METHOD,
   );
 };

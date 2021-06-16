@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from 'react-router-dom';
+import {useHistory, useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -16,7 +16,7 @@ import * as API from '../../Utils/API/index';
 import * as helper from '../../Utils/helper';
 import './TweetPage.css';
 import {ReplyModal} from '../ReplyModal/ReplyModal';
-import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
+import {TweetItem} from '../TweetItem/TweetItem';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import {Link} from 'react-router-dom';
@@ -27,6 +27,7 @@ const TweetPage = () => {
   const [tweet, setTweet] = useState({});
   const [open, setOpen] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
+  const history = useHistory();
 
   const openReplyModal = () => {
     setOpen(true);
@@ -57,6 +58,10 @@ const TweetPage = () => {
     window.history.back();
   };
 
+  const goParent = () => {
+    history.push('/tweet/'+ tweet.parent?.id);
+  };
+
   return (
     <div>
       <Snackbar
@@ -77,7 +82,9 @@ const TweetPage = () => {
         </Tooltip>
         <Box component="span" className="b-900 ml-2">Tweet</Box>
         <Divider />
-        <Box display="flex" className="px-3 pt-3">
+        {tweet.is_reply &&
+        <Box onClick={goParent} display="flex"
+          className="px-3 pt-3 parent-hover pointer">
           <Box display="flex" alignItems="center" flexDirection="column">
             <Avatar alt={tweet.parent?.username} title={tweet.parent?.username}
               className="w-48 h-48"
@@ -93,7 +100,7 @@ const TweetPage = () => {
               <div className="b-400 text-gray">
                 @{tweet.parent?.username} .</div>
               <div className="ml-2 text-gray">
-                {helper.extractTime(tweet.parent?.createDate)}</div>
+                {helper.extractTime(tweet.parent?.create_date)}</div>
             </Box>
             <div className="mt-2 fs-15 lh-20">
               {tweet.parent?.content}
@@ -120,8 +127,8 @@ const TweetPage = () => {
               </div>
             </Box>
           </div>
-        </Box>
-        <Box className="px-3 mt-1">
+        </Box>}
+        <Box className={tweet.is_reply ? 'px-3 mt-1' : 'px-3 mt-3'}>
           <Box display="flex" justifyContent="space-between"
             alignItems="center">
             <Box display="flex">
@@ -154,13 +161,13 @@ const TweetPage = () => {
               <MenuItem onClick={handleCloseMoreBtn}>Report</MenuItem>
             </Menu>
           </Box>
-          <div className="my-3">
+          {tweet.is_reply && <div className="my-3">
             <span className="text-gray">Replying to </span>
             <Link to={'/profile/'+tweet.parent?.user_id}
               className="link-color">
               @{tweet.parent?.username}
             </Link>
-          </div>
+          </div>}
           <Box className="mt-3">
             {tweet.content}
           </Box>
@@ -190,15 +197,8 @@ const TweetPage = () => {
       </Box>
       {tweet.children?.map((child) => (
         <Box key={child.id}>
-          <TweetSearchItem
-            id={child.id}
-            name={child.first_name + ' ' + child.last_name}
-            username={child.username}
-            createDate={child.create_date}
-            content={child.content}
-            userId={child.user}
-            profileImg={child.profile_img}
-            isPublic={child.is_public}/>
+          <TweetItem
+            tweet={child}/>
           <Divider />
         </Box>
       ))}
