@@ -375,7 +375,7 @@ class ShowReplySerializer(serializers.ModelSerializer):
             temp = Tweet.objects.filter(id=item.tweet.id)
             liked_tweets.append(temp)
             for temp in liked_tweets:
-                if parent == temp[0]:
+                if instance.parent == temp[0]:
                     result['parent_is_liked'] = True
                     break
             else:
