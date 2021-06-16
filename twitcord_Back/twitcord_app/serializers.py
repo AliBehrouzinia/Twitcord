@@ -202,6 +202,7 @@ class GlobalUserSearchSerializer(serializers.ModelSerializer):
 class GlobalTweetSearchSerializer(serializers.ModelSerializer):
     retweet_from = TweetSerializer(read_only=True)
     parent = TweetSerializer(read_only=True)
+    user = ProfileDetailsViewSerializer(read_only=True)
 
     class Meta:
         model = Tweet
@@ -209,18 +210,11 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(GlobalTweetSearchSerializer, self).to_representation(instance)
-        user = instance.user
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         is_retweeted = Tweet.objects.filter(id=instance.id, user_id=self.context['request'].user.id,
                                             retweet_from__isnull=False).exists()
         result['is_retweeted'] = is_retweeted
         result['is_liked'] = is_liked
-        result['user_id'] = result.pop('user')
-        result['id'] = instance.id
-        result['username'] = user.username
-        result['first_name'] = user.first_name
-        result['last_name'] = user.last_name
-        result['is_public'] = user.is_public
         result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
         result['reply_count'] = len(Tweet.objects.filter(parent_id=instance.id))
         result['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=instance.id))
