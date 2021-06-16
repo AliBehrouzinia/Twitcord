@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import './ProfileUserinfo.css';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
-import image from '../../assets/image.png';
 import * as API from '../../Utils/API/index';
 import * as Actions from '../../redux/Actions/index.js';
 import * as Constants from '../../Utils/Constants.js';
@@ -12,6 +11,7 @@ import {Typography} from '@material-ui/core';
 import {useHistory, useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import headerDefaultImage from '../../assets/headerDefaultImage.jpg';
 
 const ProfileUserinfo = () => {
   const params = useParams();
@@ -44,6 +44,24 @@ const ProfileUserinfo = () => {
           console.log('failed to load data');
         });
   }, []);
+
+
+  const getCover = () => {
+    if (profileInfo.has_header_img) {
+      return profileInfo.header_img;
+    } else {
+      return headerDefaultImage;
+    }
+  };
+
+  const getProfilePhoto = () => {
+    if (profileInfo.has_profile_img) {
+      return profileInfo.profile_img;
+    } else {
+      return null;
+    }
+  };
+
   const date = new Date(profileInfo.date_joined);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -56,8 +74,8 @@ const ProfileUserinfo = () => {
   return (
     <Box>
       <Box className="position-relative">
-        <img src={image} alt="img" className="profile_cover" />
-        <Avatar className="p-avatar" />
+        <img src={getCover()} alt="img" className="profile_cover" />
+        <Avatar src={getProfilePhoto()} className="p-avatar" />
       </Box>
       <Box className="text-right p-3">
         {userId == params.id ? <Button

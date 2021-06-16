@@ -20,6 +20,7 @@ import AddAPhotoOutlinedIcon from '@material-ui/icons/AddAPhotoOutlined';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import minioClient from '../../Utils/Minio';
+import headerDefaultImage from '../../assets/headerDefaultImage.jpg';
 
 let coverFile = null;
 let photoFile = null;
@@ -27,21 +28,38 @@ let clearCover = false;
 let clearPhoto = false;
 
 const EditProfile = () => {
+  const dispatch = useDispatch();
   const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
   const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
+  const [clearCoverLocal, setClearCoverLocal] = useState(false);
+  const [clearPhotoLocal, setClearPhotoLocal] = useState(false);
   const isSnackbarOpen = useSelector((state) => state).tweet.isSnackbarOpen;
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
+
   let photoInput;
   let coverInput;
 
-  let profileId = -1;
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
   );
-  if (userGeneralInfo != null) {
-    profileId = userGeneralInfo.pk;
-  }
-  const dispatch = useDispatch();
+
+  const profileId = userGeneralInfo?.pk ? userGeneralInfo?.pk : -1;
+
+  const getCover = () => {
+    if (profileInfo.has_header_img && !clearCoverLocal) {
+      return profileInfo.header_img;
+    } else {
+      return headerDefaultImage;
+    }
+  };
+
+  const getProfilePhoto = () => {
+    if (profileInfo.has_profile_img && !clearPhotoLocal) {
+      return profileInfo.profile_img;
+    } else {
+      return null;
+    }
+  };
 
   const requestProfileInfo = () => {
     API.getProfileInfo({id: profileId})
@@ -194,6 +212,7 @@ const EditProfile = () => {
   };
 
   const clearCoverImage = () => {
+    setClearCoverLocal(true);
     clearCover = true;
     showSnackbar(
         Constants.COVER_CLEARED,
@@ -202,6 +221,7 @@ const EditProfile = () => {
   };
 
   const clearPhotoImage = () => {
+    setClearPhotoLocal(true);
     clearPhoto = true;
     showSnackbar(
         Constants.PHOTO_CLEARED,
@@ -256,8 +276,8 @@ const EditProfile = () => {
   return (
     <Grid container direction="column">
       <Grid item className="ep-grid-item" xs>
-        <img src={profileInfo.header_img} className="ep-profile_cover" />
-        <Avatar src={profileInfo.profile_img} className="ep-avatar" />
+        <img src={getCover()} className="ep-profile_cover" />
+        <Avatar src={getProfilePhoto()} className="ep-avatar" />
         <Avatar
           onClick={handleUploadProfilePhotoClick}
           className="ep-edit-photo-icon">
@@ -266,16 +286,17 @@ const EditProfile = () => {
         <AddAPhotoIcon
           onClick={handleUploadProfileCoverClick}
           className="ep-edit-cover-icon"/>
-        { profileInfo.has_header_img &&
+        { profileInfo.has_header_img && !clearCoverLocal &&
         <HighlightOffIcon
           onClick={clearCoverImage}
           className="ep-clear-cover-icon"/>
         }
-        { profileInfo.has_profile_img && <Avatar
-          onClick={clearPhotoImage}
-          className="ep-clear-photo-icon">
-          <HighlightOffIcon />
-        </Avatar> }
+        { profileInfo.has_profile_img && !clearPhotoLocal &&
+         <Avatar
+           onClick={clearPhotoImage}
+           className="ep-clear-photo-icon">
+           <HighlightOffIcon />
+         </Avatar> }
         <input
           type="file"
           id="file"
