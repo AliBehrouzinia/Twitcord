@@ -361,10 +361,11 @@ class ReplySerializer(serializers.ModelSerializer):
 class ShowReplySerializer(serializers.ModelSerializer):
     parent = TweetSerializer(read_only=True)
     retweet_from = TweetSerializer(read_only=True)
+    user = ProfileDetailsViewSerializer(read_only=True)
 
     class Meta:
         model = Tweet
-        fields = ['id', 'parent', 'retweet_from']
+        fields = ['id', 'parent', 'retweet_from', 'user']
 
     def to_representation(self, instance):
         result = super(ShowReplySerializer, self).to_representation(instance)
@@ -393,15 +394,6 @@ class ShowReplySerializer(serializers.ModelSerializer):
                 break
         else:
             result['is_liked'] = False
-        result['user_id'] = instance.user.id
-        result['username'] = instance.user.username
-        result['email'] = instance.user.email
-        result['first_name'] = instance.user.first_name
-        result['last_name'] = instance.user.last_name
-        result['is_public'] = instance.user.is_public
-        result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
-        result['reply_count'] = len(Tweet.objects.filter(parent_id=instance.id))
-        result['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=instance.id))
 
         tweets = Tweet.objects.filter(parent_id=instance.id)
         result['children'] = {}
