@@ -85,6 +85,9 @@ class TweetSerializer(serializers.ModelSerializer):
 
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         result['is_liked'] = is_liked
+        result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
+        result['reply_count'] = len(Tweet.objects.filter(parent_id=instance.id))
+        result['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=instance.id))
         return result
 
 
