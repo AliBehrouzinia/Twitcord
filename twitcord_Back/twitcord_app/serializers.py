@@ -33,6 +33,7 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
         followings = UserFollowing.objects.filter(user_id=request_user.id)
         requests = FollowRequest.objects.filter(request_from=request_user.id)
         queryset1 = []
+        result['id'] = instance.id
         for item in followings:
             queryset1.append(item.following_user.id)
         queryset2 = []
@@ -70,9 +71,11 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
 
 
 class TweetSerializer(serializers.ModelSerializer):
+    user = ProfileDetailsViewSerializer(read_only=True)
+
     class Meta:
         model = Tweet
-        fields = ['id', 'content', 'create_date']
+        fields = ['id', 'content', 'create_date', 'user']
         read_only_fields = ['id', 'create_date']
         extra_kwargs = {
             'content': {'required': True}
@@ -80,18 +83,12 @@ class TweetSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(TweetSerializer, self).to_representation(instance)
-        user = instance.user
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         is_retweeted = Tweet.objects.filter(id=instance.id, user_id=self.context['request'].user.id,
                                             retweet_from__isnull=False).exists()
         result['is_retweeted'] = is_retweeted
         result['is_liked'] = is_liked
-        result['user_id'] = user.id
         result['id'] = instance.id
-        result['username'] = user.username
-        result['first_name'] = user.first_name
-        result['last_name'] = user.last_name
-        result['is_public'] = user.is_public
         result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
         result['reply_count'] = len(Tweet.objects.filter(parent_id=instance.id))
         result['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=instance.id))
@@ -375,12 +372,6 @@ class ShowReplySerializer(serializers.ModelSerializer):
         for item in likes:
             temp = Tweet.objects.filter(id=item.tweet.id)
             liked_tweets.append(temp)
-            for temp in liked_tweets:
-                if instance.parent == temp[0]:
-                    result['parent_is_liked'] = True
-                    break
-            else:
-                result['parent_is_liked'] = False
         result['id'] = result.pop('id')
         result['is_reply'] = instance.is_reply
         result['content'] = instance.content
@@ -418,11 +409,16 @@ class ShowReplySerializer(serializers.ModelSerializer):
                         break
                 else:
                     result['children'][counter]['is_liked'] = False
-                result['children'][counter]['user_id'] = item.user.id
-                result['children'][counter]['username'] = item.user.username
-                result['children'][counter]['first_name'] = item.user.first_name
-                result['children'][counter]['last_name'] = item.user.last_name
-                result['children'][counter]['is_public'] = item.user.is_public
+                result['children'][counter]['user'] = {}
+                result['children'][counter]['user']['username'] = item.user.username
+                result['children'][counter]['user']['date_joined'] = item.user.date_joined
+                result['children'][counter]['user']['first_name'] = item.user.first_name
+                result['children'][counter]['user']['last_name'] = item.user.last_name
+                result['children'][counter]['user']['birth_date'] = item.user.birth_date
+                result['children'][counter]['user']['is_public'] = item.user.is_public
+                result['children'][counter]['user']['profile_img'] = item.user.profile_img
+                result['children'][counter]['user']['header_img'] = item.user.header_img
+                result['children'][counter]['user']['id'] = item.user.id
                 result['children'][counter]['like_count'] = len(Like.objects.filter(tweet_id=item.id))
                 result['children'][counter]['reply_count'] = len(Tweet.objects.filter(parent_id=item.id))
                 result['children'][counter]['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=item.id))
