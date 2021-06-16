@@ -93,7 +93,7 @@ const TweetPage = () => {
           </Box>
           <div className="ml-2 w-100">
             <Box display="flex" className="lh-20 fs-15">
-              {(tweet.parent?.first_name || tweet?.last_name)&&
+              {(tweet.parent?.first_name || tweet.parent?.last_name)&&
               (<div className="b-900 mr-2">
                 {(tweet.parent?.first_name +
                    ' ' + tweet.parent?.last_name)}</div>)}
@@ -132,17 +132,17 @@ const TweetPage = () => {
           <Box display="flex" justifyContent="space-between"
             alignItems="center">
             <Box display="flex">
-              <Avatar alt={tweet.username}
-                title={tweet.username}
+              <Avatar alt={tweet.user.username}
+                title={tweet.user.username}
                 className="w-48 h-48"
                 src="/static/images/avatar/1.jpg" />
               <Box display="flex" flexDirection="column" justifyContent="center"
                 className="ml-2">
                 <Box className="b-600">
-                  {tweet.name}
+                  {tweet.user.first_name}
                 </Box>
                 <Box className="text-gray mt-1">
-                  {'@' + tweet.username}</Box>
+                  {'@' + tweet.user.username}</Box>
               </Box>
             </Box>
             <Box className="mr--6">

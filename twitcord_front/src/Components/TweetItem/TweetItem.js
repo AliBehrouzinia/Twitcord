@@ -71,12 +71,12 @@ export const TweetItem = (props) => {
               <div className="tsi-name-container">
                 <Link className="lh-0" to={'/profile/' + props.tweet?.user_id}>
                   <Tooltip
-                    title={props.tweet?.first_name +
-                       ' ' + props.tweet?.last_name}
+                    title={props.tweet?.user?.first_name +
+                       ' ' + props.tweet?.user?.last_name}
                     placement="top-start">
                     <Typography className="tsi-name" >
-                      {props.tweet?.first_name +
-                       ' ' + props.tweet?.last_name}</Typography>
+                      {props.tweet?.user?.first_name +
+                       ' ' + props.tweet?.user?.last_name}</Typography>
                   </Tooltip>
                 </Link>
                 {!props.tweet?.is_public &&
@@ -87,9 +87,10 @@ export const TweetItem = (props) => {
                 </Typography>
               </div>
               <Link to={'/profile/' + props.tweet?.user_id}>
-                <Tooltip title={'@'+props.tweet?.username}
+                <Tooltip title={'@'+props.tweet?.user?.username}
                   placement="top-start">
-                  <Typography className="tsi-username">@{props.tweet?.username}
+                  <Typography
+                    className="tsi-username">@{props.tweet?.user?.username}
                   </Typography>
                 </Tooltip>
               </Link>
