@@ -12,6 +12,7 @@ import EditProfile from './Components/EditProfile/EditProfile.js';
 import SideDrawer from './Components/SideDrawer/SideDrawer';
 import RoomList from './Components/Room/RoomList/RoomList';
 import Profile from './Components/Profile/Profile.js';
+import TweetPage from './Components/TweetPage/TweetPage.js';
 
 // eslint-disable-next-line require-jsdoc
 function App() {
@@ -36,6 +37,7 @@ function App() {
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/profile/:id" component={Profile} />
                 <Route exact path="/edit-profile" component={EditProfile} />
+                <Route exact path="/tweet/:id" component={TweetPage}></Route>
                 <Route exact path="/room" component={RoomList} />
               </div>
             </div>
