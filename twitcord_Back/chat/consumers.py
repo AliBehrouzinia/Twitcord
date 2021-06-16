@@ -1,6 +1,7 @@
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import AnonymousUser
 
 from .serializers import (
     WSRoomMessageSerializer,
@@ -57,8 +58,8 @@ class RoomConsumer(AsyncJsonWebsocketConsumer):
         self.room_id = self.scope['url_route']['kwargs']['room_id']
         self.room_group_name = f'room_{self.room_id}'
 
-        if not self.scope['user'].is_authenticated:
-            print('Error: User should be authenticated.')
+        if isinstance(self.scope['user'], AnonymousUser):
+            print("No authorize, add token in query string")
             return
 
         # Join room group
