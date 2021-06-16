@@ -85,6 +85,9 @@ class TweetSerializer(serializers.ModelSerializer):
 
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         result['is_liked'] = is_liked
+        result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
+        result['reply_count'] = len(Tweet.objects.filter(parent_id=instance.id))
+        result['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=instance.id))
         return result
 
 
@@ -169,7 +172,7 @@ class FollowCountSerializer(serializers.ModelSerializer):
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'email', 'bio']
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'email', 'bio', 'profile_img']
 
     def to_representation(self, instance):
         result = super(GlobalUserSearchSerializer, self).to_representation(instance)
@@ -217,6 +220,7 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
         result['first_name'] = user.first_name
         result['last_name'] = user.last_name
         result['is_public'] = user.is_public
+        result['user_profile_img'] = user.profile_img
         return result
 
 
