@@ -2,6 +2,8 @@
 
 /* eslint-disable require-jsdoc */
 /* eslint-disable max-len */
+/* eslint-disable */
+
 import {Send} from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
 import React, {useEffect} from 'react';
@@ -9,8 +11,9 @@ import './Chat.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {Grid, Typography} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-
 import * as API from '../../Utils/API/index';
+import * as Constants from '../../Utils/Constants'
+
 const Chat = () => {
   const [ChatMessages, setChatMessages] = React.useState([{}]);
   const [RoomInfo, setRoomInfo] = React.useState([{}]);
@@ -18,6 +21,26 @@ const Chat = () => {
   let count = 0;
   for (let k in RoomInfo.members) if (RoomInfo.members.hasOwnProperty(k)) count++;
 
+  const chatSocket = new WebSocket(
+    'ws://127.0.0.1:8000/ws/chat/' + 1 + '/' +'?token='+localStorage.getItem('token')
+  );
+
+  chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    console.log("onmessage:" + data)
+  };
+
+  chatSocket.onopen = function(e) {
+    console.log("open:" + e);
+};
+
+chatSocket.onerror = function(e) {
+  console.log(e);
+};
+chatSocket.onclose = function(e) {
+  console.log(e);
+};
+  
   useEffect(() => {
     API.getmessages({id: 1})
         .then((response) => {
@@ -53,7 +76,6 @@ const Chat = () => {
         </Grid>
         <Grid className="info">
           <Typography className="group_name"> {RoomInfo.title}</Typography>
-          {console.log(typeof(RoomInfo.members))}
           <Typography className="group_members">{count} members</Typography>
         </Grid>
         <Grid className="back_arrow">
