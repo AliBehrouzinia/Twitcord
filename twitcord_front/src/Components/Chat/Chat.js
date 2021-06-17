@@ -15,38 +15,33 @@ import * as API from '../../Utils/API/index';
 import * as Constants from '../../Utils/Constants'
 import {useParams} from 'react-router-dom';
 
+let chatSocket = null;
+
 const Chat = () => {
   const params = useParams();
   const [ChatMessages, setChatMessages] = React.useState([{}]);
   const [RoomInfo, setRoomInfo] = React.useState([{}]);
   const counter = 1;
   let count = 0;
+  let input = null
   for (let k in RoomInfo.members) if (RoomInfo.members.hasOwnProperty(k)) count++;
 
-  const chatSocket = new WebSocket(
-    'ws://127.0.0.1:8000/ws/chat/' + params.id + '/' +'?token='+localStorage.getItem('token')
-  );
+  const initWebSocket = () => {
+    chatSocket = new WebSocket(
+      'ws://127.0.0.1:8000/ws/chat/' + params.id + '/' +'?token='+localStorage.getItem('token')
+    );
 
+    chatSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      console.log("onmessage:" + data)
+    };
+  }
 
-  chatSocket.onmessage = function(e) {
-    const data = JSON.parse(e.data);
-    console.log("onmessage:" + data)
-  };
+  if (chatSocket == null){
+    initWebSocket()
+  }
 
-  chatSocket.onopen = function(e) {
-    console.log("open:" + e);
-    chatSocket.send(JSON.stringify({message : "hi"}))
-
-};
-
-chatSocket.onerror = function(e) {
-  console.log(e);
-};
-chatSocket.onclose = function(e) {
-  console.log(e);
-};
-  
-  useEffect(() => {
+  useEffect(() => {  
     API.getmessages({id: params.id , page: 1})
         .then((response) => {
           setChatMessages(response.data.results);
@@ -64,14 +59,28 @@ chatSocket.onclose = function(e) {
   }, []);
 
   function fetchMoreData(c) {
-    /*API.getmessages({id: params.id, page: c})
+    API.getmessages({id: params.id, page: c})
         .then((response) => {
           Chatmessages.push(response.data.results);
         })
         .catch((error) => {
           console.log(error);
         });
-      */}
+      }
+
+  const onSendClick = () => {
+    console.log(input)
+    if (chatSocket == null){
+      initWebSocket()
+      setTimeout(function(){ chatSocket.send(JSON.stringify({message : input})); }, 1000);
+      return;
+    }
+    chatSocket.send(JSON.stringify({message : input}));
+  }
+
+  const onInputChange = (text) => {
+    input = text
+  }
 
   return (
     <div className="mesgs" style={{fontFamily: 'BZar'}}>
@@ -81,7 +90,7 @@ chatSocket.onclose = function(e) {
         </Grid>
         <Grid className="info">
           <Typography className="group_name"> {RoomInfo.title}</Typography>
-          <Typography className="group_members">{count} members</Typography>
+          <Typography className="group_members">{RoomInfo.number_of_members} members</Typography>
         </Grid>
         <Grid className="back_arrow">
           <ArrowBackIosIcon/>
@@ -135,7 +144,6 @@ chatSocket.onclose = function(e) {
       </InfiniteScroll>
 
 
-      <form >
         <div className="type_msg">
           <div className="input_msg_write">
             <input
@@ -144,13 +152,15 @@ chatSocket.onclose = function(e) {
               placeholder=" ...بنویسید"
               name="current_message"
               autoComplete="off"
+              onChange={e => onInputChange(e.target.value)}
             />
           </div>
-          <button className="msg_send_btn">
+          <button
+          onClick={onSendClick}
+          className="msg_send_btn">
             <Send />
           </button>
         </div>
-      </form>
     </div>
   );
 };
