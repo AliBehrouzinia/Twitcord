@@ -13,8 +13,10 @@ import {Grid, Typography} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import * as API from '../../Utils/API/index';
 import * as Constants from '../../Utils/Constants'
+import {useParams} from 'react-router-dom';
 
 const Chat = () => {
+  const params = useParams();
   const [ChatMessages, setChatMessages] = React.useState([{}]);
   const [RoomInfo, setRoomInfo] = React.useState([{}]);
   const counter = 1;
@@ -22,8 +24,9 @@ const Chat = () => {
   for (let k in RoomInfo.members) if (RoomInfo.members.hasOwnProperty(k)) count++;
 
   const chatSocket = new WebSocket(
-    'ws://127.0.0.1:8000/ws/chat/' + 1 + '/' +'?token='+localStorage.getItem('token')
+    'ws://127.0.0.1:8000/ws/chat/' + params.id + '/' +'?token='+localStorage.getItem('token')
   );
+
 
   chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
@@ -32,6 +35,8 @@ const Chat = () => {
 
   chatSocket.onopen = function(e) {
     console.log("open:" + e);
+    chatSocket.send(JSON.stringify({message : "hi"}))
+
 };
 
 chatSocket.onerror = function(e) {
@@ -42,14 +47,14 @@ chatSocket.onclose = function(e) {
 };
   
   useEffect(() => {
-    API.getmessages({id: 1})
+    API.getmessages({id: params.id , page: 1})
         .then((response) => {
           setChatMessages(response.data.results);
         })
         .catch((error) => {
           console.log(error);
         });
-    API.getroominfo({id: 3})
+    API.getroominfo({id: params.id})
         .then((response) => {
           setRoomInfo(response.data.results[0]);
         })
@@ -59,14 +64,14 @@ chatSocket.onclose = function(e) {
   }, []);
 
   function fetchMoreData(c) {
-    API.getmessages({id: c})
+    /*API.getmessages({id: params.id, page: c})
         .then((response) => {
           Chatmessages.push(response.data.results);
         })
         .catch((error) => {
           console.log(error);
         });
-  }
+      */}
 
   return (
     <div className="mesgs" style={{fontFamily: 'BZar'}}>

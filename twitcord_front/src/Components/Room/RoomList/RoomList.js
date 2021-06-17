@@ -13,7 +13,8 @@ import Select from 'react-select';
 import Button from '@material-ui/core/Button';
 import * as API from '../../../Utils/API/index';
 import * as Constants from '../../../Utils/Constants.js';
-
+import {Link} from 'react-router-dom';
+/* eslint-disable */
 
 const RoomList = () => {
   const [open, setOpen] = React.useState(false);
@@ -119,10 +120,15 @@ const RoomList = () => {
     setSelectedOption(selectedOptions);
   };
 
-  const roomsList = rooms.map((room) => <div key={room.id}>
-    <RoomItem title={room.title} membersCount={room.members.length}/>
-    <Divider/>
-  </div>);
+  const roomsList = rooms.map((room) => <Link 
+  key={room.id} 
+  to={'/chat/'+room.id} 
+  >
+    <div>
+      <RoomItem title={room.title} membersCount={room.members.length}/>
+      <Divider/>
+    </div>
+  </Link>);
 
   return (
     <div className="rl-root">
