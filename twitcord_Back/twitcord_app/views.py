@@ -74,8 +74,8 @@ class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
         following_id = self.kwargs.get('id')
         following_obj = get_object_or_404(models.UserFollowing, user_id=following_id,
                                           following_user_id=self.request.user.id)
-        data = {'user': self.request.user.id,
-                'following_user': following_id,
+        data = {'user': following_id,
+                'following_user': self.request.user.id,
                 'created': following_obj.created,
                 'type': self.request.data['type']
                 }
