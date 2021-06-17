@@ -61,6 +61,8 @@ class UsersTweetsPermission(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             user_request_from = request.user
             user_request_to = get_object_or_404(models.TwitcordUser, id=view.kwargs.get('id'))
+            if request.user.id == view.kwargs['id']:
+                return True
             # public users
             if user_request_to.is_public:
                 return True
