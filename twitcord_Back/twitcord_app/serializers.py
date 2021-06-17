@@ -275,35 +275,16 @@ class TimeLineSerializer(serializers.ModelSerializer):
 
 
 class RoomSerializer(serializers.ModelSerializer):
+    owner = ProfileDetailsViewSerializer(read_only=True)
+    users = ProfileDetailsViewSerializer(read_only=True, many=True)
+
     class Meta:
         model = Room
         fields = '__all__'
 
     def to_representation(self, instance):
         result = super(RoomSerializer, self).to_representation(instance)
-        users = result.pop('users')
-        owner = result.pop('owner')
-        result['owner'] = {}
-        admin = TwitcordUser.objects.filter(id=owner)
-        admin_object = admin[0]
-        result['owner']['id'] = admin_object.id
-        result['owner']['first_name'] = admin_object.first_name
-        result['owner']['last_name'] = admin_object.last_name
-        result['owner']['username'] = admin_object.username
-        result['members'] = {}
-        if users is not None:
-            counter = 1
-            for item in users:
-                user = TwitcordUser.objects.filter(id=item)
-                main_user = user[0]
-                result['members'][counter] = {}
-                result['members'][counter]['id'] = main_user.id
-                result['members'][counter]['first_name'] = main_user.first_name
-                result['members'][counter]['last_name'] = main_user.last_name
-                result['members'][counter]['username'] = main_user.username
-                counter += 1
-        values = result['members'].values()
-        result['members'] = list(values)
+        result['number_of_members'] = get_object_or_404(Room, id=instance.id).users.count() + 1
         return result
 
 
