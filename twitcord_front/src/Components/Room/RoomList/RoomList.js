@@ -45,26 +45,6 @@ const RoomList = () => {
           });
 
           followers
-              .filter((item) => {
-                return !optionIds.includes(item.value);
-              })
-              .map((item) => {
-                options.push(item);
-                optionIds.push(item.value);
-              });
-          setOptions(options);
-        });
-
-    API.getFollowingsList({id: userGeneralInfo.pk})
-        .then((response) => {
-          const followings = response.data.results.map((item) => {
-            return {value: item.id, label: item.username};
-          });
-
-          followings
-              .filter((item) => {
-                return !optionIds.includes(item.value);
-              })
               .map((item) => {
                 options.push(item);
                 optionIds.push(item.value);
@@ -98,7 +78,9 @@ const RoomList = () => {
           setRooms([...rooms, {
             id: response.data.id,
             title: response.data.title,
-            members: response.data.members,
+            owner: response.data.owner,
+            users: response.data.users,
+            number_of_members: response.data.number_of_members,
           }]);
         })
         .catch((error) => {
@@ -125,7 +107,7 @@ const RoomList = () => {
   to={'/chat/'+room.id} 
   >
     <div>
-      <RoomItem title={room.title} membersCount={room.members.length}/>
+      <RoomItem title={room.title} membersCount={room.number_of_members}/>
       <Divider/>
     </div>
   </Link>);
