@@ -72,8 +72,8 @@ class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
 
     def patch(self, request, *args, **kwargs):
         following_id = self.kwargs.get('id')
-        following_obj = get_object_or_404(models.UserFollowing, user_id=self.request.user.id,
-                                          following_user_id=following_id)
+        following_obj = get_object_or_404(models.UserFollowing, user_id=following_id,
+                                          following_user_id=self.request.user.id)
         data = {'user': self.request.user.id,
                 'following_user': following_id,
                 'created': following_obj.created,
