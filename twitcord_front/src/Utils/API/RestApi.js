@@ -246,3 +246,21 @@ export const getTweet = (id) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const getReplyList = (id) => {
+  return request(
+      {},
+      {},
+      Constants.URL_REPLYS+id + '/',
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const getTweetList = (id) => {
+  return request(
+      {},
+      {},
+      Constants.URL_USER+id+'/tweets/',
+      Constants.GET_REQUEST_METHOD,
+  );
+};
