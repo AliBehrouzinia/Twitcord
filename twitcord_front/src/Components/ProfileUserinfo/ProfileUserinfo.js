@@ -7,7 +7,6 @@ import './ProfileUserinfo.css';
 import Fade from '@material-ui/core/Fade';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
-import image from '../../assets/image.png';
 import * as API from '../../Utils/API/index';
 import Backdrop from '@material-ui/core/Backdrop';
 import * as Actions from '../../redux/Actions/index.js';
@@ -20,16 +19,17 @@ import {useParams} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import DateRangeIcon from '@material-ui/icons/DateRange';
+import headerDefaultImage from '../../assets/headerDefaultImage.jpg';
 
 
 const ProfileUserinfo = () => {
-  const params = useParams();
+  const {id} = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const followcount = useSelector((state) => state).tweet.followcount;
   const [Situation, setSituation] = useState('');
-  const [Relation, setRelation] = useState('family');
+  const [Relation, setRelation] = useState('Family');
   const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
   const userId = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -103,7 +103,7 @@ const ProfileUserinfo = () => {
   }
   function onchange(event){
     console.log({"type": event.target.value });
-    API.editfollowstatus( {"type": event.target.value } , params.id)
+    API.editfollowstatus( {"type": event.target.value } , id)
     .then((response) => {
       setRelation(event.target.value);
       console.log(event.target.value);
@@ -114,7 +114,8 @@ const ProfileUserinfo = () => {
     });
   }
   useEffect(() => {
-    API.getProfileInfo({id: params.id})
+    console.log('effect');
+    API.getProfileInfo({id: id})
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data ));
           setSituation(response.data.status);
@@ -123,15 +124,32 @@ const ProfileUserinfo = () => {
         .catch((error) => {
           console.log(error);
         });
-    API.followcount({id: params.id})
+    API.followcount({id: id})
         .then((response) => {
           dispatch(Actions.setfollowcount(response.data.results[0]));
         })
         .catch((error) => {
           console.log(error);
-        });    
-  }, []);
- 
+        });
+  }, [id]);
+
+
+  const getCover = () => {
+    if (profileInfo.has_header_img) {
+      return profileInfo.header_img;
+    } else {
+      return headerDefaultImage;
+    }
+  };
+
+  const getProfilePhoto = () => {
+    if (profileInfo.has_profile_img) {
+      return profileInfo.profile_img;
+    } else {
+      return null;
+    }
+  };
+
   const date = new Date(profileInfo.date_joined);
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -144,8 +162,8 @@ const ProfileUserinfo = () => {
   return (
     <Box >
       <Box className="position-relative">
-        <img src={image} alt="img" className="profile_cover" />
-        <Avatar className="p-avatar" />
+        <img src={getCover()} alt="img" className="profile_cover" />
+        <Avatar src={getProfilePhoto()} className="p-avatar" />
       </Box>
       
       <Box className="text-right p-3">
@@ -189,12 +207,12 @@ const ProfileUserinfo = () => {
 					) : (
           <select className="relation" onChange = {onchange} value= {Relation}>
             <option value="unknown" className = "option">unknown</option>
-            <option value="family" className = "option">family</option>
+            <option value="Family" className = "option">family</option>
             <option value="Friend" className = "option">friend</option>
-            <option selected value="closefriend" className = "option">
+            <option value="Close Friend" className = "option">
               close friend
             </option>
-            <option value="unfamiliarperson " className = "option">unfamiliar person </option>
+            <option value="Unfamiliar_person " className = "option">unfamiliar person</option>
           </select>
 
 					)}

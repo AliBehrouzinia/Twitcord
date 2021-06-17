@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -26,6 +26,15 @@ export const SearchBar = () => {
       input: e.target.value,
     }));  
   };
+  
+  useEffect(() => {
+    dispatch(Actions.setUserSearchResults({
+      users: [],
+    }));
+    dispatch(Actions.setTweetSearchResults({
+      tweets: []
+    }));
+  }, []);
 
   const searchUser = (query, page=1) => {
     API.searchUsers({}, {query: query, page: page})
