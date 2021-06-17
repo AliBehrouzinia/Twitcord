@@ -84,4 +84,7 @@ class IsMemberOfRoom(permissions.BasePermission):
         user = request.user
         room_id = view.kwargs['room_id']
         room = get_object_or_404(models.Room, id=room_id)
-        return user in room.users.all()
+        if user in room.users.all() or user == room.owner:
+            return True
+        else:
+            return False

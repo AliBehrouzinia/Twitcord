@@ -423,12 +423,8 @@ class ShowReplySerializer(serializers.ModelSerializer):
 
 
 class RoomMessageSerializer(serializers.ModelSerializer):
-    class UserRoomMessageDetailsSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = TwitcordUser
-            fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
-    sender = UserRoomMessageDetailsSerializer(read_only=True)
+    sender = ProfileDetailsViewSerializer(read_only=True)
     is_sent_by_me = serializers.SerializerMethodField()
 
     class Meta:
