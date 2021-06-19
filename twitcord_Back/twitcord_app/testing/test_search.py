@@ -24,7 +24,7 @@ class SearchUserTest(APITestCase):
         self.user = twitcord_user.objects.create(email='mmd@gmail.com', username='test', password='test_pass')
         self.token = Token.objects.create(user=self.user)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
-        url = '/search/user/?query=t'.format(self.user.id)
+        url = '/search/user/?query=t'
         response = self.client.get(url, content_type='application/json', accept='application/json')
         self.maxDiff = None
         data = {
@@ -32,12 +32,11 @@ class SearchUserTest(APITestCase):
             "next": None,
             "previous": None,
             "results": {
-                "id": 1,
+                "id": 31,
                 "username": "test",
                 "first_name": None,
                 "last_name": None,
                 "is_public": True,
-                "profile_img": "http://testserver/profiles/defaults/user-profile-image.jpg",
                 "email": "mmd@gmail.com",
                 "bio": None,
                 "status": "not following"
@@ -71,12 +70,14 @@ class SeachTweetTest(APITestCase):
             "previous": None,
             "results":
                 {
-                    "id": 1,
+                    "id": 30,
                     "is_reply": False,
                     "content": "Hi from there",
                     "create_date": response.data['results'][0]['create_date'],
                     "parent": None,
-                    "profile_img": "/profiles/defaults/user-profile-image.jpg",
+                    "has_media": False,
+                    "retweet_from": None,
+                    "is_liked": False,
                     "username": "test",
                     "first_name": None,
                     "last_name": None,

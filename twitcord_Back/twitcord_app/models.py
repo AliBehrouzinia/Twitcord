@@ -119,6 +119,10 @@ class Tweet(models.Model):
     content = models.TextField(max_length=280, null=True)
     create_date = models.DateTimeField(default=timezone.now)
 
+    # Media(photo) for tweet
+    has_media = models.BooleanField(default=False)
+    TWEET_MEDIA_DIRECTORY = f"tweets"
+
     class Meta:
         constraints = [
             models.CheckConstraint(check=((Q(retweet_from__isnull=True) & Q(content__isnull=False)) |
@@ -127,6 +131,35 @@ class Tweet(models.Model):
 
     def __str__(self):
         return f"{self.id}|{self.content}"
+
+    @property
+    def get_tweet_media_name(self):
+        return f"tweet_media_{self.id}.jpg"
+
+    @property
+    def tweet_media_upload_details(self):
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.TWEET_MEDIA_DIRECTORY
+        name = self.get_tweet_media_name
+
+        image = {
+            'bucket_name': bucket_name,
+            'object_name': f"{directory}/{name}"
+        }
+        return image
+
+    @property
+    def tweet_media(self):
+        if not self.has_media:
+            return None
+
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.TWEET_MEDIA_DIRECTORY
+        name = self.get_tweet_media_name
+        object_name = f"{directory}/{name}"
+
+        url = minio_client.get_presigned_url("GET", bucket_name, object_name)
+        return url
 
 
 class UserFollowing(models.Model):
@@ -170,6 +203,39 @@ class Room(models.Model):
     owner = models.ForeignKey(TwitcordUser, related_name="created_rooms", on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
     users = models.ManyToManyField("TwitcordUser", related_name="rooms", blank=True)
+
+    # room image
+    has_image = models.BooleanField(default=False)
+    ROOM_IMAGE_DIRECTORY = f"tweets"
+
+    @property
+    def get_room_img_name(self):
+        return f"room_img_{self.id}.jpg"
+
+    @property
+    def room_img_upload_details(self):
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.ROOM_IMAGE_DIRECTORY
+        name = self.get_room_img_name
+
+        image = {
+            'bucket_name': bucket_name,
+            'object_name': f"{directory}/{name}"
+        }
+        return image
+
+    @property
+    def room_img(self):
+        if not self.has_image:
+            return None
+
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.ROOM_IMAGE_DIRECTORY
+        name = self.get_room_img_name
+        object_name = f"{directory}/{name}"
+
+        url = minio_client.get_presigned_url("GET", bucket_name, object_name)
+        return url
 
     def __str__(self):
         return f"{self.title}"
