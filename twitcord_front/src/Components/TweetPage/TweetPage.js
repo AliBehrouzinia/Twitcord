@@ -62,6 +62,8 @@ const TweetPage = () => {
     history.push('/tweet/'+ tweet.parent?.id);
   };
 
+  console.log(tweet?.user?.profile_img);
+
   return (
     <div>
       <Snackbar
@@ -89,7 +91,7 @@ const TweetPage = () => {
             <Avatar alt={tweet.parent?.user?.username}
               title={tweet.parent?.user?.username}
               className="w-48 h-48"
-              src={tweet?.profile_img}/>
+              src={tweet.parent?.user?.profile_img}/>
             <div className="vl mt-1 br-33"></div>
           </Box>
           <div className="ml-2 w-100">
@@ -137,7 +139,7 @@ const TweetPage = () => {
               <Avatar alt={tweet.user?.username}
                 title={tweet.user?.username}
                 className="w-48 h-48"
-                src="/static/images/avatar/1.jpg" />
+                src={tweet?.user?.profile_img} />
               <Box display="flex" flexDirection="column" justifyContent="center"
                 className="ml-2">
                 <Box className="b-600">

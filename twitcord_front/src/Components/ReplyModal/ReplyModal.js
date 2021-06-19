@@ -129,7 +129,7 @@ export const ReplyModal = (props) => {
             <Box display="flex" alignItems="center" flexDirection="column">
               <Avatar alt={props.tweet?.username} title={props.tweet?.username}
                 className="w-48 h-48"
-                src="/static/images/avatar/1.jpg" />
+                src={props.tweet?.profile_img}/>
               <div className="vl mt-1 br-33"></div>
             </Box>
             <div className="ml-2">
