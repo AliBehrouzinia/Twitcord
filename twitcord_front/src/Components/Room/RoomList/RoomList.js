@@ -13,7 +13,10 @@ import Select from 'react-select';
 import Button from '@material-ui/core/Button';
 import * as API from '../../../Utils/API/index';
 import * as Constants from '../../../Utils/Constants.js';
-
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+/* eslint-disable*/
+let hasMedia = false;
+let photoUploadDetails = null;
 
 const RoomList = () => {
   const [open, setOpen] = React.useState(false);
@@ -23,6 +26,7 @@ const RoomList = () => {
   const [postButtonDisabled, setPostButtonDisabled] = useState(true);
   const [roomTitle, setRoomTitle] = useState('');
   const [selectedOptionIds, setSelectedOptionIds] = useState([]);
+  const [media, setMedia] = useState(null);
   const optionIds = [];
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -101,6 +105,60 @@ const RoomList = () => {
     setSelectedOption(selectedOptions);
   };
 
+  const uploadPhoto = () => {
+    minioClient.presignedPutObject(
+      photoUploadDetails.bucket_name,
+      photoUploadDetails.object_name,
+      function(err, presignedUrl) {
+        console.log(presignedUrl)
+        API.uploadPhoto({file: media, url: presignedUrl})
+        .then(
+          res => {
+            setSnackbarAlertMessage(
+              Constants.TWEET_SUCCESS_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_SUCCESS_SEVERITY);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+          }
+        ).catch(
+          err => {
+            setSnackbarAlertMessage(
+              Constants.TWEET_FAILURE_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_ERROR_SEVERITY);
+          setMedia(null);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+          }
+          );
+      });
+  }
+
+  const onPhotoChange = (file) => {
+    setMedia(file);
+    hasMedia = true;
+  };
+
+  const onAddPhotoClick = () => {
+    photoInput.click();
+  };
+
+  const onClearMedia = () => {
+    setMedia(null);
+    hasMedia = false;
+  };
+
+  const getMediaUrl = () => {
+    return URL.createObjectURL(media);
+  };
+
   const roomsList = rooms.map((room) => <div key={room.id}>
     <RoomItem title={room.title} membersCount={room.number_of_members}/>
     <Divider/>
@@ -131,9 +189,24 @@ const RoomList = () => {
         <Fade in={open}>
           <form className="rl-paper">
             <Typography className="rl-title">Create Room</Typography>
-            <Avatar className="rl-avatar" alt="room name">
+            <Avatar 
+            src={getMediaUrl()}
+            className="rl-avatar" 
+            alt="room name">
               <ImageIcon className="rl-icon"/>
             </Avatar>
+            <HighlightOffIcon
+              onClick={onClearMedia}
+              className="tb-clear-media"/>
+            <input
+            type="file"
+            id="file"
+            onChange={(e) =>{
+              onPhotoChange(e.target.files[0]);
+              e.target.value = '';
+            }}
+            ref={(ref) => photoInput = ref}
+            style={{display: 'none'}}/>
             <TextField
               className="rl-room-name"
               label="room name"
