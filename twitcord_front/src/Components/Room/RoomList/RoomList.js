@@ -13,9 +13,11 @@ import Select from 'react-select';
 import Button from '@material-ui/core/Button';
 import * as API from '../../../Utils/API/index';
 import * as Constants from '../../../Utils/Constants.js';
+import PropTypes from 'prop-types';
+/* eslint-disable */
 
 
-const RoomList = () => {
+const RoomList = (props) => {
   const [open, setOpen] = React.useState(false);
   const [rooms, setRooms] = React.useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -101,21 +103,22 @@ const RoomList = () => {
     setSelectedOption(selectedOptions);
   };
 
-  const roomsList = rooms.map((room) => <div key={room.id}>
-    <RoomItem title={room.title} membersCount={room.number_of_members}/>
-    <Divider/>
-  </div>);
+  const roomsList = rooms.filter(room => (room.owner.id == userGeneralInfo.pk) || !props.self)
+    .map((room) => <div key={room.id}>
+      <RoomItem title={room.title} membersCount={room.number_of_members}/>
+      <Divider/>
+    </div>);
 
   return (
     <div className="rl-root">
       {roomsList}
-      <Fab
+      {!props.self && <Fab
         className="rl-fab"
         color="primary"
         aria-label="add"
         onClick={openCreateRoomModal}>
         <AddIcon />
-      </Fab>
+      </Fab>}
       <Modal
         className="rl-modal"
         aria-labelledby="transition-modal-title"
@@ -162,6 +165,10 @@ const RoomList = () => {
       </Modal>
     </div>
   );
+};
+
+RoomList.propTypes = {
+  self: PropTypes.bool,
 };
 
 export default RoomList;
