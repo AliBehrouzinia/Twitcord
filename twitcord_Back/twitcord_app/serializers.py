@@ -90,7 +90,7 @@ class TweetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ['id', 'content', 'create_date', 'user']
+        fields = ['id', 'content', 'create_date', 'user', 'retweet_from']
         read_only_fields = ['id', 'create_date']
         extra_kwargs = {
             'content': {'required': True}
@@ -98,6 +98,37 @@ class TweetSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(TweetSerializer, self).to_representation(instance)
+        source_tweet_id = result.pop('retweet_from')
+        tweet = Tweet.objects.filter(pk=source_tweet_id)
+        if tweet is not None:
+            for item in tweet:
+                source_tweet = item
+                result['retweet_from'] = {}
+                result['retweet_from']['id'] = source_tweet.id
+                result['retweet_from']['content'] = source_tweet.content
+                result['retweet_from']['create_date'] = source_tweet.create_date
+                source_tweet_id = source_tweet.user.id
+                source_tweet_user = get_object_or_404(TwitcordUser, pk=source_tweet_id)
+                result['retweet_from']['user'] = {}
+                result['retweet_from']['user']['username'] = source_tweet_user.username
+                result['retweet_from']['user']['date_joined'] = source_tweet_user.date_joined
+                result['retweet_from']['user']['first_name'] = source_tweet_user.first_name
+                result['retweet_from']['user']['last_name'] = source_tweet_user.last_name
+                result['retweet_from']['user']['birth_date'] = source_tweet_user.birth_date
+                result['retweet_from']['user']['is_public'] = source_tweet_user.is_public
+                result['retweet_from']['user']['profile_img'] = source_tweet_user.profile_img
+                result['retweet_from']['user']['header_img'] = source_tweet_user.header_img
+                result['retweet_from']['user']['id'] = source_tweet_user.id
+                is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=source_tweet.id).exists()
+                is_retweeted = Tweet.objects.filter(id=source_tweet.id, user_id=self.context['request'].user.id,
+                                                    retweet_from__isnull=False).exists()
+                result['retweet_from']['is_retweeted'] = is_retweeted
+                result['retweet_from']['is_liked'] = is_liked
+                result['retweet_from']['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
+                result['retweet_from']['reply_count'] = len(Tweet.objects.filter(parent_id=instance.id))
+                result['retweet_from']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=instance.id))
+        else:
+            result['retweet_from'] = None
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         is_retweeted = Tweet.objects.filter(id=instance.id, user_id=self.context['request'].user.id,
                                             retweet_from__isnull=False).exists()
@@ -272,7 +303,7 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
 class RetweetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
-        fields = ['user', 'create_date', 'retweet_from', 'content']
+        fields = ['id', 'user', 'create_date', 'retweet_from', 'content']
 
     def to_internal_value(self, data):
         data['user'] = self.context['request'].user.id
@@ -281,11 +312,44 @@ class RetweetSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(RetweetSerializer, self).to_representation(instance)
-        result['source_tweet_id'] = result.pop('retweet_from')
-        source_tweet = get_object_or_404(Tweet, id=result['source_tweet_id'])
-        result['source_tweet_user'] = source_tweet.user.id
-        result['source_tweet_create_date'] = serializers.DateTimeField().to_representation(source_tweet.create_date)
-        result['source_tweet_content'] = source_tweet.content
+        user_id = result.pop('user')
+        user = get_object_or_404(TwitcordUser, pk=user_id)
+        result['user'] = {}
+        result['user']['username'] = user.username
+        result['user']['date_joined'] = user.date_joined
+        result['user']['first_name'] = user.first_name
+        result['user']['last_name'] = user.last_name
+        result['user']['birth_date'] = user.birth_date
+        result['user']['is_public'] = user.is_public
+        result['user']['profile_img'] = user.profile_img
+        result['user']['header_img'] = user.header_img
+        result['user']['id'] = user.id
+        source_tweet_id = result.pop('retweet_from')
+        source_tweet = get_object_or_404(Tweet, pk=source_tweet_id)
+        result['retweet_from'] = {}
+        result['retweet_from']['id'] = source_tweet.id
+        result['retweet_from']['content'] = source_tweet.content
+        result['retweet_from']['create_date'] = source_tweet.create_date
+        source_tweet_id = source_tweet.user.id
+        source_tweet_user = get_object_or_404(TwitcordUser, pk=source_tweet_id)
+        result['retweet_from']['user'] = {}
+        result['retweet_from']['user']['username'] = source_tweet_user.username
+        result['retweet_from']['user']['date_joined'] = source_tweet_user.date_joined
+        result['retweet_from']['user']['first_name'] = source_tweet_user.first_name
+        result['retweet_from']['user']['last_name'] = source_tweet_user.last_name
+        result['retweet_from']['user']['birth_date'] = source_tweet_user.birth_date
+        result['retweet_from']['user']['is_public'] = source_tweet_user.is_public
+        result['retweet_from']['user']['profile_img'] = source_tweet_user.profile_img
+        result['retweet_from']['user']['header_img'] = source_tweet_user.header_img
+        result['retweet_from']['user']['id'] = source_tweet_user.id
+        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=source_tweet.id).exists()
+        is_retweeted = Tweet.objects.filter(id=source_tweet.id, user_id=self.context['request'].user.id,
+                                            retweet_from__isnull=False).exists()
+        result['retweet_from']['is_retweeted'] = is_retweeted
+        result['retweet_from']['is_liked'] = is_liked
+        result['retweet_from']['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
+        result['retweet_from']['reply_count'] = len(Tweet.objects.filter(parent_id=instance.id))
+        result['retweet_from']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=instance.id))
         return result
 
 

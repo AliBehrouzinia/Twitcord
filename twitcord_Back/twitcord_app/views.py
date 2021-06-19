@@ -267,6 +267,8 @@ class RetweetView(generics.CreateAPIView):
             'view': self,
             "retweet_from": self.kwargs['id']
         }
+
+
 class RoomView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.RoomSerializer
