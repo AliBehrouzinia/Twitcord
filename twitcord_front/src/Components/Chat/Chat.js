@@ -16,6 +16,7 @@ import * as Constants from '../../Utils/Constants'
 import {useParams} from 'react-router-dom';
 
 let chatSocket = null;
+let messages = []
 
 const Chat = () => {
   const params = useParams();
@@ -33,7 +34,9 @@ const Chat = () => {
 
     chatSocket.onmessage = function(e) {
       const data = JSON.parse(e.data);
-      console.log("onmessage:" + data)
+      console.log("onmessage:" + messages.length)
+      messages.push(data.message)
+      setChatMessages([...messages]);
     };
   }
 
@@ -45,6 +48,7 @@ const Chat = () => {
     API.getmessages({id: params.id , page: 1})
         .then((response) => {
           setChatMessages(response.data.results);
+          messages = response.data.results
         })
         .catch((error) => {
           console.log(error);
