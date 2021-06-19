@@ -204,6 +204,39 @@ class Room(models.Model):
     title = models.CharField(max_length=20)
     users = models.ManyToManyField("TwitcordUser", related_name="rooms", blank=True)
 
+    # room image
+    has_image = models.BooleanField(default=False)
+    ROOM_IMAGE_DIRECTORY = f"tweets"
+
+    @property
+    def get_room_img_name(self):
+        return f"room_img_{self.id}.jpg"
+
+    @property
+    def room_img_upload_details(self):
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.ROOM_IMAGE_DIRECTORY
+        name = self.get_room_img_name
+
+        image = {
+            'bucket_name': bucket_name,
+            'object_name': f"{directory}/{name}"
+        }
+        return image
+
+    @property
+    def room_img(self):
+        if not self.has_image:
+            return None
+
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.ROOM_IMAGE_DIRECTORY
+        name = self.get_room_img_name
+        object_name = f"{directory}/{name}"
+
+        url = minio_client.get_presigned_url("GET", bucket_name, object_name)
+        return url
+
     def __str__(self):
         return f"{self.title}"
 
