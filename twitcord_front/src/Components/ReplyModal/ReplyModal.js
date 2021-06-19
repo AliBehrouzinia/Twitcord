@@ -61,7 +61,7 @@ export const ReplyModal = (props) => {
   };
 
   const replyTweet = () => {
-    const reqData = {content: tweetInfo, parent: props.tweet.id};
+    const reqData = {content: tweetInfo, parent: props.tweet?.id};
     console.log(props.tweet);
     if (!isSubmitting) {
       setSubmitting(true);
@@ -127,8 +127,8 @@ export const ReplyModal = (props) => {
         <DialogContent className="px-12" dividers>
           <Box display="flex" className="min-w-50 min-w-auto-sm">
             <Box display="flex" alignItems="center" flexDirection="column">
-              <Avatar alt={props.tweet?.user.username}
-                title={props.tweet?.user.username}
+              <Avatar alt={props.tweet?.user?.username}
+                title={props.tweet?.user?.username}
                 className="w-48 h-48"
                 src="/static/images/avatar/1.jpg" />
               <div className="vl mt-1 br-33"></div>
@@ -136,10 +136,10 @@ export const ReplyModal = (props) => {
             <div className="ml-2">
               <Box display="flex">
                 <div className="b-900 fs-15 b-700 lh-20">
-                  {props.tweet?.user.first_name +
-                  ' ' + props.tweet?.user.last_name}</div>
+                  {props.tweet?.user?.first_name +
+                  ' ' + props.tweet?.user?.last_name}</div>
                 <div className="ml-2 fs-15 b-400 lh-20 text-gray">
-                  @{props.tweet?.user.username}</div>
+                  @{props.tweet?.user?.username}</div>
                 {/* <div className="ml-2">
                 {extractTime(props.tweet?.createDate)}</div> */}
               </Box>
@@ -148,16 +148,16 @@ export const ReplyModal = (props) => {
               </div>
               <div className="my-3">
                 <span className="text-gray">Replying to </span>
-                <Link to={'/profile/'+props.tweet?.user.id}
+                <Link to={'/profile/'+props.tweet?.user?.id}
                   className="link-color">
-                  @{props.tweet?.user.username}
+                  @{props.tweet?.user?.username}
                 </Link>
               </div>
             </div>
           </Box>
           <Box display="flex" className="mt-1">
-            <Avatar alt={props.tweet?.user.username}
-              title={props.tweet?.user.username}
+            <Avatar alt={props.tweet?.user?.username}
+              title={props.tweet?.user?.username}
               className="w-48 h-48"
               src="/static/images/avatar/1.jpg" />
             <TextareaAutosize
