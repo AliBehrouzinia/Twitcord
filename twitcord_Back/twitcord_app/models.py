@@ -124,6 +124,7 @@ class Tweet(models.Model):
     TWEET_MEDIA_DIRECTORY = f"tweets"
 
     class Meta:
+        unique_together = ("user", "retweet_from")
         constraints = [
             models.CheckConstraint(check=((Q(retweet_from__isnull=True) & Q(content__isnull=False)) |
                                           Q(retweet_from__isnull=False)), name='content_null',)

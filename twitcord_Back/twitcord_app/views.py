@@ -269,9 +269,19 @@ class RetweetView(generics.CreateAPIView):
         }
 
 
-class RoomView(generics.ListCreateAPIView):
+class CreateRoomView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    serializer_class = serializers.CreateRoomSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        return models.Tweet.objects.all()
+
+
+class RoomView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.RoomSerializer
+    pagination_class = paginations.RoomListPagination
 
     def get_queryset(self):
         user_id = self.kwargs['id']
@@ -292,6 +302,7 @@ class RoomView(generics.ListCreateAPIView):
 class RoomDataView(generics.ListAPIView):
     permission_class = IsAuthenticated
     serializer_class = serializers.RoomSerializer
+    pagination_class = None
 
     def get_queryset(self):
         room_id = self.kwargs['id']
@@ -318,3 +329,13 @@ class ShowReplyFamilyView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ShowReplySerializer
     lookup_url_kwarg = 'id'
+
+
+class DeleteTweetView(generics.DestroyAPIView):
+    serializer_class = serializers.TweetSerializer
+    permission_classes = [IsAuthenticated, DestroyTweetPermission]
+
+    def delete(self, request, *args, **kwargs):
+        tweet = get_object_or_404(models.Tweet, id=self.kwargs['id'])
+        tweet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
