@@ -367,6 +367,17 @@ class RoomSerializer(serializers.ModelSerializer):
         return result
 
 
+class CreateRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super(CreateRoomSerializer, self).to_representation(instance)
+        result['number_of_members'] = get_object_or_404(Room, id=instance.id).users.count() + 1
+        return result
+
+
 class ReplySerializer(serializers.ModelSerializer):
     is_reply = serializers.BooleanField()
     parent = serializers.PrimaryKeyRelatedField(queryset=Tweet.objects.all())
