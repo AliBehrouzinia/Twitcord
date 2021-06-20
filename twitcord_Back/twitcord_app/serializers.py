@@ -419,7 +419,7 @@ class ReplySerializer(serializers.ModelSerializer):
                 if is_retweeted:
                     result['parent']['retweeted_id'] = get_object_or_404(Tweet, retweet_from__id=obj.id,
                                                                          user_id=self.context['request'].user.id,
-                                                                         retweet_from__isnull=False)
+                                                                         retweet_from__isnull=False).id
                 result['parent']['is_liked'] = is_liked
                 result['parent']['user_id'] = obj.user.id
                 result['parent']['username'] = obj.user.username
