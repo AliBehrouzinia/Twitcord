@@ -29,4 +29,5 @@ urlpatterns = [
     path('reply/', views.ReplyTweetCreateView.as_view()),
     path('replys/<int:id>/', views.ReplysListView.as_view()),
     path('tweets/<int:id>/family/', views.ShowReplyFamilyView.as_view()),
+    path('tweet/<int:id>/', views.DeleteTweetView.as_view()),
 ]
