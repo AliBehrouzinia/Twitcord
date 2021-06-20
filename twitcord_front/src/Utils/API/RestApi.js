@@ -202,7 +202,7 @@ export const createRetweet = (id, data) => {
 };
 
 
-// TODO change the url 
+// TODO change the url
 export const deleteTweet = (id) => {
   return request(
       {},
