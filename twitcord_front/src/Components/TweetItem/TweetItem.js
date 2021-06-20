@@ -18,6 +18,7 @@ import Box from '@material-ui/core/Box';
 import {Link} from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import * as API from '../../Utils/API/index';
 
 
 export const TweetItem = (props) => {
@@ -25,6 +26,15 @@ export const TweetItem = (props) => {
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const retweet = () => {
+    API.createRetweet(props.tweet?.id, {'content': null}).then((res) => {
+      props.tweet?.is_retweeted = true;
+      props.tweet?.retweet_count++;
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
 
   const handleClickRetweetBtn = (event) => {
     setAnchorEl(event.currentTarget);
@@ -142,8 +152,17 @@ export const TweetItem = (props) => {
             open={Boolean(anchorEl)}
             onClose={handleCloseRetweetBtn}
           >
-            <MenuItem onClick={handleCloseRetweetBtn}>Retweet</MenuItem>
-            <MenuItem onClick={handleCloseRetweetBtn}>Quote Retweet</MenuItem>
+            {!props.tweet?.is_retweeted &&
+             <MenuItem onClick={() => {
+               handleCloseRetweetBtn();
+               retweet();
+             }}>Retweet</MenuItem>}
+            {props.tweet?.is_retweeted &&
+             <MenuItem onClick={handleCloseRetweetBtn}>Undo Retweet</MenuItem>}
+            <MenuItem onClick={() => {
+              handleCloseRetweetBtn();
+              openReplyModal();
+            }}>Quote Retweet</MenuItem>
           </Menu>
           {props.tweet?.retweet_count}
         </div>

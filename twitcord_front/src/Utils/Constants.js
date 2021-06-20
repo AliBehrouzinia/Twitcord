@@ -23,6 +23,7 @@ export const URL_ROOMS_LIST= '/user/{id}/rooms/';
 export const URL_REPLY = '/reply/';
 export const URL_REPLYS= '/replys/';
 export const URL_USER = '/users/';
+export const URL_RETWEET = '/retweet/';
 
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;
