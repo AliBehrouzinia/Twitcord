@@ -16,12 +16,24 @@ import * as helper from '../../Utils/helper';
 import {useHistory} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import {Link} from 'react-router-dom';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 export const TweetItem = (props) => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClickRetweetBtn = (event) => {
+    setAnchorEl(event.currentTarget);
+    setIsClosing(true);
+  };
+
+  const handleCloseRetweetBtn = () => {
+    setAnchorEl(null);
+  };
 
   const openReplyModal = () => {
     setOpen(true);
@@ -119,10 +131,20 @@ export const TweetItem = (props) => {
           {props.tweet?.reply_count}
         </div>
         <div>
-          <IconButton className="mr-1">
+          <IconButton className="mr-1" onClick={handleClickRetweetBtn}>
             {props.tweet?.is_retweeted && <CachedIcon color="primary"/>}
             {!props.tweet?.is_retweeted && <CachedIcon/>}
           </IconButton>
+          <Menu
+            id="retweet-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleCloseRetweetBtn}
+          >
+            <MenuItem onClick={handleCloseRetweetBtn}>Retweet</MenuItem>
+            <MenuItem onClick={handleCloseRetweetBtn}>Quote Retweet</MenuItem>
+          </Menu>
           {props.tweet?.retweet_count}
         </div>
       </Box>
