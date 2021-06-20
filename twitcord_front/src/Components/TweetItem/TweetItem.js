@@ -16,7 +16,7 @@ import * as helper from '../../Utils/helper';
 import {useHistory} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import {Link} from 'react-router-dom';
-/* eslint-disable*/
+
 
 export const TweetItem = (props) => {
   const history = useHistory();
@@ -55,8 +55,6 @@ export const TweetItem = (props) => {
     history.push('/tweet/'+props.tweet?.id);
   };
 
-  console.log()
-
   return (
     <div className="tsi-hover pointer" onClick={tweetClicked}>
       <Grid container
@@ -66,36 +64,33 @@ export const TweetItem = (props) => {
         justify="space-between">
         <Grid item xs={12} sm={9} md={10}>
           <div className="tsi-avatar-container">
-            <Link to={'/profile/' + props.tweet?.uesr_id?.id}>
-              <Avatar 
-              src={props.tweet?.user_id?.profile_img}             
-              className="tsi-avatar" 
-              alt="avatar"/>
+            <Link to={'/profile/' + props.tweet?.uesr?.id}>
+              <Avatar className="tsi-avatar" alt="avatar"/>
             </Link>
             <div className="tsi-username-container">
               <div className="tsi-name-container">
-                <Link className="lh-0" to={'/profile/' + props.tweet?.user_id?.id}>
+                <Link className="lh-0" to={'/profile/' + props.tweet?.user?.id}>
                   <Tooltip
-                    title={props.tweet?.user_id?.first_name +
-                       ' ' + props.tweet?.user_id?.last_name}
+                    title={props.tweet?.user?.first_name +
+                       ' ' + props.tweet?.user?.last_name}
                     placement="top-start">
                     <Typography className="tsi-name" >
-                      {props.tweet?.user_id?.first_name +
-                       ' ' + props.tweet?.user_id?.last_name}</Typography>
+                      {props.tweet?.user?.first_name +
+                       ' ' + props.tweet?.user?.last_name}</Typography>
                   </Tooltip>
                 </Link>
-                {!props.tweet?.user_id?.is_public &&
+                {!props.tweet?.user?.is_public &&
                  <Icon className="tsi-lock-icon">lock</Icon>}
                 <Typography className="tsi-date">
                   <div className="tsi-dot"/>
                   {helper.extractTime(props.tweet?.create_date)}
                 </Typography>
               </div>
-              <Link to={'/profile/' + props.tweet?.user_id?.id}>
-                <Tooltip title={'@'+props.tweet?.user_id?.username}
+              <Link to={'/profile/' + props.tweet?.user?.id}>
+                <Tooltip title={'@'+props.tweet?.user?.username}
                   placement="top-start">
                   <Typography
-                    className="tsi-username">@{props.tweet?.user_id?.username}
+                    className="tsi-username">@{props.tweet?.user?.username}
                   </Typography>
                 </Tooltip>
               </Link>
