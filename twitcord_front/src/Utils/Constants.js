@@ -7,6 +7,7 @@ export const POST_REQUEST_METHOD = 'POST';
 export const GET_REQUEST_METHOD = 'GET';
 export const PATCH_REQUEST_METHOD = 'PATCH';
 export const PUT_REQUEST_METHOD = 'PUT';
+export const DELETE_REQUEST_METHOD = 'DELETE';
 
 // Urls
 export const URL_TWEET = '/tweets/';

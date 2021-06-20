@@ -200,3 +200,14 @@ export const createRetweet = (id, data) => {
       Constants.POST_REQUEST_METHOD,
   );
 };
+
+
+// TODO change the url 
+export const deleteTweet = (id) => {
+  return request(
+      {},
+      {},
+      '/tweet/'+id,
+      Constants.DELETE_REQUEST_METHOD,
+  );
+};
