@@ -6,21 +6,27 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import Fade from '@material-ui/core/Fade';
+import {useDispatch} from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import Avatar from '@material-ui/core/Avatar';
+import * as Actions from '../../../redux/Actions/index';
 import ImageIcon from '@material-ui/icons/Image';
 import Select from 'react-select';
 import Button from '@material-ui/core/Button';
 import * as API from '../../../Utils/API/index';
 import * as Constants from '../../../Utils/Constants.js';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import ClearIcon from '@material-ui/icons/Clear';
+import minioClient from '../../../Utils/Minio';
+
 /* eslint-disable*/
-let hasMedia = false;
-let photoUploadDetails = null;
+let hasImage = false;
 
 const RoomList = () => {
   const [open, setOpen] = React.useState(false);
   const [rooms, setRooms] = React.useState([]);
+  const dispatch = useDispatch();
+  const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
+  const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
   const [options, setOptions] = useState([]);
   const [postButtonDisabled, setPostButtonDisabled] = useState(true);
@@ -28,6 +34,7 @@ const RoomList = () => {
   const [selectedOptionIds, setSelectedOptionIds] = useState([]);
   const [media, setMedia] = useState(null);
   const optionIds = [];
+  let photoInput;
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
   );
@@ -36,6 +43,7 @@ const RoomList = () => {
     API.getRoomsList({id: userGeneralInfo.pk})
         .then((response) => {
           const rooms = response.data.results;
+          console.log(rooms)
           setRooms(rooms);
         })
         .catch((error) => {
@@ -73,17 +81,20 @@ const RoomList = () => {
       owner: userGeneralInfo.pk,
       title: roomTitle,
       users: selectedOptionIds,
+      has_image: hasImage
     };
 
     API.createRoom(data)
         .then((response) => {
           closeCreateRoomModal();
+          uploadPhoto(response.data.room_img_upload_details)
           setRooms([...rooms, {
             id: response.data.id,
             title: response.data.title,
             owner: response.data.owner,
             users: response.data.users,
             number_of_members: response.data.number_of_members,
+            room_img: getMediaUrl()
           }]);
         })
         .catch((error) => {
@@ -105,12 +116,11 @@ const RoomList = () => {
     setSelectedOption(selectedOptions);
   };
 
-  const uploadPhoto = () => {
+  const uploadPhoto = (roomPhotoUploadDetails) => {
     minioClient.presignedPutObject(
-      photoUploadDetails.bucket_name,
-      photoUploadDetails.object_name,
+      roomPhotoUploadDetails.bucket_name,
+      roomPhotoUploadDetails.object_name,
       function(err, presignedUrl) {
-        console.log(presignedUrl)
         API.uploadPhoto({file: media, url: presignedUrl})
         .then(
           res => {
@@ -143,7 +153,7 @@ const RoomList = () => {
 
   const onPhotoChange = (file) => {
     setMedia(file);
-    hasMedia = true;
+    hasImage = true;
   };
 
   const onAddPhotoClick = () => {
@@ -152,15 +162,19 @@ const RoomList = () => {
 
   const onClearMedia = () => {
     setMedia(null);
-    hasMedia = false;
+    hasImage = false;
   };
 
   const getMediaUrl = () => {
+    if (media == null){
+      return null;
+    }
     return URL.createObjectURL(media);
   };
 
   const roomsList = rooms.map((room) => <div key={room.id}>
-    <RoomItem title={room.title} membersCount={room.number_of_members}/>
+    <RoomItem 
+    room={room}/>
     <Divider/>
   </div>);
 
@@ -192,13 +206,16 @@ const RoomList = () => {
             <Avatar 
             src={getMediaUrl()}
             className="rl-avatar" 
+            onClick={onAddPhotoClick}
             alt="room name">
               <ImageIcon className="rl-icon"/>
             </Avatar>
-            <HighlightOffIcon
+            {media != null && <ClearIcon
+              className="rl-clear"
               onClick={onClearMedia}
-              className="tb-clear-media"/>
+             />}
             <input
+            accept="image/*"
             type="file"
             id="file"
             onChange={(e) =>{
