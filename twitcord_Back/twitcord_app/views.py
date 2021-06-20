@@ -264,6 +264,7 @@ class CreateRoomView(generics.CreateAPIView):
 class RoomView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.RoomSerializer
+    pagination_class = paginations.RoomListPagination
 
     def get_queryset(self):
         user_id = self.kwargs['id']
