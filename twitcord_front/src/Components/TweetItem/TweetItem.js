@@ -26,11 +26,13 @@ export const TweetItem = (props) => {
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [retweetCount, setRetweetCount] = useState(props.tweet?.retweet_count);
+  const [isRetweeted, setIsRetweeted] = useState(props.tweet?.is_retweeted);
 
   const retweet = () => {
     API.createRetweet(props.tweet?.id, {'content': null}).then((res) => {
-      props.tweet?.is_retweeted = true;
-      props.tweet?.retweet_count++;
+      setIsRetweeted(true);
+      setRetweetCount(retweetCount+1);
     }).catch((error) => {
       console.log(error);
     });
@@ -142,8 +144,8 @@ export const TweetItem = (props) => {
         </div>
         <div>
           <IconButton className="mr-1" onClick={handleClickRetweetBtn}>
-            {props.tweet?.is_retweeted && <CachedIcon color="primary"/>}
-            {!props.tweet?.is_retweeted && <CachedIcon/>}
+            {isRetweeted && <CachedIcon color="primary"/>}
+            {!isRetweeted && <CachedIcon/>}
           </IconButton>
           <Menu
             id="retweet-menu"
@@ -152,19 +154,19 @@ export const TweetItem = (props) => {
             open={Boolean(anchorEl)}
             onClose={handleCloseRetweetBtn}
           >
-            {!props.tweet?.is_retweeted &&
+            {!isRetweeted &&
              <MenuItem onClick={() => {
                handleCloseRetweetBtn();
                retweet();
              }}>Retweet</MenuItem>}
-            {props.tweet?.is_retweeted &&
+            {isRetweeted &&
              <MenuItem onClick={handleCloseRetweetBtn}>Undo Retweet</MenuItem>}
             <MenuItem onClick={() => {
               handleCloseRetweetBtn();
               openReplyModal();
             }}>Quote Retweet</MenuItem>
           </Menu>
-          {props.tweet?.retweet_count}
+          {retweetCount}
         </div>
       </Box>
       <ReplyModal tweet={props.tweet} open={open} onClose={handleClose} />
