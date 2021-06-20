@@ -206,7 +206,7 @@ class Room(models.Model):
 
     # room image
     has_image = models.BooleanField(default=False)
-    ROOM_IMAGE_DIRECTORY = f"tweets"
+    ROOM_IMAGE_DIRECTORY = f"rooms"
 
     @property
     def get_room_img_name(self):

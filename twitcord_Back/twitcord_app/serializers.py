@@ -289,7 +289,8 @@ class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = '__all__'
+        fields = ['id', 'owner', 'users', 'title', 'room_img']
+        read_only_fields = ['id', 'room_img']
 
     def to_representation(self, instance):
         result = super(RoomSerializer, self).to_representation(instance)
@@ -304,6 +305,9 @@ class CreateRoomSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(CreateRoomSerializer, self).to_representation(instance)
+        request = self.context['request']
+        if request.method == 'POST':
+            result['room_img_upload_details'] = instance.room_img_upload_details
         result['number_of_members'] = get_object_or_404(Room, id=instance.id).users.count() + 1
         return result
 
