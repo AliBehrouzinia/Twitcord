@@ -207,7 +207,7 @@ export const deleteTweet = (id) => {
   return request(
       {},
       {},
-      '/tweet/'+id,
+      Constants.URL_TWEET+id,
       Constants.DELETE_REQUEST_METHOD,
   );
 };

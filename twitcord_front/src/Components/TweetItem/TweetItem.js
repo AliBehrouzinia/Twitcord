@@ -28,11 +28,22 @@ export const TweetItem = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [retweetCount, setRetweetCount] = useState(props.tweet?.retweet_count);
   const [isRetweeted, setIsRetweeted] = useState(props.tweet?.is_retweeted);
+  const [retweetedId, setRetweetedId] = useState(props.tweet?.retweeted_id);
 
   const retweet = () => {
     API.createRetweet(props.tweet?.id, {'content': null}).then((res) => {
       setIsRetweeted(true);
       setRetweetCount(retweetCount+1);
+      setRetweetedId(res.data.id);
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+
+  const undoRetweet = () => {
+    API.deleteTweet(retweetedId).then((res) => {
+      setIsRetweeted(false);
+      setRetweetCount(retweetCount-1);
     }).catch((error) => {
       console.log(error);
     });
@@ -160,7 +171,10 @@ export const TweetItem = (props) => {
                retweet();
              }}>Retweet</MenuItem>}
             {isRetweeted &&
-             <MenuItem onClick={handleCloseRetweetBtn}>Undo Retweet</MenuItem>}
+             <MenuItem onClick={() => {
+               handleCloseRetweetBtn();
+               undoRetweet();
+             }}>Undo Retweet</MenuItem>}
             <MenuItem onClick={() => {
               handleCloseRetweetBtn();
               openReplyModal();
