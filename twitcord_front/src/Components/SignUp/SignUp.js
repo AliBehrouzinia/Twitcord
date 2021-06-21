@@ -39,6 +39,8 @@ const SignUp = () => {
 
   const handleSubmit = (values) => {
     dispatch(Actions.setSignUpInfo(values));
+    console.log("here")
+    console.log(store.getState().tweet.signUpInfo)
     API.signUp(store.getState().tweet.signUpInfo)
         .then((response) => {
           setSnackbarAlertMessage(
@@ -76,6 +78,8 @@ const SignUp = () => {
           <Formik
             initialValues={{
               username: '',
+              firstName: '',
+              lastName: '',
               email: '',
               password: '',
               confirmPassword: '',
@@ -84,6 +88,12 @@ const SignUp = () => {
               const errors = {};
               if (!values.username) {
                 errors.username = 'Required';
+              }
+              if (!values.firstName) {
+                errors.firstName = 'Required';
+              }
+              if (!values.lastName) {
+                errors.lastName = 'Required';
               }
               if (!values.email) {
                 errors.email = 'Required';
@@ -128,6 +138,22 @@ const SignUp = () => {
                   variant="outlined"
                   name="email"
                   type="email"
+                />
+
+                <Field
+                  component={TextField}
+                  className="text-field"
+                  label="First Name"
+                  variant="outlined"
+                  name="firstName"
+                />
+
+                <Field
+                  component={TextField}
+                  className="text-field"
+                  label="Last Name"
+                  variant="outlined"
+                  name="lastName"
                 />
 
                 <Field
