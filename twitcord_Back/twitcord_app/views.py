@@ -292,15 +292,11 @@ class TimeLineView(generics.ListAPIView):
                 result[tweet] += 20
             else:
                 result[tweet] = 20
-        followers_of_own_user = models.UserFollowing.objects.filter(following_user_id=user)
-        followers_of_own_user_id = []
-        for item in followers_of_own_user:
-            followers_of_own_user_id.append(item.user)
         for tweet in result:
             tweet_user = tweet.user
-            for user_id in followers_of_own_user_id:
+            for user_id in followings:
                 if user_id == tweet_user:
-                    users = models.UserFollowing.objects.filter(Q(user_id=user_id) & Q(following_user_id=user))
+                    users = models.UserFollowing.objects.filter(Q(user_id=user) & Q(following_user_id=user_id))
                     type_status = users[0].type
                     if type_status == models.UserFollowing.FollowingType.FAMILY:
                         result[tweet] *= 2
