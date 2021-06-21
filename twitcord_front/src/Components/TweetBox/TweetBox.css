@@ -61,9 +61,13 @@
 .tb-clear-media{
   position: absolute;
   cursor: pointer;
-  top: 20px;
+  top: 15px;
   color: gray;
-  right: 20px;
+  right: 15px;
   background: white;
   border-radius: 50%;
+}
+
+.tb-media-container{
+  position: relative;
 }

@@ -128,7 +128,7 @@ const TweetBox = () => {
 
           {
           media !== null ?
-          <Grid item>
+          <Grid item className="tb-media-container">
             <img
               className="tb-media"
               src={getMediaUrl()}/>
