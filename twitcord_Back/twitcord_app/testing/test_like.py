@@ -46,9 +46,11 @@ class LikeTest(APITestCase):
                 {
                     "id": 1,
                     "tweet": {
-                        "id": 1,
+                        "id": self.tweet.id,
                         "content": "salam",
                         "create_date": serializers.DateTimeField().to_representation(self.tweet.create_date),
+                        "tweet_media": None,
+                        "has_media": False,
                         "is_liked": True,
                         "like_count": 1,
                         "reply_count": 0,

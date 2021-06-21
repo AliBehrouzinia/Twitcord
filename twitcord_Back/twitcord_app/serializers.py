@@ -100,7 +100,7 @@ class TweetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ['id', 'content', 'create_date', 'user']
+        fields = ['id', 'content', 'create_date', 'user', 'tweet_media', 'has_media']
         read_only_fields = ['id', 'create_date']
         extra_kwargs = {
             'content': {'required': True}
@@ -108,6 +108,10 @@ class TweetSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(TweetSerializer, self).to_representation(instance)
+        request = self.context['request']
+        if request.method == 'POST':
+            result['tweet_media_upload_details'] = instance.tweet_media_upload_details
+
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
         is_retweeted = Tweet.objects.filter(id=instance.id, user_id=self.context['request'].user.id,
                                             retweet_from__isnull=False).exists()
@@ -201,7 +205,7 @@ class FollowCountSerializer(serializers.ModelSerializer):
 class GlobalUserSearchSerializer(serializers.ModelSerializer):
     class Meta:
         model = TwitcordUser
-        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'email', 'bio']
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_public', 'email', 'bio', 'profile_img']
 
     def to_representation(self, instance):
         result = super(GlobalUserSearchSerializer, self).to_representation(instance)
@@ -231,7 +235,17 @@ class GlobalTweetSearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = '__all__'
+        fields = [
+            "id",
+            "user",
+            "is_reply",
+            "content",
+            "create_date",
+            "parent",
+            "retweet_from",
+            "has_media",
+            "tweet_media"
+        ]
 
     def to_representation(self, instance):
         result = super(GlobalTweetSearchSerializer, self).to_representation(instance)
@@ -285,10 +299,25 @@ class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = '__all__'
+        fields = ['id', 'owner', 'users', 'title', 'room_img']
+        read_only_fields = ['id', 'room_img']
 
     def to_representation(self, instance):
         result = super(RoomSerializer, self).to_representation(instance)
+        result['number_of_members'] = get_object_or_404(Room, id=instance.id).users.count() + 1
+        return result
+
+
+class CreateRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super(CreateRoomSerializer, self).to_representation(instance)
+        request = self.context['request']
+        if request.method == 'POST':
+            result['room_img_upload_details'] = instance.room_img_upload_details
         result['number_of_members'] = get_object_or_404(Room, id=instance.id).users.count() + 1
         return result
 

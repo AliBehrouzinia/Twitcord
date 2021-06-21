@@ -4,6 +4,8 @@ const initialState = {
   signUpInfo: {
     username: '',
     email: '',
+    first_name: '',
+    last_name: '',
     password1: '',
     password2: '',
   },
@@ -53,6 +55,8 @@ const tweetReducer = (state = initialState, action) => {
           ...state.signUpInfo,
           username: action.username,
           email: action.email,
+          first_name: action.firstName,
+          last_name: action.lastName,
           password1: action.password,
           password2: action.confirmPassword,
         },
