@@ -38,3 +38,32 @@
   padding: 10px !important; 
 }
 
+.tb-items-box{
+  display: flex;
+    align-items: center;
+}
+
+.tb-image-icon{
+  width: 40px !important;
+  height: 40px !important;
+  margin-left: 10px;
+  cursor: pointer;
+  color: rgb(172, 172, 172);
+}
+
+.tb-media{
+  max-height: 500px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+.tb-clear-media{
+  position: absolute;
+  cursor: pointer;
+  top: 20px;
+  color: gray;
+  right: 20px;
+  background: white;
+  border-radius: 50%;
+}

@@ -23,6 +23,7 @@ const Search = () => {
             name={user.first_name + ' ' + user.last_name}
             username={user.username}
             bio={user.bio}
+            profileImg={user.profile_img}
             followState={user.status}
             isPublic={user.is_public}/>
         </Link>
