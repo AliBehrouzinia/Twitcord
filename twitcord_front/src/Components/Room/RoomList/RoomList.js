@@ -15,13 +15,9 @@ import Select from 'react-select';
 import Button from '@material-ui/core/Button';
 import * as API from '../../../Utils/API/index';
 import * as Constants from '../../../Utils/Constants.js';
-<<<<<<< HEAD
 import ClearIcon from '@material-ui/icons/Clear';
 import minioClient from '../../../Utils/Minio';
-=======
 import PropTypes from 'prop-types';
-/* eslint-disable */
->>>>>>> 7a1caa77d455296c52bc6ff18e4da41d88ec8d7c
 
 /* eslint-disable*/
 let hasImage = false;
@@ -121,7 +117,6 @@ const RoomList = (props) => {
     setSelectedOption(selectedOptions);
   };
 
-<<<<<<< HEAD
   const uploadPhoto = (roomPhotoUploadDetails) => {
     minioClient.presignedPutObject(
       roomPhotoUploadDetails.bucket_name,
@@ -178,18 +173,12 @@ const RoomList = (props) => {
     return URL.createObjectURL(media);
   };
 
-  const roomsList = rooms.map((room) => <div key={room.id}>
-    <RoomItem 
-    room={room}/>
-    <Divider/>
-  </div>);
-=======
   const roomsList = rooms.filter(room => (room.owner.id == userGeneralInfo.pk) || !props.self)
     .map((room) => <div key={room.id}>
-      <RoomItem title={room.title} membersCount={room.number_of_members}/>
+      <RoomItem 
+      room={room}/>
       <Divider/>
     </div>);
->>>>>>> 7a1caa77d455296c52bc6ff18e4da41d88ec8d7c
 
   return (
     <div className="rl-root">
