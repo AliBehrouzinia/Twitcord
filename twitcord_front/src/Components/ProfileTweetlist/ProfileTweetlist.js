@@ -7,7 +7,7 @@ import * as Constants from '../../Utils/Constants.js';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 import * as Actions from '../../redux/Actions/index.js';
-import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
+import {TweetItem} from '../TweetItem/TweetItem';
 
 
 const ProfileTweetlist = () => {
@@ -42,7 +42,7 @@ const ProfileTweetlist = () => {
       {tweetInfo.map((tweet) => {
         return (
           <div key={tweet.id}>
-            <TweetSearchItem
+            <TweetItem
               id={tweet.id}
               name={profileInfo.firstName+ ' ' +profileInfo.lastName}
               username={profileInfo.username}

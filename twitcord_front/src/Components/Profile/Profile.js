@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ProfileUserinfo from '../ProfileUserinfo/ProfileUserinfo';
 import './Profile.css';
 import PropTypes from 'prop-types';
@@ -7,30 +7,38 @@ import Tab from '@material-ui/core/Tab';
 import {useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
-import ProfileTweetlist from '../ProfileTweetlist/ProfileTweetlist';
-import LikeList from '../LikeList/LikeList';
+import * as API from '../../Utils/API/index';
+import {TweetItem} from '../TweetItem/TweetItem';
 
 const Profile = () => {
   const params = useParams();
   const [tabSelected, setSelectedTab] = useState(0);
+  const [replys, setReplys] = useState([]);
+  const [tweets, setTweets] = useState([]);
+
 
   const handleChange = (event, selectedTab) => {
     setSelectedTab(selectedTab);
   };
-  // const tweets = useSelector((state) => state).tweet.tweetInfo;
 
+  const getTweets = () => {
+    API.getTweetList(params.id).then((res)=> {
+      setTweets(res.data);
+    }).catch((error)=> {
+    });
+  };
 
-  // const tweetlists = tweets.map(
-  //   (user) => <div key={user.id}>
-  //     <ProfileTweetlist
-  //       name={user.first_name + ' ' + user.last_name}
-  //       username={user.username}
-  //       bio={user.bio}
-  //       followState={user.status}
-  //       isPublic={user.is_public} />
-  //     <Divider />
-  //   </div>,
-  // )
+  const getReplyList = () => {
+    API.getReplyList(params.id).then((res)=> {
+      setReplys(res.data.results);
+    }).catch((error)=>{
+    });
+  };
+
+  useEffect(()=>{
+    getReplyList();
+    getTweets();
+  }, []);
 
   return (
     <Box container direction="column" className="w-100 overflow-hidden">
@@ -55,9 +63,23 @@ const Profile = () => {
       </Box>
       <Divider />
       <Box>
-        {tabSelected == 0 && <ProfileTweetlist></ProfileTweetlist> }
-        {tabSelected == 1 && <p>replys</p> }
-        {tabSelected == 2 && <LikeList></LikeList>}
+        {tabSelected == 0 && (
+          tweets.map((tweet)=> (
+            <div key={tweet.id}>
+              <TweetItem tweet={tweet} />
+              <Divider />
+            </div>
+          ))
+        ) }
+        {tabSelected == 1 && (
+          replys.map((reply)=> (
+            <div key={reply.id}>
+              <TweetItem tweet={reply} />
+              <Divider />
+            </div>
+          ))
+        ) }
+        {tabSelected == 2 && <p>likes</p> }
         {tabSelected == 3 && <p>rooms</p> }
       </Box>
     </Box>

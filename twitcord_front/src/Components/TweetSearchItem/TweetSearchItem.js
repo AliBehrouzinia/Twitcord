@@ -7,12 +7,9 @@ import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import './TweetSearchItem.css';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import CachedIcon from '@material-ui/icons/Cached';
 import IconButton from '@material-ui/core/IconButton';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
-// import Favorite from '@material-ui/icons/Favorite';
-// import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import {ReplyModal} from '../ReplyModal/ReplyModal';
 
 
@@ -81,14 +78,6 @@ export const TweetSearchItem = (props) => {
     }
 
     return showingDate;
-
-    // const like = useState(false);
-    // const handleLikeClick = () => {
-    //   like(true);
-    // };
-    // function like(x){
-    //   x.toggle
-    // }
   };
 
   const [open, setOpen] = useState(false);
@@ -137,7 +126,7 @@ export const TweetSearchItem = (props) => {
         <Grid xs={12} container item className="tsi-icon-bottom-bar">
           <Grid item>
             <IconButton>
-              
+              <FavoriteBorderIcon/>
             </IconButton>
           </Grid>
 
