@@ -75,6 +75,10 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'twitcord_app.serializers.CustomUserDetailsSerializer',
 }
 
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'twitcord_app.serializers.RegistrationSerializer'
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
