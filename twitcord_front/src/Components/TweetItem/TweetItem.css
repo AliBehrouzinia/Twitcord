@@ -101,10 +101,26 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 9;
   -webkit-box-orient: vertical;
   margin-top: -30px !important;
-  padding-left: 80px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.tsi-media{
+  max-height: 500px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+.tsi-item-media{
+  margin-top: -25px !important;
+}
+
+.tweet-link-hover:hover{
+  background-color: rgb(238, 238, 238) !important;
 }
 
 .tweet-link-hover:hover{
