@@ -39,8 +39,6 @@ const SignUp = () => {
 
   const handleSubmit = (values) => {
     dispatch(Actions.setSignUpInfo(values));
-    console.log("here")
-    console.log(store.getState().tweet.signUpInfo)
     API.signUp(store.getState().tweet.signUpInfo)
         .then((response) => {
           setSnackbarAlertMessage(
