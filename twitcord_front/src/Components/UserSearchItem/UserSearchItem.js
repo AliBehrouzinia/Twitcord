@@ -7,6 +7,7 @@ import {Icon} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import './UserSearchItem.css';
+/* eslint-disable */
 
 export const UserSearchItem = (props) => {
   return (
@@ -17,7 +18,11 @@ export const UserSearchItem = (props) => {
       justify="space-between">
       <Grid item xs={12} sm={9} md={10}>
         <div className="usi-avatar-container">
-          <Avatar className="usi-avatar" alt="avatar"/>
+          <Avatar 
+          src={props.profileImg}
+          className="usi-avatar" 
+          alt="avatar"
+          />
           <div className="usi-username-container">
             <div className="usi-name-container">
               <Tooltip title={props.name} placement="top-start">

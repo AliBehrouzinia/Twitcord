@@ -252,9 +252,19 @@ class TweetsLikedListView(generics.ListAPIView):
         return models.Like.objects.filter(user=user_id)
 
 
-class RoomView(generics.ListCreateAPIView):
+class CreateRoomView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    serializer_class = serializers.CreateRoomSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        return models.Tweet.objects.all()
+
+
+class RoomView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.RoomSerializer
+    pagination_class = paginations.RoomListPagination
 
     def get_queryset(self):
         user_id = self.kwargs['id']
@@ -275,6 +285,7 @@ class RoomView(generics.ListCreateAPIView):
 class RoomDataView(generics.ListAPIView):
     permission_class = IsAuthenticated
     serializer_class = serializers.RoomSerializer
+    pagination_class = None
 
     def get_queryset(self):
         room_id = self.kwargs['id']
