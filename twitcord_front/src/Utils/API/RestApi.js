@@ -184,11 +184,11 @@ export const unlike = (data) => {
   );
 };
 
-export const likeList = (data) => {
+export const getLikeList = (id) => {
   return request(
-      data,
       {},
-      Constants.URL_LIKE_LIST.replace('{id}', data.id),
+      {},
+      Constants.URL_LIKES+id + '/tweets/like/',
       Constants.GET_REQUEST_METHOD,
   );
 };

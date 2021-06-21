@@ -15,6 +15,7 @@ const Profile = () => {
   const [tabSelected, setSelectedTab] = useState(0);
   const [replys, setReplys] = useState([]);
   const [tweets, setTweets] = useState([]);
+  const [likes, setLikes] = useState([]);
 
 
   const handleChange = (event, selectedTab) => {
@@ -35,9 +36,17 @@ const Profile = () => {
     });
   };
 
+  const getLikeList = () => {
+    API.getLikeList(params.id).then((res)=> {
+      setLikes(res.data.results);
+    }).catch((error)=>{
+    });
+  };
+
   useEffect(()=>{
     getReplyList();
     getTweets();
+    getLikeList();
   }, []);
 
   return (
@@ -79,7 +88,14 @@ const Profile = () => {
             </div>
           ))
         ) }
-        {tabSelected == 2 && <p>likes</p> }
+        {tabSelected == 2 && (
+          likes.map((like)=> (
+            <div key={like.id}>
+              <TweetItem tweet={like} />
+              <Divider />
+            </div>
+          ))
+        )}
         {tabSelected == 3 && <p>rooms</p> }
       </Box>
     </Box>
