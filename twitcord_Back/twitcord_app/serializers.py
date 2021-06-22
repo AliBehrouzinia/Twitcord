@@ -65,7 +65,9 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
             result['status'] = "following"
         else:
             result['status'] = "not following"
-        following_type_obj = UserFollowing.objects.filter(user_id=instance_user, following_user_id=request_user.id)
+        print(request_user.id)
+        print(instance_user)
+        following_type_obj = UserFollowing.objects.filter(user_id=request_user.id, following_user_id=instance_user)
         if following_type_obj is not None:
             for obj in following_type_obj:
                 result['following_status'] = obj.type
