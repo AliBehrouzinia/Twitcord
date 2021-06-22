@@ -201,11 +201,13 @@ const ProfileUserinfo = () => {
 
       <Box className="px-3">
         <Typography className="fs-25 b-900 lh-1">
-          {profileInfo.first_name + ' ' + profileInfo.last_name + '-'}
-          {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ? (
+          {profileInfo.first_name + ' ' + profileInfo.last_name }
+          {userGeneralInfo !== null && userGeneralInfo.email === profileInfo.email ?(
 					       <div/> 
 					) : (
-          <select className="relation" onChange = {onchange} value= {Relation}>
+             profileInfo.status === "following" ?( 
+
+            <select className="relation" onChange = {onchange} value= {Relation}>
             <option value="unknown" className = "option">unknown</option>
             <option value="Family" className = "option">family</option>
             <option value="Friend" className = "option">friend</option>
@@ -214,6 +216,10 @@ const ProfileUserinfo = () => {
             </option>
             <option value="Unfamiliar_person " className = "option">unfamiliar person</option>
           </select>
+          ):(
+            <div></div>
+          )
+          
 
 					)}
       
