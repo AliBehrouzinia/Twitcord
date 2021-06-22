@@ -29,7 +29,7 @@ const ProfileUserinfo = () => {
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const followcount = useSelector((state) => state).tweet.followcount;
   const [Situation, setSituation] = useState('');
-  const [Relation, setRelation] = useState('Family');
+  const [Relation, setRelation] = useState('');
   const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
   const userId = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -105,8 +105,8 @@ const ProfileUserinfo = () => {
     console.log({"type": event.target.value });
     API.editfollowstatus( {"type": event.target.value } , id)
     .then((response) => {
-      setRelation(event.target.value);
-      console.log(event.target.value);
+      setRelation(response.data.type);
+      console.log(Relation);
       
     })
     .catch((error) => {
@@ -119,6 +119,7 @@ const ProfileUserinfo = () => {
         .then((response) => {
           dispatch(Actions.setProfileInfo(response.data ));
           setSituation(response.data.status);
+          setRelation(response.data.following_status);
        
         })
         .catch((error) => {
@@ -208,13 +209,12 @@ const ProfileUserinfo = () => {
              profileInfo.status === "following" ?( 
 
             <select className="relation" onChange = {onchange} value= {Relation}>
-            <option value="unknown" className = "option">unknown</option>
+            <option value="Unfamiliar_person" className = "option">Unfamiliar person</option>
             <option value="Family" className = "option">family</option>
             <option value="Friend" className = "option">friend</option>
-            <option value="Close Friend" className = "option">
+            <option value="Close_friend" className = "option">
               close friend
             </option>
-            <option value="Unfamiliar_person " className = "option">unfamiliar person</option>
           </select>
           ):(
             <div></div>
