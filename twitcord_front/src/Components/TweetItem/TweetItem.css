@@ -1,14 +1,6 @@
 .tsi-avatar {
-  width: 60px !important;
-  height: 60px !important;
-}
-
-.tsi-avatar-container:hover{
-  cursor: pointer;
-}
-
-.tsi-avatar-container {
-  display: flex;
+  width: 55px !important;
+  height: 55px !important;
 }
 
 .retweet-hover:hover {
@@ -59,10 +51,16 @@
   line-height: 0 !important;
 }
 
+.ml-retweet-item {
+  margin-left: 33px;
+}
+
+.mb--2 {
+  margin-bottom: -.5rem !important;
+}
+
 .tsi-name {
-  margin: 0;
-  font-size: x-large !important;
-  display: inline-block;
+  font-weight: 600 !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -137,6 +135,10 @@
 
 .tweet-link-hover:hover{
   background-color: rgb(238, 238, 238) !important;
+}
+
+.tsi-ml-avatar {
+  margin-left: calc(55px + 0.5rem) !important;
 }
 
 @media screen and (max-width: 600px) {

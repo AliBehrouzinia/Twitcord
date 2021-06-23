@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import {Icon} from '@material-ui/core';
@@ -19,6 +18,7 @@ import {Link} from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import * as API from '../../Utils/API/index';
+import * as Constants from '../../Utils/Constants.js';
 
 
 export const TweetItem = (props) => {
@@ -29,6 +29,10 @@ export const TweetItem = (props) => {
   const [retweetCount, setRetweetCount] = useState(props.tweet?.retweet_count);
   const [isRetweeted, setIsRetweeted] = useState(props.tweet?.is_retweeted);
   const [retweetedId, setRetweetedId] = useState(props.tweet?.retweeted_id);
+
+  const userId = JSON.parse(
+      localStorage.getItem(Constants.GENERAL_USER_INFO),
+  )?.pk;
 
   const retweet = () => {
     API.createRetweet(props.tweet?.id, {'content': null}).then((res) => {
@@ -68,6 +72,7 @@ export const TweetItem = (props) => {
   };
 
   const tweetClicked = (event) => {
+    event.stopPropagation();
     const links = document.getElementsByTagName('a');
     const buttons = document.getElementsByTagName('button');
     for (let i=0; i<links.length; i++) {
@@ -91,152 +96,65 @@ export const TweetItem = (props) => {
   };
 
   return (
-    <div className="tsi-hover pointer" onClick={tweetClicked}>
-      <Grid container
-        direction="row"
-        spacing={6}
-        className="m-0 w-100"
-        justify="space-between">
-        {props.tweet?.content !=null &&
-        <Grid item xs={12} sm={9} md={10}>
-          <div className="tsi-avatar-container">
-            <Link to={'/profile/' + props.tweet?.user?.id}>
-              <Avatar className="tsi-avatar" alt="avatar"/>
-            </Link>
-            <div className="tsi-username-container">
-              <div className="tsi-name-container">
-                <Link className="lh-0" to={'/profile/' + props.tweet?.user?.id}>
-                  <Tooltip
-                    title={props.tweet?.user?.first_name +
-                       ' ' + props.tweet?.user?.last_name}
-                    placement="top-start">
-                    <Typography className="tsi-name" >
-                      {props.tweet?.user?.first_name +
-                       ' ' + props.tweet?.user?.last_name}</Typography>
-                  </Tooltip>
-                </Link>
-                {!props.tweet?.user?.is_public &&
-                 <Icon className="tsi-lock-icon">lock</Icon>}
-                <Typography className="tsi-date">
-                  <div className="tsi-dot"/>
-                  {helper.extractTime(props.tweet?.create_date)}
-                </Typography>
-              </div>
-              <Link to={'/profile/' + props.tweet?.user?.id}>
-                <Tooltip title={'@'+props.tweet?.user?.username}
+    <div className={props.isInfoVisable ?'tsi-hover pointer':
+    'border-1 retweet-hover br-5'}
+    onClick={tweetClicked}>
+      {props.tweet?.content == null &&
+      <Box display="flex" alignItems="center"
+        className="px-3 pt-3 b-600 mb--2 fs-14 color-gray ml-retweet-item">
+        <CachedIcon fontSize="small" className="mr-2"/>
+        {userId == props.tweet?.user?.id ? 'You' :
+        props.tweet?.user?.first_name + ' ' +
+        props.tweet?.user?.last_name} Retweeted</Box>}
+      {props.tweet?.content !=null &&
+      <Box
+        className={props.isInfoVisable ? 'm-0 w-100 px-3 pt-3' :
+         'm-0 w-100 p-3'}>
+        <Box display="flex">
+          <Link to={'/profile/' + props.tweet?.user?.id}>
+            <Avatar className="tsi-avatar" alt="avatar"/>
+          </Link>
+          <Box className="ml-2">
+            <Box display="flex" alignItems="center">
+              <Link className="lh-0" to={'/profile/' + props.tweet?.user?.id}>
+                <Tooltip
+                  title={props.tweet?.user?.first_name +
+                     ' ' + props.tweet?.user?.last_name}
                   placement="top-start">
-                  <Typography
-                    className="tsi-username">@{props.tweet?.user?.username}
-                  </Typography>
+                  <Typography className="tsi-name" >
+                    {props.tweet?.user?.first_name +
+                     ' ' + props.tweet?.user?.last_name}</Typography>
                 </Tooltip>
               </Link>
-            </div>
-          </div>
-        </Grid>}
-        <Grid xs={12} item className="tsi-item-desc">
-          <Typography className="tsi-desc">{props.tweet?.content}
-            {props.tweet?.retweet_from && (
-              <Box className={props.tweet?.content !=null ?
-                'border-1 br-5 p-2 mt-3 retweet-hover':
-                'mt-3'}>
-                <Box display="flex">
-                  <Link to={'/profile/' + props.tweet?.retweet_from?.user?.id}>
-                    <Avatar className="tsi-avatar" alt="avatar"/>
-                  </Link>
-                  <Box display="flex" flexDirection="column" className="ml-2">
-                    <Box display="flex" alignItems="center">
-                      <Link className="lh-0" to={'/profile/' +
-                      props.tweet?.retweet_from?.user?.id}>
-                        <Tooltip
-                          title={props.tweet?.retweet_from?.user?.first_name +
-                            ' ' + props.tweet?.retweet_from?.user?.last_name}
-                          placement="top-start">
-                          <Typography className="tsi-name" >
-                            {props.tweet?.retweet_from?.user?.first_name +
-                            ' ' +
-                              props.tweet?.retweet_from?.user?.last_name}
-                          </Typography>
-                        </Tooltip>
-                      </Link>
-                      <Typography className="tsi-date">
-                        <div className="tsi-dot"/>
-                        {helper.extractTime(
-                            props.tweet?.retweet_from?.create_date)}
-                      </Typography>
-                    </Box>
-                    <Link to={'/profile/' +
-                     props.tweet?.retweet_from?.user?.id}>
-                      <Tooltip title={
-                        '@'+props.tweet?.retweet_from?.user?.username}
-                      placement="top-start">
-                        <Typography
-                          className="tsi-username">
-                            @{props.tweet?.retweet_from?.user?.username}
-                        </Typography>
-                      </Tooltip>
-                    </Link>
-                  </Box>
-                </Box>
-                <Box className="pl-avatar mt-2">
-                  {props.tweet?.retweet_from?.content}
-                </Box>
-                <Box display="flex"
-                  justifyContent="space-around"
-                  className="px-3 py-1 mt-2 fs-12">
-                  <div>
-                    <IconButton className="mr-1">
-                      {props.tweet?.retweet_from?.is_liked && <FavoriteIcon
-                        color="secondary"/>}
-                      {!props.tweet?.retweet_from?.is_liked &&
-                      <FavoriteBorderIcon />}
-                    </IconButton>
-                    {props.tweet?.retweet_from?.like_count}
-                  </div>
-                  <div>
-                    <IconButton className="mr-1" onClick={openReplyModal}>
-                      <ChatBubbleOutlineIcon />
-                    </IconButton>
-                    {props.tweet?.retweet_from?.reply_count}
-                  </div>
-                  <div>
-                    <IconButton
-                      className="mr-1" onClick={handleClickRetweetBtn}>
-                      {isRetweeted && <CachedIcon color="primary"/>}
-                      {!isRetweeted && <CachedIcon/>}
-                    </IconButton>
-                    <Menu
-                      id="retweet-menu"
-                      anchorEl={anchorEl}
-                      keepMounted
-                      open={Boolean(anchorEl)}
-                      onClose={handleCloseRetweetBtn}
-                    >
-                      {!isRetweeted &&
-                       <MenuItem onClick={() => {
-                         handleCloseRetweetBtn();
-                         retweet();
-                       }}>Retweet</MenuItem>}
-                      {isRetweeted &&
-                       <MenuItem onClick={() => {
-                         handleCloseRetweetBtn();
-                         undoRetweet();
-                       }}>Undo Retweet</MenuItem>}
-                      <MenuItem onClick={() => {
-                        handleCloseRetweetBtn();
-                        openReplyModal();
-                      }}>Quote Retweet</MenuItem>
-                    </Menu>
-                    {retweetCount}
-                  </div>
-                </Box>
-              </Box>
-            )}
-          </Typography>
-        </Grid>
-
-      </Grid>
+              {!props.tweet?.user?.is_public &&
+               <Icon className="tsi-lock-icon">lock</Icon>}
+              <Typography className="tsi-date">
+                <div className="tsi-dot"/>
+                {helper.extractTime(props.tweet?.create_date)}
+              </Typography>
+            </Box>
+            <Link to={'/profile/' + props.tweet?.user?.id}>
+              <Tooltip title={'@'+props.tweet?.user?.username}
+                placement="top-start">
+                <Typography
+                  className="tsi-username">@{props.tweet?.user?.username}
+                </Typography>
+              </Tooltip>
+            </Link>
+          </Box>
+        </Box>
+        <Typography className="mt-3 tsi-ml-avatar">
+          {props.tweet?.content}
+        </Typography>
+      </Box>}
+      {props.tweet?.retweet_from &&
+      <Box className={props.tweet?.content ? 'px-3 pt-3' : 'p-0'}>
+        <TweetItem isInfoVisable={props.tweet?.content ? false : true}
+          tweet={props.tweet?.retweet_from}></TweetItem>
+      </Box>}
+      {(props.tweet?.content && props.isInfoVisable) &&
       <Box display="flex"
-        justifyContent="space-around" className="px-3 py-1 mt-2 fs-12">
+        justifyContent="space-around" className="px-3 py-1 fs-12">
         <div>
           <IconButton className="mr-1">
             {props.tweet?.is_liked && <FavoriteIcon color="secondary"/>}
@@ -279,7 +197,7 @@ export const TweetItem = (props) => {
           </Menu>
           {retweetCount}
         </div>
-      </Box>
+      </Box>}
       <ReplyModal tweet={props.tweet} open={open} onClose={handleClose} />
     </div>
   );
@@ -287,4 +205,9 @@ export const TweetItem = (props) => {
 
 TweetItem.propTypes = {
   tweet: PropTypes.object,
+  isInfoVisable: PropTypes.bool,
+};
+
+TweetItem.defaultProps = {
+  isInfoVisable: true,
 };
