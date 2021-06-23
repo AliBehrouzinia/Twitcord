@@ -167,6 +167,13 @@ a {
   border-radius: 33px;
 }
 
+.br-3 {
+  border-radius: 3px !important;
+}
+
+.br-5 {
+  border-radius: 5px !important;
+}
 
 .mt-2 {
   margin-top: .5rem;
