@@ -97,7 +97,7 @@ export const TweetItem = (props) => {
 
   return (
     <div className={props.isInfoVisable ?'tsi-hover pointer':
-    'border-1 retweet-hover br-5'}
+    'border-1 retweet-hover br-5 pointer'}
     onClick={tweetClicked}>
       {props.tweet?.content == null &&
       <Box display="flex" alignItems="center"
@@ -148,7 +148,8 @@ export const TweetItem = (props) => {
         </Typography>
       </Box>}
       {props.tweet?.retweet_from &&
-      <Box className={props.tweet?.content ? 'px-3 pt-3' : 'p-0'}>
+      <Box className={props.tweet?.content ? 'px-3 pt-3 tsi-ml-avatar' :
+       'p-0 tsi-ml-avatar'}>
         <TweetItem isInfoVisable={props.tweet?.content ? false : true}
           tweet={props.tweet?.retweet_from}></TweetItem>
       </Box>}
