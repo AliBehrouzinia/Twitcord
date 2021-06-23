@@ -128,9 +128,9 @@ class TweetSerializer(serializers.ModelSerializer):
                                                                                user_id=self.context['request'].user.id,
                                                                                retweet_from__isnull=False).id
                 result['retweet_from']['is_liked'] = is_liked
-                result['retweet_from']['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
-                result['retweet_from']['reply_count'] = len(Tweet.objects.filter(parent_id=instance.id))
-                result['retweet_from']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=instance.id))
+                result['retweet_from']['like_count'] = len(Like.objects.filter(tweet_id=source_tweet.id))
+                result['retweet_from']['reply_count'] = len(Tweet.objects.filter(parent_id=source_tweet.id))
+                result['retweet_from']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=source_tweet.id))
         else:
             result['retweet_from'] = None
         request = self.context['request']
@@ -368,9 +368,9 @@ class RetweetSerializer(serializers.ModelSerializer):
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=source_tweet.id).exists()
         result['retweet_from']['is_retweeted'] = True
         result['retweet_from']['is_liked'] = is_liked
-        result['retweet_from']['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
-        result['retweet_from']['reply_count'] = len(Tweet.objects.filter(parent_id=instance.id))
-        result['retweet_from']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=instance.id))
+        result['retweet_from']['like_count'] = len(Like.objects.filter(tweet_id=source_tweet.id))
+        result['retweet_from']['reply_count'] = len(Tweet.objects.filter(parent_id=source_tweet.id))
+        result['retweet_from']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=source_tweet.id))
         return result
 
 
