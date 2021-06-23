@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import * as API from '../../Utils/API/index';
 import {TweetItem} from '../TweetItem/TweetItem';
+import RoomList from '../Room/RoomList/RoomList';
 
 const Profile = () => {
   const params = useParams();
@@ -80,7 +81,7 @@ const Profile = () => {
           ))
         ) }
         {tabSelected == 2 && <p>likes</p> }
-        {tabSelected == 3 && <p>rooms</p> }
+        {tabSelected == 3 && <RoomList self /> }
       </Box>
     </Box>
   );
