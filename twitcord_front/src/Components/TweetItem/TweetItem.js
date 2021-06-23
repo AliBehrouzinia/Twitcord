@@ -149,7 +149,7 @@ export const TweetItem = (props) => {
       </Box>}
       {props.tweet?.retweet_from &&
       <Box className={props.tweet?.content ? 'px-3 pt-3 tsi-ml-avatar' :
-       'p-0 tsi-ml-avatar'}>
+       'p-0'}>
         <TweetItem isInfoVisable={props.tweet?.content ? false : true}
           tweet={props.tweet?.retweet_from}></TweetItem>
       </Box>}
