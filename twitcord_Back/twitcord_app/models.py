@@ -126,6 +126,8 @@ class Tweet(models.Model):
     class Meta:
         unique_together = ("user", "retweet_from")
         constraints = [
+            models.UniqueConstraint(fields=['user', 'retweet_from'], condition=Q(content__isnull=True),
+                                    name='unique_retweet'),
             models.CheckConstraint(check=((Q(retweet_from__isnull=True) & Q(content__isnull=False)) |
                                           Q(retweet_from__isnull=False)), name='content_null',)
         ]
