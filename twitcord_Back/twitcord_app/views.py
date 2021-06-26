@@ -25,7 +25,7 @@ from django.db.models import Q
 class ProfileDetailsView(generics.RetrieveUpdateAPIView):
     """Get profile details of a user"""
     queryset = models.TwitcordUser.objects.all()
-    permission_classes = [UserIsOwnerOrReadonly]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.ProfileDetailsViewSerializer
     lookup_url_kwarg = 'id'
 
@@ -68,16 +68,28 @@ class ListOfFollowersView(generics.ListAPIView):
 
 class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, UserIsOwnerOrReadonly)
-    queryset = models.UserFollowing.objects.all()
     serializer_class = serializers.FollowingsSerializer
-    lookup_url_kwarg = 'id'
+
+    def patch(self, request, *args, **kwargs):
+        following_id = self.kwargs.get('id')
+        following_obj = get_object_or_404(models.UserFollowing, user_id=self.request.user.id,
+                                          following_user_id=following_id)
+        data = {'user': self.request.user.id,
+                'following_user': following_id,
+                'created': following_obj.created,
+                'type': self.request.data['type']
+                }
+        serializer = serializers.FollowingsSerializer(following_obj, data=data, partial=True)
+        if serializer.is_valid(True):
+            serializer.save()
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
         following_user_id = self.kwargs.get('id')
         instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
         instance.delete()
-        return Response()
+        return Response(data={"status": "not following", "following": "unfollowed"})
 
 
 class FollowingRequestView(generics.CreateAPIView):
@@ -101,13 +113,13 @@ class FollowingRequestView(generics.CreateAPIView):
             serializer = serializers.FollowingsSerializer(data=follow_user_data)
             if serializer.is_valid(True):
                 serializer.save()
-                return Response(data={"status": "Followed", "follow_request_id": None},
+                return Response(data={"status": "following", "follow_request_id": None},
                                 status=status.HTTP_201_CREATED)
         else:
             serializer = serializers.FollowingRequestSerializer(data=data)
             if serializer.is_valid(True):
                 follow_request = serializer.save()
-                return Response(data={"status": "Requested", "follow_request_id": follow_request.id},
+                return Response(data={"status": "pending", "follow_request_id": follow_request.id},
                                 status=status.HTTP_201_CREATED)
 
         return Response(status.HTTP_406_NOT_ACCEPTABLE)
@@ -156,10 +168,11 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         user = self.request.user.id
+        print(user)
         following = self.kwargs.get('id')
-        instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
+        instance = get_object_or_404(models.FollowRequest, request_from_id=user, request_to_id=following)
         instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(data={"status": "not following", "follow_request": "Deleted"})
 
 
 class FollowCountView(generics.ListAPIView):
@@ -252,9 +265,19 @@ class TweetsLikedListView(generics.ListAPIView):
         return models.Like.objects.filter(user=user_id)
 
 
-class RoomView(generics.ListCreateAPIView):
+class CreateRoomView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, ]
+    serializer_class = serializers.CreateRoomSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        return models.Tweet.objects.all()
+
+
+class RoomView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.RoomSerializer
+    pagination_class = paginations.RoomListPagination
 
     def get_queryset(self):
         user_id = self.kwargs['id']
@@ -275,6 +298,7 @@ class RoomView(generics.ListCreateAPIView):
 class RoomDataView(generics.ListAPIView):
     permission_class = IsAuthenticated
     serializer_class = serializers.RoomSerializer
+    pagination_class = None
 
     def get_queryset(self):
         room_id = self.kwargs['id']

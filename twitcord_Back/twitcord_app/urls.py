@@ -22,7 +22,7 @@ urlpatterns = [
     path('like/tweet/<int:id>/', views.LikeCreateView.as_view()),
     path('users/like/tweet/<int:id>/', views.UsersLikedTweetListView.as_view()),
     path('tweets/like/user/<int:id>/', views.TweetsLikedListView.as_view()),
-    path('create/rooms/', views.RoomView.as_view()),
+    path('create/rooms/', views.CreateRoomView.as_view()),
     path('user/<int:id>/rooms/', views.RoomView.as_view()),
     path('room/<int:id>/', views.RoomDataView.as_view()),
     path('reply/', views.ReplyTweetCreateView.as_view()),

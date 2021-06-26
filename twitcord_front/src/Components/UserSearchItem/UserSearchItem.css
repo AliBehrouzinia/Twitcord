@@ -1,6 +1,3 @@
-.usi-container {
-  padding: 15px !important;
-}
 
 .usi-avatar {
   width: 60px !important;
@@ -11,8 +8,16 @@
   cursor: pointer;
 }
 
+.usi-item-hover:hover {
+  background-color: rgb(245, 245, 245);
+}
+
 .usi-avatar-container {
   display: flex;
+}
+.usi-info-container{
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .usi-name-container {
@@ -40,7 +45,7 @@
 
 .usi-follow-button {
   float: right;
-  width: 100%;
+  width: fit-content;
 }
 
 .usi-item-follow{
@@ -98,5 +103,6 @@
 
   .usi-follow-button{
     margin-top: -30px !important;
+    width: 100%;
   }
 }

@@ -1,7 +1,3 @@
-.tsi-container {
-  padding: 15px !important;
-}
-
 .tsi-avatar {
   width: 60px !important;
   height: 60px !important;
@@ -15,8 +11,13 @@
   display: flex;
 }
 
+.tsi-hover:hover {
+  background-color: rgb(248, 248, 248);
+}
+
 .tsi-name-container {
   display: flex;
+  align-items: center;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -40,6 +41,10 @@
 
 .tsi-item-desc{
   order: 2;
+}
+
+.lh-0 {
+  line-height: 0 !important;
 }
 
 .tsi-name {
@@ -88,8 +93,7 @@
 }
 
 .tsi-date{
-  color: rgb(190, 190, 190);
-  align-self: flex-end;
+  color: rgb(148, 120, 120);
   padding: 3px;
 }
 
@@ -97,10 +101,30 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 9;
   -webkit-box-orient: vertical;
   margin-top: -30px !important;
-  padding-left: 80px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.tsi-media{
+  max-height: 500px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+.tsi-item-media{
+  margin-top: -25px !important;
+}
+
+.tweet-link-hover:hover{
+  background-color: rgb(238, 238, 238) !important;
+}
+
+.tweet-link-hover:hover{
+  background-color: rgb(238, 238, 238) !important;
 }
 
 @media screen and (max-width: 600px) {
