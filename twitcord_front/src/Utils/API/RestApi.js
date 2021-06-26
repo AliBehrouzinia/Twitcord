@@ -188,10 +188,20 @@ export const getLikeList = (id) => {
   return request(
       {},
       {},
-      Constants.URL_LIKES+id + '/tweets/like/',
+      Constants.URL_LIKES.replace('{id}', id),
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const getUsersLiked = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_LIKES.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
 export const getTweet = (id) => {
   return request(
       {},

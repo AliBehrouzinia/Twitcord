@@ -54,7 +54,7 @@ export const TweetItem = (props) => {
     }
     history.push('/tweet/'+props.tweet?.id);
   };
-
+  console.log(props.tweet.tweet);
   return (
     <div className="tsi-hover pointer" onClick={tweetClicked}>
       <Grid container
