@@ -58,13 +58,26 @@ export const postTweet = (data, userId) => {
 };
 
 export const logIn = (data) => {
+  return request(data, {}, Constants.URL_LOG_IN, Constants.POST_REQUEST_METHOD);
+};
+
+export const rejectfollowrequest = (data, params) => {
   return request(
       data,
-      {},
-      Constants.URL_LOG_IN,
-      Constants.POST_REQUEST_METHOD,
+      params,
+      Constants.REJECT_FOLLOW_REQUEST.replace('{id}', data.id),
+      Constants.PATCH_REQUEST_METHOD,
   );
 };
+export const acceptfollowrequest = (data, params) => {
+  return request(
+      data,
+      params,
+      Constants.ACCEPT_FOLLOW_REQUEST.replace('{id}', data.id),
+      Constants.PATCH_REQUEST_METHOD,
+  );
+};
+
 
 export const searchUsers = (data, params) => {
   return request(
@@ -99,6 +112,15 @@ export const updateProfileInfo = (id, data) => {
       {},
       Constants.URL_PROFILE_INFO.replace('{id}', id),
       Constants.PATCH_REQUEST_METHOD,
+  );
+};
+
+export const followcount = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_FOLLOW_COUNT.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
   );
 };
 
@@ -164,6 +186,22 @@ export const getRoomsList = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+export const followerslist = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_FOLLOWERS.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+export const followingslist = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_FOLLOWINGS.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
 
 export const like = (data) => {
   return request(
@@ -202,6 +240,41 @@ export const getUsersLiked = (data) => {
   );
 };
 
+export const getFollowRequests = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_FOLLOW_REQUESTS,
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const follow = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_FOLLOW,
+      Constants.POST_REQUEST_METHOD,
+  );
+};
+
+export const unfollow = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_UNFOLLOW.replace('{id}', data.id),
+      Constants.DELETE_REQUEST_METHOD,
+  );
+};
+
+export const deleteFollowRequest = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_DELETE_FOLLOW_REQUEST.replace('{id}', data.id),
+      Constants.DELETE_REQUEST_METHOD,
+  );
+};
 export const getTweet = (id) => {
   return request(
       {},
@@ -210,6 +283,15 @@ export const getTweet = (id) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+export const editfollowstatus = (data, id) => {
+  return request(
+      data,
+      {},
+      Constants.URL_EDIT_FOLLOW_STATUS.replace('{id}', id),
+      Constants.PATCH_REQUEST_METHOD,
+  );
+};
+
 
 export const getReplyList = (id) => {
   return request(

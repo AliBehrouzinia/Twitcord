@@ -7,6 +7,11 @@ export const POST_REQUEST_METHOD = 'POST';
 export const GET_REQUEST_METHOD = 'GET';
 export const PATCH_REQUEST_METHOD = 'PATCH';
 export const DELETE_REQUEST_METHOD = 'DELETE';
+
+// follow status
+export const STATUS_FOLLOW = 'Follow';
+export const STATUS_FOLLOWING = 'Following';
+export const STATUS_REQUESTED = 'Requested';
 export const PUT_REQUEST_METHOD = 'PUT';
 
 // Urls
@@ -21,6 +26,16 @@ export const URL_LIKE= '/like/tweet/{id}/';
 export const URL_UNLIKE= '/like/tweet/{id}/';
 export const URL_LIKES= '/tweets/like/user/{id}/';
 export const URL_USERS_LIKED= '/user/like/tweet/{id}/';
+export const URL_USER_GENERAL_INFO= '/rest-auth/user/';
+export const URL_FOLLOWINGS= '/followings/list/{id}/';
+export const URL_FOLLOWERS= '/followers/list/{id}/';
+export const URL_FOLLOW_REQUESTS= '/followers/requests/';
+export const URL_FOLLOW_COUNT= '/follow/count/{id}/';
+export const URL_FOLLOW= '/followings/requests/';
+export const URL_UNFOLLOW= '/followings/{id}/';
+export const URL_DELETE_FOLLOW_REQUEST= '/followings/requests/{id}/';
+export const REJECT_FOLLOW_REQUEST= '/followers/requests/{id}/?action=reject';
+export const ACCEPT_FOLLOW_REQUEST= '/followers/requests/{id}/?action=accept';
 export const URL_CREATE_ROOM= '/create/rooms/';
 export const URL_FOLLOWINGS_LIST= '/followings/list/{id}/';
 export const URL_FOLLOWERS_LIST= '/followers/list/{id}/';
@@ -28,6 +43,7 @@ export const URL_ROOMS_LIST= '/user/{id}/rooms/';
 export const URL_REPLY = '/reply/';
 export const URL_REPLYS= '/replys/';
 export const URL_USER = '/users/';
+export const URL_EDIT_FOLLOW_STATUS = '/followings/{id}/';
 
 export const TWEET_BOX_ROW_MIN = 6;
 export const TWEET_BOX_ROW_MAX = 16;
