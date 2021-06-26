@@ -9,10 +9,6 @@ from rest_framework import serializers
 
 
 class LikeTest(APITestCase):
-    """
-    Ensure we can get list of followings.
-    Ensure we can unfollow a user.
-    """
 
     def setUp(self):
         twitcord_user = get_user_model()
@@ -28,7 +24,7 @@ class LikeTest(APITestCase):
         data = {
             "id": 1,
             "date": response.data['date'],
-            "user": 28,
+            "user": self.user.id,
             "tweet": 1
         }
         self.assertEqual(response.data, data)
@@ -50,13 +46,18 @@ class LikeTest(APITestCase):
                 {
                     "id": 1,
                     "tweet": {
-                        "id": 1,
+                        "id": self.tweet.id,
                         "content": "salam",
                         "create_date": serializers.DateTimeField().to_representation(self.tweet.create_date),
-                        "is_liked": True
+                        "tweet_media": None,
+                        "has_media": False,
+                        "is_liked": True,
+                        "like_count": 1,
+                        "reply_count": 0,
+                        "retweet_count": 0
                     },
                     "date": response.data['results'][0]['date'],
-                    "user": 28
+                    "user": self.user.id
                 }
         }
         result = response.data

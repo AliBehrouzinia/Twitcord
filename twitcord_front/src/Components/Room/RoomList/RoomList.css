@@ -21,6 +21,11 @@
     cursor: pointer;
 }
 
+.rl-clear{
+    color: gray;
+    cursor: pointer;
+}
+
 .rl-icon{
     width: 60px !important;
     height: 60px !important;

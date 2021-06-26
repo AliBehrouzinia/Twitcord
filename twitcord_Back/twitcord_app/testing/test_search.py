@@ -24,7 +24,7 @@ class SearchUserTest(APITestCase):
         self.user = twitcord_user.objects.create(email='mmd@gmail.com', username='test', password='test_pass')
         self.token = Token.objects.create(user=self.user)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
-        url = '/search/user/?query=t'.format(self.user.id)
+        url = '/search/user/?query=t'
         response = self.client.get(url, content_type='application/json', accept='application/json')
         self.maxDiff = None
         data = {
@@ -32,12 +32,12 @@ class SearchUserTest(APITestCase):
             "next": None,
             "previous": None,
             "results": {
-                "id": 31,
+                "id": self.user.id,
                 "username": "test",
                 "first_name": None,
                 "last_name": None,
                 "is_public": True,
-                "profile_img": "http://testserver/profiles/defaults/user-profile-image.jpg",
+                "profile_img": None,
                 "email": "mmd@gmail.com",
                 "bio": None,
                 "status": "not following"
@@ -71,18 +71,21 @@ class SeachTweetTest(APITestCase):
             "previous": None,
             "results":
                 {
-                    "id": 30,
+                    "id": self.tweets[0].id,
                     "is_reply": False,
                     "content": "Hi from there",
                     "create_date": response.data['results'][0]['create_date'],
                     "parent": None,
                     "retweet_from": None,
+                    "has_media": False,
+                    "tweet_media": None,
                     "is_liked": False,
-                    "profile_img": "/profiles/defaults/user-profile-image.jpg",
+                    "user_id": self.user.id,
                     "username": "test",
                     "first_name": None,
                     "last_name": None,
-                    "is_public": True
+                    "is_public": True,
+                    "user_profile_img": None
                 }
         }
         result = response.data
