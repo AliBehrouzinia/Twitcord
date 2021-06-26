@@ -41,6 +41,7 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         result = super(ProfileDetailsViewSerializer, self).to_representation(instance)
+        result['id'] = instance.id
         result['followings_count'] = UserFollowing.objects.filter(user_id=instance.id).count()
         result['followers_count'] = UserFollowing.objects.filter(following_user_id=instance.id).count()
         instance_user = instance.pk
@@ -56,12 +57,23 @@ class ProfileDetailsViewSerializer(serializers.ModelSerializer):
             queryset2.append(item.request_to.id)
         if instance_user == request_user.id:
             result['status'] = "self"
+            result['following_status'] = "self"
+            return result
         elif instance_user in queryset2:
             result['status'] = "pending"
         elif instance_user in queryset1:
             result['status'] = "following"
         else:
             result['status'] = "not following"
+        print(request_user.id)
+        print(instance_user)
+        following_type_obj = UserFollowing.objects.filter(user_id=request_user.id, following_user_id=instance_user)
+        if following_type_obj is not None:
+            for obj in following_type_obj:
+                result['following_status'] = obj.type
+                return result
+        if instance_user != request_user.id:
+            result['following_status'] = None
         return result
 
     class Meta:
