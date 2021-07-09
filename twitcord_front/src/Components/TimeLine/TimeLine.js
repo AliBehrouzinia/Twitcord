@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';
+import {TweetItem} from '../TweetItem/TweetItem';
 import Grid from '@material-ui/core/Grid';
 import './TimeLine.css';
 import Divider from '@material-ui/core/Divider';
@@ -34,7 +34,7 @@ const TimeLine = () => {
       {tweetInfo ===[] ?tweetInfo.map((tweet) => {
         return (
           <div key={tweet.id}>
-            <TweetSearchItem
+            <TweetItem
               id={tweet.id}
               name={tweet.first_name + ' ' + tweet.last_name}
               username={tweet.username}

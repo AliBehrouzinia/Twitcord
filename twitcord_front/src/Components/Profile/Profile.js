@@ -24,7 +24,7 @@ const Profile = () => {
 
   const getTweets = () => {
     API.getTweetList(params.id).then((res)=> {
-      setTweets(res.data);
+      setTweets(res.data.reverse());
     }).catch((error)=> {
     });
   };
