@@ -1,4 +1,4 @@
-import {React, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';

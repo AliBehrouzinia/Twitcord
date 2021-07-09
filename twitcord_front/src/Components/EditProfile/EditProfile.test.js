@@ -14,67 +14,82 @@ describe('EditProfile', () => {
         const wrapper = mount( <Provider store={store}><EditProfile /></Provider>);
       });
 
-    it('should set profileInfo in store', () => {
-      let date = new Date()
-      expect(tweetReducer(
-          { 
-            profileInfo: {
-              username: '',
-              bio: '',
-              date_joined: '',
-              birthday: '',
-              firstName: '',
-              lastName: '',
-              website: '',
-              isPublic: false,
-              email: '',
+      it('should set profileInfo in store', () => {
+        const date = new Date();
+          expect(tweetReducer(
+            { 
+              profileInfo: {
+                username: '',
+                bio: '',
+                date_joined: '',
+                birth_date: '',
+                first_name: '',
+                id: '',
+                status: '',
+                last_name: '',
+                website: '',
+                is_public: false,
+                email: '',
+                following_status: '',
+                has_header_img: false,
+                has_profile_img: false,
+                is_active: false,
+                header_img: '',
+                type:'SET_PROFILE_INFO',
+                profile_img_upload_details: '',
+                header_img_upload_details: '',
+                followers_count: 0,
+                followings_count: 0,
+              }
+            },
+            Actions.setProfileInfo({ 
+              username: 'aliii',
+              bio: 'bio',
+              id: 1212,
+              date_joined: date,
+              birth_date: date,
+              status: 'FOLLOWED',
+              type:'SET_PROFILE_INFO',
+              first_name: 'ali',
+              last_name: 'behrooz',
+              website: 'www.google.com',
+              is_public: false,
+              is_active: true,
+              email: 'ali.behroozi@gmail.com',
               has_header_img: false,
               has_profile_img: false,
-              header_img: '',
-              profile_img_upload_details: '',
-              header_img_upload_details: '',
+              following_status: 'FOLLOWED',
+              header_img: 'fake_path',
+              profile_img: 'fake_path',
+              profile_img_upload_details: 'details',
+              header_img_upload_details: 'details',
               followers_count: 0,
               followings_count: 0,
-            }
-          },
-          Actions.setProfileInfo({ 
-            username: 'aliii',
-            bio: 'bio',
-            date_joined: date,
-            birthday: date,
-            first_name: 'ali',
-            last_name: 'behrooz',
-            website: 'www.google.com',
-            isPublic: false,
-            email: 'ali.behroozi@gmail.com',
-            has_header_img: false,
-            has_profile_img: false,
-            header_img: 'fake_path',
-            profile_img: 'fake_path',
-            profile_img_upload_details: 'details',
-            header_img_upload_details: 'details',
-            followers_count: 0,
-            followings_count: 0,
-          })
-        )).toEqual({ profileInfo: {
-            username: 'aliii',
-            bio: 'bio',
-            date_joined: date,
-            birthday: date,
-            firstName: 'ali',
-            lastName: 'behrooz',
-            website: 'www.google.com',
-            isPublic: false,
-            email: 'ali.behroozi@gmail.com',
-            has_header_img: false,
-            has_profile_img: false,
-            header_img: 'fake_path',
-            profile_img: 'fake_path',
-            profile_img_upload_details: 'details',
-            header_img_upload_details: 'details',
-            followers_count: 0,
-            followings_count: 0,
-       }});
-    });
+            })
+          )).toEqual({ profileInfo: {
+              username: 'aliii',
+              bio: 'bio',
+              date_joined: date,
+              birth_date: date,
+              status: 'FOLLOWED',
+              type:'SET_PROFILE_INFO',
+              first_name: 'ali',
+              id: 1212,
+              last_name: 'behrooz',
+              website: 'www.google.com',
+              is_public: false,
+              is_active: true,
+              email: 'ali.behroozi@gmail.com',
+              has_header_img: false,
+              has_profile_img: false,
+              header_img: 'fake_path',
+              following_status: 'FOLLOWED',
+              profile_img: 'fake_path',
+              profile_img_upload_details: 'details',
+              header_img_upload_details: 'details',
+              followers_count: 0,
+              followings_count: 0,
+        }});
+      });
 });
 
