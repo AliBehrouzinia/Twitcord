@@ -26,12 +26,10 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     # Profile Image
     has_profile_img = models.BooleanField(default=False)
     PROFILE_IMG_DIRECTORY = f"profile_images"
-    PROFILE_IMG_DEFAULT_NAME = "profile_img_default.jpg"
 
     # Header Image
     has_header_img = models.BooleanField(default=False)
     HEADER_IMG_DIRECTORY = "profile_header_images"
-    HEADER_IMG_DEFAULT_NAME = "profile_header_img_default.jpg"
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -62,8 +60,9 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
     def profile_img(self):
         bucket_name = settings.MEDIA_BUCKET_NAME
         directory = self.PROFILE_IMG_DIRECTORY
-        default_name = self.PROFILE_IMG_DEFAULT_NAME
-        name = self.get_profile_img_name if self.has_profile_img else default_name
+        if not self.has_profile_img:
+            return None
+        name = self.get_profile_img_name
         object_name = f"{directory}/{name}"
 
         url = minio_client.get_presigned_url("GET", bucket_name, object_name)
@@ -84,8 +83,9 @@ class TwitcordUser(AbstractBaseUser, PermissionsMixin):
 
     @property
     def header_img(self):
-        default_name = self.HEADER_IMG_DEFAULT_NAME
-        name = self.get_header_img_name if self.has_header_img else default_name
+        if not self.has_header_img:
+            return None
+        name = self.get_header_img_name
         object_name = f"{self.HEADER_IMG_DIRECTORY}/{name}"
         url = minio_client.get_presigned_url("GET", settings.MEDIA_BUCKET_NAME, object_name)
         return url
@@ -125,6 +125,8 @@ class Tweet(models.Model):
 
     class Meta:
         constraints = [
+            models.UniqueConstraint(fields=['user', 'retweet_from'], condition=Q(content__isnull=True),
+                                    name='unique_retweet'),
             models.CheckConstraint(check=((Q(retweet_from__isnull=True) & Q(content__isnull=False)) |
                                           Q(retweet_from__isnull=False)), name='content_null',)
         ]
@@ -203,6 +205,39 @@ class Room(models.Model):
     owner = models.ForeignKey(TwitcordUser, related_name="created_rooms", on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
     users = models.ManyToManyField("TwitcordUser", related_name="rooms", blank=True)
+
+    # room image
+    has_image = models.BooleanField(default=False)
+    ROOM_IMAGE_DIRECTORY = f"rooms"
+
+    @property
+    def get_room_img_name(self):
+        return f"room_img_{self.id}.jpg"
+
+    @property
+    def room_img_upload_details(self):
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.ROOM_IMAGE_DIRECTORY
+        name = self.get_room_img_name
+
+        image = {
+            'bucket_name': bucket_name,
+            'object_name': f"{directory}/{name}"
+        }
+        return image
+
+    @property
+    def room_img(self):
+        if not self.has_image:
+            return None
+
+        bucket_name = settings.MEDIA_BUCKET_NAME
+        directory = self.ROOM_IMAGE_DIRECTORY
+        name = self.get_room_img_name
+        object_name = f"{directory}/{name}"
+
+        url = minio_client.get_presigned_url("GET", bucket_name, object_name)
+        return url
 
     def __str__(self):
         return f"{self.title}"

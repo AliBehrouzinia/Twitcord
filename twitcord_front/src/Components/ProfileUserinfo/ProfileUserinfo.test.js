@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
 import React from 'react';
 import ProfileUserinfo from './ProfileUserinfo';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
@@ -30,7 +31,7 @@ describe('ProfileUserinfo', () => {
             firstName: '',
             lastName: '',
             website: '',
-            isPublic: false,
+            is_public: false,
             email: '',
             has_header_img: false,
             has_profile_img: false,

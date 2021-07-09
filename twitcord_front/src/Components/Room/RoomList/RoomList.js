@@ -6,24 +6,36 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
 import Fade from '@material-ui/core/Fade';
+import {useDispatch} from 'react-redux';
 import Backdrop from '@material-ui/core/Backdrop';
 import Avatar from '@material-ui/core/Avatar';
+import * as Actions from '../../../redux/Actions/index';
 import ImageIcon from '@material-ui/icons/Image';
 import Select from 'react-select';
 import Button from '@material-ui/core/Button';
 import * as API from '../../../Utils/API/index';
 import * as Constants from '../../../Utils/Constants.js';
+import ClearIcon from '@material-ui/icons/Clear';
+import minioClient from '../../../Utils/Minio';
+import PropTypes from 'prop-types';
 
+/* eslint-disable*/
+let hasImage = false;
 
-const RoomList = () => {
+const RoomList = (props) => {
   const [open, setOpen] = React.useState(false);
   const [rooms, setRooms] = React.useState([]);
+  const dispatch = useDispatch();
+  const [snackbarAlertMessage, setSnackbarAlertMessage] = useState('');
+  const [snackbarAlertSeverity, setSnackbarAlertSeverity] = useState('');
   const [selectedOption, setSelectedOption] = useState(null);
   const [options, setOptions] = useState([]);
   const [postButtonDisabled, setPostButtonDisabled] = useState(true);
   const [roomTitle, setRoomTitle] = useState('');
   const [selectedOptionIds, setSelectedOptionIds] = useState([]);
+  const [media, setMedia] = useState(null);
   const optionIds = [];
+  let photoInput;
   const userGeneralInfo = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
   );
@@ -32,6 +44,7 @@ const RoomList = () => {
     API.getRoomsList({id: userGeneralInfo.pk})
         .then((response) => {
           const rooms = response.data.results;
+          console.log(rooms)
           setRooms(rooms);
         })
         .catch((error) => {
@@ -44,26 +57,6 @@ const RoomList = () => {
           });
 
           followers
-              .filter((item) => {
-                return !optionIds.includes(item.value);
-              })
-              .map((item) => {
-                options.push(item);
-                optionIds.push(item.value);
-              });
-          setOptions(options);
-        });
-
-    API.getFollowingsList({id: userGeneralInfo.pk})
-        .then((response) => {
-          const followings = response.data.results.map((item) => {
-            return {value: item.id, label: item.username};
-          });
-
-          followings
-              .filter((item) => {
-                return !optionIds.includes(item.value);
-              })
               .map((item) => {
                 options.push(item);
                 optionIds.push(item.value);
@@ -89,15 +82,20 @@ const RoomList = () => {
       owner: userGeneralInfo.pk,
       title: roomTitle,
       users: selectedOptionIds,
+      has_image: hasImage
     };
 
     API.createRoom(data)
         .then((response) => {
           closeCreateRoomModal();
+          uploadPhoto(response.data.room_img_upload_details)
           setRooms([...rooms, {
             id: response.data.id,
             title: response.data.title,
-            members: response.data.members,
+            owner: response.data.owner,
+            users: response.data.users,
+            number_of_members: response.data.number_of_members,
+            room_img: getMediaUrl()
           }]);
         })
         .catch((error) => {
@@ -119,21 +117,79 @@ const RoomList = () => {
     setSelectedOption(selectedOptions);
   };
 
-  const roomsList = rooms.map((room) => <div key={room.id}>
-    <RoomItem title={room.title} membersCount={room.members.length}/>
-    <Divider/>
-  </div>);
+  const uploadPhoto = (roomPhotoUploadDetails) => {
+    minioClient.presignedPutObject(
+      roomPhotoUploadDetails.bucket_name,
+      roomPhotoUploadDetails.object_name,
+      function(err, presignedUrl) {
+        API.uploadPhoto({file: media, url: presignedUrl})
+        .then(
+          res => {
+            setSnackbarAlertMessage(
+              Constants.TWEET_SUCCESS_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_SUCCESS_SEVERITY);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+          }
+        ).catch(
+          err => {
+            setSnackbarAlertMessage(
+              Constants.TWEET_FAILURE_MESSAGE);
+          setSnackbarAlertSeverity(
+              Constants.SNACKBAR_ERROR_SEVERITY);
+          setMedia(null);
+          dispatch(
+              Actions.setSnackBarState({
+                isSnackbarOpen: true,
+              }),
+          );
+          }
+          );
+      });
+  }
+
+  const onPhotoChange = (file) => {
+    setMedia(file);
+    hasImage = true;
+  };
+
+  const onAddPhotoClick = () => {
+    photoInput.click();
+  };
+
+  const onClearMedia = () => {
+    setMedia(null);
+    hasImage = false;
+  };
+
+  const getMediaUrl = () => {
+    if (media == null){
+      return null;
+    }
+    return URL.createObjectURL(media);
+  };
+
+  const roomsList = rooms.filter(room => (room.owner.id == userGeneralInfo.pk) || !props.self)
+    .map((room) => <div key={room.id}>
+      <RoomItem 
+      room={room}/>
+      <Divider/>
+    </div>);
 
   return (
     <div className="rl-root">
       {roomsList}
-      <Fab
+      {!props.self && <Fab
         className="rl-fab"
         color="primary"
         aria-label="add"
         onClick={openCreateRoomModal}>
         <AddIcon />
-      </Fab>
+      </Fab>}
       <Modal
         className="rl-modal"
         aria-labelledby="transition-modal-title"
@@ -149,9 +205,27 @@ const RoomList = () => {
         <Fade in={open}>
           <form className="rl-paper">
             <Typography className="rl-title">Create Room</Typography>
-            <Avatar className="rl-avatar" alt="room name">
+            <Avatar 
+            src={getMediaUrl()}
+            className="rl-avatar" 
+            onClick={onAddPhotoClick}
+            alt="room name">
               <ImageIcon className="rl-icon"/>
             </Avatar>
+            {media != null && <ClearIcon
+              className="rl-clear"
+              onClick={onClearMedia}
+             />}
+            <input
+            accept="image/*"
+            type="file"
+            id="file"
+            onChange={(e) =>{
+              onPhotoChange(e.target.files[0]);
+              e.target.value = '';
+            }}
+            ref={(ref) => photoInput = ref}
+            style={{display: 'none'}}/>
             <TextField
               className="rl-room-name"
               label="room name"
@@ -180,6 +254,10 @@ const RoomList = () => {
       </Modal>
     </div>
   );
+};
+
+RoomList.propTypes = {
+  self: PropTypes.bool,
 };
 
 export default RoomList;
