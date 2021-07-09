@@ -3,7 +3,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
 import {useSelector} from 'react-redux';
-import {SearchBar} from '../SearchBar/SearchBar';
+import SearchBar from '../SearchBar/SearchBar.js';
 import Divider from '@material-ui/core/Divider';
 import {UserSearchItem} from '../UserSearchItem/UserSearchItem';
 import {TweetSearchItem} from '../TweetSearchItem/TweetSearchItem';

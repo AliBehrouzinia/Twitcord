@@ -10,7 +10,7 @@ import * as Actions from '../../redux/Actions/index.js';
 /* eslint-disable */
 
 
-export const SearchBar = () => {
+const SearchBar = () => {
   const userInput = useSelector((state) => state).tweet.searchInput;
   const dispatch = useDispatch();
 
@@ -56,12 +56,14 @@ export const SearchBar = () => {
       component="form"
       className="root">
       <InputBase
+        id="input"
         onKeyDown={handleKeyDown}
         onChange={handleInputChange}
         value={userInput}
         className="input-base"
         placeholder="Search"/>
       <IconButton
+        id="search"
         className="search-icon"
         type="submit"
         onClick={(event) => {
@@ -73,3 +75,5 @@ export const SearchBar = () => {
       </IconButton>
     </div> );
 };
+
+export default SearchBar;
