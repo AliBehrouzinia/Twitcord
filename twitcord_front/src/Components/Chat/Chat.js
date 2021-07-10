@@ -54,7 +54,7 @@ const Chat = () => {
         });
     API.getroominfo({id: params.id})
         .then((response) => {
-          setRoomInfo(response.data.results[0]);
+          setRoomInfo(response.data[0]);
         })
         .catch((error) => {
           console.log(error);
@@ -104,11 +104,11 @@ const Chat = () => {
         dataLength={ChatMessages.length}
         next={fetchMoreData(counter + 1)}
         loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{textAlign: 'center'}}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
+        // endMessage={
+        //   <p style={{textAlign: 'center'}}>
+        //     <b>Yay! You have seen it all</b>
+        //   </p>
+        // }
       >
         <div className="msg_history">
           {ChatMessages.map((postdetail, index) => {
