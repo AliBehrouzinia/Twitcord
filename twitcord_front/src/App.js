@@ -2,6 +2,7 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import store from './redux/store.js';
 import {BrowserRouter, Route, Redirect} from 'react-router-dom';
+import Hidden from '@material-ui/core/Hidden';
 import LogIn from './Components/LogIn/LogIn.js';
 import SignUp from './Components/SignUp/SignUp.js';
 import HomePage from './Components/HomePage/HomePage.js';
@@ -16,17 +17,22 @@ import TweetPage from './Components/TweetPage/TweetPage.js';
 
 // eslint-disable-next-line require-jsdoc
 function App() {
-  const windowHeight = window['innerHeight'];
-  const sideDrawerEnable = useSelector((state) => state).tweet.sideDrawerEnable;
+  // const windowHeight = window['innerHeight'];
+  const sideDrawerEnable =
+  useSelector((state) => state).tweet.sideDrawerEnable;
 
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Grid container className="hp-container">
-          {sideDrawerEnable && <Grid item xs={4} className="hp-side-left">
-            <SideDrawer />
-          </Grid>}
-          <Grid item xs>
+        <Grid container spacing={0}>
+          {sideDrawerEnable &&
+          <Hidden xsDown>
+            <Grid item sm={4}>
+              <SideDrawer />
+            </Grid>
+          </Hidden>
+          }
+          <Grid item xs={12} sm={8} md={5}>
             <div className="App">
               <div>
                 <Route exact path="/" render={() =>
@@ -42,13 +48,13 @@ function App() {
               </div>
             </div>
           </Grid>
-          {sideDrawerEnable && <Grid
-            item
-            xs={12}
-            lg={3}
-            style={{height: windowHeight}}
-            className="hp-side-right">
-          </Grid>}
+          {sideDrawerEnable &&
+          <Hidden mdDown>
+            <Grid
+              item
+              md={3}>
+            </Grid>
+          </Hidden>}
         </Grid>
       </BrowserRouter>
     </Provider>
