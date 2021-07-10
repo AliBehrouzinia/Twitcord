@@ -21,7 +21,7 @@ import * as API from '../../Utils/API/index';
 import * as Constants from '../../Utils/Constants.js';
 
 
-export const TweetItem = (props) => {
+const TweetItem = (props) => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -212,3 +212,5 @@ TweetItem.propTypes = {
 TweetItem.defaultProps = {
   isInfoVisable: true,
 };
+
+export default TweetItem;
