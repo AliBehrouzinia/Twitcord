@@ -247,11 +247,12 @@ export const getTweet = (id) => {
   );
 };
 
-export const timeLine = (data, params) => {
+export const getTimeLine = (data) => {
   return request(
       data,
-      params,
+      {},
       Constants.URL_TIMELINE,
+      Constants.GET_REQUEST_METHOD,
   );
 };
 export const editfollowstatus = (data, id) => {
