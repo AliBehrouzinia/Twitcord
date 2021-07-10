@@ -16,7 +16,7 @@ import * as API from '../../Utils/API/index';
 import * as helper from '../../Utils/helper';
 import './TweetPage.css';
 import {ReplyModal} from '../ReplyModal/ReplyModal';
-import {TweetItem} from '../TweetItem/TweetItem';
+import TweetItem from '../TweetItem/TweetItem.js';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import {Link} from 'react-router-dom';
