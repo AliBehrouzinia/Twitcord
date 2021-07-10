@@ -34,7 +34,6 @@ const dhm = (t) => {
 };
 
 export const extractTime = (dateString) => {
-  console.log(dateString);
   let showingDate = 'now';
   const date = new Date(dateString);
   const currentDate = new Date();
