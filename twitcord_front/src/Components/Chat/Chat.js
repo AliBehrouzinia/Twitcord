@@ -73,6 +73,7 @@ const Chat = () => {
       }
 
   const onSendClick = () => {
+    console.log(input)
     if (chatSocket == null){
       initWebSocket()
       setTimeout(function(){ chatSocket.send(JSON.stringify({message : input})); }, 1000);

@@ -36,6 +36,8 @@ export const URL_FOLLOWINGS_LIST= '/followings/list/{id}/';
 export const URL_FOLLOWERS_LIST= '/followers/list/{id}/';
 export const URL_ROOMS_LIST= '/user/{id}/rooms/';
 export const URL_REPLY = '/reply/';
+export const URL_MESSAGES = '/rooms/{id}/messages/?page={page}';
+export const URL_ROOM_INFO = '/room/{id}/';
 export const URL_REPLYS= '/replys/';
 export const URL_USER = '/users/';
 export const URL_EDIT_FOLLOW_STATUS = '/followings/{id}/';

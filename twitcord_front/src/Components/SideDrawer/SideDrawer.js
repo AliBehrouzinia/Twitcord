@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState} from 'react';
 import {useHistory, NavLink} from 'react-router-dom';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import NotificationsRoundedIcon from
@@ -48,16 +48,14 @@ const SideDrawer = () => {
   const windowHeight = window['innerHeight'];
   const [anchorEl, setAnchorEl] = useState(null);
 
-  useMemo(
-      () => {
-        if (userGeneralInfo == null || userGeneralInfo.pk == null) {
-          setTimeout(() => {
-            history.push('/login');
-          }, 0);
-        }
-      },
-      [],
-  );
+  // useMemo(
+  //   () => {
+  //       if (userGeneralInfo == null || userGeneralInfo.userID == null){
+  //         history.push('/login')
+  //       }
+  //   },
+  //   []
+  // );
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
