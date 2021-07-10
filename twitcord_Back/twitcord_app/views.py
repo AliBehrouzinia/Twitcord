@@ -265,6 +265,23 @@ class TweetsLikedListView(generics.ListAPIView):
         return models.Like.objects.filter(user=user_id)
 
 
+class RetweetView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = serializers.RetweetSerializer
+
+    def get_queryset(self):
+        tweet_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(id=tweet_id)
+
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self,
+            "retweet_from": self.kwargs['id']
+        }
+
+
 class CreateRoomView(generics.CreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.CreateRoomSerializer
@@ -325,3 +342,13 @@ class ShowReplyFamilyView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ShowReplySerializer
     lookup_url_kwarg = 'id'
+
+
+class DeleteTweetView(generics.DestroyAPIView):
+    serializer_class = serializers.TweetSerializer
+    permission_classes = [IsAuthenticated, DestroyTweetPermission]
+
+    def delete(self, request, *args, **kwargs):
+        tweet = get_object_or_404(models.Tweet, id=self.kwargs['id'])
+        tweet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

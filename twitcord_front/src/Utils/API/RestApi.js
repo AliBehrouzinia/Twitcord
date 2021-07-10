@@ -269,7 +269,27 @@ export const getTweetList = (id) => {
   return request(
       {},
       {},
-      Constants.URL_USER+id+'/tweets/',
+      Constants.URL_USER+id+Constants.URL_TWEET,
       Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const createRetweet = (id, data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_TWEET+id+Constants.URL_RETWEET,
+      Constants.POST_REQUEST_METHOD,
+  );
+};
+
+
+// TODO change the url
+export const deleteTweet = (id) => {
+  return request(
+      {},
+      {},
+      Constants.URL_TWEET+id,
+      Constants.DELETE_REQUEST_METHOD,
   );
 };
