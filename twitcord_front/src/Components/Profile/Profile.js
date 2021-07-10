@@ -8,7 +8,7 @@ import {useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import * as API from '../../Utils/API/index';
-import {TweetItem} from '../TweetItem/TweetItem';
+import TweetItem from '../TweetItem/TweetItem.js';
 import RoomList from '../Room/RoomList/RoomList';
 
 const Profile = () => {
@@ -48,7 +48,7 @@ const Profile = () => {
     getReplyList();
     getTweets();
     getLikeList();
-  }, []);
+  }, [params.id]);
 
   return (
     <Box container direction="column" className="w-100 overflow-hidden">
