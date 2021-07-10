@@ -21,6 +21,8 @@ import PropTypes from 'prop-types';
 
 /* eslint-disable*/
 let hasImage = false;
+import {Link} from 'react-router-dom';
+/* eslint-disable */
 
 const RoomList = (props) => {
   const [open, setOpen] = React.useState(false);
@@ -173,12 +175,15 @@ const RoomList = (props) => {
     return URL.createObjectURL(media);
   };
 
-  const roomsList = rooms.filter(room => (room.owner.id == userGeneralInfo.pk) || !props.self)
-    .map((room) => <div key={room.id}>
-      <RoomItem 
-      room={room}/>
+  const roomsList = rooms.map((room) => <Link 
+  key={room.id} 
+  to={'/chat/'+room.id} 
+  >
+    <div>
+      <RoomItem title={room.title} membersCount={room.number_of_members}/>
       <Divider/>
-    </div>);
+    </div>
+  </Link>);
 
   return (
     <div className="rl-root">

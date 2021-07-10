@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as Constants from '../Constants.js';
 
+/* eslint-disable */
 const instance = axios.create({
   baseURL: Constants.BASE_URL,
   responseType: 'json',
@@ -191,10 +192,13 @@ export const getmessages = (data) => {
   return request(
       {},
       {},
-      Constants.URL_MESSAGES.replace('{id}', data.id),
+      Constants.URL_MESSAGES
+        .replace('{id}', data.id)
+        .replace('{page}', data.page),
       Constants.GET_REQUEST_METHOD,
   );
 };
+
 export const getroominfo = (data) => {
   return request(
       {},

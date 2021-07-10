@@ -460,8 +460,12 @@ class ShowReplySerializer(serializers.ModelSerializer):
 
 
 class RoomMessageSerializer(serializers.ModelSerializer):
+    class UserInChatSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = TwitcordUser
+            fields = ['id', 'first_name', 'last_name', 'username', 'profile_img', 'email']
 
-    sender = ProfileDetailsViewSerializer(read_only=True)
+    sender = UserInChatSerializer(read_only=True)
     is_sent_by_me = serializers.SerializerMethodField()
 
     class Meta:
