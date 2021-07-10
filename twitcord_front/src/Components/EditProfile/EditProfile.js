@@ -94,21 +94,7 @@ const EditProfile = () => {
   };
 
   const saveProfileInfo = (dispatch, data) => {
-    dispatch(Actions.setProfileInfo({
-      bio: data.bio,
-      birthday: data.birth_date,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      website: data.website,
-      username: data.username,
-      isPublic: data.is_public,
-      has_header_img: data.has_header_img,
-      has_profile_img: data.has_profile_img,
-      profile_img: data.profile_img,
-      header_img: data.header_img,
-      profile_img_upload_details: data.profile_img_upload_details,
-      header_img_upload_details: data.header_img_upload_details,
-    }));
+    dispatch(Actions.setProfileInfo(data));
   };
 
   const onSubmitClicked = (
@@ -172,15 +158,15 @@ const EditProfile = () => {
       return true;
     }
 
-    if (data.firstName !== profileInfo.firstName) {
+    if (data.firstName !== profileInfo.first_name) {
       return true;
     }
 
-    if (data.lastName !== profileInfo.lastName) {
+    if (data.lastName !== profileInfo.last_name) {
       return true;
     }
 
-    if (data.birthday !== profileInfo.birthday) {
+    if (data.birthday !== profileInfo.birth_date) {
       return true;
     }
 
@@ -192,7 +178,7 @@ const EditProfile = () => {
       return true;
     }
 
-    if (data.isPublic !== profileInfo.isPublic) {
+    if (data.isPublic !== profileInfo.is_public) {
       return true;
     }
 
@@ -300,7 +286,7 @@ const EditProfile = () => {
         <input
           type="file"
           id="file"
-          accept=".jpg"
+          accept="image/*"
           onChange={(e) =>
             setProfilePhotoDetails(e.target.files[0])}
           ref={(ref) => photoInput = ref}
@@ -325,12 +311,12 @@ const EditProfile = () => {
               enableReinitialize
               initialValues={{
                 username: profileInfo.username || '',
-                firstName: profileInfo.firstName || '',
-                lastName: profileInfo.lastName || '',
+                firstName: profileInfo.first_name || '',
+                lastName: profileInfo.last_name || '',
                 website: profileInfo.website || '',
                 bio: profileInfo.bio || '',
-                birthday: Date.parse(profileInfo.birthday) || '',
-                isPublic: !profileInfo.isPublic,
+                birthday: Date.parse(profileInfo.birth_date) || '',
+                isPublic: !profileInfo.is_public,
               }}
               validate={(values) => {
                 const errors = {};
