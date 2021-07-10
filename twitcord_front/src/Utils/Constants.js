@@ -13,7 +13,6 @@ export const STATUS_FOLLOW = 'Follow';
 export const STATUS_FOLLOWING = 'Following';
 export const STATUS_REQUESTED = 'Requested';
 export const PUT_REQUEST_METHOD = 'PUT';
-export const DELETE_REQUEST_METHOD = 'DELETE';
 
 // Urls
 export const URL_TWEET = '/tweets/';

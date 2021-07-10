@@ -21,7 +21,7 @@ import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import {TweetItem} from '../TweetItem/TweetItem';
+import TweetItem from '../TweetItem/TweetItem';
 
 
 const useStyles = makeStyles((theme) => ({
