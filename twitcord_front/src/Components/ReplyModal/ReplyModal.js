@@ -21,6 +21,7 @@ import Box from '@material-ui/core/Box';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import TweetItem from '../TweetItem/TweetItem';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -124,7 +125,7 @@ export const ReplyModal = (props) => {
             </Hidden>
           </Box>
         </DialogTitle>
-        <DialogContent className="px-12" dividers>
+        <DialogContent className="px-12 overflow-x-hidden" dividers>
           <Box display="flex" className="min-w-50 min-w-auto-sm">
             <Box display="flex" alignItems="center" flexDirection="column">
               <Avatar alt={props.tweet?.user?.username}
@@ -133,7 +134,7 @@ export const ReplyModal = (props) => {
                 src="/static/images/avatar/1.jpg" />
               <div className="vl mt-1 br-33"></div>
             </Box>
-            <div className="ml-2">
+            <div className="ml-2 w-100">
               <Box display="flex">
                 <div className="b-900 fs-15 b-700 lh-20">
                   {props.tweet?.user?.first_name +
@@ -146,6 +147,12 @@ export const ReplyModal = (props) => {
               <div className="mt-2 fs-15 lh-20">
                 {props.tweet?.content}
               </div>
+              {props.tweet?.retweet_from &&
+              <Box className={props.tweet?.content ?
+               'px-3 pt-3 ml--3' : 'p-0 ml--3'}>
+                <TweetItem isInfoVisable={props.tweet?.content ? false : true}
+                  tweet={props.tweet?.retweet_from}></TweetItem>
+              </Box>}
               <div className="my-3">
                 <span className="text-gray">Replying to </span>
                 <Link to={'/profile/'+props.tweet?.user?.id}
