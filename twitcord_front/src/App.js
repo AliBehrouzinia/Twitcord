@@ -14,6 +14,7 @@ import RoomList from './Components/Room/RoomList/RoomList';
 import SideDrawer from './Components/SideDrawer/SideDrawer.js';
 import Profile from './Components/Profile/Profile.js';
 import TweetPage from './Components/TweetPage/TweetPage.js';
+import MobileNavbar from './Components/MobileNavbar/MobileNavbar.js';
 
 // eslint-disable-next-line require-jsdoc
 function App() {
@@ -24,6 +25,10 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
+        <Hidden smUp>
+          <MobileNavbar/>
+          <div className="h-56"></div>
+        </Hidden>
         <Grid container spacing={0}>
           {sideDrawerEnable &&
           <Hidden xsDown>

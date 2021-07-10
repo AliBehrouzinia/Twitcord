@@ -82,6 +82,10 @@ a {
   font-size: var(--font-size-12) !important;
 }
 
+.h-56 {
+  height: 56px !important;
+}
+
 .fs-13 {
   font-size: var(--font-size-13) !important;
 }
