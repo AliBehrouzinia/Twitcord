@@ -16,20 +16,30 @@ const initialState = {
   userSearchResult: [],
   tweetSearchResult: [],
   profileInfo: {
-    username: '',
     bio: '',
+    birth_date: '',
     date_joined: '',
-    birthday: '',
-    firstName: '',
-    lastName: '',
-    website: '',
-    isPublic: false,
     email: '',
+    first_name: '',
+    followers_count: 0,
+    following_status: '',
+    followings_count: 0,
     has_header_img: false,
     has_profile_img: false,
     header_img: '',
-    profile_img_upload_details: '',
     header_img_upload_details: '',
+    id: 0,
+    is_active: false,
+    is_public: false,
+    last_name: '',
+    profile_img: '',
+    status: '',
+    type: '',
+    username: '',
+    website: '',
+  },
+  followcount: {
+    pk: 0,
     followers_count: 0,
     followings_count: 0,
   },
@@ -40,6 +50,7 @@ const initialState = {
 };
 
 const tweetReducer = (state = initialState, action) => {
+  console.log(action);
   switch (action.type) {
     case ActionTypes.SET_SIGN_UP_INFO:
       return {
@@ -92,7 +103,17 @@ const tweetReducer = (state = initialState, action) => {
         userSearchResult: action.users,
       };
     }
-
+    case ActionTypes.SET_FOLLOW_COUNT: {
+      return {
+        ...state,
+        followcount: {
+          ...state.followcount,
+          pk: action.pk,
+          followers_count: action.followers_count,
+          followings_count: action.followings_count,
+        },
+      };
+    }
     case ActionTypes.SET_TWEET_SEARCH_RESULT: {
       return {
         ...state,
@@ -101,27 +122,34 @@ const tweetReducer = (state = initialState, action) => {
     }
 
     case ActionTypes.SET_PROFILE_INFO: {
+      console.log('reducer'+ action);
       return {
         ...state,
         profileInfo: {
           ...state.profileInfo,
           bio: action.bio,
-          birthday: action.birthday,
-          firstName: action.first_name,
-          lastName: action.last_name,
-          website: action.website,
-          username: action.username,
-          isPublic: action.isPublic,
+          birth_date: action.birth_date,
+          date_joined: action.date_joined,
           email: action.email,
+          first_name: action.first_name,
+          followers_count: action.followers_count,
+          following_status: action.following_status,
+          followings_count: action.followings_count,
           has_header_img: action.has_header_img,
           has_profile_img: action.has_profile_img,
-          date_joined: action.date_joined,
-          profile_img: action.profile_img,
           header_img: action.header_img,
-          profile_img_upload_details: action.profile_img_upload_details,
           header_img_upload_details: action.header_img_upload_details,
-          followers_count: action.followers_count,
-          followings_count: action.followings_count,
+          profile_img: action.profile_img,
+          profile_img_upload_details: action.profile_img_upload_details,
+          id: action.id,
+          is_active: action.is_active,
+          is_public: action.is_public,
+          last_name: action.last_name,
+          profile_img: action.profile_img,
+          status: action.status,
+          type: action.type,
+          username: action.username,
+          website: action.website,
         },
       };
     }
@@ -137,7 +165,12 @@ const tweetReducer = (state = initialState, action) => {
         },
       };
     }
-
+    case ActionTypes.SET_SEARCH_INPUT: {
+      return {
+        ...state,
+        searchInput: action.input,
+      };
+    }
     case ActionTypes.SET_SIDE_DRAWER_ENABLE: {
       return {
         ...state,

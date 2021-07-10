@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
@@ -10,7 +10,7 @@ import * as Actions from '../../redux/Actions/index.js';
 /* eslint-disable */
 
 
-export const SearchBar = () => {
+const SearchBar = () => {
   const userInput = useSelector((state) => state).tweet.searchInput;
   const dispatch = useDispatch();
 
@@ -26,6 +26,15 @@ export const SearchBar = () => {
       input: e.target.value,
     }));  
   };
+  
+  useEffect(() => {
+    dispatch(Actions.setUserSearchResults({
+      users: [],
+    }));
+    dispatch(Actions.setTweetSearchResults({
+      tweets: []
+    }));
+  }, []);
 
   const searchUser = (query, page=1) => {
     API.searchUsers({}, {query: query, page: page})
@@ -56,12 +65,14 @@ export const SearchBar = () => {
       component="form"
       className="root">
       <InputBase
+        id="input"
         onKeyDown={handleKeyDown}
         onChange={handleInputChange}
         value={userInput}
         className="input-base"
         placeholder="Search"/>
       <IconButton
+        id="search"
         className="search-icon"
         type="submit"
         onClick={(event) => {
@@ -73,3 +84,5 @@ export const SearchBar = () => {
       </IconButton>
     </div> );
 };
+
+export default SearchBar;

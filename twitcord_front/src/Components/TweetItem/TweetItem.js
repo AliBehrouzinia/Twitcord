@@ -18,7 +18,7 @@ import Box from '@material-ui/core/Box';
 import {Link} from 'react-router-dom';
 
 
-export const TweetItem = (props) => {
+const TweetItem = (props) => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -134,3 +134,5 @@ export const TweetItem = (props) => {
 TweetItem.propTypes = {
   tweet: PropTypes.object,
 };
+
+export default TweetItem;
