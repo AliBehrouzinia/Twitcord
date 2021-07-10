@@ -175,13 +175,12 @@ const RoomList = (props) => {
     return URL.createObjectURL(media);
   };
 
-  
   const roomsList = rooms.map((room) => <Link 
   key={room.id} 
   to={'/chat/'+room.id} 
   >
     <div>
-      <RoomItem title={room.title} membersCount={room.number_of_members}/>
+      <RoomItem room={room}/>
       <Divider/>
     </div>
   </Link>);

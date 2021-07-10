@@ -187,6 +187,26 @@ export const getRoomsList = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const getmessages = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_MESSAGES
+        .replace('{id}', data.id)
+        .replace('{page}', data.page),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const getroominfo = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_ROOM_INFO.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
 export const followerslist = (data) => {
   return request(
       data,
@@ -237,24 +257,6 @@ export const deleteFollowRequest = (data) => {
       {},
       Constants.URL_DELETE_FOLLOW_REQUEST.replace('{id}', data.id),
       Constants.DELETE_REQUEST_METHOD,
-  );
-};
-export const getmessages = (data) => {
-  return request(
-      {},
-      {},
-      Constants.URL_MESSAGES
-        .replace('{id}', data.id)
-        .replace('{page}', data.page),
-      Constants.GET_REQUEST_METHOD,
-  );
-};
-
-export const getroominfo = (data) => {
-  return request(
-      {},
-      {},
-      Constants.URL_ROOM_INFO.replace('{id}', data.id),
   );
 };
 
