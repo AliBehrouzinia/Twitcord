@@ -77,6 +77,18 @@ class UsersTweetsPermission(permissions.BasePermission):
             return request.user.id == view.kwargs['id']
 
 
+class IsMemberOfRoom(permissions.BasePermission):
+    message = "You can't access to messages of room that you aren't member of that"
+
+    def has_permission(self, request, view):
+        user = request.user
+        room_id = view.kwargs['room_id']
+        room = get_object_or_404(models.Room, id=room_id)
+        if user in room.users.all() or user == room.owner:
+            return True
+        else:
+            return False
+
 class DestroyTweetPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         tweet_id = view.kwargs['id']

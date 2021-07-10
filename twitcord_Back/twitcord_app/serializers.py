@@ -562,3 +562,20 @@ class ShowReplySerializer(serializers.ModelSerializer):
         values = result['children'].values()
         result['children'] = list(values)
         return result
+
+
+class RoomMessageSerializer(serializers.ModelSerializer):
+    class UserInChatSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = TwitcordUser
+            fields = ['id', 'first_name', 'last_name', 'username', 'profile_img', 'email']
+
+    sender = UserInChatSerializer(read_only=True)
+    is_sent_by_me = serializers.SerializerMethodField()
+
+    class Meta:
+        model = RoomMessage
+        fields = ['created_at', 'sender', 'content', 'is_sent_by_me']
+
+    def get_is_sent_by_me(self, obj):
+        return self.context['request'].user.id == obj.sender.id

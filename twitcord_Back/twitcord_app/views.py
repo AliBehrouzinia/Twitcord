@@ -344,6 +344,16 @@ class ShowReplyFamilyView(generics.RetrieveAPIView):
     lookup_url_kwarg = 'id'
 
 
+class RoomMessagesListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated & IsMemberOfRoom]
+    serializer_class = serializers.RoomMessageSerializer
+    pagination_class = paginations.RoomMessagesPagination
+
+    def get_queryset(self):
+        qs = models.RoomMessage.objects.filter(room_id=self.kwargs.get('room_id'))
+        return qs
+
+        
 class DeleteTweetView(generics.DestroyAPIView):
     serializer_class = serializers.TweetSerializer
     permission_classes = [IsAuthenticated, DestroyTweetPermission]
