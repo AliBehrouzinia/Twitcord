@@ -347,6 +347,9 @@ class TimeLineSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(TimeLineSerializer, self).to_representation(instance)
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
+        is_retweeted = Tweet.objects.filter(retweet_from__id=instance.id, user_id=self.context['request'].user.id,
+                                            retweet_from__isnull=False).exists()
+        result['is_retweeted'] = is_retweeted
         result['is_liked'] = is_liked
         result['id'] = instance.id
         result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
