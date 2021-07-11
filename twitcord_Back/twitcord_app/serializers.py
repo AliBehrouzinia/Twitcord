@@ -461,17 +461,6 @@ class ReplySerializer(serializers.ModelSerializer):
         model = Tweet
         fields = '__all__'
 
-    def to_representation(self, instance):
-        result = super(ReplySerializer, self).to_representation(instance)
-        user = instance.user
-        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
-        result['is_liked'] = is_liked
-        result['id'] = instance.id
-        result['user_id'] = result.pop('user')
-        result['username'] = user.username
-        result['first_name'] = user.first_name
-        return result
-
     def to_internal_value(self, data):
         data['user'] = self.context['request'].user.id
         data['is_reply'] = True
