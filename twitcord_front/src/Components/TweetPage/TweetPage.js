@@ -77,9 +77,18 @@ const TweetPage = () => {
   };
 
   const handleOpenLikedTweet = () => {
+    API.getUsersLiked({id: tweet.id})
+    .then((response) => {
+      setUserLikedList(response.data.results);
+      console.log(results);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
     setOpenlikes(true);
+    
   };
-
+  console.log(tweet);
   const likebody = (
     <div className="likespaper" >
       <List className="fl-root" >
@@ -109,17 +118,6 @@ const TweetPage = () => {
       </List>
     </div>
   );
-console.log(tweet);
-  useEffect(() => {
-    API.getUsersLiked({id: tweet.id})
-        .then((response) => {
-          setUserLikedList(response.data.results);
-          console.log(results);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-  }, []);
 
   return (
     <div>
@@ -240,7 +238,7 @@ console.log(tweet);
               className="text-gray">Retweets</Box></Box>
 
             <Box type="userLiked" className="userLiked" onClick={handleOpenLikedTweet}>
-            {tweet.parent?.like_count+ '   ' +'likes'}
+            {tweet.like_count+ '   ' +'likes'}
             </Box>
             <Modal
             open={openlikes}

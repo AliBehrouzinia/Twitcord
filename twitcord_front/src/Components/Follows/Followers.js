@@ -10,6 +10,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import * as API from '../../Utils/API/index';
 // import * as Constants from '../../Utils/Constants.js';
+
 import {useSelector} from 'react-redux';
 
 /* eslint-disable require-jsdoc */
