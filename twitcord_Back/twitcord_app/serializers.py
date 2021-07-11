@@ -362,6 +362,9 @@ class TimeLineSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(TimeLineSerializer, self).to_representation(instance)
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
+        is_retweeted = Tweet.objects.filter(retweet_from__id=instance.id, user_id=self.context['request'].user.id,
+                                            retweet_from__isnull=False).exists()
+        result['is_retweeted'] = is_retweeted
         result['is_liked'] = is_liked
         result['id'] = instance.id
         result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
@@ -459,17 +462,6 @@ class ReplySerializer(serializers.ModelSerializer):
         model = Tweet
         fields = '__all__'
 
-    def to_representation(self, instance):
-        result = super(ReplySerializer, self).to_representation(instance)
-        user = instance.user
-        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
-        result['is_liked'] = is_liked
-        result['id'] = instance.id
-        result['user_id'] = result.pop('user')
-        result['username'] = user.username
-        result['first_name'] = user.first_name
-        return result
-
     def to_internal_value(self, data):
         data['user'] = self.context['request'].user.id
         data['is_reply'] = True
@@ -495,12 +487,15 @@ class ReplySerializer(serializers.ModelSerializer):
                     result['parent']['retweeted_id'] = get_object_or_404(Tweet, retweet_from__id=obj.id,
                                                                          user_id=self.context['request'].user.id,
                                                                          retweet_from__isnull=False).id
-                result['parent']['is_liked'] = is_liked
-                result['parent']['user_id'] = obj.user.id
-                result['parent']['username'] = obj.user.username
-                result['parent']['first_name'] = obj.user.first_name
-                result['parent']['last_name'] = obj.user.last_name
-                result['parent']['is_public'] = obj.user.is_public
+                result['parent']['user'] = {}
+                result['parent']['user']['is_liked'] = is_liked
+                result['parent']['user']['user_id'] = obj.user.id
+                result['parent']['user']['username'] = obj.user.username
+                result['parent']['user']['first_name'] = obj.user.first_name
+                result['parent']['user']['last_name'] = obj.user.last_name
+                result['parent']['user']['is_public'] = obj.user.is_public
+                result['parent']['user']['profile_img'] = obj.user.profile_img
+                result['parent']['user']['header_img'] = obj.user.header_img
                 result['parent']['like_count'] = len(Like.objects.filter(tweet_id=obj.id))
                 result['parent']['reply_count'] = len(Tweet.objects.filter(parent_id=obj.id))
                 result['parent']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=obj.id))
@@ -537,7 +532,7 @@ class ShowReplySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ['id', 'parent', 'retweet_from', 'user']
+        fields = ['id', 'parent', 'retweet_from', 'user', 'tweet_media']
 
     def to_representation(self, instance):
         result = super(ShowReplySerializer, self).to_representation(instance)

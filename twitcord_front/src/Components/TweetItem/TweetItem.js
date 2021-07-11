@@ -34,6 +34,7 @@ const TweetItem = (props) => {
   const [isLiked, setIsLiked] = useState(props.tweet?.is_liked);
   const [LikedId, setLikedId] = useState(props.tweet?.Liked_id);
   const [replyCount, setReplyCount] = useState(props.tweet?.reply_count);
+  const [replyModel, setReplyModel] = useState({});
 
   const userId = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -67,7 +68,8 @@ const TweetItem = (props) => {
     setAnchorEl(null);
   };
 
-  const openReplyModal = () => {
+  const openReplyModal = (tweet) => {
+    setReplyModel(tweet);
     setOpen(true);
   };
 
@@ -110,6 +112,7 @@ const TweetItem = (props) => {
   };
   const handleReply = () => {
     setReplyCount(replyCount+1);
+    props.handleUpdate();
   };
 
   const tweetClicked = (event) => {
@@ -135,19 +138,91 @@ const TweetItem = (props) => {
     }
     history.push('/tweet/'+props.tweet?.id);
   };
-  console.log(props.tweet.tweet);
+
+  const goParent = (event) => {
+    event.stopPropagation();
+    const links = document.getElementsByTagName('a');
+    const buttons = document.getElementsByTagName('button');
+    for (let i=0; i<links.length; i++) {
+      if (links[i].contains(event.target)) {
+        return;
+      }
+    }
+    for (let i=0; i<buttons.length; i++) {
+      if (buttons[i].contains(event.target)) {
+        return;
+      }
+    }
+    if (open) {
+      return;
+    }
+    history.push('/tweet/'+ props.tweet.parent?.id);
+  };
+
   return (
-    <div className={props.isInfoVisable ?'tsi-hover pointer':
-    'border-1 retweet-hover br-5 pointer'}
+    <div className={props.isInfoVisable ?'overflow-hidden':
+    'border-1 retweet-hover br-5 pointer overflow-hidden'}
     onClick={tweetClicked}>
-      {props.tweet?.content == null &&
+      {props.isReply &&
+        <Box onClick={goParent} display="flex"
+          className="px-3 pt-3 tsi-hover pointer">
+          <Box display="flex" alignItems="center" flexDirection="column">
+            <Avatar alt={props.tweet.parent?.user?.username}
+              title={props.tweet.parent?.user?.username}
+              className="tsi-avatar"
+              src="/static/images/avatar/1.jpg" />
+            <div className="vl mt-2 br-33"></div>
+          </Box>
+          <div className="ml-2 w-100">
+            <Box display="flex" className="lh-20 fs-15">
+              {(props.tweet.parent?.user?.first_name ||
+               props.tweet.parent?.user?.last_name)&&
+              (<div className="b-900 mr-2">
+                {(props.tweet.parent?.user?.first_name +
+                   ' ' + props.tweet.parent?.user?.last_name)}</div>)}
+              <div className="b-400 text-gray">
+                @{props.tweet.parent?.user?.username} .</div>
+              <div className="ml-2 text-gray">
+                {helper.extractTime(props.tweet.parent?.create_date)}</div>
+            </Box>
+            <div className="mt-2 fs-15 lh-20">
+              {props.tweet.parent?.content}
+            </div>
+            <Box display="flex"
+              justifyContent="space-around" className="px-3 py-1 mt-2 fs-12">
+              <div className="text-nowrap">
+                <IconButton className="mr-1">
+                  <FavoriteBorderIcon />
+                </IconButton>
+                {props.tweet.parent?.like_count}
+              </div>
+              <div className="text-nowrap">
+                <IconButton className="mr-1"
+                  onClick={()=> openReplyModal(props.tweet.parent)}>
+                  <ChatBubbleOutlineIcon />
+                </IconButton>
+                {props.tweet.parent?.reply_count}
+              </div>
+              <div className="text-nowrap">
+                <IconButton className="mr-1">
+                  <CachedIcon />
+                </IconButton>
+                {props.tweet.parent?.retweet_count}
+              </div>
+            </Box>
+          </div>
+        </Box>}
+      <div className={props.isReply ? 'tsi-hover pointer mt--2' :
+       'tsi-hover pointer'}>
+        {props.tweet?.content == null &&
       <Box display="flex" alignItems="center"
-        className="px-3 pt-3 b-600 mb--2 fs-14 color-gray ml-retweet-item">
+        className="px-3 pt-3 b-600 mb--2 fs-14
+         color-gray ml-retweet-item">
         <CachedIcon fontSize="small" className="mr-2"/>
         {userId == props.tweet?.user?.id ? 'You' :
         props.tweet?.user?.first_name + ' ' +
         props.tweet?.user?.last_name} Retweeted</Box>}
-      {props.tweet?.content !=null &&
+        {props.tweet?.content !=null &&
       <Box
         className={props.isInfoVisable ? 'm-0 w-100 px-3 pt-3' :
          'm-0 w-100 p-3'}>
@@ -191,13 +266,13 @@ const TweetItem = (props) => {
           {props.tweet?.content}
         </Typography>
       </Box>}
-      {props.tweet?.retweet_from &&
+        {props.tweet?.retweet_from &&
       <Box className={props.tweet?.content ? 'px-3 pt-3 tsi-ml-avatar' :
        'p-0'}>
         <TweetItem isInfoVisable={props.tweet?.content ? false : true}
           tweet={props.tweet?.retweet_from}></TweetItem>
       </Box>}
-      {(props.tweet?.content && props.isInfoVisable) &&
+        {(props.tweet?.content && props.isInfoVisable) &&
       <Box display="flex"
         justifyContent="space-around" className="px-3 py-1 fs-12">
         <div>
@@ -208,7 +283,8 @@ const TweetItem = (props) => {
           {likeCount}
         </div>
         <div>
-          <IconButton className="mr-1" onClick={openReplyModal}>
+          <IconButton className="mr-1"
+            onClick={()=> openReplyModal(props.tweet)}>
             <ChatBubbleOutlineIcon />
           </IconButton>
           {replyCount}
@@ -237,13 +313,13 @@ const TweetItem = (props) => {
              }}>Undo Retweet</MenuItem>}
             <MenuItem onClick={() => {
               handleCloseRetweetBtn();
-              openReplyModal();
             }}>Quote Retweet</MenuItem>
           </Menu>
           {retweetCount}
         </div>
       </Box>}
-      <ReplyModal tweet={props.tweet} open={open}
+      </div>
+      <ReplyModal tweet={replyModel} open={open}
         onClose={handleClose} onReply={handleReply} />
     </div>
   );
@@ -252,10 +328,13 @@ const TweetItem = (props) => {
 TweetItem.propTypes = {
   tweet: PropTypes.object,
   isInfoVisable: PropTypes.bool,
+  isReply: PropTypes.bool,
+  handleUpdate: PropTypes.func.isRequired,
 };
 
 TweetItem.defaultProps = {
   isInfoVisable: true,
+  isReply: false,
 };
 
 export default TweetItem;

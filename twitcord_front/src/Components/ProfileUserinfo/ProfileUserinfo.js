@@ -238,7 +238,7 @@ const ProfileUserinfo = () => {
         </Box>
 
         <Box display="flex" className="mt-2">
-          <Box type="followers" className="followers" onClick={handleOpenfollowers}>
+          <Box type="followers" className="followers pointer" onClick={handleOpenfollowers}>
             {'followers' + '   ' + followcount.followers_count}
           </Box>
           <Modal
@@ -255,7 +255,7 @@ const ProfileUserinfo = () => {
           >
             <Fade in={open}>{body}</Fade>
           </Modal>
-          <Box type="followings" className="followings" onClick={handleOpenfollowing}>
+          <Box type="followings" className="followings pointer" onClick={handleOpenfollowing}>
             {'followings' + '   ' + followcount.followings_count}
           </Box>
           <Modal
