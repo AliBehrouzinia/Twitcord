@@ -11,6 +11,7 @@ services:
     container_name: twitcord_django
     depends_on:
       - postgres
+      - redis
       - minio
     volumes:
       - ./twitcord_Back:/app:z
@@ -65,10 +66,12 @@ services:
       MINIO_ROOT_PASSWORD: minio_pass
     volumes:
       - local_storage_minio:/storage
+  
   redis:
     image: redis:5
     container_name: twitcord_redis
     command: --port 6380
+    network_mode: "host"
 
 volumes:
   local_postgres_data: { }

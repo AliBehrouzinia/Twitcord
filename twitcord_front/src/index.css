@@ -82,6 +82,10 @@ a {
   font-size: var(--font-size-12) !important;
 }
 
+.h-56 {
+  height: 56px !important;
+}
+
 .fs-13 {
   font-size: var(--font-size-13) !important;
 }
@@ -167,6 +171,13 @@ a {
   border-radius: 33px;
 }
 
+.br-3 {
+  border-radius: 3px !important;
+}
+
+.br-5 {
+  border-radius: 5px !important;
+}
 
 .mt-2 {
   margin-top: .5rem;
@@ -354,6 +365,10 @@ a {
 }
 .mr-2 {
   margin-right: .5rem !important;
+}
+
+.mr-3 {
+  margin-right: 1rem !important;
 }
 
 .mt-1 {

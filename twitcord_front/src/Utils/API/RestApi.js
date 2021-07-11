@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as Constants from '../Constants.js';
 
+/* eslint-disable */
 const instance = axios.create({
   baseURL: Constants.BASE_URL,
   responseType: 'json',
@@ -186,6 +187,26 @@ export const getRoomsList = (data) => {
       Constants.GET_REQUEST_METHOD,
   );
 };
+
+export const getmessages = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_MESSAGES
+        .replace('{id}', data.id)
+        .replace('{page}', data.page),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const getroominfo = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_ROOM_INFO.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
 export const followerslist = (data) => {
   return request(
       data,
@@ -238,6 +259,7 @@ export const deleteFollowRequest = (data) => {
       Constants.DELETE_REQUEST_METHOD,
   );
 };
+
 export const getTweet = (id) => {
   return request(
       {},
@@ -269,7 +291,27 @@ export const getTweetList = (id) => {
   return request(
       {},
       {},
-      Constants.URL_USER+id+'/tweets/',
+      Constants.URL_USER+id+Constants.URL_TWEET,
       Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const createRetweet = (id, data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_TWEET+id+Constants.URL_RETWEET,
+      Constants.POST_REQUEST_METHOD,
+  );
+};
+
+
+// TODO change the url
+export const deleteTweet = (id) => {
+  return request(
+      {},
+      {},
+      Constants.URL_TWEET+id,
+      Constants.DELETE_REQUEST_METHOD,
   );
 };
