@@ -75,7 +75,7 @@ const Profile = () => {
         {tabSelected == 1 && (
           replys.map((reply)=> (
             <div key={reply.id}>
-              <TweetItem tweet={reply} />
+              <TweetItem tweet={reply} isReply={true}/>
               <Divider />
             </div>
           ))
