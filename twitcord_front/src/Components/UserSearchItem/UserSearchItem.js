@@ -11,7 +11,7 @@ import * as API from '../../Utils/API/index';
 import './UserSearchItem.css';
 import {Link, useHistory} from 'react-router-dom';
 
-export const UserSearchItem = (props) => {
+const UserSearchItem = (props) => {
   const [Situation, setSituation] = useState(props.status);
   const history = useHistory();
   function handleunrequest(id) {
@@ -127,3 +127,5 @@ UserSearchItem.propTypes = {
   isPublic: PropTypes.bool,
   status: PropTypes.string,
 };
+
+export default UserSearchItem;

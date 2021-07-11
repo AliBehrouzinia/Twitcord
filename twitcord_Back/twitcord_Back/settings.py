@@ -235,7 +235,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('twitcord_redis', 6380)],
+            "hosts": [('localhost', 6380)],
         },
     },
 }

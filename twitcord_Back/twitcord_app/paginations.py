@@ -8,6 +8,11 @@ class MyPagination(PageNumberPagination):
     last_page_strings = ('the_end',)
 
 
+class RoomMessagesPagination(PageNumberPagination):
+    page_size_query_param = 'page_size'
+    page_size = 30
+
+
 class RoomListPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     page_size = 15
