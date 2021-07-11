@@ -71,6 +71,7 @@ export const ReplyModal = (props) => {
             onReply();
           })
           .catch((error) => {
+            console.log(error, 'error');
             setSnackOpen(true);
             setSubmitting(false);
           });

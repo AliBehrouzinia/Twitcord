@@ -40,7 +40,11 @@ const TweetPage = () => {
   const history = useHistory();
   const [userLikedList, setUserLikedList] = React.useState([{}]);
   const [count, setcount] = useState(0);
-  const openReplyModal = () => {
+
+  const [replyModel, setReplyModel] = useState({});
+
+  const openReplyModal = (tweet) => {
+    setReplyModel(tweet);
     setOpen(true);
   };
 
@@ -140,6 +144,9 @@ const TweetPage = () => {
       </List>
     </div>
   );
+  const doNothing = () => {
+    return;
+  };
 
   return (
     <div>
@@ -195,7 +202,8 @@ const TweetPage = () => {
                 {tweet.parent?.like_count}
               </div>
               <div>
-                <IconButton className="mr-1" onClick={openReplyModal}>
+                <IconButton className="mr-1"
+                  onClick={()=> openReplyModal(tweet.parent)}>
                   <ChatBubbleOutlineIcon />
                 </IconButton>
                 {tweet.parent?.reply_count}
@@ -283,7 +291,7 @@ const TweetPage = () => {
           <IconButton>
             <FavoriteBorderIcon />
           </IconButton>
-          <IconButton onClick={openReplyModal}>
+          <IconButton onClick={()=> openReplyModal(tweet)}>
             <ChatBubbleOutlineIcon />
           </IconButton>
           <IconButton>
@@ -299,7 +307,8 @@ const TweetPage = () => {
           <Divider />
         </Box>
       ))}
-      <ReplyModal tweet={tweet} open={open} onClose={handleClose} />
+      <ReplyModal tweet={replyModel} open={open} onClose={handleClose}
+        onReply={doNothing}/>
     </div>
   );
 };
