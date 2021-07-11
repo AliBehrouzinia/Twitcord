@@ -356,7 +356,8 @@ class TimeLineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = '__all__'
+        fields = ['parent', 'retweet_from', 'is_reply', 'user', 'content', 'create_date', 'has_media',
+                  'tweet_media']
 
     def to_representation(self, instance):
         result = super(TimeLineSerializer, self).to_representation(instance)
