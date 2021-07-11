@@ -50,8 +50,7 @@ const Chat = () => {
 
     chatSocket.onmessage = function(e) {
       const data = JSON.parse(e.data);
-      console.log("onmessage:" + messages.length)
-      messages.push(data.message)
+      messages = [data.message,...messages]
       setChatMessages([...messages]);
     };
   }
@@ -99,7 +98,6 @@ const Chat = () => {
       } 
 console.log(ChatMessages);
   const onSendClick = () => {
-    console.log(input)
     if (chatSocket == null){
       initWebSocket()
       setTimeout(function(){ chatSocket.send(JSON.stringify({message : input})); }, 1000);

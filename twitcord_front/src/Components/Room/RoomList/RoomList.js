@@ -180,7 +180,7 @@ const RoomList = (props) => {
   to={'/chat/'+room.id} 
   >
     <div>
-    <RoomItem room={room}/>
+      <RoomItem room={room}/>
       <Divider/>
     </div>
   </Link>);

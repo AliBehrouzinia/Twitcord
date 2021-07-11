@@ -88,3 +88,12 @@ class IsMemberOfRoom(permissions.BasePermission):
             return True
         else:
             return False
+
+class DestroyTweetPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        tweet_id = view.kwargs['id']
+        tweet = get_object_or_404(models.Tweet, id=tweet_id)
+        if request.user.id == tweet.user.id:
+            return True
+        else:
+            return False
