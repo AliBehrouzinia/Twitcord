@@ -29,6 +29,7 @@ const TweetItem = (props) => {
   const [retweetCount, setRetweetCount] = useState(props.tweet?.retweet_count);
   const [isRetweeted, setIsRetweeted] = useState(props.tweet?.is_retweeted);
   const [retweetedId, setRetweetedId] = useState(props.tweet?.retweeted_id);
+  const [replyCount, setReplyCount] = useState(props.tweet?.reply_count);
 
   const userId = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -69,6 +70,10 @@ const TweetItem = (props) => {
   const handleClose = () => {
     setIsClosing(true);
     setOpen(false);
+  };
+
+  const handleReply = () => {
+    setReplyCount(replyCount+1);
   };
 
   const tweetClicked = (event) => {
@@ -167,7 +172,7 @@ const TweetItem = (props) => {
           <IconButton className="mr-1" onClick={openReplyModal}>
             <ChatBubbleOutlineIcon />
           </IconButton>
-          {props.tweet?.reply_count}
+          {replyCount}
         </div>
         <div>
           <IconButton className="mr-1" onClick={handleClickRetweetBtn}>
@@ -199,7 +204,8 @@ const TweetItem = (props) => {
           {retweetCount}
         </div>
       </Box>}
-      <ReplyModal tweet={props.tweet} open={open} onClose={handleClose} />
+      <ReplyModal tweet={props.tweet} open={open}
+        onClose={handleClose} onReply={handleReply} />
     </div>
   );
 };
