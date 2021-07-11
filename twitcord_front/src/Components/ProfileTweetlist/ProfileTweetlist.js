@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import Tweets from '../Tweets/Tweets';
 import Grid from '@material-ui/core/Grid';
 import './ProfileTweetlist.css';
 import Divider from '@material-ui/core/Divider';
@@ -8,9 +7,12 @@ import * as Constants from '../../Utils/Constants.js';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 import * as Actions from '../../redux/Actions/index.js';
+import {TweetItem} from '../TweetItem/TweetItem';
+
 
 const ProfileTweetlist = () => {
   const tweetInfo = useSelector((state) => state).tweet.tweetInfo;
+  const profileInfo = useSelector((state) => state).tweet.profileInfo;
   const dispatch = useDispatch();
   let profileId = -1;
   const userGeneralInfo = JSON.parse(
@@ -27,7 +29,8 @@ const ProfileTweetlist = () => {
           dispatch(Actions.setTweetListInfo({
             tweetInfo: d.results,
           }));
-          console.log(tweetInfo);
+          console.log('tweetInfo', tweetInfo);
+          console.log('profileInfo', profileInfo);
         })
         .catch((error) => {
           console.log(error);
@@ -39,15 +42,16 @@ const ProfileTweetlist = () => {
       {tweetInfo.map((tweet) => {
         return (
           <div key={tweet.id}>
-            {/* <Tweets
+            <TweetItem
               id={tweet.id}
-              name={tweet.first_name + ' ' + tweet.last_name}
-              username={tweet.username}
+              name={profileInfo.firstName+ ' ' +profileInfo.lastName}
+              username={profileInfo.username}
               createDate={tweet.create_date}
               content={tweet.content}
-              isPublic={tweet.is_public}
-            /> */}
-            to do
+              userId={tweet.user}
+              profileImg={tweet.profile_img}
+              isPublic={profileInfo.isPublic}
+            />
             <Divider />
           </div>
         );

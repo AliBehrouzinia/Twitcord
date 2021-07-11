@@ -6,6 +6,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 
 from .models import *
 from .models import TwitcordUser
+from django.shortcuts import get_object_or_404
 
 
 class RegistrationSerializer(RegisterSerializer):
@@ -333,6 +334,19 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = '__all__'
+
+    def to_representation(self, instance):
+        result = super(TweetsLikedListSerializer, self).to_representation(instance)
+        print(result['tweet'])
+        tweet = instance.tweet
+        result['tweet']['username'] = tweet.user.username
+        result['tweet']['first_name'] = tweet.user.first_name
+        result['tweet']['last_name'] = tweet.user.last_name
+        result['tweet']['is_public'] = tweet.user.is_public
+        result['tweet']['like_count'] = len(Like.objects.filter(tweet_id=tweet.id))
+        result['tweet']['reply_count'] = len(Tweet.objects.filter(parent_id=tweet.id))
+        result['tweet']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=tweet.id))
+        return result
 
 
 class TimeLineSerializer(serializers.ModelSerializer):
