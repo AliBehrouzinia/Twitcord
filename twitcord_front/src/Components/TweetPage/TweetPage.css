@@ -22,3 +22,6 @@
 	justify-Content: center;
     overflow: auto !important;
 }
+.userLiked{
+	margin-left: 2%;
+}

@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
-import React, {useState} from 'react';
+/* eslint-disable  */
+import React, {useEffect,useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import {Icon} from '@material-ui/core';
@@ -30,9 +30,9 @@ const TweetItem = (props) => {
   const [retweetCount, setRetweetCount] = useState(props.tweet?.retweet_count);
   const [isRetweeted, setIsRetweeted] = useState(props.tweet?.is_retweeted);
   const [retweetedId, setRetweetedId] = useState(props.tweet?.retweeted_id);
-  // const [likeCount, setLikeCount] = useState(props.tweet?.like_count);
-  // const [isLiked, setIsLiked] = useState(props.tweet?.is_liked);
-  // const [LikedId, setLikedId] = useState(props.tweet?.Liked_id);
+  const [likeCount, setLikeCount] = useState(props.tweet?.like_count);
+  const [isLiked, setIsLiked] = useState(props.tweet?.is_liked);
+  const [LikedId, setLikedId] = useState(props.tweet?.Liked_id);
   const [replyCount, setReplyCount] = useState(props.tweet?.reply_count);
 
   const userId = JSON.parse(
@@ -76,29 +76,38 @@ const TweetItem = (props) => {
     setOpen(false);
   };
 
-  // const handleClickLikeBtn = (event) => {
-  //   setlike(event.currentTarget);
-  //   setIsClosing(true);
-  // };
+  const handleClickLikeBtn = (event) => {
+    setlike(event.currentTarget);
+    setIsClosing(true);
+  };
 
-  // const likeTweet = () => {
-  //   API.like(props.tweet?.id, {'content': null}).then((res) => {
-  //     setIsLiked(true);
-  //     setLikedCount(likedCount+1);
-  //     setLikedId(res.data.id);
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   });
-  // };
+  function like(){
+    console.log(props.tweet.id,);
 
-  // const undolike = () => {
-  //   API.unlike(LikeId).then((res) => {
-  //     setIsLiked(false);
-  //     setLikedCount(LikeCount-1);
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   });
-  // };
+    API.like(props.tweet.id, {'content': null}).then((res) => {
+
+      setIsLiked(true);
+      setLikeCount(likedCount+1);
+      setLikedId(res.data.id);
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+  useEffect(()=>{
+   
+  }, [likeCount]);
+
+
+  function dislike() {
+    console.log('here');
+    API.unlike(props.tweet.id).then((res) => {
+
+      setIsLiked(false);
+      setLikeCount(LikeCount-1);
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
   const handleReply = () => {
     setReplyCount(replyCount+1);
   };
@@ -190,10 +199,10 @@ const TweetItem = (props) => {
         justifyContent="space-around" className="px-3 py-1 fs-12">
         <div>
           <IconButton className="mr-1" >
-            {props.tweet?.is_liked && <FavoriteIcon color="secondary"/>}
-            {!props.tweet?.is_liked && <FavoriteBorderIcon />}
+            {isLiked && <FavoriteIcon name='dislike' color="secondary" onClick={dislike}/>}
+            {!isLiked && <FavoriteBorderIcon name = 'like' onClick={like}></FavoriteBorderIcon>}
           </IconButton>
-          {props.tweet?.like_count}
+          {likeCount}
         </div>
         <div>
           <IconButton className="mr-1" onClick={openReplyModal}>

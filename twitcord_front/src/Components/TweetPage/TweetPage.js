@@ -39,7 +39,7 @@ const TweetPage = () => {
   const [openlikes, setOpenlikes] = useState(false);
   const history = useHistory();
   const [userLikedList, setUserLikedList] = React.useState([{}]);
-
+  const [count, setcount] = useState(0);
   const openReplyModal = () => {
     setOpen(true);
   };
@@ -55,6 +55,18 @@ const TweetPage = () => {
     API.getTweet(params.id).then((res)=> {
       setTweet({...res.data, name: res.data.first_name +
          ' ' + res.data.last_name});
+         API.getUsersLiked({id: res.data.id })
+
+        .then((response) => {
+         setUserLikedList(response.data.results);
+         setcount(response.data.count);
+
+      console.log(results);
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
     }).catch((error)=>{
       setSnackOpen(true);
     });
@@ -93,14 +105,7 @@ const TweetPage = () => {
   };
 
   const handleOpenLikedTweet = () => {
-    API.getUsersLiked({id: tweet.id})
-    .then((response) => {
-      setUserLikedList(response.data.results);
-      console.log(results);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+    
     setOpenlikes(true);
     
   };
@@ -108,6 +113,7 @@ const TweetPage = () => {
   const likebody = (
     <div className="likespaper" >
       <List className="fl-root" >
+        
         {userLikedList.map((postdetail, index) => {
           return (
             <div key={index} >
@@ -254,7 +260,7 @@ const TweetPage = () => {
               className="text-gray">Retweets</Box></Box>
 
             <Box type="userLiked" className="userLiked" onClick={handleOpenLikedTweet}>
-            {tweet.like_count+ '   ' +'likes'}
+            {count+ '   ' +'likes'}
             </Box>
             <Modal
             open={openlikes}

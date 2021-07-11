@@ -224,11 +224,12 @@ export const followingslist = (data) => {
   );
 };
 
-export const like = (data) => {
+export const like = ( id , data) => {
+  
   return request(
       data,
       {},
-      Constants.URL_LIKE,
+      Constants.URL_LIKE.replace('{id}' , id),
       Constants.POST_REQUEST_METHOD,
   );
 };
@@ -237,8 +238,7 @@ export const unlike = (data) => {
   return request(
       data,
       {},
-      {},
-      Constants.URL_UNLIKE,
+      Constants.URL_UNLIKE.replace('{id}' , data),
       Constants.DELETE_REQUEST_METHOD,
   );
 };
