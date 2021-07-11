@@ -112,6 +112,7 @@ const TweetItem = (props) => {
   };
   const handleReply = () => {
     setReplyCount(replyCount+1);
+    handleUpdate();
   };
 
   const tweetClicked = (event) => {
@@ -325,6 +326,7 @@ TweetItem.propTypes = {
   tweet: PropTypes.object,
   isInfoVisable: PropTypes.bool,
   isReply: PropTypes.bool,
+  handleUpdate: PropTypes.func,
 };
 
 TweetItem.defaultProps = {

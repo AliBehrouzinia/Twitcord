@@ -50,6 +50,7 @@ const Profile = () => {
     getLikeList();
   }, [params.id]);
 
+
   return (
     <Box container direction="column" className="w-100 overflow-hidden">
       <Box>
@@ -84,7 +85,8 @@ const Profile = () => {
         {tabSelected == 1 && (
           replys.map((reply)=> (
             <div key={reply.id}>
-              <TweetItem tweet={reply} isReply={true}/>
+              <TweetItem tweet={reply}
+                handleUpdate={getReplyList} isReply={true}/>
               <Divider />
             </div>
           ))
