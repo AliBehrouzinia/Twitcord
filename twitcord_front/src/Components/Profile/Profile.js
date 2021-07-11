@@ -50,6 +50,9 @@ const Profile = () => {
     getLikeList();
   }, [params.id]);
 
+  const doNothing = () => {
+    return;
+  };
 
   return (
     <Box container direction="column" className="w-100 overflow-hidden">
@@ -77,7 +80,7 @@ const Profile = () => {
         {tabSelected == 0 && (
           tweets.map((tweet)=> (
             <div key={tweet.id}>
-              <TweetItem tweet={tweet} />
+              <TweetItem tweet={tweet} handleUpdate={doNothing}/>
               <Divider />
             </div>
           ))
@@ -95,7 +98,7 @@ const Profile = () => {
           likes.map((like)=> (
             <div key={like.id}>
               {console.log(like)}
-              <TweetItem tweet={like.tweet} />
+              <TweetItem tweet={like.tweet} handleUpdate={doNothing}/>
               <Divider />
             </div>
           ))

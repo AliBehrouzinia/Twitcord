@@ -112,7 +112,7 @@ const TweetItem = (props) => {
   };
   const handleReply = () => {
     setReplyCount(replyCount+1);
-    handleUpdate();
+    props.handleUpdate();
   };
 
   const tweetClicked = (event) => {
@@ -167,21 +167,21 @@ const TweetItem = (props) => {
         <Box onClick={goParent} display="flex"
           className="px-3 pt-3 tsi-hover pointer">
           <Box display="flex" alignItems="center" flexDirection="column">
-            <Avatar alt={props.tweet.parent?.username}
-              title={props.tweet.parent?.username}
+            <Avatar alt={props.tweet.parent?.user?.username}
+              title={props.tweet.parent?.user?.username}
               className="tsi-avatar"
               src="/static/images/avatar/1.jpg" />
             <div className="vl mt-2 br-33"></div>
           </Box>
           <div className="ml-2 w-100">
             <Box display="flex" className="lh-20 fs-15">
-              {(props.tweet.parent?.first_name ||
-               props.tweet.parent?.last_name)&&
+              {(props.tweet.parent?.user?.first_name ||
+               props.tweet.parent?.user?.last_name)&&
               (<div className="b-900 mr-2">
-                {(props.tweet.parent?.first_name +
-                   ' ' + props.tweet.parent?.last_name)}</div>)}
+                {(props.tweet.parent?.user?.first_name +
+                   ' ' + props.tweet.parent?.user?.last_name)}</div>)}
               <div className="b-400 text-gray">
-                @{props.tweet.parent?.username} .</div>
+                @{props.tweet.parent?.user?.username} .</div>
               <div className="ml-2 text-gray">
                 {helper.extractTime(props.tweet.parent?.create_date)}</div>
             </Box>
@@ -326,7 +326,7 @@ TweetItem.propTypes = {
   tweet: PropTypes.object,
   isInfoVisable: PropTypes.bool,
   isReply: PropTypes.bool,
-  handleUpdate: PropTypes.func,
+  handleUpdate: PropTypes.func.isRequired,
 };
 
 TweetItem.defaultProps = {
