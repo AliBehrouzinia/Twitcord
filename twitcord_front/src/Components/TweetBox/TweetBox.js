@@ -48,7 +48,9 @@ const TweetBox = () => {
         .then((response) => {
           photoUploadDetails = response.data.tweet_media_upload_details;
           clearTweet();
-          uploadPhoto()
+          if (photoInput != null){
+            uploadPhoto()
+          }
         })
         .catch((error) => {
           setSnackbarAlertMessage(
@@ -69,7 +71,6 @@ const TweetBox = () => {
       photoUploadDetails.bucket_name,
       photoUploadDetails.object_name,
       function(err, presignedUrl) {
-        console.log(presignedUrl)
         API.uploadPhoto({file: media, url: presignedUrl})
         .then(
           res => {
@@ -165,9 +166,10 @@ const TweetBox = () => {
           }}
           ref={(ref) => photoInput = ref}
           style={{display: 'none'}}/>
-        <div className="tb-items-box">
+        <div className="tb-items-box" id="tb_items_container">
           <CharCounter numChar={tweetInfo.tweetCharCount} />
           <AddPhotoAlternateIcon
+            id="add-photo"
             onClick={onAddPhotoClick}
             className="tb-image-icon"/>
         </div>
