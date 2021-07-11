@@ -1,4 +1,4 @@
-/* eslint-disable require-jsdoc */
+/* eslint-disable */
 import React, {useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -90,7 +90,8 @@ const UserSearchItem = (props) => {
         <Grid item xs={6} >
           <div className="usi-avatar-container">
             <Link to={'/profile/'+ props.id}>
-              <Avatar className="usi-avatar" alt="avatar"/>
+              <Avatar className="usi-avatar" alt="avatar" 
+              src={props.profileImg}/>
             </Link>
             <div className="usi-username-container">
               <div className="usi-name-container">
@@ -126,6 +127,7 @@ UserSearchItem.propTypes = {
   id: PropTypes.number,
   isPublic: PropTypes.bool,
   status: PropTypes.string,
+  profileImg: PropTypes.string,
 };
 
 export default UserSearchItem;

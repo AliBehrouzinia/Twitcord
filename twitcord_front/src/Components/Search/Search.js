@@ -30,6 +30,7 @@ const Search = () => {
           followState={user.status}
           isPublic={user.is_public}
           id={user.id}
+          profileImg={user.profile_img}
           status= {user.status}/>
         <Divider />
       </div> : <div></div>,
