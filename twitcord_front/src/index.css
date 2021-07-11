@@ -82,6 +82,10 @@ a {
   font-size: var(--font-size-12) !important;
 }
 
+.h-56 {
+  height: 56px !important;
+}
+
 .fs-13 {
   font-size: var(--font-size-13) !important;
 }
@@ -170,6 +174,15 @@ a {
 .br-3 {
   border-radius: 3px !important;
 }
+
+.border-left-1 {
+  border-left: 1px solid rgb(226, 226, 226);
+}
+
+.border-right-1 {
+  border-right: 1px solid rgb(226, 226, 226);
+}
+
 
 .br-5 {
   border-radius: 5px !important;

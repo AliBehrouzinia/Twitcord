@@ -28,8 +28,10 @@ const TweetPage = () => {
   const [open, setOpen] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
   const history = useHistory();
+  const [replyModel, setReplyModel] = useState({});
 
-  const openReplyModal = () => {
+  const openReplyModal = (tweet) => {
+    setReplyModel(tweet);
     setOpen(true);
   };
 
@@ -58,8 +60,28 @@ const TweetPage = () => {
     window.history.back();
   };
 
-  const goParent = () => {
+  const goParent = (event) => {
+    event.stopPropagation();
+    const links = document.getElementsByTagName('a');
+    const buttons = document.getElementsByTagName('button');
+    for (let i=0; i<links.length; i++) {
+      if (links[i].contains(event.target)) {
+        return;
+      }
+    }
+    for (let i=0; i<buttons.length; i++) {
+      if (buttons[i].contains(event.target)) {
+        return;
+      }
+    }
+    if (open) {
+      return;
+    }
     history.push('/tweet/'+ tweet.parent?.id);
+  };
+
+  const doNothing = () => {
+    return;
   };
 
   return (
@@ -116,7 +138,8 @@ const TweetPage = () => {
                 {tweet.parent?.like_count}
               </div>
               <div>
-                <IconButton className="mr-1" onClick={openReplyModal}>
+                <IconButton className="mr-1"
+                  onClick={()=> openReplyModal(tweet.parent)}>
                   <ChatBubbleOutlineIcon />
                 </IconButton>
                 {tweet.parent?.reply_count}
@@ -188,7 +211,7 @@ const TweetPage = () => {
           <IconButton>
             <FavoriteBorderIcon />
           </IconButton>
-          <IconButton onClick={openReplyModal}>
+          <IconButton onClick={()=> openReplyModal(tweet)}>
             <ChatBubbleOutlineIcon />
           </IconButton>
           <IconButton>
@@ -204,7 +227,8 @@ const TweetPage = () => {
           <Divider />
         </Box>
       ))}
-      <ReplyModal tweet={tweet} open={open} onClose={handleClose} />
+      <ReplyModal tweet={replyModel} open={open} onClose={handleClose}
+        onReply={doNothing}/>
     </div>
   );
 };

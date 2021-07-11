@@ -22,6 +22,7 @@ urlpatterns = [
     path('like/tweet/<int:id>/', views.LikeCreateView.as_view()),
     path('users/like/tweet/<int:id>/', views.UsersLikedTweetListView.as_view()),
     path('tweets/like/user/<int:id>/', views.TweetsLikedListView.as_view()),
+    path('timeline/', views.TimeLineView.as_view()),
     path('tweets/<int:id>/retweet/', views.RetweetView.as_view()),
     path('create/rooms/', views.CreateRoomView.as_view()),
     path('user/<int:id>/rooms/', views.RoomView.as_view()),
@@ -29,5 +30,6 @@ urlpatterns = [
     path('reply/', views.ReplyTweetCreateView.as_view()),
     path('replys/<int:id>/', views.ReplysListView.as_view()),
     path('tweets/<int:id>/family/', views.ShowReplyFamilyView.as_view()),
+    path('rooms/<int:room_id>/messages/', views.RoomMessagesListView.as_view()),
     path('tweets/<int:id>/', views.DeleteTweetView.as_view()),
 ]

@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const ReplyModal = (props) => {
   const [isSubmitting, setSubmitting] = useState(false);
-  const {onClose, open} = props;
+  const {onClose, onReply, open} = props;
   const [tweetInfo, setTweetInfo] = useState('');
   const [snackOpen, setSnackOpen] = useState(false);
 
@@ -63,14 +63,15 @@ export const ReplyModal = (props) => {
 
   const replyTweet = () => {
     const reqData = {content: tweetInfo, parent: props.tweet?.id};
-    console.log(props.tweet);
     if (!isSubmitting) {
       setSubmitting(true);
       API.replyTweet(reqData)
           .then((res) => {
             handleClose();
+            onReply();
           })
           .catch((error) => {
+            console.log(error, 'error');
             setSnackOpen(true);
             setSubmitting(false);
           });
@@ -198,6 +199,7 @@ export const ReplyModal = (props) => {
 };
 
 ReplyModal.propTypes = {
+  onReply: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   tweet: PropTypes.object,
