@@ -486,12 +486,15 @@ class ReplySerializer(serializers.ModelSerializer):
                     result['parent']['retweeted_id'] = get_object_or_404(Tweet, retweet_from__id=obj.id,
                                                                          user_id=self.context['request'].user.id,
                                                                          retweet_from__isnull=False).id
-                result['parent']['is_liked'] = is_liked
-                result['parent']['user_id'] = obj.user.id
-                result['parent']['username'] = obj.user.username
-                result['parent']['first_name'] = obj.user.first_name
-                result['parent']['last_name'] = obj.user.last_name
-                result['parent']['is_public'] = obj.user.is_public
+                result['parent']['user'] = {}
+                result['parent']['user']['is_liked'] = is_liked
+                result['parent']['user']['user_id'] = obj.user.id
+                result['parent']['user']['username'] = obj.user.username
+                result['parent']['user']['first_name'] = obj.user.first_name
+                result['parent']['user']['last_name'] = obj.user.last_name
+                result['parent']['user']['is_public'] = obj.user.is_public
+                result['parent']['user']['profile_img'] = obj.user.profile_img
+                result['parent']['user']['header_img'] = obj.user.header_img
                 result['parent']['like_count'] = len(Like.objects.filter(tweet_id=obj.id))
                 result['parent']['reply_count'] = len(Tweet.objects.filter(parent_id=obj.id))
                 result['parent']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=obj.id))
