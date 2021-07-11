@@ -184,7 +184,9 @@ const TweetItem = (props) => {
             </Link>
           </Box>
         </Box>
-        <img src={props.tweet?.tweet_media} />
+        <div className="ti-media-container">
+          <img className="ti-media" src={props.tweet?.tweet_media}/>
+        </div>
         <Typography className="mt-3 tsi-ml-avatar">
           {props.tweet?.content}
         </Typography>
