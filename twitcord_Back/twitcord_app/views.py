@@ -25,7 +25,7 @@ from django.db.models import Q
 class ProfileDetailsView(generics.RetrieveUpdateAPIView):
     """Get profile details of a user"""
     queryset = models.TwitcordUser.objects.all()
-    permission_classes = [UserIsOwnerOrReadonly]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.ProfileDetailsViewSerializer
     lookup_url_kwarg = 'id'
 
@@ -68,16 +68,28 @@ class ListOfFollowersView(generics.ListAPIView):
 
 class EditFollowingsView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, UserIsOwnerOrReadonly)
-    queryset = models.UserFollowing.objects.all()
     serializer_class = serializers.FollowingsSerializer
-    lookup_url_kwarg = 'id'
+
+    def patch(self, request, *args, **kwargs):
+        following_id = self.kwargs.get('id')
+        following_obj = get_object_or_404(models.UserFollowing, user_id=self.request.user.id,
+                                          following_user_id=following_id)
+        data = {'user': self.request.user.id,
+                'following_user': following_id,
+                'created': following_obj.created,
+                'type': self.request.data['type']
+                }
+        serializer = serializers.FollowingsSerializer(following_obj, data=data, partial=True)
+        if serializer.is_valid(True):
+            serializer.save()
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
         user_id = self.request.user.id
         following_user_id = self.kwargs.get('id')
         instance = get_object_or_404(models.UserFollowing, user_id=user_id, following_user=following_user_id)
         instance.delete()
-        return Response()
+        return Response(data={"status": "not following", "following": "unfollowed"})
 
 
 class FollowingRequestView(generics.CreateAPIView):
@@ -101,13 +113,13 @@ class FollowingRequestView(generics.CreateAPIView):
             serializer = serializers.FollowingsSerializer(data=follow_user_data)
             if serializer.is_valid(True):
                 serializer.save()
-                return Response(data={"status": "Followed", "follow_request_id": None},
+                return Response(data={"status": "following", "follow_request_id": None},
                                 status=status.HTTP_201_CREATED)
         else:
             serializer = serializers.FollowingRequestSerializer(data=data)
             if serializer.is_valid(True):
                 follow_request = serializer.save()
-                return Response(data={"status": "Requested", "follow_request_id": follow_request.id},
+                return Response(data={"status": "pending", "follow_request_id": follow_request.id},
                                 status=status.HTTP_201_CREATED)
 
         return Response(status.HTTP_406_NOT_ACCEPTABLE)
@@ -156,10 +168,11 @@ class DeleteFollowRequestView(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         user = self.request.user.id
+        print(user)
         following = self.kwargs.get('id')
-        instance = models.FollowRequest.objects.filter(request_from_id=user, request_to_id=following)
+        instance = get_object_or_404(models.FollowRequest, request_from_id=user, request_to_id=following)
         instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(data={"status": "not following", "follow_request": "Deleted"})
 
 
 class FollowCountView(generics.ListAPIView):
@@ -252,6 +265,103 @@ class TweetsLikedListView(generics.ListAPIView):
         return models.Like.objects.filter(user=user_id)
 
 
+class TimeLineView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = serializers.TimeLineSerializer
+
+    def get_queryset(self):
+        user = self.request.user.id
+        user_followings = models.UserFollowing.objects.filter(user_id=user)
+        queryset = []
+        for instance in user_followings:
+            queryset.append(instance.following_user)
+        result = self.calculate_threshold(user, queryset)
+        sorted_tweets = sorted(result.items(), key=lambda x: x[1], reverse=True)
+        final_result = []
+        for key, value in sorted_tweets:
+            if value > 50:
+                final_result.append(key)
+        return final_result
+
+    def calculate_threshold(self, user, followings):
+        result = {}
+        tweets = models.Tweet.objects.filter(user_id__in=followings).order_by('create_date')
+        for tweet in tweets:
+            result[tweet] = 100
+        followings_of_own_followings = models.UserFollowing.objects.filter(user_id__in=followings)
+        queryset = []
+        for instance in followings_of_own_followings:
+            queryset.append(instance.following_user)
+        tweets = models.Tweet.objects.filter(user_id__in=queryset).order_by('create_date')
+        for tweet in tweets:
+            result[tweet] = 50
+        liked_tweets_id = []
+        likes = models.Like.objects.filter(user_id__in=followings)
+        for like in likes:
+            liked_tweets_id.append(like.tweet.id)
+        liked_tweets = models.Tweet.objects.filter(pk__in=liked_tweets_id)
+        for tweet in liked_tweets:
+            if tweet in result:
+                result[tweet] += 20
+            else:
+                result[tweet] = 20
+        for tweet in result:
+            tweet_user = tweet.user
+            for user_id in followings:
+                if user_id == tweet_user:
+                    users = models.UserFollowing.objects.filter(Q(user_id=user) & Q(following_user_id=user_id))
+                    type_status = users[0].type
+                    if type_status == models.UserFollowing.FollowingType.FAMILY:
+                        result[tweet] *= 2
+                    elif type_status == models.UserFollowing.FollowingType.CLOSE_FRIEND:
+                        result[tweet] *= 1.5
+                    elif type_status == models.UserFollowing.FollowingType.FRIEND:
+                        result[tweet] *= 1
+                    elif type_status == models.UserFollowing.FollowingType.UNFAMILIAR_PERSON:
+                        result[tweet] *= 0.8
+        list_of_mutual = {}
+        for second_level_user in followings_of_own_followings:
+            mutual_followers = 0
+            for first_level_user in followings:
+                first_cond = models.UserFollowing.objects.filter(user_id=second_level_user.following_user.id,
+                                                                 following_user_id=first_level_user.id).exists()
+                second_cond = models.UserFollowing.objects.filter(user_id=first_level_user.id, following_user_id=
+                second_level_user.following_user.id).exists()
+                if first_cond and second_cond:
+                    mutual_followers += 1
+            list_of_mutual[second_level_user.following_user] = mutual_followers
+        for item in list_of_mutual:
+            user = models.TwitcordUser.objects.filter(email=item)
+            level_two_tweets = models.Tweet.objects.filter(user_id=user[0].id).order_by('create_date')
+            if list_of_mutual[item] < 3:
+                for tweet in level_two_tweets:
+                    result[tweet] = 20
+            elif 3 <= list_of_mutual[item] <= 5:
+                for tweet in level_two_tweets:
+                    result[tweet] = 50
+            elif list_of_mutual[item] > 5:
+                for tweet in level_two_tweets:
+                    result[tweet] = 80
+        return result
+
+
+class RetweetView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = serializers.RetweetSerializer
+
+    def get_queryset(self):
+        tweet_id = self.kwargs.get('id')
+        return models.Tweet.objects.filter(id=tweet_id)
+
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self,
+            "retweet_from": self.kwargs['id']
+        }
+
+
 class CreateRoomView(generics.CreateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, ]
     serializer_class = serializers.CreateRoomSerializer
@@ -301,7 +411,7 @@ class ReplyTweetCreateView(generics.CreateAPIView):
 class ReplysListView(generics.ListAPIView):
     permission_classes = [PrivateAccountUserPermission]
     serializer_class = serializers.ReplySerializer
-    
+
     def get_queryset(self):
         user_id = self.kwargs.get('id')
         return models.Tweet.objects.filter(user_id=user_id, is_reply=True)
@@ -312,3 +422,23 @@ class ShowReplyFamilyView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.ShowReplySerializer
     lookup_url_kwarg = 'id'
+
+
+class RoomMessagesListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated & IsMemberOfRoom]
+    serializer_class = serializers.RoomMessageSerializer
+    pagination_class = paginations.RoomMessagesPagination
+
+    def get_queryset(self):
+        qs = models.RoomMessage.objects.filter(room_id=self.kwargs.get('room_id'))
+        return qs
+
+        
+class DeleteTweetView(generics.DestroyAPIView):
+    serializer_class = serializers.TweetSerializer
+    permission_classes = [IsAuthenticated, DestroyTweetPermission]
+
+    def delete(self, request, *args, **kwargs):
+        tweet = get_object_or_404(models.Tweet, id=self.kwargs['id'])
+        tweet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -14,6 +14,14 @@
   height: 100%;
 }
 
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+.ml--3 {
+  margin-left: -1rem !important;
+}
+
 .w-48 {
   width: 48px !important;
 }

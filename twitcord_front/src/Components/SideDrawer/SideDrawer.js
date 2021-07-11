@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState} from 'react';
 import {useHistory, NavLink} from 'react-router-dom';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import NotificationsRoundedIcon from
@@ -8,7 +8,6 @@ import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import RecordVoiceOverRoundedIcon from
   '@material-ui/icons/RecordVoiceOverRounded';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Typography from '@material-ui/core/Typography';
 import './SideDrawer.css';
 import Avatar from '@material-ui/core/Avatar';
@@ -41,23 +40,19 @@ const SideDrawer = () => {
       icon: <SearchRoundedIcon className="sd-icon" />},
     {id: 4, title: 'Room', route: '/room',
       icon: <RecordVoiceOverRoundedIcon className="sd-icon" />},
-    {id: 5, title: 'Message', route: '/message',
-      icon: <MailOutlineIcon className="sd-icon" />},
   ];
   const dispatch = useDispatch();
   const windowHeight = window['innerHeight'];
   const [anchorEl, setAnchorEl] = useState(null);
 
-  useMemo(
-      () => {
-        if (userGeneralInfo == null || userGeneralInfo.pk == null) {
-          setTimeout(() => {
-            history.push('/login');
-          }, 0);
-        }
-      },
-      [],
-  );
+  // useMemo(
+  //   () => {
+  //       if (userGeneralInfo == null || userGeneralInfo.userID == null){
+  //         history.push('/login')
+  //       }
+  //   },
+  //   []
+  // );
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);

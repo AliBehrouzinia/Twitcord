@@ -7,7 +7,7 @@ class UserIsOwnerOrReadonly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.id == request.user.id
+        return obj.following_user.id == request.user.id
 
 
 class DeleteFollowRequestPermission(permissions.BasePermission):
@@ -75,3 +75,25 @@ class UsersTweetsPermission(permissions.BasePermission):
                 return False
         elif request.method == 'POST':
             return request.user.id == view.kwargs['id']
+
+
+class IsMemberOfRoom(permissions.BasePermission):
+    message = "You can't access to messages of room that you aren't member of that"
+
+    def has_permission(self, request, view):
+        user = request.user
+        room_id = view.kwargs['room_id']
+        room = get_object_or_404(models.Room, id=room_id)
+        if user in room.users.all() or user == room.owner:
+            return True
+        else:
+            return False
+
+class DestroyTweetPermission(permissions.BasePermission):
+    def has_permission(self, request, view):
+        tweet_id = view.kwargs['id']
+        tweet = get_object_or_404(models.Tweet, id=tweet_id)
+        if request.user.id == tweet.user.id:
+            return True
+        else:
+            return False

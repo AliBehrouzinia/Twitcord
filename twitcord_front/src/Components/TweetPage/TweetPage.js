@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
@@ -16,10 +17,18 @@ import * as API from '../../Utils/API/index';
 import * as helper from '../../Utils/helper';
 import './TweetPage.css';
 import {ReplyModal} from '../ReplyModal/ReplyModal';
-import {TweetItem} from '../TweetItem/TweetItem';
+import TweetItem from '../TweetItem/TweetItem.js';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import {Link} from 'react-router-dom';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Typography from '@material-ui/core/Typography';
+import {Modal} from '@material-ui/core';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade'
 
 const TweetPage = () => {
   const params = useParams();
@@ -27,20 +36,41 @@ const TweetPage = () => {
   const [tweet, setTweet] = useState({});
   const [open, setOpen] = useState(false);
   const [snackOpen, setSnackOpen] = useState(false);
+  const [openlikes, setOpenlikes] = useState(false);
   const history = useHistory();
+  const [userLikedList, setUserLikedList] = React.useState([{}]);
+  const [count, setcount] = useState(0);
 
-  const openReplyModal = () => {
+  const [replyModel, setReplyModel] = useState({});
+
+  const openReplyModal = (tweet) => {
+    setReplyModel(tweet);
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+  const handleCloselikes = () => {
+    setOpenlikes(false);
+  };
 
   useEffect(()=>{
     API.getTweet(params.id).then((res)=> {
       setTweet({...res.data, name: res.data.first_name +
          ' ' + res.data.last_name});
+         API.getUsersLiked({id: res.data.id })
+
+        .then((response) => {
+         setUserLikedList(response.data.results);
+         setcount(response.data.count);
+
+      console.log(results);
+
+    })
+    .catch((error) => {
+      console.log(error);
+    });
     }).catch((error)=>{
       setSnackOpen(true);
     });
@@ -58,8 +88,64 @@ const TweetPage = () => {
     window.history.back();
   };
 
-  const goParent = () => {
+  const goParent = (event) => {
+    event.stopPropagation();
+    const links = document.getElementsByTagName('a');
+    const buttons = document.getElementsByTagName('button');
+    for (let i=0; i<links.length; i++) {
+      if (links[i].contains(event.target)) {
+        return;
+      }
+    }
+    for (let i=0; i<buttons.length; i++) {
+      if (buttons[i].contains(event.target)) {
+        return;
+      }
+    }
+    if (open) {
+      return;
+    }
     history.push('/tweet/'+ tweet.parent?.id);
+  };
+
+  const handleOpenLikedTweet = () => {
+    
+    setOpenlikes(true);
+    
+  };
+  console.log(tweet);
+  const likebody = (
+    <div className="likespaper" >
+      <List className="fl-root" >
+        
+        {userLikedList.map((postdetail, index) => {
+          return (
+            <div key={index} >
+              <ListItem alignItems="flex-start" >
+                <ListItemAvatar>  
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={postdetail.username}
+                  secondary={
+                    <React.Fragment>
+                      <Typography component="span" variant="body2" className="fl-inline" color="textPrimary" >
+                        {postdetail.first_name+postdetail.last_name}
+                      </Typography>
+                      {' — ' + postdetail.type + '\n' + postdetail.email}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+              <Divider variant="inset" component="li" />
+            </div>
+          );
+        })}
+      </List>
+    </div>
+  );
+  const doNothing = () => {
+    return;
   };
 
   return (
@@ -116,7 +202,8 @@ const TweetPage = () => {
                 {tweet.parent?.like_count}
               </div>
               <div>
-                <IconButton className="mr-1" onClick={openReplyModal}>
+                <IconButton className="mr-1"
+                  onClick={()=> openReplyModal(tweet.parent)}>
                   <ChatBubbleOutlineIcon />
                 </IconButton>
                 {tweet.parent?.reply_count}
@@ -179,8 +266,24 @@ const TweetPage = () => {
           <Box display="flex" className="py-3">
             <Box>{0} <Box component="span"
               className="text-gray">Retweets</Box></Box>
-            <Box className="ml-5">{0} <Box component="span"
-              className="text-gray">likes</Box></Box>
+
+            <Box type="userLiked" className="userLiked" onClick={handleOpenLikedTweet}>
+            {count+ '   ' +'likes'}
+            </Box>
+            <Modal
+            open={openlikes}
+            onClose={handleCloselikes}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="sim"
+            BackdropComponent={Backdrop}
+            className="modal"
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={openlikes}>{likebody}</Fade>
+          </Modal>
+          
           </Box>
         </Box>
         <Box className="px-3"><Divider /></Box>
@@ -188,7 +291,7 @@ const TweetPage = () => {
           <IconButton>
             <FavoriteBorderIcon />
           </IconButton>
-          <IconButton onClick={openReplyModal}>
+          <IconButton onClick={()=> openReplyModal(tweet)}>
             <ChatBubbleOutlineIcon />
           </IconButton>
           <IconButton>
@@ -204,7 +307,8 @@ const TweetPage = () => {
           <Divider />
         </Box>
       ))}
-      <ReplyModal tweet={tweet} open={open} onClose={handleClose} />
+      <ReplyModal tweet={replyModel} open={open} onClose={handleClose}
+        onReply={doNothing}/>
     </div>
   );
 };

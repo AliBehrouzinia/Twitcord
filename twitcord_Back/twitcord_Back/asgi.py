@@ -13,13 +13,14 @@ from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 import chat.routing
+from chat.token_auth import TokenAuthMiddlewareStack
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'twitcord_Back.settings')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": AuthMiddlewareStack(
+    "websocket": TokenAuthMiddlewareStack(
         URLRouter(
             chat.routing.websocket_urlpatterns
         )

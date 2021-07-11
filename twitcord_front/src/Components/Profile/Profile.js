@@ -8,7 +8,7 @@ import {useParams} from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import * as API from '../../Utils/API/index';
-import {TweetItem} from '../TweetItem/TweetItem';
+import TweetItem from '../TweetItem/TweetItem.js';
 import RoomList from '../Room/RoomList/RoomList';
 
 const Profile = () => {
@@ -16,6 +16,7 @@ const Profile = () => {
   const [tabSelected, setSelectedTab] = useState(0);
   const [replys, setReplys] = useState([]);
   const [tweets, setTweets] = useState([]);
+  const [likes, setLikes] = useState([]);
 
 
   const handleChange = (event, selectedTab) => {
@@ -24,14 +25,21 @@ const Profile = () => {
 
   const getTweets = () => {
     API.getTweetList(params.id).then((res)=> {
-      setTweets(res.data);
+      setTweets(res.data.reverse());
     }).catch((error)=> {
     });
   };
 
   const getReplyList = () => {
     API.getReplyList(params.id).then((res)=> {
-      setReplys(res.data.results);
+      setReplys(res.data.results.reverse());
+    }).catch((error)=>{
+    });
+  };
+
+  const getLikeList = () => {
+    API.getLikeList(params.id).then((res)=> {
+      setLikes(res.data.results.reverse());
     }).catch((error)=>{
     });
   };
@@ -39,7 +47,8 @@ const Profile = () => {
   useEffect(()=>{
     getReplyList();
     getTweets();
-  }, []);
+    getLikeList();
+  }, [params.id]);
 
   return (
     <Box container direction="column" className="w-100 overflow-hidden">
@@ -80,7 +89,15 @@ const Profile = () => {
             </div>
           ))
         ) }
-        {tabSelected == 2 && <p>likes</p> }
+        {tabSelected == 2 && (
+          likes.map((like)=> (
+            <div key={like.id}>
+              {console.log(like)}
+              <TweetItem tweet={like.tweet} />
+              <Divider />
+            </div>
+          ))
+        )}
         {tabSelected == 3 && <RoomList self /> }
       </Box>
     </Box>
