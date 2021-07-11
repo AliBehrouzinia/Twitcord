@@ -33,6 +33,7 @@ const TweetItem = (props) => {
   // const [likeCount, setLikeCount] = useState(props.tweet?.like_count);
   // const [isLiked, setIsLiked] = useState(props.tweet?.is_liked);
   // const [LikedId, setLikedId] = useState(props.tweet?.Liked_id);
+  const [replyCount, setReplyCount] = useState(props.tweet?.reply_count);
 
   const userId = JSON.parse(
       localStorage.getItem(Constants.GENERAL_USER_INFO),
@@ -98,6 +99,9 @@ const TweetItem = (props) => {
   //     console.log(error);
   //   });
   // };
+  const handleReply = () => {
+    setReplyCount(replyCount+1);
+  };
 
   const tweetClicked = (event) => {
     event.stopPropagation();
@@ -195,7 +199,7 @@ const TweetItem = (props) => {
           <IconButton className="mr-1" onClick={openReplyModal}>
             <ChatBubbleOutlineIcon />
           </IconButton>
-          {props.tweet?.reply_count}
+          {replyCount}
         </div>
         <div>
           <IconButton className="mr-1" >
@@ -227,7 +231,8 @@ const TweetItem = (props) => {
           {retweetCount}
         </div>
       </Box>}
-      <ReplyModal tweet={props.tweet} open={open} onClose={handleClose} />
+      <ReplyModal tweet={props.tweet} open={open}
+        onClose={handleClose} onReply={handleReply} />
     </div>
   );
 };

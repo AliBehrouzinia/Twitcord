@@ -265,6 +265,86 @@ class TweetsLikedListView(generics.ListAPIView):
         return models.Like.objects.filter(user=user_id)
 
 
+class TimeLineView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated, ]
+    serializer_class = serializers.TimeLineSerializer
+
+    def get_queryset(self):
+        user = self.request.user.id
+        user_followings = models.UserFollowing.objects.filter(user_id=user)
+        queryset = []
+        for instance in user_followings:
+            queryset.append(instance.following_user)
+        result = self.calculate_threshold(user, queryset)
+        sorted_tweets = sorted(result.items(), key=lambda x: x[1], reverse=True)
+        final_result = []
+        for key, value in sorted_tweets:
+            if value > 50:
+                final_result.append(key)
+        return final_result
+
+    def calculate_threshold(self, user, followings):
+        result = {}
+        tweets = models.Tweet.objects.filter(user_id__in=followings).order_by('create_date')
+        for tweet in tweets:
+            result[tweet] = 100
+        followings_of_own_followings = models.UserFollowing.objects.filter(user_id__in=followings)
+        queryset = []
+        for instance in followings_of_own_followings:
+            queryset.append(instance.following_user)
+        tweets = models.Tweet.objects.filter(user_id__in=queryset).order_by('create_date')
+        for tweet in tweets:
+            result[tweet] = 50
+        liked_tweets_id = []
+        likes = models.Like.objects.filter(user_id__in=followings)
+        for like in likes:
+            liked_tweets_id.append(like.tweet.id)
+        liked_tweets = models.Tweet.objects.filter(pk__in=liked_tweets_id)
+        for tweet in liked_tweets:
+            if tweet in result:
+                result[tweet] += 20
+            else:
+                result[tweet] = 20
+        for tweet in result:
+            tweet_user = tweet.user
+            for user_id in followings:
+                if user_id == tweet_user:
+                    users = models.UserFollowing.objects.filter(Q(user_id=user) & Q(following_user_id=user_id))
+                    type_status = users[0].type
+                    if type_status == models.UserFollowing.FollowingType.FAMILY:
+                        result[tweet] *= 2
+                    elif type_status == models.UserFollowing.FollowingType.CLOSE_FRIEND:
+                        result[tweet] *= 1.5
+                    elif type_status == models.UserFollowing.FollowingType.FRIEND:
+                        result[tweet] *= 1
+                    elif type_status == models.UserFollowing.FollowingType.UNFAMILIAR_PERSON:
+                        result[tweet] *= 0.8
+        list_of_mutual = {}
+        for second_level_user in followings_of_own_followings:
+            mutual_followers = 0
+            for first_level_user in followings:
+                first_cond = models.UserFollowing.objects.filter(user_id=second_level_user.following_user.id,
+                                                                 following_user_id=first_level_user.id).exists()
+                second_cond = models.UserFollowing.objects.filter(user_id=first_level_user.id, following_user_id=
+                second_level_user.following_user.id).exists()
+                if first_cond and second_cond:
+                    mutual_followers += 1
+            list_of_mutual[second_level_user.following_user] = mutual_followers
+        for item in list_of_mutual:
+            user = models.TwitcordUser.objects.filter(email=item)
+            level_two_tweets = models.Tweet.objects.filter(user_id=user[0].id).order_by('create_date')
+            if list_of_mutual[item] < 3:
+                for tweet in level_two_tweets:
+                    result[tweet] = 20
+            elif 3 <= list_of_mutual[item] <= 5:
+                for tweet in level_two_tweets:
+                    result[tweet] = 50
+            elif list_of_mutual[item] > 5:
+                for tweet in level_two_tweets:
+                    result[tweet] = 80
+        return result
+
+
 class RetweetView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated, ]
     serializer_class = serializers.RetweetSerializer
@@ -344,6 +424,16 @@ class ShowReplyFamilyView(generics.RetrieveAPIView):
     lookup_url_kwarg = 'id'
 
 
+class RoomMessagesListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated & IsMemberOfRoom]
+    serializer_class = serializers.RoomMessageSerializer
+    pagination_class = paginations.RoomMessagesPagination
+
+    def get_queryset(self):
+        qs = models.RoomMessage.objects.filter(room_id=self.kwargs.get('room_id'))
+        return qs
+
+        
 class DeleteTweetView(generics.DestroyAPIView):
     serializer_class = serializers.TweetSerializer
     permission_classes = [IsAuthenticated, DestroyTweetPermission]
