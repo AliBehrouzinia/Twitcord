@@ -19,7 +19,6 @@ import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 // import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import RecordVoiceOverRoundedIcon from
   '@material-ui/icons/RecordVoiceOverRounded';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import * as Constants from '../../Utils/Constants';
 import {Link} from 'react-router-dom';
 
@@ -47,8 +46,6 @@ const MobileNavbar = () => {
       icon: <SearchRoundedIcon />},
     {id: 4, title: 'Room', route: '/room',
       icon: <RecordVoiceOverRoundedIcon />},
-    {id: 5, title: 'Message', route: '/message',
-      icon: <MailOutlineIcon />},
   ];
 
   return (
