@@ -537,7 +537,7 @@ class ShowReplySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tweet
-        fields = ['id', 'parent', 'retweet_from', 'user']
+        fields = ['id', 'parent', 'retweet_from', 'user', 'tweet_media']
 
     def to_representation(self, instance):
         result = super(ShowReplySerializer, self).to_representation(instance)
