@@ -125,7 +125,7 @@ console.log(ChatMessages);
           <Typography className="group_members">{RoomInfo.number_of_members} members</Typography>
         </Grid>
         <Grid className="back_arrow">
-          <Button onClick={onRoomClick}>
+          <Button onClick={onRoomClick} >
           <ArrowBackIosIcon/>
           </Button>
         </Grid>

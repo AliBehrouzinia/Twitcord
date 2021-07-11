@@ -5,7 +5,7 @@
     display: flex;
     position: relative;
     justify-content: center;
-    background-color: rgba(228, 228, 228, 0.329);
+    background-color: rgba(172, 172, 173, 0.11);
 }
 .info_pic{
     position: absolute;
@@ -41,11 +41,11 @@
   .msg_cotainer {
     font-size:15px ;
 		margin-left: 10px;
-		background-color: #dde1e29a;
+		background-color: rgba(178, 198, 236, 0.226);
     border-radius: 10px;
     padding-left: 1%;
     padding-right: 1%;
-    max-width: 70%;
+    max-width: 60%;
     min-width: 10%;
     position: relative;
     overflow-wrap: break-word;
@@ -57,7 +57,7 @@
     border-radius: 10px;
     padding-left: 1%;
     padding-right: 1%;
-    max-width: 70%;
+    max-width: 60vh;
     min-width: 10%;
 		position: relative;
     color: white;
@@ -89,6 +89,7 @@
   }
   .type_msg {
     border-top: 1px solid #c4c4c4;
+    border-right: 0.2px solid #dddcdc;
     background-color: white;
     bottom: 0px;
     display: flex;
