@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+/* eslint-disable  */
+import React, {useEffect,useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import {Icon} from '@material-ui/core';
@@ -29,6 +30,9 @@ const TweetItem = (props) => {
   const [retweetCount, setRetweetCount] = useState(props.tweet?.retweet_count);
   const [isRetweeted, setIsRetweeted] = useState(props.tweet?.is_retweeted);
   const [retweetedId, setRetweetedId] = useState(props.tweet?.retweeted_id);
+  const [likeCount, setLikeCount] = useState(props.tweet?.like_count);
+  const [isLiked, setIsLiked] = useState(props.tweet?.is_liked);
+  const [LikedId, setLikedId] = useState(props.tweet?.Liked_id);
   const [replyCount, setReplyCount] = useState(props.tweet?.reply_count);
   const [replyModel, setReplyModel] = useState({});
 
@@ -74,6 +78,38 @@ const TweetItem = (props) => {
     setOpen(false);
   };
 
+  const handleClickLikeBtn = (event) => {
+    setlike(event.currentTarget);
+    setIsClosing(true);
+  };
+
+  function like(){
+    console.log(props.tweet.id,);
+
+    API.like(props.tweet.id, {'content': null}).then((res) => {
+
+      setIsLiked(true);
+      setLikeCount(likedCount+1);
+      setLikedId(res.data.id);
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
+  useEffect(()=>{
+   
+  }, [likeCount]);
+
+
+  function dislike() {
+    console.log('here');
+    API.unlike(props.tweet.id).then((res) => {
+
+      setIsLiked(false);
+      setLikeCount(LikeCount-1);
+    }).catch((error) => {
+      console.log(error);
+    });
+  };
   const handleReply = () => {
     setReplyCount(replyCount+1);
   };
@@ -236,11 +272,11 @@ const TweetItem = (props) => {
       <Box display="flex"
         justifyContent="space-around" className="px-3 py-1 fs-12">
         <div>
-          <IconButton className="mr-1">
-            {props.tweet?.is_liked && <FavoriteIcon color="secondary"/>}
-            {!props.tweet?.is_liked && <FavoriteBorderIcon />}
+          <IconButton className="mr-1" >
+            {isLiked && <FavoriteIcon name='dislike' color="secondary" onClick={dislike}/>}
+            {!isLiked && <FavoriteBorderIcon name = 'like' onClick={like}></FavoriteBorderIcon>}
           </IconButton>
-          {props.tweet?.like_count}
+          {likeCount}
         </div>
         <div>
           <IconButton className="mr-1"
@@ -250,8 +286,8 @@ const TweetItem = (props) => {
           {replyCount}
         </div>
         <div>
-          <IconButton className="mr-1" onClick={handleClickRetweetBtn}>
-            {isRetweeted && <CachedIcon color="primary"/>}
+          <IconButton className="mr-1" >
+            {isRetweeted && <CachedIcon color="primary" onClick={handleClickRetweetBtn}/>}
             {!isRetweeted && <CachedIcon/>}
           </IconButton>
           <Menu

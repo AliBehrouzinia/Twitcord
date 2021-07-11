@@ -8,7 +8,6 @@ import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import RecordVoiceOverRoundedIcon from
   '@material-ui/icons/RecordVoiceOverRounded';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import Typography from '@material-ui/core/Typography';
 import './SideDrawer.css';
 import Avatar from '@material-ui/core/Avatar';
@@ -41,8 +40,6 @@ const SideDrawer = () => {
       icon: <SearchRoundedIcon className="sd-icon" />},
     {id: 4, title: 'Room', route: '/room',
       icon: <RecordVoiceOverRoundedIcon className="sd-icon" />},
-    {id: 5, title: 'Message', route: '/message',
-      icon: <MailOutlineIcon className="sd-icon" />},
   ];
   const dispatch = useDispatch();
   const windowHeight = window['innerHeight'];

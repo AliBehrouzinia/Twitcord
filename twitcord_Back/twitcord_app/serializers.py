@@ -6,6 +6,7 @@ from rest_auth.registration.serializers import RegisterSerializer
 
 from .models import *
 from .models import TwitcordUser
+from django.shortcuts import get_object_or_404
 
 
 class RegistrationSerializer(RegisterSerializer):
@@ -334,6 +335,19 @@ class TweetsLikedListSerializer(serializers.ModelSerializer):
         model = Like
         fields = '__all__'
 
+    def to_representation(self, instance):
+        result = super(TweetsLikedListSerializer, self).to_representation(instance)
+        print(result['tweet'])
+        tweet = instance.tweet
+        result['tweet']['username'] = tweet.user.username
+        result['tweet']['first_name'] = tweet.user.first_name
+        result['tweet']['last_name'] = tweet.user.last_name
+        result['tweet']['is_public'] = tweet.user.is_public
+        result['tweet']['like_count'] = len(Like.objects.filter(tweet_id=tweet.id))
+        result['tweet']['reply_count'] = len(Tweet.objects.filter(parent_id=tweet.id))
+        result['tweet']['retweet_count'] = len(Tweet.objects.filter(retweet_from_id=tweet.id))
+        return result
+
 
 class TimeLineSerializer(serializers.ModelSerializer):
     parent = TweetSerializer(read_only=True)
@@ -347,6 +361,9 @@ class TimeLineSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         result = super(TimeLineSerializer, self).to_representation(instance)
         is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
+        is_retweeted = Tweet.objects.filter(retweet_from__id=instance.id, user_id=self.context['request'].user.id,
+                                            retweet_from__isnull=False).exists()
+        result['is_retweeted'] = is_retweeted
         result['is_liked'] = is_liked
         result['id'] = instance.id
         result['like_count'] = len(Like.objects.filter(tweet_id=instance.id))
@@ -443,17 +460,6 @@ class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Tweet
         fields = '__all__'
-
-    def to_representation(self, instance):
-        result = super(ReplySerializer, self).to_representation(instance)
-        user = instance.user
-        is_liked = Like.objects.filter(user_id=self.context['request'].user.id, tweet=instance.id).exists()
-        result['is_liked'] = is_liked
-        result['id'] = instance.id
-        result['user_id'] = result.pop('user')
-        result['username'] = user.username
-        result['first_name'] = user.first_name
-        return result
 
     def to_internal_value(self, data):
         data['user'] = self.context['request'].user.id

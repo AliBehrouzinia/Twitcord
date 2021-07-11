@@ -224,6 +224,43 @@ export const followingslist = (data) => {
   );
 };
 
+export const like = ( id , data) => {
+  
+  return request(
+      data,
+      {},
+      Constants.URL_LIKE.replace('{id}' , id),
+      Constants.POST_REQUEST_METHOD,
+  );
+};
+
+export const unlike = (data) => {
+  return request(
+      data,
+      {},
+      Constants.URL_UNLIKE.replace('{id}' , data),
+      Constants.DELETE_REQUEST_METHOD,
+  );
+};
+
+export const getLikeList = (id) => {
+  return request(
+      {},
+      {},
+      Constants.URL_LIKES.replace('{id}', id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
+export const getUsersLiked = (data) => {
+  return request(
+      {},
+      {},
+      Constants.URL_USERS_LIKED.replace('{id}', data.id),
+      Constants.GET_REQUEST_METHOD,
+  );
+};
+
 export const getFollowRequests = (data) => {
   return request(
       data,

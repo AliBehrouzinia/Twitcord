@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-import './Follow.css';
 import React, {useEffect} from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,24 +8,17 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import * as API from '../../Utils/API/index';
-// import * as Constants from '../../Utils/Constants.js';
-
 import {useSelector} from 'react-redux';
 
 /* eslint-disable require-jsdoc */
-const Followers = () => {
-  // let profileId = -1;
+const UserLiked = () => {
   const profileInfo = useSelector((state) => state).tweet.profileInfo;
-  // const userGeneralInfo = JSON.parse(localStorage.getItem(Constants.GENERAL_USER_INFO));
-  // if (userGeneralInfo != null) {
-  //   profileId = userGeneralInfo.pk;
-  // }
-  const [FollowList, setFollowList] = React.useState([{}]);
+  const [UserLikedList, setUserLikedList] = React.useState([{}]);
 
   useEffect(() => {
-    API.followerslist({id: profileInfo.id})
+    API.getUsersLiked({id: profileInfo.id})
         .then((response) => {
-          setFollowList(response.data.results);
+          setUserLikedList(response.data.results);
         })
         .catch((error) => {
           console.log(error);
@@ -34,7 +26,7 @@ const Followers = () => {
   }, []);
   return (
     <List className="fl-root" >
-      {FollowList.map((postdetail, index) => {
+      {UserLikedList.map((postdetail, index) => {
         return (
           <div key={index} >
             <ListItem alignItems="flex-start" >
@@ -60,4 +52,4 @@ const Followers = () => {
     </List>
   );
 };
-export default Followers;
+export default UserLiked;
