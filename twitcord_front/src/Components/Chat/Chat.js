@@ -3,17 +3,17 @@
 /* eslint-disable require-jsdoc */
 /* eslint-disable max-len */
 /* eslint-disable */
-
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import {Send} from '@material-ui/icons';
 import Avatar from '@material-ui/core/Avatar';
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import './Chat.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import {Grid, Typography} from '@material-ui/core';
+import {Button, Grid, Typography} from '@material-ui/core';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import * as API from '../../Utils/API/index';
 import * as Constants from '../../Utils/Constants'
-import {useParams} from 'react-router-dom';
+import {useParams, useHistory} from 'react-router-dom';
 
 let chatSocket = null;
 let messages = []
@@ -22,11 +22,27 @@ const Chat = () => {
   const params = useParams();
   const [ChatMessages, setChatMessages] = React.useState([{}]);
   const [RoomInfo, setRoomInfo] = React.useState([{}]);
+  const divRef = useRef(null);
   const counter = 1;
+  const monthNumberToLabelMap = {
+    [1]: 'January',
+    [2]: 'February',
+    [3]: 'March',
+    [4]: 'April',
+    [5]: 'May',
+    [6]: 'June',
+    [7]: 'July',
+    [8]: 'August',
+    [9]: 'September',
+    [10]: 'October',
+    [11]: 'November',
+    [12]: 'December',
+  };
   let count = 0;
   let input = null
   for (let k in RoomInfo.members) if (RoomInfo.members.hasOwnProperty(k)) count++;
-
+  
+  const history = useHistory();
   const initWebSocket = () => {
     chatSocket = new WebSocket(
       'ws://127.0.0.1:8000/ws/chat/' + params.id + '/' +'?token='+localStorage.getItem('token')
@@ -42,6 +58,9 @@ const Chat = () => {
   if (chatSocket == null){
     initWebSocket()
   }
+ function onRoomClick(){
+  history.push('/room');
+ }
 
   useEffect(() => {  
     API.getmessages({id: params.id , page: 1})
@@ -59,7 +78,8 @@ const Chat = () => {
         .catch((error) => {
           console.log(error);
         });
-  }, []);
+        divRef.current.scrollIntoView();    
+  }, [messages]);
 
   function fetchMoreData(c) {
     API.getmessages({id: params.id, page: c})
@@ -70,7 +90,13 @@ const Chat = () => {
           console.log(error);
         });
       }
-
+      function addZero(i) {
+        if (i < 10) {
+          i = "0" + i;
+        }
+        return i;
+      } 
+console.log(ChatMessages);
   const onSendClick = () => {
     if (chatSocket == null){
       initWebSocket()
@@ -88,15 +114,18 @@ const Chat = () => {
     <div className="mesgs" style={{fontFamily: 'BZar'}}>
       <Grid className= "group_info">
         <Grid className="info_pic">
-          <Avatar className="ch_avatar" />
+          {RoomInfo.room_img != null ?(<image className="ch_avatar" src={RoomInfo.room_img}/>):
+          (<Avatar className="ch_avatar"  />)}
+          
         </Grid>
         <Grid className="info">
           <Typography className="group_name"> {RoomInfo.title}</Typography>
           <Typography className="group_members">{RoomInfo.number_of_members} members</Typography>
         </Grid>
         <Grid className="back_arrow">
+          <Button onClick={onRoomClick} >
           <ArrowBackIosIcon/>
-          <Typography>rooms</Typography>
+          </Button>
         </Grid>
       </Grid>
 
@@ -104,65 +133,66 @@ const Chat = () => {
         dataLength={ChatMessages.length}
         next={fetchMoreData(counter + 1)}
         loader={<h4>Loading...</h4>}
-        // endMessage={
-        //   <p style={{textAlign: 'center'}}>
-        //     <b>Yay! You have seen it all</b>
-        //   </p>
-        // }
       >
         <div className="msg_history">
           {ChatMessages.map((postdetail, index) => {
+            const date = new Date(postdetail.created_at);
+            const hour = addZero( date.getHours());
+            const month = date.getMonth() + 1;
+            const dt = date.getDate();
+            const minute =addZero(date.getMinutes());
             return (
-              <div key={index}>
+              <div key={index} >
                 {!postdetail.is_sent_by_me ? (
-                  <div className="incoming_msg">
-                    {console.log('here')}
-                    {console.log(postdetail.content)}
-                    <div className="incoming_msg_img">
-                      <Avatar src={Avatar}alt="sunil" />
-                      {/* <img src={avatar} alt="sunil" /> */}
+                  <div class="d-flex justify-content-start mb-4 msg_card">
+                    <div class="img_cont_msg">
+                      <Avatar src={postdetail?.sender?.profile_img} alt="sunil" />
                     </div>
-                    <div className="received_msg">
-                      <div className="received_withd_msg">
-                        <p>{postdetail.content}</p>
-                        {/* <span class="time_date"> ساعت | تاریخ</span> */}
-                      </div>
+                    <div class="msg_cotainer">
+                      <div className="msg_name">{postdetail?.sender?.first_name}</div>
+                      <div className="content">{postdetail.content}</div>
+                      <span class="msg_time"> {' ' + dt + ' ' +
+                                               monthNumberToLabelMap[month] +
+                                               ' ' + hour +':'+minute}
+                      </span>
                     </div>
-                  </div>
+                </div>
                 ) : (
-                  <div className="outgoing_msg">
-                    <div className="sent_msg">
-                      <p>{postdetail.content}</p>
-                      <div/>
-                      {/* <span class="time_date"> 11:01 AM | Today</span>{" "} */}
+                  <div class="d-flex justify-content-end mb-4 msg_card">
+                    <div class="msg_cotainer_send">
+                      <div className="content">{postdetail.content}</div>
+                      <span class="msg_time"> {' ' + dt + ' ' +
+                                               monthNumberToLabelMap[month] +
+                                               ' ' + hour +':'+minute}
+                      </span>
                     </div>
-                  </div>
+                </div>
                 )}
-
+                
               </div>
             );
           }).reverse()}
+          <div ref={divRef} />
         </div>
       </InfiniteScroll>
-
-
-        <div className="type_msg">
-          <div className="input_msg_write">
-            <input
+        <div className="type_msg">   
+            <TextareaAutosize
               id="current_message"
-              className="right"
-              placeholder=" ...بنویسید"
+              className="input-text"
+              rowsMin={Constants.TWEET_BOX_ROW_MIN}
+              rowsMax={Constants.TWEET_BOX_ROW_MAX}
+              placeholder="anything you want to say ?..."
               name="current_message"
               autoComplete="off"
               onChange={e => onInputChange(e.target.value)}
             />
-          </div>
           <button
           onClick={onSendClick}
           className="msg_send_btn">
             <Send />
           </button>
         </div>
+        
     </div>
   );
 };
