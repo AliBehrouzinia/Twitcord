@@ -31,6 +31,19 @@
   padding-left: calc(60px + .5rem) !important;
 }
 
+.ti-media{
+  max-height: 500px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+.ti-media-container{
+  position: relative;
+  margin-right: 30px;
+  margin-top: 20px;
+}
+
 .tsi-name-container {
   display: flex;
   align-items: center;

@@ -228,7 +228,7 @@ const TweetItem = (props) => {
          'm-0 w-100 p-3'}>
         <Box display="flex">
           <Link to={'/profile/' + props.tweet?.user?.id}>
-            <Avatar className="tsi-avatar" alt="avatar"/>
+            <Avatar className="tsi-avatar" alt="avatar" src={props.tweet?.user?.profile_img}/>
           </Link>
           <Box className="ml-2">
             <Box display="flex" alignItems="center">
@@ -259,6 +259,9 @@ const TweetItem = (props) => {
             </Link>
           </Box>
         </Box>
+        <div className="ti-media-container">
+          <img className="ti-media" src={props.tweet?.tweet_media}/>
+        </div>
         <Typography className="mt-3 tsi-ml-avatar">
           {props.tweet?.content}
         </Typography>

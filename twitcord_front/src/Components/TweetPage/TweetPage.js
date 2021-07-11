@@ -258,6 +258,7 @@ const TweetPage = () => {
             </Link>
           </div>}
           <Box className="mt-3">
+          <img className="ti-media" src={tweet?.tweet_media}/>
             {tweet.content}
           </Box>
           <Box className="mt-4 text-gray fs-14">
