@@ -46,11 +46,13 @@ export const extractTime = (dateString) => {
   const diffMins =dhmResult[2];
   if (diffHours < 1 && diffDays < 1 && diffMins > 0) {
     showingDate = diffMins + ' m';
+    return showingDate;
   }
   if (diffDays < 1 && diffHours > 0) {
     showingDate = diffHours + ' h';
+    return showingDate;
   }
-  if (date.getDate() < currentDate.getDate()) {
+  if (date.getTime() < currentDate.getTime()) {
     showingDate = date.getFullYear() +
     ' ' + ( monthNumberToLabelMap[date.getMonth() + 1] ) +
     ' ' + date.getDate();

@@ -39,7 +39,7 @@ const Profile = () => {
   useEffect(()=>{
     getReplyList();
     getTweets();
-  }, []);
+  }, [params.id]);
 
   return (
     <Box container direction="column" className="w-100 overflow-hidden">
