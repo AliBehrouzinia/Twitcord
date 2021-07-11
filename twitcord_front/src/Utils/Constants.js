@@ -21,7 +21,6 @@ export const URL_LOG_IN = '/rest-auth/login/';
 export const URL_SEARCH_USER = '/search/user/';
 export const URL_SEARCH_TWEET = '/search/tweet/';
 export const URL_PROFILE_INFO = '/profile/{id}/header/';
-export const URL_USER_GENERAL_INFO = '/rest-auth/user/';
 export const URL_LIKE= '/like/tweet/{id}/';
 export const URL_UNLIKE= '/like/tweet/{id}/';
 export const URL_LIKES= '/tweets/like/user/{id}/';

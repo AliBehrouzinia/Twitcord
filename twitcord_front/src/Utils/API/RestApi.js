@@ -235,7 +235,7 @@ export const getUsersLiked = (data) => {
   return request(
       {},
       {},
-      Constants.URL_LIKES.replace('{id}', data.id),
+      Constants.URL_USERS_LIKED.replace('{id}', data.id),
       Constants.GET_REQUEST_METHOD,
   );
 };

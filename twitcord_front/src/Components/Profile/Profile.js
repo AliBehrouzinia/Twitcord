@@ -25,21 +25,21 @@ const Profile = () => {
 
   const getTweets = () => {
     API.getTweetList(params.id).then((res)=> {
-      setTweets(res.data);
+      setTweets(res.data.reverse());
     }).catch((error)=> {
     });
   };
 
   const getReplyList = () => {
     API.getReplyList(params.id).then((res)=> {
-      setReplys(res.data.results);
+      setReplys(res.data.results.reverse());
     }).catch((error)=>{
     });
   };
 
   const getLikeList = () => {
     API.getLikeList(params.id).then((res)=> {
-      setLikes(res.data.results);
+      setLikes(res.data.results.reverse());
     }).catch((error)=>{
     });
   };
@@ -92,7 +92,8 @@ const Profile = () => {
         {tabSelected == 2 && (
           likes.map((like)=> (
             <div key={like.id}>
-              <TweetItem tweet={like} />
+              {console.log(like)}
+              <TweetItem tweet={like.tweet} />
               <Divider />
             </div>
           ))
