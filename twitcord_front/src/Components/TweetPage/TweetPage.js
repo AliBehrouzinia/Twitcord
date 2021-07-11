@@ -58,7 +58,23 @@ const TweetPage = () => {
     window.history.back();
   };
 
-  const goParent = () => {
+  const goParent = (event) => {
+    event.stopPropagation();
+    const links = document.getElementsByTagName('a');
+    const buttons = document.getElementsByTagName('button');
+    for (let i=0; i<links.length; i++) {
+      if (links[i].contains(event.target)) {
+        return;
+      }
+    }
+    for (let i=0; i<buttons.length; i++) {
+      if (buttons[i].contains(event.target)) {
+        return;
+      }
+    }
+    if (open) {
+      return;
+    }
     history.push('/tweet/'+ tweet.parent?.id);
   };
 

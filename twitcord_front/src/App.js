@@ -39,7 +39,7 @@ function App() {
           </Hidden>
           }
           <Grid item xs={12} sm={8} md={5}>
-            <div className="App">
+            <div className="App border-left-1 border-right-1">
               <div>
                 <Route exact path="/" render={() =>
                   (<Redirect to="/homepage" />)} />
